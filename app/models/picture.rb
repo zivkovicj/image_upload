@@ -1,5 +1,7 @@
-class Picture < ActiveRecord::Base
-    validates_presence_of :name
-    
-    mount_uploader :image, ImageUploader
+class Picture < ApplicationRecord
+  belongs_to :label
+  has_many :questions
+  
+  validates_presence_of :image
+  mount_uploader :image, ImageUploader
 end
