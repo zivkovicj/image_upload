@@ -13,7 +13,6 @@ class CreateQuestions < ActiveRecord::Migration[5.0]
       t.string :choice_3
       t.string :choice_4
       t.string :choice_5
-      t.references :picture, foreign_key: true
 
       t.timestamps
     end
