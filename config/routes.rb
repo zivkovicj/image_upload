@@ -1,5 +1,16 @@
 Rails.application.routes.draw do
   
+  resources :teams
+  resources :consultancies
+  resources :ripostes
+  resources :quizzes
+  resources :label_objectives
+  resources :objective_seminars
+  resources :objective_users
+  resources :preconditions
+  resources :objectives
+  resources :seminar_users
+  resources :seminars
   resources :users
   resources :questions
   resources :labels

@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Seminars</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @seminars.each do |seminar| %>
+      <tr>
+        <td><%= link_to 'Show', seminar %></td>
+        <td><%= link_to 'Edit', edit_seminar_path(seminar) %></td>
+        <td><%= link_to 'Destroy', seminar, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Seminar', new_seminar_path %>

@@ -1,0 +1,2 @@
+class Precondition < ApplicationRecord
+end

@@ -1,0 +1,2 @@
+module ObjectiveUsersHelper
+end

@@ -1,0 +1,2 @@
+class SeminarUser < ApplicationRecord
+end

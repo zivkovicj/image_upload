@@ -1,0 +1,2 @@
+class Riposte < ApplicationRecord
+end

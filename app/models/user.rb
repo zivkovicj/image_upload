@@ -5,7 +5,7 @@ class User < ApplicationRecord
     
     has_many :seminars, dependent: :destroy, foreign_key: "teacher_id"
     has_many    :students, through: :seminars
-    has_many    :assignments
+    has_many    :objectives
     has_many    :questions
     has_many    :labels
 
@@ -85,10 +85,10 @@ class User < ApplicationRecord
     end
 
     
-    # Determines whether a teacher has an assignment
-    def hasAssignment?(thisAssignment)
+    # Determines whether a teacher has an objective
+    def has_objective?(this_objective)
        seminars.each do |seminar|
-           return true if seminar.assignments.include?(thisAssignment)
+           return true if seminar.objectives.include?(this_objective)
        end
        return false
     end

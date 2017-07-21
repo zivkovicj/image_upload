@@ -1,0 +1,2 @@
+class LabelObjective < ApplicationRecord
+end

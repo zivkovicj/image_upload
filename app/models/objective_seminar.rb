@@ -1,0 +1,2 @@
+class ObjectiveSeminar < ApplicationRecord
+end

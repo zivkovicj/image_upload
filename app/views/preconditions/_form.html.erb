@@ -1,0 +1,17 @@
+<%= form_for(precondition) do |f| %>
+  <% if precondition.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(precondition.errors.count, "error") %> prohibited this precondition from being saved:</h2>
+
+      <ul>
+      <% precondition.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

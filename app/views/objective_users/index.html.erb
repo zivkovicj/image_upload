@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Objective Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @objective_users.each do |objective_user| %>
+      <tr>
+        <td><%= link_to 'Show', objective_user %></td>
+        <td><%= link_to 'Edit', edit_objective_user_path(objective_user) %></td>
+        <td><%= link_to 'Destroy', objective_user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Objective User', new_objective_user_path %>

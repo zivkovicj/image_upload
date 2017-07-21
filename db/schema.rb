@@ -10,7 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170721193423) do
+ActiveRecord::Schema.define(version: 20170721202853) do
+
+  create_table "consultancies", force: :cascade do |t|
+    t.integer  "seminar_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["seminar_id"], name: "index_consultancies_on_seminar_id"
+  end
+
+  create_table "label_objectives", force: :cascade do |t|
+    t.integer  "objective_id"
+    t.integer  "label_id"
+    t.integer  "quantity"
+    t.integer  "point_value"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["label_id"], name: "index_label_objectives_on_label_id"
+    t.index ["objective_id"], name: "index_label_objectives_on_objective_id"
+  end
 
   create_table "labels", force: :cascade do |t|
     t.string   "name"
@@ -21,12 +39,50 @@ ActiveRecord::Schema.define(version: 20170721193423) do
     t.index ["user_id"], name: "index_labels_on_user_id"
   end
 
+  create_table "objective_seminars", force: :cascade do |t|
+    t.integer  "seminar_id"
+    t.integer  "objective_id"
+    t.integer  "priority"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["objective_id"], name: "index_objective_seminars_on_objective_id"
+    t.index ["seminar_id"], name: "index_objective_seminars_on_seminar_id"
+  end
+
+  create_table "objectives", force: :cascade do |t|
+    t.string   "name"
+    t.string   "extent"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "objectives_users", id: false, force: :cascade do |t|
+    t.integer  "objective_id",    null: false
+    t.integer  "user_id",         null: false
+    t.integer  "objective_id_id"
+    t.integer  "user_id_id"
+    t.integer  "score"
+    t.integer  "unlocked"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["objective_id_id"], name: "index_objectives_users_on_objective_id_id"
+    t.index ["user_id_id"], name: "index_objectives_users_on_user_id_id"
+  end
+
   create_table "pictures", force: :cascade do |t|
     t.string   "name"
     t.integer  "label_id"
     t.string   "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "preconditions", force: :cascade do |t|
+    t.integer  "mainassign_id"
+    t.integer  "preassign_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "questions", force: :cascade do |t|
@@ -49,6 +105,64 @@ ActiveRecord::Schema.define(version: 20170721193423) do
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
+  create_table "quizzes", force: :cascade do |t|
+    t.integer  "student_id"
+    t.integer  "objective_id"
+    t.integer  "total_score"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["objective_id"], name: "index_quizzes_on_objective_id"
+    t.index ["student_id"], name: "index_quizzes_on_student_id"
+  end
+
+  create_table "ripostes", force: :cascade do |t|
+    t.integer  "quiz_id"
+    t.integer  "question_id"
+    t.integer  "tally"
+    t.integer  "position"
+    t.string   "stud_answer"
+    t.integer  "poss"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["question_id"], name: "index_ripostes_on_question_id"
+    t.index ["quiz_id"], name: "index_ripostes_on_quiz_id"
+  end
+
+  create_table "seminar_users", id: false, force: :cascade do |t|
+    t.integer  "seminar_id"
+    t.integer  "user_id"
+    t.integer  "teach_request"
+    t.integer  "learn_request"
+    t.integer  "pref_request"
+    t.boolean  "present"
+    t.integer  "consulting_stars"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.index ["seminar_id"], name: "index_seminar_users_on_seminar_id"
+    t.index ["user_id"], name: "index_seminar_users_on_user_id"
+  end
+
+  create_table "seminars", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "teacher_id"
+    t.integer  "consultantThreshold"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.integer  "consultancy_id"
+    t.integer  "objective_id"
+    t.integer  "users_id"
+    t.integer  "consultant_id"
+    t.integer  "bracket"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["consultancy_id"], name: "index_teams_on_consultancy_id"
+    t.index ["objective_id"], name: "index_teams_on_objective_id"
+    t.index ["users_id"], name: "index_teams_on_users_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -67,6 +181,8 @@ ActiveRecord::Schema.define(version: 20170721193423) do
     t.string   "username"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.integer  "teams_id"
+    t.index ["teams_id"], name: "index_users_on_teams_id"
   end
 
 end
