@@ -58,16 +58,16 @@ ActiveRecord::Schema.define(version: 20170721202853) do
   end
 
   create_table "objectives_users", id: false, force: :cascade do |t|
-    t.integer  "objective_id",    null: false
-    t.integer  "user_id",         null: false
-    t.integer  "objective_id_id"
-    t.integer  "user_id_id"
+    t.integer  "objective_id",  null: false
+    t.integer  "user_id",       null: false
+    t.integer  "objectives_id"
+    t.integer  "users_id"
     t.integer  "score"
     t.integer  "unlocked"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.index ["objective_id_id"], name: "index_objectives_users_on_objective_id_id"
-    t.index ["user_id_id"], name: "index_objectives_users_on_user_id_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["objectives_id"], name: "index_objectives_users_on_objectives_id"
+    t.index ["users_id"], name: "index_objectives_users_on_users_id"
   end
 
   create_table "pictures", force: :cascade do |t|
@@ -106,13 +106,13 @@ ActiveRecord::Schema.define(version: 20170721202853) do
   end
 
   create_table "quizzes", force: :cascade do |t|
-    t.integer  "student_id"
+    t.integer  "user_id"
     t.integer  "objective_id"
     t.integer  "total_score"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.index ["objective_id"], name: "index_quizzes_on_objective_id"
-    t.index ["student_id"], name: "index_quizzes_on_student_id"
+    t.index ["user_id"], name: "index_quizzes_on_user_id"
   end
 
   create_table "ripostes", force: :cascade do |t|

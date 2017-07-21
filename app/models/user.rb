@@ -4,7 +4,7 @@ class User < ApplicationRecord
     before_create :create_activation_digest
     
     has_many :seminars, dependent: :destroy, foreign_key: "teacher_id"
-    has_many    :students, through: :seminars
+    has_many    :users, through: :seminars
     has_many    :objectives
     has_many    :questions
     has_many    :labels
