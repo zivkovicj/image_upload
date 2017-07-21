@@ -1,0 +1,77 @@
+<%= form_for(question) do |f| %>
+  <% if question.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(question.errors.count, "error") %> prohibited this question from being saved:</h2>
+
+      <ul>
+      <% question.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :prompt %>
+    <%= f.text_area :prompt %>
+  </div>
+
+  <div class="field">
+    <%= f.label :extent %>
+    <%= f.text_field :extent %>
+  </div>
+
+  <div class="field">
+    <%= f.label :user_id %>
+    <%= f.text_field :user_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :label_id %>
+    <%= f.text_field :label_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :correct_answers %>
+    <%= f.text_area :correct_answers %>
+  </div>
+
+  <div class="field">
+    <%= f.label :choice_0 %>
+    <%= f.text_field :choice_0 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :choice_1 %>
+    <%= f.text_field :choice_1 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :choice_2 %>
+    <%= f.text_field :choice_2 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :choice_3 %>
+    <%= f.text_field :choice_3 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :choice_4 %>
+    <%= f.text_field :choice_4 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :choice_5 %>
+    <%= f.text_field :choice_5 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :picture_id %>
+    <%= f.text_field :picture_id %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

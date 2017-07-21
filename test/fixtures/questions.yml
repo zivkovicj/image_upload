@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  prompt: MyText
+  extent: MyString
+  user: one
+  label: one
+  correct_answers: MyText
+  choice_0: MyString
+  choice_1: MyString
+  choice_2: MyString
+  choice_3: MyString
+  choice_4: MyString
+  choice_5: MyString
+  picture: one
+
+two:
+  prompt: MyText
+  extent: MyString
+  user: two
+  label: two
+  correct_answers: MyText
+  choice_0: MyString
+  choice_1: MyString
+  choice_2: MyString
+  choice_3: MyString
+  choice_4: MyString
+  choice_5: MyString
+  picture: two
