@@ -5,6 +5,7 @@ class CreateQuestions < ActiveRecord::Migration[5.0]
       t.string :extent
       t.references :user, foreign_key: true
       t.references :label, foreign_key: true
+      t.references :picture, foreign_key: true
       t.text :correct_answers
       t.string :choice_0
       t.string :choice_1

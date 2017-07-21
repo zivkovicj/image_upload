@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170721175849) do
+ActiveRecord::Schema.define(version: 20170721192830) do
 
   create_table "labels", force: :cascade do |t|
     t.string   "name"
@@ -24,10 +24,9 @@ ActiveRecord::Schema.define(version: 20170721175849) do
   create_table "pictures", force: :cascade do |t|
     t.string   "name"
     t.integer  "label_id"
-    t.integer  "questions_id"
     t.string   "image"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "questions", force: :cascade do |t|
@@ -35,6 +34,7 @@ ActiveRecord::Schema.define(version: 20170721175849) do
     t.string   "extent"
     t.integer  "user_id"
     t.integer  "label_id"
+    t.integer  "picture_id"
     t.text     "correct_answers"
     t.string   "choice_0"
     t.string   "choice_1"
@@ -42,7 +42,6 @@ ActiveRecord::Schema.define(version: 20170721175849) do
     t.string   "choice_3"
     t.string   "choice_4"
     t.string   "choice_5"
-    t.integer  "picture_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.index ["label_id"], name: "index_questions_on_label_id"
