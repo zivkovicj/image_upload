@@ -1,2 +1,0 @@
-class ObjectiveUser < ApplicationRecord
-end

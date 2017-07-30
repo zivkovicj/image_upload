@@ -1,6 +1,11 @@
+
+=begin
+
 require 'test_helper'
 
 class PreconditionsControllerTest < ActionDispatch::IntegrationTest
+  
+  
   setup do
     @precondition = preconditions(:one)
   end
@@ -45,4 +50,7 @@ class PreconditionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to preconditions_url
   end
+  
 end
+
+=end

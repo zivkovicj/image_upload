@@ -1,74 +1,94 @@
 class LabelsController < ApplicationController
-  before_action :set_label, only: [:show, :edit, :update, :destroy]
-
-  # GET /labels
-  # GET /labels.json
-  def index
-    @labels = Label.all
-  end
-
-  # GET /labels/1
-  # GET /labels/1.json
-  def show
-  end
-
-  # GET /labels/new
+  
+  before_action :logged_in_user
+  before_action :correct_user,    only: [:delete, :destroy]
+  
+  include SetPermissions
+  
   def new
     @label = Label.new
+    new_label_stuff()
+    @questions = questions_to_offer
+    setPermissions(@label)
   end
 
-  # GET /labels/1/edit
-  def edit
-  end
-
-  # POST /labels
-  # POST /labels.json
   def create
     @label = Label.new(label_params)
-
-    respond_to do |format|
-      if @label.save
-        format.html { redirect_to @label, notice: 'Label was successfully created.' }
-        format.json { render :show, status: :created, location: @label }
-      else
-        format.html { render :new }
-        format.json { render json: @label.errors, status: :unprocessable_entity }
-      end
+    
+    if @label.save
+      flash[:success] = "Label Created"
+      redirect_to user_path(current_user)
+    else
+      new_label_stuff()
+      setPermissions(@label)
+      @questions = questions_to_offer
+      render 'new'
     end
   end
 
-  # PATCH/PUT /labels/1
-  # PATCH/PUT /labels/1.json
+  def edit
+    @label = Label.find(params[:id])
+    @questions = questions_to_offer
+    setPermissions(@label)
+  end
+
   def update
-    respond_to do |format|
-      if @label.update(label_params)
-        format.html { redirect_to @label, notice: 'Label was successfully updated.' }
-        format.json { render :show, status: :ok, location: @label }
-      else
-        format.html { render :edit }
-        format.json { render json: @label.errors, status: :unprocessable_entity }
+    @label = Label.find(params[:id])
+    
+    if @label.update_attributes(label_params)
+      flash[:success] = "Label Updated"
+      redirect_to user_path(current_user)
+    else
+      render 'edit'
+    end
+  end
+
+  def index
+    if current_user.role == "admin"
+      initial_list = Label.all
+    else
+      initial_list = Label.where("user_id = ? OR extent = ?", current_user.id, "public")
+    end
+
+    if !params[:search].blank?
+      second_list = initial_list.search(params[:search], params[:whichParam])
+    else
+      second_list = initial_list
+    end
+    
+    @labels = second_list.paginate(page: params[:page])
+  end
+
+  def destroy
+  end
+  
+  private
+  
+    def label_params
+      params.require(:label).permit(:name, :extent, :user_id, question_ids: [])
+    end
+    
+    def correct_user
+      @label = Label.find(params[:id])
+      unless (@label.user == current_user || (current_user && current_user.role == "admin"))
+        flash[:danger] = "You do not have permission for this action"
+        redirect_to(login_url) 
       end
     end
-  end
-
-  # DELETE /labels/1
-  # DELETE /labels/1.json
-  def destroy
-    @label.destroy
-    respond_to do |format|
-      format.html { redirect_to labels_url, notice: 'Label was successfully destroyed.' }
-      format.json { head :no_content }
+    
+    def questions_to_offer
+      build_list = []
+      question_list = (current_user.role == "admin" ? Question.all : Question.where(:user => current_user))
+      
+      question_list.all.each do |question|
+        build_list.push([question.id, question.shortPrompt, question.label])
+      end
+      
+      return build_list
     end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_label
-      @label = Label.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def label_params
-      params.require(:label).permit(:name, :extent, :user_id)
+    
+    def new_label_stuff()
+      @label.user = current_user
+      @label.extent = "public"
     end
 end

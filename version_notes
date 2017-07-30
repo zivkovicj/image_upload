@@ -1,0 +1,120 @@
+
+VERSION 2.11 ADD QUESTIONS TO DB
+    Migrate after deploy
+        There might be an issue with the migration that added created_by to objectives
+        Roll back to this migration. Then erase all old objectives.
+        Need to eliminate the reference to "0" as a question/objective creator.
+        
+VERSION 2.12 UPDATED TESTS AFTER QUESTIONS
+    Placement of created date in questions index
+    Admin shows "Admin Page" and "Back to your Profile"
+        Get rid of "Admin" link.
+        Creating a question seems to be missing the "Back to your profile" link
+    Test for message for teachers who haven't made any private objectives
+    Make sure that when a user is deleted, to also delete that user's objectives.
+        Otherwise those objectives will return an error.
+        
+VERSION 2.13 ASSIGN LABELS TO QUESTIONS
+    User can create labels
+        And edit
+        And index
+    Question form gives list of choices for labels
+        "No label yet" option is the default checked radio button
+        Write a test for that
+    Default label is "Unlabeled"
+    Label form lists questions that don't yet have a label
+    Edit permission message should only appear once in the form, instead of appearing on every attribute.
+    Question index allows showing questions by label
+       Remember which labels are checked after form is submitted.
+    Icon for label
+    I suspect the live site might have issues with assigning a question with a label_id 0
+        But if not, then leave that part alone.
+        
+        
+VERSION 2.14 LABELJOINS (Later renamed to Objective_Seminars)
+    Flaw from previous update where questions index wasn't showing labels to choose from.
+    Next, make it so that checking a label creates a labeljoin
+    Partial needs to include the permission aspect
+    Test that mainassigns do not appear as a choice for a possible preassign
+    Editor can edit how many questions from each label appear on the quiz for that objective.
+    Editing Objectives goes to a radio button list of available labels so teacher can which label a question fits
+        Then another screen where the teacher can choose how many questions from each label
+        and the point value of each question from that label
+    Total Point Calculator that updates as the values are changed.
+    Test for editing labeljoins
+        Test for Deleting a labeljoin
+    Create a New Objective should read "Private Objective" instead of "Public Objective"
+    "objective Created" should read, "Objective Created"
+    Creating an objective needs to re-route to quantities, just like editing an objective does.
+    
+UPDATE 2.15 CREATE QUIZ PUSHED 07/11/17
+    When student clicks on the objective, a new quiz instance is created.
+    Ripostes (Quiz_question joins) are created for each question associated with that quiz 
+    Ruby chooses random questions to put on the quiz
+    Add an attribute to riposte to keep track of that riposte's order in the quiz.
+    instead of using twenty different answer choices saved and
+        twenty different responses, the controller should save an array of correct
+        responses. (The array is for future questions where multiple correct
+        answers are possible.)
+    Now there's a new function to create scores for each student.
+        That should be moved from quiz_test into test_helper
+        And setup in all models that need it.
+    Show total score at top and bottom of quiz report.
+    I think that life will be easier and more readable if I give each riposte a
+        column to show its points possible.
+    Save the whole answer in reponse column of riposte, not just "true" or "false"
+    Student sees first question, responds, and submits
+        Response is saved in riposte (quiz_question join)
+    Student sees second question, etc.
+        etc.
+    Total score for quiz is calculated
+    If student has improved, score for that objective is updated
+    Will need to rollback migration after deploy to change the type of the response columns
+    
+    
+    
+    
+2.16 CONSULTANCIES -- STARTED 07/11/17
+                      PUSHED 07/15/17
+    Quiz Answer Choice order is randomized
+    .pluralize display for the word stars in Quiz report
+    Button to go back to class (or at least profile) after taking quiz.
+        Add current_class to student modeL
+    Consultancy model
+        Seminar
+        Date
+        Has many Teams
+    Team model
+        Has one topic
+        Has one leader
+        Has many members
+        Type (normal, unplaced, absent)
+    Can get rid of studentHash[:placed] 
+    Consultancy is created and detailed when teacher chooses "DeskConsulants"
+    Desk Consultants view should be changed to be based on @consultancy
+        Now see if the view works
+    When teacher views class, she can view all the consultancies for that class
+    Migrate to add current_class to student
+    
+2.17 LOCKED QUIZZES -- STARTED 07/15/17
+                        PUSHED 07/18/17
+    Rename Score to objectiveStudent to follow convention
+        Model has "unlocked" attribute
+    Rename StudentsTeam to StudentTeam (singular)
+    When a consultancy is created, Quiz is unlocked for to all students
+        who have that topic
+    Students can only see unlocked objectiveS
+    Try to implement eager loading where applicable
+    Erase oldest consultancy when a class has more than 9
+    Erase first consultancy in a day if a second is created.
+    
+2.18 MULTIPLE QUESTIONS -- STARTED 07/18/2017
+                          PUSHED 07/20/2017
+    When clicking on "Create a new question," it brings up a form with only one
+        spot to choose "public" or "private" and one spot to choose labels. But
+        five spots for prompt and answer choice.
+    Test for multiple questions
+    Header in "Create new Students" view
+    Buttons for label and extent aren't showing properly.
+    Don't create 5 questions if no prompt is entered for the last few.
+    Default checked label

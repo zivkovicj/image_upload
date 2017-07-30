@@ -1,49 +1,66 @@
-<p id="notice"><%= notice %></p>
 
-<h1>Questions</h1>
+<% provide(:title, 'All Questions') %>
+<% provide(:headerText, 'All Questions') %>
+<% provide(:headerPic, 'question.png') %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Prompt</th>
-      <th>Extent</th>
-      <th>User</th>
-      <th>Label</th>
-      <th>Correct answers</th>
-      <th>Choice 0</th>
-      <th>Choice 1</th>
-      <th>Choice 2</th>
-      <th>Choice 3</th>
-      <th>Choice 4</th>
-      <th>Choice 5</th>
-      <th>Picture</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
 
-  <tbody>
-    <% @questions.each do |question| %>
-      <tr>
-        <td><%= question.prompt %></td>
-        <td><%= question.extent %></td>
-        <td><%= question.user %></td>
-        <td><%= question.label %></td>
-        <td><%= question.correct_answers %></td>
-        <td><%= question.choice_0 %></td>
-        <td><%= question.choice_1 %></td>
-        <td><%= question.choice_2 %></td>
-        <td><%= question.choice_3 %></td>
-        <td><%= question.choice_4 %></td>
-        <td><%= question.choice_5 %></td>
-        <td><%= question.picture %></td>
-        <td><%= link_to 'Show', question %></td>
-        <td><%= link_to 'Edit', edit_question_path(question) %></td>
-        <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render :partial => 'shared/searchField', 
+  :locals => {:whichPath => questions_path,
+              :attrLabel1 => "Prompt", :attrLabel2 => nil, :attrLabel3 => nil, :attrLabel4 => nil, :attrLabel5 => nil,
+              :attrData1 => :prompt, :attrData2 => nil, :attrData3 => nil, :attrData4 => nil, :attrData5 => nil} %>
 
-<br>
 
-<%= link_to 'New Question', new_question_path %>
+<% if @questions != [0] %>
+  <% if !@questions.empty? %>
+  
+    <div>
+      <%= will_paginate %>
+        <% @questions.each do |question| %>
+          <table>
+            <% if current_user.role == "admin" %>
+              <tr>
+                <td><%= question.created_at.strftime("%Y-%m-%d") %></td>
+                <td><%= question.updated_at.strftime("%Y-%m-%d") %></td>
+              </tr>
+            <% end %>
+            <tr class="users">
+              <td><% if question.user == current_user || current_user.role == "admin" %>
+                  <%= link_to "Delete", question, method: :delete, :id => "delete_#{question.id}",
+                              data: { confirm: "You are about to permanently remove all records of this question. All scores for this question will also be deleted. This cannot be undone."  } %>
+                  <% end %>
+              </td>
+              <td><%= question.extent.capitalize %></td>
+              <td>Label: <%= question.label.name if question.label %></td>
+            </tr>
+            <tr>
+              <td colspan="3"><%= link_to question.shortPrompt, edit_question_path(question), :id => "edit_#{question.id}" %></td>
+            </tr>
+            <tr>
+              <td colspan = "3">
+                <% 6.times do |n| %>
+                  <% this_choice = question.read_attribute(:"choice_#{n}") %>
+                  <% if !(this_choice.blank?) %>
+                    <% if n > 0 %>
+                      , &nbsp;
+                    <% end %>
+                    <% conditional_wrapper(question.correct_answers.include?(this_choice)) do %>
+                      <%= this_choice %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          </table>
+          </br>
+        <% end %>
+      <%= will_paginate %>
+    </div>
+  <% else %>
+    <%# Show Nothing if @questions is empty. That makes it so user doesn't get the "Nothing
+      found for that search method if they were just visiting that screen for the first time. %>
+  <% end %>
+<% else %>
+  <h3>Nothing found for that search.</h3>
+<% end %>

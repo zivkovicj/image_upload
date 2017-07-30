@@ -1,11 +1,93 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+# First Seminar
+
+objective_10:
+  name: percentages
+  extent: "public"
+  user_id: 0
+
+  
+objective_20:
+  name: slope
+  extent: "public"
+  user_id: 0
+
+objective_30:
+  name: intercept
+  extent: "public"
+  user_id: 0
+  
+objective_40:
+  name: irrational numbers
+  extent: "private"
+  user_id: 0
+  
+objective_50:
+  name: pythagorean theorem
+  extent: "private"
+  user_id: 0
+
+  
+objective_60:
+  name: volume of cylinders
+  extent: "private"
+  user_id: 0
+
+  
+# Second Seminar
+
+objective_70:
+  name: add integers on a number line
+  extent: "public"
+  user_id: 0
+
+  
+objective_80:
+  name: integers block model
+  extent: "public"
+  user_id: 0
+
+  
+objective_90:
+  name: subtract integers
+  extent: "private"
+  user_id: 0
+
+# No seminars yet
+
+objective_100:
+  name: equations 1
+  extent: "public"
+  user_id: 0
+  
+objective_110:
+  name: equations 2
+  extent: "public"
+  user_id: 0
+
+objective_120:
+  name: equations 3
+  extent: "private"
+  user_id: 0
+  
+objective_130:
+  name: equations 4
+  extent: "private"
+  user_id: 0  
+  
+objective_140:
+  name: equations 5
+  extent: "private"
+  user_id: 0
+  
+objective_150:
+  name: equations 6
+  extent: "private"
+  user_id: 0
+  
+# Created by another teacher
+objective_160:
+  name: flagellates
+  extent: "private"
+  user_id: 0

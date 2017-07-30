@@ -1,74 +1,136 @@
 class ObjectivesController < ApplicationController
-  before_action :set_objective, only: [:show, :edit, :update, :destroy]
-
-  # GET /objectives
-  # GET /objectives.json
-  def index
-    @objectives = Objective.all
-  end
-
-  # GET /objectives/1
-  # GET /objectives/1.json
-  def show
-  end
-
-  # GET /objectives/new
+  before_action :correct_user, only: [:delete, :destroy]
+  #before_action :admin_user,    only: []
+  
+  include BuildPreReqLists
+  include SetPermissions
+  include LabelsList
+  
+  
   def new
-    @objective = Objective.new
+    @objective = Objective.new()
+    new_objective_stuff()
+    @labels = labels_to_offer
+    setPermissions(@objective)
+    @pre_req_list = build_pre_req_list(@objective)
   end
-
-  # GET /objectives/1/edit
-  def edit
-  end
-
-  # POST /objectives
-  # POST /objectives.json
+  
   def create
     @objective = Objective.new(objective_params)
-
-    respond_to do |format|
-      if @objective.save
-        format.html { redirect_to @objective, notice: 'Objective was successfully created.' }
-        format.json { render :show, status: :created, location: @objective }
+    if @objective.name.blank?
+      @objective.name = "Objective #{Objective.count}"  
+    end
+    
+    if @objective.save
+      flash[:success] = "Objective Created"
+      redirect_to quantities_path(@objective)
+    else
+      new_objective_stuff()
+      setPermissions(@objective)
+      @pre_req_list = build_pre_req_list(@objective)
+      render 'objectives/new'
+    end
+  end
+  
+  def index
+    if !params[:search].blank?
+      if current_user.role == "admin"
+        @objectives = Objective.paginate(page: params[:page]).search(params[:search], params[:whichParam])
       else
-        format.html { render :new }
-        format.json { render json: @objective.errors, status: :unprocessable_entity }
+        @objectives = Objective.where("user_id = ? OR extent = ?", current_user, "public").paginate(page: params[:page]).search(params[:search], params[:whichParam])
       end
+    end
+    
+    if current_user.role == "admin"
+      @objectives ||= Objective.paginate(page: params[:page])
+    elsif current_user.role == "student"
+      redirect_to login_url
+    else
+      @objectives ||= Objective.where("user_id = ? OR extent = ?", current_user.id, "public").paginate(page: params[:page])
     end
   end
 
-  # PATCH/PUT /objectives/1
-  # PATCH/PUT /objectives/1.json
+  def edit
+    @objective = Objective.find(params[:id])
+    @labels = labels_to_offer
+
+    setPermissions(@objective)
+    @pre_req_list = build_pre_req_list(@objective)
+  end
+
   def update
-    respond_to do |format|
-      if @objective.update(objective_params)
-        format.html { redirect_to @objective, notice: 'Objective was successfully updated.' }
-        format.json { render :show, status: :ok, location: @objective }
+    @objective = Objective.find(params[:id])
+    newName = params[:objective][:name] 
+    if newName.blank?
+      params[:objective][:name] = @objective.name 
+    end
+    if current_user.id == @objective.user_id || current_user.role =="admin"
+      if @objective.update_attributes(objective_params)
+        flash[:success] = "Objective Updated"
+        redirect_to quantities_path(@objective)
       else
-        format.html { render :edit }
-        format.json { render json: @objective.errors, status: :unprocessable_entity }
+        @labels = labels_to_offer
+        @pre_req_list = build_pre_req_list(@objective)
+        render 'edit'
+      end
+    else
+      if @objective.update_attributes(limited_objective_params)
+        flash[:success] = "Objective Updated"
+        redirect_to user_path(current_user)
+      else
+        @labels = labels_to_offer
+        @pre_req_list = build_pre_req_list(@objective)
+        render 'edit'
       end
     end
   end
-
-  # DELETE /objectives/1
-  # DELETE /objectives/1.json
-  def destroy
-    @objective.destroy
-    respond_to do |format|
-      format.html { redirect_to objectives_url, notice: 'Objective was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+  
+  def quantities
+    @objective = Objective.find(params[:id])
+    @label_objectives = @objective.label_objectives.sort_by{|x| [x.label.name]}
   end
 
+  def destroy
+    @objective = Objective.find(params[:id])
+    
+    ObjectiveStudent.where(:objective_id => @objective.id).each do |as|
+      as.destroy!
+    end
+    oldAssignId = @objective.id
+    @objective.destroy
+    SeminarStudent.all.each do |ss|
+      if ss.teach_request == oldAssignId
+        ss.update(:teach_request => nil)
+      end
+      
+      if ss.learn_request == oldAssignId
+        ss.update(:learn_request => nil)
+      end
+    end
+    flash[:success] = "Objective Deleted"
+    
+    redirect_to current_user
+  end
+  
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_objective
-      @objective = Objective.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def objective_params
-      params.fetch(:objective, {})
-    end
+        def objective_params
+            params.require(:objective).permit(:name, :extent, :user_id, preassign_ids: [], seminar_ids: [], label_ids: [])
+        end
+        
+        def limited_objective_params
+            params.require(:objective).permit(seminar_ids: [])
+        end
+        
+        def correct_user
+          @objective = Objective.find_by(id: params[:id])
+          redirect_to login_url unless (current_user && @objective.user == current_user) || (current_user && current_user.role == "admin")
+        end
+        
+        def new_objective_stuff
+          @objective.name = "Objective #{Objective.count}"
+          @objective.user = current_user
+          @objective.extent = "public"
+        end
+          
+          
 end

@@ -1,0 +1,16 @@
+
+<h1><%= @student.fullName %></h1>
+
+<div class="requestBox preferenceBox">
+    <div class="singleOption lowSingOpt">
+        <h3><strong>Your Classes</strong></h3>
+    </div>
+    <br/>
+    <% @student.seminars.each do |seminar| %>
+        <%= link_to studentView_path(seminar, :student => @student.id) do %>
+            <div class="singleOption lowSingOpt linkDiv hoverHigh">
+                <h4 class="linkHeader"><%= seminar.name %></h4>
+            </div>
+        <% end %>
+    <% end %>
+</div>

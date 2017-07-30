@@ -1,31 +1,51 @@
-<p id="notice"><%= notice %></p>
 
-<h1>Labels</h1>
+<% provide(:title, 'All Labels') %>
+<% provide(:headerText, 'All Labels') %>
+<% provide(:headerPic, 'labels.png') %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Extent</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
 
-  <tbody>
-    <% @labels.each do |label| %>
-      <tr>
-        <td><%= label.name %></td>
-        <td><%= label.extent %></td>
-        <td><%= label.user %></td>
-        <td><%= link_to 'Show', label %></td>
-        <td><%= link_to 'Edit', edit_label_path(label) %></td>
-        <td><%= link_to 'Destroy', label, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
-<br>
+<%= render :partial => 'shared/searchField', 
+  :locals => {:whichPath => labels_path,
+              :attrLabel1 => "Name", :attrLabel2 => nil, :attrLabel3 => nil, :attrLabel4 => nil, :attrLabel5 => nil,
+              :attrData1 => :name, :attrData2 => nil, :attrData3 => nil, :attrData4 => nil, :attrData5 => nil} %>
 
-<%= link_to 'New Label', new_label_path %>
+
+<% if @labels != [0] %>
+  <% if !@labels.empty? %>
+  
+    <div>
+      <%= will_paginate %>
+        <% @labels.each do |label| %>
+          <table>
+            <% if current_user.role == "admin" %>
+              <tr>
+                <td><%= label.created_at.strftime("%Y-%m-%d") %></td>
+                <td><%= label.updated_at.strftime("%Y-%m-%d") %></td>
+              </tr>
+            <% end %>
+            <tr class="users">
+              <td><% if label.user == current_user || current_user.role == "admin" %>
+                  <%= link_to "Delete", label, method: :delete, :id => "delete_#{label.id}",
+                              data: { confirm: "You are about to permanently remove all records of this label. All questions for this label will also be deleted. This cannot be undone."  } %>
+                  <% end %>
+              </td>
+              <td><%= label.extent.capitalize %></td>
+            </tr>
+            <tr>
+              <td colspan="2"><%= link_to label.name, edit_label_path(label), :id => "edit_#{label.id}" %></td>
+            </tr>
+          </table>
+          </br>
+        <% end %>
+      <%= will_paginate %>
+    </div>
+  <% else %>
+    <%# Show Nothing if @labels is empty. That makes it so user doesn't get the "Nothing
+      found for that search method if they were just visiting that screen for the first time. %>
+  <% end %>
+<% else %>
+  <h3>Nothing found for that search.</h3>
+<% end %>

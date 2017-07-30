@@ -6,5 +6,7 @@ class CreateObjectiveSeminars < ActiveRecord::Migration[5.0]
       t.integer  :priority
       t.timestamps
     end
+    
+    add_index  :objective_seminars, [:objective_id, :seminar_id]
   end
 end

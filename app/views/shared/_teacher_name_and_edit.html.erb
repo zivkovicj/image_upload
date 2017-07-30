@@ -1,0 +1,21 @@
+
+
+<div class="row">
+    <aside class="col-md-4">
+        <section class="user_info">
+            <h3>
+                <%= gravatar_for @teacher %>
+                <strong><%= @teacher.nameWithTitle %></strong>
+                <% if current_user?(@teacher) %>
+                    &nbsp;
+                    <small>
+                        <span class="btn-group">
+                            <%= button_to( "Edit", edit_user_path(@teacher), :method => :get,
+                                :class => "btn btn-small btn-primary") %>
+                        </span>
+                    </small>
+                <% end %>
+            </h3>
+        </section>
+    </aside>
+</div>

@@ -1,48 +1,121 @@
 require 'test_helper'
 
 class ObjectivesControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @objective = objectives(:one)
+  
+  def setup
+    @user = users(:michael)
+    @teacher_user = users(:archer)
+    @wrong_teacher = users(:zacky)
+    @seminar = seminars(:one)
+    @objective = objectives(:objective_20)
+    @objective40 = objectives(:objective_40)
+    setup_objectives()
+    setup_scores()
+
   end
 
-  test "should get index" do
-    get objectives_url
-    assert_response :success
+  test "objectives index test" do
+    log_in_as(@user)
+    get objectives_path
+    assert_template 'objectives/index'
+  end
+  
+  test "objectives index as non-admin" do
+    log_in_as(@teacher_user)
+    get objectives_path
+    # Should test that admin gets delete links for publics
+    # Non-admin doesn't get those links.
+  end
+  
+  test "edit as non-admin" do
+    oldName = @objective.name
+    
+    log_in_as(@teacher_user)
+    patch objective_path(@objective), params: { objective: { name:  "Burgersauce",
+                                          seminar_id: @seminar.id } }
+                                          
+    @objective.reload
+    assert_equal oldName, @objective.name
+  end
+  
+  test "edit without login" do
+    oldName = @objective.name
+    
+    log_in_as(@teacher_user)
+    patch objective_path(@objective), params: { objective: { name:  "Burgersauce",
+                                          seminar_id: @seminar.id } }
+                                          
+    @objective.reload
+    assert_equal oldName, @objective.name
   end
 
-  test "should get new" do
-    get new_objective_url
-    assert_response :success
-  end
+  test "delete an objective" do
+    # also check whether it deletes scores
+    # and resets student requests
 
-  test "should create objective" do
-    assert_difference('Objective.count') do
-      post objectives_url, params: { objective: {  } }
+    oldobjectiveCount = Objective.count
+    oldId = @objective40.id
+    oldScoreCount = ObjectiveStudent.count
+    old_os_count = ObjectiveSeminar.count
+    studentCount = @seminar.students.count
+    assert Precondition.where(:mainassign_id => oldId).count > 0
+    assert Precondition.where(:preassign_id => oldId).count > 0
+
+    @ss = @seminar.seminar_students.first
+    @ss.update(:teach_request => oldId)
+    @second_ss = @seminar.seminar_students.second
+    @second_ss.update(:learn_request => oldId)
+    assert_equal @ss.teach_request, oldId
+    assert_equal @second_ss.learn_request, oldId
+    
+    capybara_teacher_login()
+    click_on("All Objectives")
+    click_on("delete_#{@objective40.id}")
+    
+    assert Precondition.where(:mainassign_id => oldId).count == 0
+    assert Precondition.where(:preassign_id => oldId).count == 0
+    assert_equal oldobjectiveCount - 1, Objective.count
+    assert_equal oldScoreCount - studentCount, ObjectiveStudent.count
+    assert_equal old_os_count - 1, ObjectiveSeminar.count
+    
+    @ss.reload
+    @second_ss.reload
+    assert_not_equal oldId, @ss.teach_request
+    assert_not_equal oldId, @second_ss.learn_request
+  end
+  
+  test "wrong user can't delete" do
+    log_in_as @wrong_teacher
+    assert_no_difference 'Objective.count' do
+      delete objective_path(@objective40)
     end
-
-    assert_redirected_to objective_url(Objective.last)
   end
 
-  test "should show objective" do
-    get objective_url(@objective)
-    assert_response :success
+  test "successful objective edit" do
+    log_in_as(@teacher_user)
+    assignToEdit = Objective.where(:user_id => @teacher_user.id).first
+    
+    get seminar_path(@seminar)
+    get edit_objective_path(assignToEdit)
+    #assert_select "a", :href => seminar_path(@seminar), text: "Back to #{@seminar.name}"
+    name  = "Pretzels"
+    patch objective_path(assignToEdit), params: { objective: { name:  name,
+                                              seminar_id: @seminar.id } }
+    assert_not flash.empty?
+    assert_redirected_to quantities_path(assignToEdit)
+    assignToEdit.reload
+    assert_equal name.downcase,  assignToEdit.name
   end
-
-  test "should get edit" do
-    get edit_objective_url(@objective)
-    assert_response :success
+  
+  test "correct number of checkboxes" do
+    numChecks = Objective.where(:extent => "public").count
+    numChecks += Objective.where(:user => @teacher_user).count
+    
+    log_in_as(@teacher_user)
+    get edit_seminar_path(@seminar)
+    get edit_objective_path(@objective)
+    #assert_select "input[type=checkbox]", count: numChecks
   end
+  
 
-  test "should update objective" do
-    patch objective_url(@objective), params: { objective: {  } }
-    assert_redirected_to objective_url(@objective)
-  end
-
-  test "should destroy objective" do
-    assert_difference('Objective.count', -1) do
-      delete objective_url(@objective)
-    end
-
-    assert_redirected_to objectives_url
-  end
 end

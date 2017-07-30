@@ -7,5 +7,7 @@ class CreateLabelObjectives < ActiveRecord::Migration[5.0]
       t.integer  :point_value
       t.timestamps
     end
+    
+    add_index  :label_objectives, [:label_id, :objective_id]
   end
 end

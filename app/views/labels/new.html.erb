@@ -1,5 +1,7 @@
-<h1>New Label</h1>
+<% provide(:title, 'New Label') %>
+<% provide(:button_text, 'Create This Label') %>
 
-<%= render 'form', label: @label %>
+<% provide(:headerText, "New Label") %>
+<% provide(:headerPic, "labels.png") %>
 
-<%= link_to 'Back', labels_path %>
+<%= render 'form' %>

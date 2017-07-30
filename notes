@@ -1,0 +1,103 @@
+
+Don't ever mess with git directory ever again!
+
+
+Run a single test:
+
+ruby -I test test/controllers/students_controller_test.rb -n test_Auto_student_number
+
+
+http://deskexperts-zivkovicj.c9users.io/seminars/preDeskConsultants/1
+
+
+
+<%= link_to "Study Guide 1 ~ Evaluate Expressions that Include Negative Numbers", 
+'/Study_Guides/SG_1_Eval_Express_w_Neg_Nums',
+:download => 'SG_1_Eval_Express_w_Neg_Nums' %>
+
+
+
+
+
+
+BEST PRACTICES
+
+Decided to go with three levels of priority (above zero) for objectives. I had temporarily
+implemented four levels, for the purpose of having one level that honored consultant
+points, but not student requests. Later realized that this was redundant, since
+priority factors into student requests, rankByobjectives, etc. 
+
+I want the ability to remove a student from a class, then put them back in. If this
+happens, that student should retain scores on objectives. But instead of fixing that
+right now, I need to re-arrange the program to keep objectives among different class periods.
+That's going to be a pretty big change.
+
+I had considered making all preReqs transitive.
+For example, if "One-step Equtions" is a reReq for "Two-Step Equations," and "Two-Step
+Equations" is PreReq for "Both-Side Equations," then "One-step Equations" should be PreReq for
+"Both-side Equations." But that will make things difficult if many different grade levels
+begin using the program. Students would need to pass everything from 1st grade before trying
+anything from 7th Grade.
+
+
+
+
+
+
+
+MANUAL TESTS
+
+Main
+Make sure that new classes can add students and that they end up in the seating
+    chart.
+
+Scoresheet
+Crosshairs are working upon clicking rows of table.
+
+New objective Form:
+And only add the boulderfist class if the objective in question has some pre-reqs
+Pre-Req dialog is visible from beginning.
+    But doesn't pop up when expected.
+User inputs invalid objective, but then is able to edit question after the re-route
+Automatic totalling of points in second screen.
+
+
+In the Seating Chart:
+Move a student to a new seat, updates the seating chart
+Make sure students can be moved twice. That's the type of stuff that often glitches.
+Move student from seat to temp area. Make sure that saves.
+Move a student from temp area to a seat.
+Moving student on top of another puts the old student in the temp area
+    and updates both matrices
+"Save changes to seating chart" disabled until an actual change is made.
+The tests include a puts line to check that a student is removed from the seating chart
+    when she is removed from the class.
+Make sure that new classes can add students and that they end up in the seating
+    chart.
+
+Create New Students
+Check that last rows are invisible until "Add more" text is clicked
+
+
+Create New Question
+Check that most answer choices are invisible until "Add more" text is clicked
+User inputs invalid question, but then is able to edit question after the re-route
+
+Desk Consultants:
+Check that attendance updates permanently. Really try to mess with it and hop around
+    to different navigations. It's prone to funky problems.
+Refreshing the screen after DeskConsultants was established was causing an error because of routing.
+Check that eliminating a student's pre-requisites causes that student to be moved
+    to a different group.
+Desk Consultants has a proper number of groups
+Check that lowering a consultants' score causes that student to no longer be a consultant.
+Check that changing attendance changes the Desk Consultants groups
+Appropriate length of objective name shown in group seating chart
+Make sure that DeskConsultants is creating mostly groups of four. (At one point, it was limiting
+    the groups to three.)
+Refreshing the screen after DeskConsultants was established was causing an error because of routing.
+
+Other:
+What you click the class name from the teacher profile page, it should go to the class
+    edit page.
+Edit teacher profile button

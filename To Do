@@ -1,0 +1,832 @@
+EM Education Main Site
+
+
+
+ADVERTISE TO FIND ANOTHER TEACHER WILLING TO TRY THE PROGRAM THIS YEAR
+ 
+BEFORE AUG 15, TRY TO INCLUDE CUMULATIVE STARS IN THE SCORESHEET
+
+    
+
+REMAKE APP IN NEW WORKSPACE
+
+    V Start a new workspace that doesn't use the tutorial configuration
+
+    V Destroying user's seminars and objectives needs to move from the controller to the model.
+    
+    V Look at the edit action for the users controller. It looks like it's set up to work
+    for students, not teachers.
+    
+    V Put teacher titles into the DB seeds
+    
+    V And Questions
+    
+    After deploy, migrate, reset, and seed with heroku
+    
+    
+
+
+SINGLE-TABLE INHERITANCE
+
+    One table for User
+    
+    Sub-table for teacher
+    
+    Sub-table for admin
+    
+    Sub-table for student
+    
+    EM Logo
+
+    Try to figure out why the debug info window is no longer showing.
+
+    
+  
+IMAGES WITH QUESTIONS
+
+    Public/Private Extent for Pictures
+
+    The first screen for writing questions is only for the type, extent, and label.
+
+    Associate pictures with labels
+    
+    Make an option to associate labels with pictures
+    
+    Link an image to a question
+    
+    Display that image when the student is answering the riposte
+    
+    Also work on the best way to display the images while creating questions
+    
+    The second screen will only offer the pictures that correspond to the chosen label.
+    
+    List options for labels when uploading a new image
+    
+
+PRE-TEST QUIZ UNLOCKS    
+    
+    Many quizzes can be set are pre-tests so that they are open to every student
+        upon joining that class.
+    
+    Rename assignjoin to objective_seminar to fit join table convention
+        
+    This should be edited on the next page after editing a class. It only lists
+        the objectives that are already in that class. Teacher can check which ones
+        should be pre-test objectives. Doing this adjusts a column in the objective_seminar
+        model.
+        
+    
+    
+    When new students join the class, the pre-tests are open to them.
+    
+    Lowest-level quizzes are shown. Higher-level quizzes are shown if the student
+        is ready for them.
+ 
+CUMULATIVE STARS      
+        
+LOCK A QUIZ AFTER A STUDENT TAKES IT
+    Should allow two attemps in the same day
+    
+    Or else close after one attempt if the day ends
+    
+
+FIX TESTS FOR DESK CONSULTANTS
+
+
+TEACHER MANUAL QUIZ UNLOCKS
+
+    Teacher clicking student can check which quizzes should be unlocked for that
+        student.
+        
+    Or through objective to check which quizzes should be unlocked for which
+        student.
+
+FIGURE OUT WHY ALL STUDENTS START OUT BEING MARKED AS ABSENT
+
+
+TEACHER CAN ADJUST CONSULTANCY
+
+CAPYBARA TEST FOR EDITING TEACHER
+
+IMPROVED CONSULTANT ORDER
+    
+    RankByConsulting should be based on @seminar.consultancies.where(:consultant => student)
+        That part is easy. But testing it will take some time.
+        
+    Redo the tests that used to depend on :adjustedConsultingPoints
+    
+    By looking at currently-created teams, I'm losing the feature that gives new students
+    a break period before they are asked to be consultants. That should come back
+    in some form.
+
+STUDY LINKS
+
+    objective can have up to 4 study links.
+    
+    Teachers can set those links to outside websites.
+    
+    Students can view them and follow the path.
+
+FILL-IN QUESTIONS
+    Free-answer questions
+
+IMPROVE PERFORMANCE OF DESK-CONSULTANTS MAKER    
+
+
+
+
+MORE QUIZ UNLOCKS
+    
+    Unlock quiz if student has clicked at least two "study links"
+        
+        That part should go into the Score model.
+        
+        Don't show a quiz available if it has no questions
+    
+
+
+    
+TEACHER MASS QUIZ UNLOCKS        
+    
+    
+    
+
+        
+    
+ONLY ALLOW QUIZ-TAKING ON CERTAIN DAYS AND TIMES        
+    Main Goal: Teacher can lock and unlock quizzes
+        Seminar needs an "unlocked days" attribute.
+            It will be an array that includes the available days.
+            Unlock time
+            Re-lock time
+        Teacher can set this up in class attributes once. So that quizzes are open
+          on a certain day between a certain start and end time.
+    
+    
+ACCOUNT ACTIVATIONS
+
+
+NEED TO REDO ALL THE STUFF ABOUT MAILERS
+
+
+
+
+
+    But there also needs to be an "Unlock quizzes" button in case students
+       are taking them on a different day. 
+         
+    Students cannot take the quiz outside of the open time.
+        Unlocking lasts for a few hours, or a day
+
+    Test for searching for every model that has an index
+        objectives
+        Labels
+        Questions
+        User
+        
+    Links to sites and games to practice needed concepts
+    
+
+
+    Almost all of these updates and little stuff in-between.
+        
+        Find a better way to choose objectives during DeskConsultants.
+            Calling teachOptions during the function around line 109 is heavily 
+                time-consuming.
+        
+        Cumulative total of student's stars
+        
+        
+        Take another look at "boulderfist" classtype and the dialog box that it should produce
+
+        Look at whether I should organize my migrations
+        
+        Option to show "My questions only" in "All Questions"
+        
+        Marking consultants in spot #4 when they shouldn't be.
+        
+        After adding a new objective, it should re-route to the scoresheet, not to the seminar edit view.
+        
+        Some updating with tests
+        
+        Check for more possible spots where a failsafe is needed. Like if it cannot find the objective that was requested.    
+        
+        Can I edit users and students from the admin screens?
+        
+        Rename the two types of consultant points. Only one type is accounted for in student's turn to consult. The other type can be put on a grade.
+        
+        Margin on the subtitle under EM Education
+        
+        Header links are also hard to see.
+        
+        The "total" field in the scoresheet should update upon changing one of that students' scores.
+        
+        The code involving "blap" could be dried
+        
+        Some other symbol, instead of zero, to keep track of objectives that haven't been attempted yet.
+        
+        Option to make a student exempt from an objective
+        
+        Fix the semianrs.show view. It's worthless right now.
+        
+        If there is an interruption while adding a student, it creates an error with giving that student consultant points
+
+        When there's only one public objective, the list looks really weird.
+            I'm sure the problem is the same for private objectives.
+            
+        The "Questions" controller needs before_action stoppers
+            And the questions_index_test needs to test for them
+            And check which other models need similar updates
+
+        Some controllers have redundant use of "@label = Label.find(params[:id])" if that line is also included in the before_action
+        
+        I learned how to use "Like" in the index. So I don't think I need to 
+            downcase names anymore. I can allow users to input the names how they want.
+            
+        Allow for partial searching if user knows part of the name or question he's
+            searching for.
+            
+        And maybe eliminate spaces from the searches. I'll need to do that for comparing answers anyway.
+        
+        Use CSS for before/after margin on div class="singleOption" instead of using </br>
+        
+        @createdLabel needs to include the users full title
+        
+            "Add more answer choices' should be a button, not a <p>
+        But it has to be a link_to shaped like a button, since a button will submit the form.
+    
+        Reloading label form directs to index
+        
+        Try again for icons for DConsult, etc.
+        
+        Add enough question fixtures to test pagination in index
+            Same with labels
+            objectives
+            Students
+            Users
+            
+        Put icons on all of the buttons, such as "Create a New Label" and "All Labels"
+            The "All Labels" icon should include more labels than the regular.
+        
+        The part of _form for labels where users can check questions, that should
+            probably use the include_checks partial
+        
+        Make a partial for the name and extent on each form.
+        
+        When the user is slecting the number of questions from each label, that 
+            select box will be blank for a label that has no questions. This 
+            screen needs some kind of warning or explanation for this fact.
+            
+        Disable "Next Question" button until student chooses a response
+    
+        When creating a question, don't allow the user to mark a blank answer as
+            the correct answer.
+
+        But at least one anwer choice must be marked as true.
+        
+        And at least two answer choices are offered.
+        
+        If student has taken this quiz ten times, the oldest attempt is destroyed
+        
+        In the quiz-finishing screen, student can change request to this quiz.
+            
+        In creating Consultant groups, finish creating the group that collects
+            absent students
+            
+        Teach and Learn Request should be made into an association, not just an integer.
+        
+        The table on the user profile page is getting too busy. Perhaps the "Objectives"
+            button should be left in the Seminar edit page. And what about consultancies?
+            Where should I link to those?
+
+        I don't think student requests are working right now.
+        
+        Multiple-select questions
+        
+        Rename all join tables to follow conventions
+        
+        I think that Desk Consultants can be sped up with more eager loading
+        
+        Warn teacher that there are some D-C objective without questions
+        
+        Catch for when student tries to take a quiz that doesn't have any questions
+        
+        Teacher clicking on "Consultancies" when none exist yet.
+
+        Don't give message, "Students added to class" if zero students were added.
+            Also, give errors if any students were not saved.
+            Do the same with the multi-question creator.
+            
+        Don't allow leaving a blank prompt when editing a question.
+        
+        Icon for students
+        
+        "Has_objective" method should probably be removed and replaced with rails
+            association
+        
+Write separate tests for each section of Desk Consultants
+    All the tests passed line 229 in newplaceforlonestudents even though the live site
+        crashed there.
+    Tests didn't catch the fact that Ariana was listed as a consultant several times.
+    Test starting a new classroom, then adding students, then running D-C
+    Test that some students end up unplaced if they've passed every objective.
+
+Then the UI of the scoresheet (Entering scores won't be as necessary when in-app assessments are live)
+
+Some students can be exempt from certain objectives.
+
+Saving records of consultant groups.
+
+Add in-app goals
+
+Adjust scores to keep a record so that students can have multiple scores in the
+same objective. And make landmark dates for term endings.
+
+
+
+
+
+
+TESTS TO ADD
+    
+If user goes to "Create New Objective" through a seminar view, re-route to that seminar.
+    If not, re-route to user page.
+    
+Why is test "Correct number of checkboxes finding 32 checkboxes?"
+    
+Dry the test setups. Symbol names for users should be in a function
+students_edit_test is in the test/controllers folder. Should probably move to integration
+Test that new user info is saved downcase
+I moved all the pieces of the "Add Existing Student" test to a capybara version.
+Should do that wherever possible.
+Should check all three branches of newPlaceForLoneStudents()
+Test for need aspect of scoreHash
+Are the apprentice request choices taking pre-requisites into account?
+Test whether student is placed if priority or cthresh changes after request has been made.
+Capybara test for chart attendance?
+The piece of code that places straggling students should also check for the priority
+of the learnrequest, and whether the student has passed preReqs.
+Upon adding a new class, make sure that all consultant points are set to zero.
+Can I write a test to ensure that objectives and scores are displayed in the correct order?
+
+Test that learnRequest is set to nil if student doesn't have a learnRequest available.
+   I think that means if learnOptions turns up an empty set.
+Should I test some aspects of profList?
+Should there be a test to check that deleting a student doesn't delete his/her scores?
+
+Tried for a few hours to test clicking on the learn_request_requests to see if it changes
+that student's request. It seems like I need the capybara-webkit gem to do that.
+But installing that gem seems impossible so far. I think the problem is an 
+incompatiity with Cloud9. Could possibly change those divs into buttons that
+reload the page, but is that worth it for testing one feature? It might be, if I
+offer a lot of that functionality in the future. I could also do standard form
+that requires saving. 
+
+I considered using a second site to test updates. But that is just as likely to 
+cause new problems. It's better to roll out small updates, and leave enough time
+to test in between.
+
+Might need a little better test for assignSGSections()
+
+Remove an objective from a class
+
+Remove a class from an objective
+
+Remove a question from a label
+
+
+
+
+
+LITTLE STUFF
+
+
+Check out whether some performance can be improved if I add indices to certain columns
+    in my table.
+    
+    Will also need to look up how to better test performance.
+
+Some changes are made by ajax. Some changes are made with a Save + Submit button.
+    That should be consistent.
+
+Allow students to be marked as ELL. When that happens, they are default exempt from
+text-heavy objectives.
+
+Should pre-requisite passing be based on @cThresh?
+
+app/controllers/concerns/teach_and_learn_options.rb:9.
+   Added a failsafe in case of nil score.
+   Is there a way I can meet the same goal without such a burden on performance?
+
+After adjusting a class, user should be re-routed to the scoresheet.
+
+Screen to edit a class needs a back button
+
+I don't think that I need the .downcase in the students_controller. Instead, it 
+now forces downcase in the model
+
+"I don't like these consultant groups" button after D-C results. User clicks to get
+ideas about how to improve the results.
+
+If so, there should be a warning message that occurs before the user submits an
+objective with priority 3.
+
+Clicking in Consultant Point column doens't activate crosshairs.
+
+At the very end, if there's a single student in a group, and another group has the 
+same topic, move one of the students from the group to work with the lone student.
+
+Suggestion to student for which objective to study next should prioritize a
+score between 40 and 75. I think the same should go for apprentice requests.
+
+Include precondition info in the assigments index.
+
+Sorting students by name doesn't work on live site.
+
+If a student has already made a request, that request should appear in the student's
+choices even if it didn't come up from priority and scores.
+
+Check before_action for security of student page
+
+Make sure that student usernames don't include an @ symbol. And that teacher names must.
+And maybe I can use that fact to make quicker searching in the correct model.
+
+Why does removing a student run so much SQL?
+
+Allow teachers to adjust the position of objectives.
+
+I think that @scores is no longer needed
+
+I've got scores set up to test that Wyatt gets placed into his own group. But haven't 
+yeat written that test.
+
+NeedHash and possibly some other things are based on all of the students. They should be
+based on the present students
+
+setobjectivesAndScores is a private method in the seminars controller. Would work better
+if moved to a concern.
+
+After performing a search, the search option should default to the previously-used attribute,
+instead of defaulting to student_number
+
+Add a feature where teachers can post links for their students.
+
+Consultants display would look better if the group had a thick border, but the cells
+did not.
+
+http://thesassway.com/beginner/how-to-structure-a-sass-project
+
+Something about Kylie Christensen's account. Causes her unable to log in. When I
+try to log in as myself afterward, I get an error that points to the studentview
+action. The "Please Log In." flash message only appears when 
+
+Home screen should offer log in space instead of having to click the log in button.
+
+A button where teachers can reset all requests
+
+Think about whether I should just put the student id into the consultant hash,
+instead of the entire student, including password hash and everything
+
+Decide whether it's more important to implement automatic consultant points and tracking.
+Or online assessment. Right now, I'm leaning toward consultant point tracking, so
+that I can write tests for consultant groups.
+
+Right now, it's possible for a student to have the opposite request of what he/she
+needs. She can be set with an apprentice request, even if she has passed every
+objective. And the student cannot change that through her own portal, because
+the buttons are not offered. However, to check for an absence of learnOptions,
+I would need to check learn options for every student, which would greatly slow
+DeskConsulants. Maybe I can perform that operation only when the request screen
+is visited. This isn't a very big problem, because the student will eventually get
+to work both jobs, even if his/her request isn't ideal. And it won't come up if the
+teacher offers objectives which nobody has passed.
+
+Allow teachers to delete their own accounts.
+
+There used to be a feature to count up how many students needed each objective,
+but I cut it for performance because it was causing soooooo many queries. Maybe I 
+can implement that feature again if I include a column in the "objectives" table.
+But that would need to come after I make the objectives universal and make the
+class-objectives join table.
+
+Teacher should be able to set a consultantThreshold individually for each objective.
+
+If user tries to add an existing student to a class twice, it produces a fatal error.
+But I think that only happens when c9 or something is being super slow.
+
+Now that I've learned ow to transmit ruby variables to jquery, I should do away
+with all of the form work-arounds that I was doing before.
+
+Set up some different scores and requests so that I can test that learn_learn_requests
+and learnlearn_requests meet the appropriate score and preReq requirements
+
+destroy method in student controller should include destroying the seminar_student. Or maybe
+when I need to destroy students by hand, I destroy their seminar_student instead.
+
+What happens when you click the class name from the teacher profile page. It should go to the class
+    edit page.
+
+Changing objective learn_requests from the teacher's side should also limit by scores,
+, like it does from the student side.
+
+For now, I disabled the seating chart edit mode because it was creating the problem
+with a broken seating-chart array. Should probably put that back soon. The seating
+chart view is all commented out right now. There was also a capybara test to check
+that page. The test is commented out.
+
+When I do bring that back, I need custom sizes for seating charts. At least allow
+four wide or eight wide.
+
+Print list of student names and passwords
+
+reconfigure rankAssignsByNeed to sort the objectives by two attributes, so it doesn't have
+to keep looping through all of the objectives three times.
+
+It's awkward that "StudentView" is in the seminar controller. It should be in the 
+student controller.
+
+Add Instructions in the Help menu
+
+Include the paper materials that were created for presentations.
+
+"Add rows for ten more students" should be a button, not a link.
+
+Make it quicker and easier for the teacher to change the position and priority by
+making edit_in_place fields for those attributes
+
+Offer a mean and median score report at the bottom of the scoresheet.
+
+If I can't figure out how to make the header stay fixed above the columns, then I
+at least need to split the table into smaller tables.
+
+While ranking importance of objectives, rank objectives higher if they are 
+preReqs for other objectives
+
+A single record from the assignmnet model should be joined to several classes. That
+way, teachers can look at their data across classes.
+
+At the very end of the DeskConsultants algorithm, check for students who are working alone.
+Whether consultant or otherwise. Try one more time to pair those students.
+
+After that, if there are two groups of two, combine them.
+This will require marking multiple consultants within the same group.
+
+"No students found with that id number" upon adding an existing student.
+appears when it shouldn't. Doens't appear when it should.
+
+Allow teachers to delete their own profile.
+
+Try to find a way to put a little more variety into the groups, so that students
+can learn different topics. Maybe update the need for each objective every time a
+consultant is assigned. This mode should probably be optional.
+
+Track scores by term, so that teacher can see which scores are from the 
+current term.
+
+Make icons smaller
+
+Update a student's learn_requests when that student passes an objective. If that student
+had learn_requested to learn the objective she just passed, her learn_request should become neutral.
+
+Limit the loading of jquery library
+
+Offer a ribbon at the bottom of seminar show pages that allows for editing the class,
+adding students, etc.
+
+Test for Hide Scoresheet
+
+After I save group information to database, I might be able to test all important aspects
+of DeskConsultants. For example, that all students in a group have a low score in
+that group's topic. But they have also met the pre-reqs.
+
+Then I can work on having the program automatically add consultant points.
+
+Makes sure appropriate before_action in Students controller for destroying,
+etc.
+
+Test that absent students are excluded from DeskConsultants
+
+Test that students assigned as consultants have a good score in that objectives
+
+Test that students assigned as apprentices haven't yet mastered that objective
+
+Test personally whether student remembering works.
+
+Fix test to ensure that student email is saved in downcase
+
+Tests for editing student profile are blank. They're located in students_controller_test
+
+Look for chances to improve the appearance.
+
+And add something "extra mile" and fun. Quote of the day.
+Includes hints for using DeskConsultants, and inspiring quotes
+about teaching. Especially mastery teaching.
+
+"You're logged-in as..." message
+
+Larger font on all student names in DeskConsultants feature.
+
+Make it clear that teachers are signing up for a EM Education account, and
+that Desk Consultants is just one feature. Check all text information for
+where this might apply.
+
+Most methods are completely repeated between user and student. I'm sure
+there's a place where I can stash those methods for the two different models
+to share.
+
+Don't offer pre-requisites if it's the first objective (other than Consultant Points).
+So, get rid of the message that has to do with pre-reqs.
+
+Consistent cell size in scoresheet
+
+Consistent cell size in desk-consultants
+
+Ensure that students aren't being placed into groups for which they haven't met the
+pre-requisites.
+
+In offering learn_request, filter out the objectives that the student has not
+mastered. Parallel to learnRequest.
+
+Figure out how to handle scores by term. Maybe "archive" some scores into past scores.
+Probably better to allow for term switching like the programs that most teachers are 
+accustomed to.
+
+Allow teachers to change the position of an objective.
+Which also changes position of that objective's score
+
+Admin be able to create classes for the users that they are visiting?
+
+Ensure that when the user edits an objective, that the pre-reqs are correct.
+I'm concerned that the program might keep all of the previous pre-reqs, plus any
+new ones that the user adds.
+
+Since the teacher's profile shows a request for them to activate their account, it should
+also include a link to send a second activation email. Or get rid of that message
+until I do have that taken care of.
+
+Student login and changing of requests
+
+Colors to improve the look of absent/present
+
+Don't show Gravatar change when viewing a student profile.
+Maybe don't show Gravatar, period.
+
+Allow teachers to customize how many groups wide their seating chart displays.
+
+And customize the size of each group.
+
+Zebra striping for columns?
+
+Don't allow another objective to be titled, "Consulting Points". That will
+cause problems.
+
+Larger font on main headings.
+
+Don't allow people to visit student index
+
+Require login to view materials. But first offer a preview. Some materials should be
+in the paid section.
+
+Allow teachers to set a threshold for each objective, so they can choose
+how high a student needs to score before bing considered to be a consultant
+in that objective.
+
+Transfer students to a different class period
+
+Summary page and print feature
+
+Video to walk people through initial setup.
+
+All applicable tests for Student model. Should be parallels from user
+model. 
+Check whether I need a separate users_login_test for students
+
+Allow admin to list all students from students index, not just search by student
+number
+
+Allow teachers to search students by first name, last name
+
+Create a school property for students. Mostly just for indexing. Or maybe a school
+district attribute. And teachers can only search students from their own district.
+
+Test for admin deleting students, objectives, etc.
+
+Many of the admin indexes are missing their "show" action
+
+Admin need to be able to search
+
+Notice if student search turns up empty
+
+Seminars Controller needs to be dried. Especially with all the different show
+methods (DeskConsultants, Scoresheet, etc.)
+
+I commented out the tests for editing a student profile.
+
+If there's trouble logging in, add a message reminding users that teachers use
+an e-mail address, but students use a username.
+
+In seating chart, consider disabling links when there are unsaved changes.
+
+Emphasize the term, "Desk Consultants" everywhere it appears.
+
+Taking the last student out of the "Temporary Placement Area" makes it disappear.
+
+I commented out the "Remember me on this computer" feature. Should I leave it gone?
+or should I try to bring it back?
+
+Flash message upon updating score error?
+
+Student awards feature, so students can vote for each other for "Most helpful,"
+    "Most creative," "Funniest," etc.
+
+Adjust seating chart by achievement
+Students shouldn't just be in order from low to high. They need to be organized 
+with highest paired with mid-highest
+
+Look again at Hartl's section about not editing admin via the web.
+
+Can probably write a method to replace the many calls to 
+"If user is nil, look at the student model instead"
+
+Seeded students don't get usernames, etc.
+
+Add "Created_by" to student. It will keep track of which teacher created
+that student
+
+Also, add location option. This will help when adding existing students to a class.
+
+Reset absences upon starting a new day.
+
+Test for resetting absences
+
+Can probably better optimize creating new objectives by passing an instance variable
+instead of the seminar_id parameter
+
+Study up on opportuities to optimize.
+
+In the seminar_students controller, it finds the current class by looking in the database.
+I can probably send that as a parameter to improve performance.
+
+Upload student roster from Excel
+
+Allow teachers to reset student passwords, but not to edit them.
+
+Instead of all the references to Seminar.find(current_user.current_class), I can
+probably save the curent_class as a semianr record, instead of just its number
+
+More attractive alert box upon deleting objective, deleting student, etc.
+
+Turn all of the hints into a system of daily hints that appear upon login.
+Add: Remind teachers to add objectives that nobody has completed yet. Those will
+become the enrichment objectives for students who are not placed in a group.
+
+On the "New Student" form, highlight the first and last name fields, since 
+they're the only ones that teachers actually need to fill out.
+
+Allow moving students to a different group after running DeskConsultants
+
+Allow students to log in using username OR email
+
+Save records of consultants so they can automatically receive consultant points.
+
+Fix the double horzontal line that shows after each studentwhen somebody
+searches the student index.
+
+Someday the position attribute needs to be moved to objective_seminar, instead of the objective itself.
+@objective.position = @seminar.objectives.count + 1
+    
+Would be cool to be able to add students to a class the same way that objectives are added.
+But that's in the distant future.
+    
+When creating a new objective, should it automatically check the box for the current class if the objectives form was accessed through a class?
+    
+I'll bet I can dry up the code that shows dialog boxes based on different clicks.
+    
+It's a little bit weird that user can't leave second answer choice blank. But that's not a really big problem.
+
+Add an attribute to quiz called "progress" that keeps track of how many questions
+    the student has answered from that quiz.  In case the student is interrupted mid-quiz.
+    
+
+
+
+*** FEATURES TO CONSIDER
+
+In the objective-edit screen, maybe allow users to set priority for specific classes.
+Instead of requiring them to go through the class to set custom priorities.
+
+Have separate names slots available for students so that they can change their
+name, but the teacher still sees the name they will know.
+
+I sort-of feel like the pseudo join-tables, such as seminar_students and Scores, should 
+be turned into actual join tables. But that would require resetting the production
+database if I decide to do that after other teachers have signed up. Or maybe 
+it can be done without, but will require a lot of careful migration, with very
+little benefit.
+
+Small icons for each class period
+
+Upload student photos. Or have student icons.
+
+I didn't remove the position column, because someday I would like to allow teachers
+to order their objectives differently.

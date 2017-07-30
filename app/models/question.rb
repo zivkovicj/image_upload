@@ -12,6 +12,7 @@ class Question < ApplicationRecord
   
   validates :prompt, :presence => true
   validates :extent, :presence => true
+  
 
   
   def shortPrompt
@@ -20,6 +21,5 @@ class Question < ApplicationRecord
   
   private
   
- 
     
 end

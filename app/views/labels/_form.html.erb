@@ -1,32 +1,61 @@
-<%= form_for(label) do |f| %>
-  <% if label.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(label.errors.count, "error") %> prohibited this label from being saved:</h2>
 
-      <ul>
-      <% label.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
 
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@label) do |lab| %>
+    
+      <%= render 'shared/error_messages', object: @label %>
+      
+      <div class="singleOption">
+        <h2>Label Created by: <%= @createdLabel %> &nbsp;</h2>
+        </br>
+        <%= lab.hidden_field :user_id, :value => @label.user_id %>
+        <% if @assignPermission != "other" %>
+          <%= lab.collection_radio_buttons :extent, [['public', 'Public Label'] ,['private', 'Private Label']],
+                           :first, :last, { item_wrapper_tag: false } do |b| %>
+            <label class="radio-inline">
+              <%= b.radio_button %> &nbsp; <%= b.label %>
+            </label>
+          <% end %>
+        <% else %>
+          </br>
+          </br>
+          You may only edit a label that you have created. In this screen you
+          may assign this label to questions that you have created.
+          <%= lab.hidden_field :extent, :value => @label.extent %>
+        <% end %>
+      </div>
+      
+      <div class="singleOption">
+        <h2>Name &nbsp;</h2>
+        <% if @assignPermission != "other" %>
+          <%= lab.text_field :name, {class: 'form-control short-field text-area', :id => "name"} %>
+        <% else %>
+          <h4><%= @label.name %></h4>
+        <% end %>
+      </div>
+     
+     <div class="singleOption">
+        <h2>Questions</h2>
+        <div>
+          <p id="toggle_text", first_text="Show Only Unlabeled Questions", second_text= "Show All Questions">Show All Questions</p>
+        </div>
+        <table>
+          <%= lab.collection_check_boxes(:question_ids, @questions, :first, :second) do |b| %>
+            <% this_class = (b.object[2] == 1 ? "themScores currently_hidden" : "") %>
+            <tr class="<%= this_class %>">
+              <td width="20%"><%= b.check_box(:value => b.object[0], :id => "question_#{b.object[0]}") %></td>
+              <td><%= b.label %></td>
+            </tr>
+          <% end %>
+        </table>
+     </div>
+      
+      </br>
+      <%= lab.submit yield(:button_text), class: "btn btn-primary" %>
+      
+    <% end %>
   </div>
-
-  <div class="field">
-    <%= f.label :extent %>
-    <%= f.text_field :extent %>
-  </div>
-
-  <div class="field">
-    <%= f.label :user_id %>
-    <%= f.text_field :user_id %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

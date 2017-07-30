@@ -1,17 +1,53 @@
-<%= form_for(seminar) do |f| %>
-  <% if seminar.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(seminar.errors.count, "error") %> prohibited this seminar from being saved:</h2>
 
-      <ul>
-      <% seminar.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<div id="dialog1" title="Setting the Priority of your Objective">
+  <p>Set the Consultant Threshold to what you consider proficient. For example, 
+  if you set the consultant threshold to 80%, then students will only
+  be considered as consultants for objectives where they have scored 80% or above.</p>
+  <p>Keep in mind that Desk Consultants usually works best when the consultants
+  have some room to grow.</p>
+  <p>EM Education recommends setting the consultant threshold to 70%.</p>
+</div>
 
-  <div class="actions">
-    <%= f.submit %>
+<%= render 'shared/pre_req_dialog' %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@seminar) do |f| %>
+      <%= render 'shared/error_messages', :object => @seminar %>
+      
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
+      
+      <div class="singleOption">
+        <h2><button type="button" class="btn btn-info" id="btn-info1">?</button>&nbsp; Consultant Threshold </h2> 
+        <%= f.collection_radio_buttons :consultantThreshold, [[60, '60 %'] ,[70, '70 %'], [80, '80 %'], [90, '90 %'], [100, '100 %']],
+                               :first, :last, { item_wrapper_tag: false } do |b| %>
+          <label class="radio-inline">
+            <%= b.radio_button%> &nbsp; <%= b.label %>
+          </label>
+        <% end %>
+      </div>
+      <br/>
+    
+      <%= render :partial => 'shared/include_checks', 
+        :locals => {:list_for_checks => Objective.all, 
+          :check_box_name => "seminar[objective_ids][]", 
+          :inclusion_var => @seminar.objectives, :boulderfist => true, 
+          :include_word => "objectives", :include_on => "in this class",
+          :model_name => "class"}  %>
+  
+      <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+    <% end %>
   </div>
-<% end %>
+</div>
+
+<br/>
+<div>
+  <h4>
+    HINT: Begin the class with the period number first to make sure that your
+    classes are displayed in the correct order.</h4>
+  <h4> For example: 1 Math 7 Honors</h4>
+</div>

@@ -1,0 +1,47 @@
+
+<% provide(:headerText, "Edit #{@objective.name} Quantities and Point Values") %>
+<% provide(:headerPic, "labels.png") %>
+
+<%= render 'shared/navribbon' %>
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+<h2><%= @objective.name %></h2>
+
+<% point_array = *(1..10) %>
+<% points_poss = 0 %>
+
+
+<%= form_tag '/label_objectives/update/' do |lj| %>
+ 
+    <table>
+        <thead>
+            <tr>
+                <td></td>
+                <td>How Many Questions<br> From This Label</td>
+                <td>Point Value<br> Per Question</td>
+            </tr>
+        </thead>
+        <% @label_objectives.each_with_index do |lo, index| %>
+            <tr>
+                <% label = lo.label %>
+                <% num_quest = [20, label.questions.count].min %>
+                <% quant_array = *(1..num_quest) %>
+                <% if label %>
+                    <td><%= label.name %></td>
+                    <td>
+                        <%= select("syl[#{lo.id}]", "quantity", quant_array, {:selected => lo.quantity}, :class => "select_box left_box", :partner => lo.id) %>
+                    </td>
+                    <td>
+                        <%= select("syl[#{lo.id}]", "point_value", point_array, {:selected => lo.point_value}, :class => "select_box") %>
+                    </td>
+                    <% points_poss += lo.quantity * lo.point_value %>
+                <% end %>
+            </tr>
+        <% end %>
+    </table>
+    
+    <p>Total Points Possible: <strong><span id="total_disp"><%= points_poss %> </span></strong></p>
+    
+    <%= submit_tag "Update these quantities" %>
+
+<% end %>

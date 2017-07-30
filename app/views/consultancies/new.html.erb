@@ -1,5 +1,46 @@
-<h1>New Consultancy</h1>
+<% provide(:title, 'Desk-Consultants') %>
 
-<%= render 'form', consultancy: @consultancy %>
+<% provide(:headerText, "Mark Attendance Before Creating Desk-Consultants Groups") %>
+<% provide(:headerPic, 'desk_consult.png') %>
 
-<%= link_to 'Back', consultancies_path %>
+<%= render 'shared/navribbon' %><br/>
+
+<%= render 'shared/teacher_name_and_edit' %><br/>
+<%= render 'shared/class_and_edit' %>
+
+<%= render 'shared/headline' %>
+
+<div class = "container-fluid">
+    <div class="row">
+        <div class="seating-block">
+            <% @seminar.students.order(:last_name).in_groups_of(6).each do |group| %>
+                <div class="row">
+                    <% group.each do |student| %>
+                        <% if student %>
+                            <% this_ss = @seminar.seminar_students.find_by(:student => student) %>
+                            <% if this_ss.present %>
+                                <% thisClass = "col-md-2 seat clickySeat" %>
+                                <% thisText = "Present" %>
+                            <% else %>
+                                <% thisClass = "col-md-2 seat clickySeat absent" %>
+                                <% thisText = "Absent" %>
+                            <% end %>
+                            <div class = "<%= thisClass %>" id="<%= this_ss.id %>">
+                                <%= student.firstPlusInit %><br/>
+                                <p class="presentTag"><%= thisText %></p>
+                            </div>
+                        <% end %>
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+
+<%= form_for(@consultancy) do |form| %>
+    <%= form.hidden_field :seminar, :value => @seminar.id %>
+    
+    <%= form.submit "Create Desk Consultants Groups", class: "btn btn-primary" %>
+
+<% end %>

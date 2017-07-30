@@ -1,4 +1,89 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, "#{@seminar.name} Desk Consultants") %>
 
-<%= link_to 'Edit', edit_consultancy_path(@consultancy) %> |
-<%= link_to 'Back', consultancies_path %>
+<%= render 'shared/navribbon' %><br/>
+<%= render 'shared/teacher_name_and_edit' %><br/>
+<%= render 'shared/class_and_edit' %>
+
+<div class="singleOption lowSingOpt">
+&emsp;<h1 class="block"><%= image_tag("desk_consult.png") %> Desk Consultant Groups</h1>
+&emsp;&emsp;&emsp; <h4 class="studentName block">Key:</h4>
+<p class="studentName consultant block">Consultant</p>
+<p class="studentName topic block">Topic</p>
+</div>
+
+<br/>
+
+<% @group_num = 0 %>
+<% @letters = [0,"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"] %>
+
+
+<% def studentCell(num, groupNum, team) %>
+  <% thisClass = (team.students[num] == team.consultant ? "table with-border consultant" : "table with-border") %>
+  <td class = "<%= thisClass %>">
+    <p class = "studentName center">
+      <% this_student = team.students[num] %>
+      <% if this_student %>
+        <%= this_student.firstPlusInit %>
+        <% this_score = this_student.objective_students.find_by(:objective => team.objective) %>
+        <% if this_score && this_score.points == 100 %>
+          <br/><small>(100%)</small>
+        <% end %>
+      <% end %>
+    </p>
+  </td>
+<% end %>
+
+<% def objective_cell(objective) %>
+  <td colspan="2" bgcolor='blue' class="table with-border topic">
+    <% if @group_num < 20 %>
+      <p class="studentName center"><small>Group <%= @letters[@group_num] %></small></p>
+    <% end %>
+    <p class='studentName center'>
+      <%= objective.shortName %>
+    </p>
+  </td>
+<% end %>
+
+<% @unplaced_team = @consultancy.teams.where(:bracket => 1).first %>
+<% if @unplaced_team %>
+  <div class="singleOption lowSingOpt">
+    <h3>These students were not placed in a group:</h3>
+    <h4>(The most common reason is because these students have passed all available objectives)</h4>
+    <% @unplaced_team.students.each do |student| %>
+      <p class="studentName"><%= student.firstPlusInit %></p>
+    <% end %>
+  </div>
+<% end %>
+
+<table class='table table-borderless'>
+  <% @consultancy.teams.in_groups_of(3).each do |group| %>
+    <tr>
+      <% group.each do |team| %>
+        <% if team && team.objective %>
+          <% @group_num = @group_num + 1 %>
+          <td>
+            <table class="consultant-group">
+              <tr>
+                <% studentCell(0, @group_num, team) %> 
+                <% studentCell(1, @group_num, team) %> 
+              </tr>
+              <tr>
+                <% objective_cell(team.objective) %>
+              </tr>
+              <tr>
+                <% studentCell(2, @group_num, team) %> 
+                <% studentCell(3, @group_num, team) %> 
+              </tr>
+            </table>
+          </td>
+        <% end %>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+
+<br/>
+<p>HINT: Make sure to award "Consultant Points" to the students who served as 
+consultants today. The program will use those points to choose different 
+consultants next time.</p>

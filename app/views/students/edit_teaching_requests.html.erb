@@ -1,0 +1,26 @@
+<% provide(:title, 'Consultant Requests') %>
+
+<%= render 'shared/back-link' %><br/>
+
+
+<div class="row">
+    <aside class="col-md-4">
+        <section class="user_info">
+            <h1>
+                <strong><%= "#{@student.lastNameFirst}" %></strong>
+                &nbsp;
+                    <span class="btn-group">
+                        <%= button_to( "Edit/Remove Student", edit_student_path(@student), :method => :get,
+                            :class => "btn btn-med btn-primary") %>
+                    </span>
+            </h1>
+        </section>
+    </aside>
+</div>
+
+<br/>
+
+<% provide(:scores_label, "Student's Scores in All Objectives") %>
+<% provide(:button_text, "Change Student Requests") %>
+
+<%= render 'shared/teach_requests' %>

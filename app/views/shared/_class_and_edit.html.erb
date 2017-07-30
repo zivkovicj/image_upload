@@ -1,0 +1,12 @@
+
+<h3> <%= @seminar.name %>
+    <% if current_user?(@teacher) %>
+        &nbsp;
+        <small>
+            <span class="btn-group">
+                <%= button_to( "Edit/Remove Class", edit_seminar_path(@seminar), :method => :get,
+                    :class => "btn btn-med btn-primary") %>
+            </span>
+        </small>
+    <% end %>
+</h3>

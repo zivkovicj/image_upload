@@ -1,4 +1,32 @@
-<p id="notice"><%= notice %></p>
+<%= render 'quizzes/total_score' %>
 
-<%= link_to 'Edit', edit_quiz_path(@quiz) %> |
-<%= link_to 'Back', quizzes_path %>
+<div class="container">
+    <% @quiz.ripostes.each do |riposte| %>
+        <div class="container singleOption topic">
+            </br>
+            <div class="singleOption lowSingOpt">
+                <%= riposte.question.prompt %>
+            </div>
+            </br>
+            <% question = riposte.question %>
+            <% class_type = (question.correct_answers.include?(riposte.stud_answer) ? "green" : "red") %>
+            Your Response: <span class=<%= class_type %>> <%= riposte.stud_answer %></span>
+            </br>
+            <%= riposte.tally %> / <%= riposte.poss %>
+            </br>
+            </br>
+            Correct Responses:
+            <% riposte.question.correct_answers.each do |answer| %>
+                <li> <%= answer %></li>
+            <% end %>
+        </div>
+        </br>
+    <% end %>
+</div>
+
+<%= render 'quizzes/total_score' %>
+
+<%= button_to "Back to Your Class Page", :method => :get, 
+    :controller => "seminars", :action => "studentView",
+    :id => current_user.current_class , :student => current_user.id,
+    class: "btn btn-lg btn-primary" %>

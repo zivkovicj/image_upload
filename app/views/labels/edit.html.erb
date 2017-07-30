@@ -1,6 +1,7 @@
-<h1>Editing Label</h1>
+<% provide(:title, 'Edit Label') %>
+<% provide(:button_text, 'Save Changes') %>
 
-<%= render 'form', label: @label %>
+<% provide(:headerText, "Edit Label") %>
+<% provide(:headerPic, "labels.png") %>
 
-<%= link_to 'Show', @label %> |
-<%= link_to 'Back', labels_path %>
+<%= render 'form' %>

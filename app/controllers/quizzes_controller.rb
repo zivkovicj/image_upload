@@ -1,74 +1,48 @@
 class QuizzesController < ApplicationController
-  before_action :set_quiz, only: [:show, :edit, :update, :destroy]
-
-  # GET /quizzes
-  # GET /quizzes.json
-  def index
-    @quizzes = Quiz.all
-  end
-
-  # GET /quizzes/1
-  # GET /quizzes/1.json
-  def show
-  end
-
-  # GET /quizzes/new
-  def new
-    @quiz = Quiz.new
-  end
-
-  # GET /quizzes/1/edit
-  def edit
-  end
-
-  # POST /quizzes
-  # POST /quizzes.json
-  def create
-    @quiz = Quiz.new(quiz_params)
-
-    respond_to do |format|
-      if @quiz.save
-        format.html { redirect_to @quiz, notice: 'Quiz was successfully created.' }
-        format.json { render :show, status: :created, location: @quiz }
-      else
-        format.html { render :new }
-        format.json { render json: @quiz.errors, status: :unprocessable_entity }
-      end
+    
+    def new
+        @objective = Objective.find(params[:objective_id])
+        @quiz = Quiz.create(:objective => @objective, :student => current_user)
+        quest_collect = []
+        @objective.label_objectives.each do |lo|
+            quant = lo.quantity
+            label = lo.label
+            label.questions.order("RANDOM()").limit(quant).each do |quest|
+                quest_collect.push([quest.id, lo.point_value])
+            end
+            debugger
+        end
+        
+        quest_collect.shuffle.each_with_index do |q_info, index|
+            @quiz.ripostes.create(:question_id => q_info[0], :position => index+1, :poss => q_info[1]) 
+        end
+        
+        redirect_to edit_riposte_path(@quiz.ripostes.first)
+    
     end
-  end
-
-  # PATCH/PUT /quizzes/1
-  # PATCH/PUT /quizzes/1.json
-  def update
-    respond_to do |format|
-      if @quiz.update(quiz_params)
-        format.html { redirect_to @quiz, notice: 'Quiz was successfully updated.' }
-        format.json { render :show, status: :ok, location: @quiz }
-      else
-        format.html { render :edit }
-        format.json { render json: @quiz.errors, status: :unprocessable_entity }
-      end
+    
+    def show
+        @quiz = Quiz.find(params[:id])
+        
+        student = current_user
+        score = student.objective_students.find_by(:objective => @quiz.objective)
+        @old_points = (score == nil ? 0 : score.points) 
+    
+        poss = 0
+        stud_score = 0
+        @quiz.ripostes.each do |riposte|
+            poss += riposte.poss
+            stud_score += (riposte.tally)
+        end
+        
+        new_total = ((stud_score * 100)/poss).round
+        @quiz.update(:total_score => new_total)
+        
+        if new_total > @old_points
+            score.update(:points => new_total)
+        end
+        
+        @total_score = @quiz.total_score
     end
-  end
-
-  # DELETE /quizzes/1
-  # DELETE /quizzes/1.json
-  def destroy
-    @quiz.destroy
-    respond_to do |format|
-      format.html { redirect_to quizzes_url, notice: 'Quiz was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_quiz
-      @quiz = Quiz.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def quiz_params
-      params.fetch(:quiz, {})
-    end
+    
 end

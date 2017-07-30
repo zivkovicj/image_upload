@@ -1,0 +1,59 @@
+
+
+
+<%= form_tag "#{whichPath}", :method => 'get' do %>
+
+  
+  <div class="singleOption">
+    <br/>
+    <%= text_field_tag :search, params[:search], :id => "searchField" %>
+    
+    <h5>Search By:</h5>
+    
+    <label class="radio-inline">
+      <%= radio_button_tag(:whichParam, attrData1, true, :class => 'radio-inline')  %> &nbsp; <%= label_tag attrLabel1 %>
+    </label>
+    <% if attrLabel2 %>
+        <label class="radio-inline">
+          <%= radio_button_tag(:whichParam, attrData2, false, :class => 'radio-inline') %> &nbsp; <%= label_tag attrLabel2 %>
+        </label>
+    <% end %>
+    <% if attrLabel3 %>
+        <label class="radio-inline">
+          <%= radio_button_tag(:whichParam, attrData3, false, :class => 'radio-inline') %> &nbsp; <%= label_tag attrLabel3 %>
+        </label>
+    <% end %>
+    <% if attrLabel4 %>
+      <label class="radio-inline">
+        <%= radio_button_tag(:whichParam, attrData4, false, :class => 'radio-inline') %> &nbsp; <%= label_tag attrLabel4 %>
+      </label>
+    <% end %>
+    <% if attrLabel5 %>
+      <label class="radio-inline">
+        <%= radio_button_tag(:whichParam, attrData5, false, :class => 'radio-inline') %> &nbsp; <%= label_tag attrLabel5 %>
+      </label>
+    <% end %>
+    
+    <br/>
+    <br/>
+    
+    <% if controller_name == "questions" %>
+      <table>
+        <% @labels.each do |label| %>
+          <tr>
+            <td width="20%"><%= check_box_tag 'label_ids[]', label.id, checked = @labels_to_check.include?(label.id) %></td>
+            <td><%= label.name %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+    </br>
+    
+    <%= submit_tag "Search", :name => nil %>
+    
+    <br/>
+    
+  </div>
+<% end %>
+
+<br/>

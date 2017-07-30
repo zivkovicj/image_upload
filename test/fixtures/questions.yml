@@ -1,29 +1,107 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  prompt: MyText
-  extent: MyString
-  user: one
+  prompt: A admin-created question
+  correct_answers: ["0"]
+  choice_0: 0
+  choice_1: 1
+  choice_2: 2
+  choice_3: 3
+  choice_4: 4
+  choice_5: 5
+  extent: public
+  user_id: 0
   label: one
-  correct_answers: MyText
-  choice_0: MyString
-  choice_1: MyString
-  choice_2: MyString
-  choice_3: MyString
-  choice_4: MyString
-  choice_5: MyString
-  picture: one
 
 two:
-  prompt: MyText
-  extent: MyString
-  user: two
-  label: two
-  correct_answers: MyText
-  choice_0: MyString
-  choice_1: MyString
-  choice_2: MyString
-  choice_3: MyString
-  choice_4: MyString
-  choice_5: MyString
-  picture: two
+  prompt: A user-created question
+  correct_answers: ["0"]
+  choice_0: 0
+  choice_1: 1
+  choice_2: 2
+  choice_3: 3
+  choice_4: 4
+  choice_5: 5
+  extent: public
+  user_id: 0
+  label: one
+  extent: private
+  user_id: 0
+  label: one
+  
+three:
+  prompt: A different_user_public
+  correct_answers: ["0"]
+  choice_0: 0
+  choice_1: 1
+  choice_2: 2
+  choice_3: 3
+  choice_4: 4
+  choice_5: 5
+  extent: public
+  user_id: 0
+  label: one
+  extent: public
+  user_id: 0
+  label: one
+  
+four:
+  prompt: A different_user_private
+  correct_answers: ["0"]
+  choice_0: 0
+  choice_1: 1
+  choice_2: 2
+  choice_3: 3
+  choice_4: 4
+  choice_5: 5
+  extent: public
+  user_id: 0
+  label: one
+  extent: private
+  user_id: 0
+  label: one
+  
+five:
+  prompt: A More_user_created_for_testing_label_objectives
+  correct_answers: ["0"]
+  choice_0: 0
+  choice_1: 1
+  choice_2: 2
+  choice_3: 3
+  choice_4: 4
+  choice_5: 5
+  extent: public
+  user_id: 0
+  label: one
+  extent: public
+  user_id: 0
+  label: one
+  
+<% 30.times do |n| %>
+question_<%= n+5 %>:
+  prompt: Admin_question_<%= n %>
+  correct_answers: ["0"]
+  choice_0: 0
+  choice_1: 1
+  choice_2: 2
+  extent: public
+  user_id: 0
+  label: one
+  extent: public
+  user_id: 0
+  label: one
+<% end %>
+
+<% 10.times do |n| %>
+question_<%= n+100 %>:
+  prompt: User_question_<%= n %>
+  correct_answers: ["0"]
+  choice_0: 0
+  choice_1: 1
+  extent: public
+  user_id: 0
+  label: one
+  extent: public
+  user_id: 0
+  label: one
+<% end %>

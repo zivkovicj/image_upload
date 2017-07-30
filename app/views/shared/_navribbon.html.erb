@@ -1,0 +1,82 @@
+
+<div>
+    <h4>NOTE: Desk Consultants is currently in open BETA. Some errors are likely
+    to occur. Please send problems, suggestions, or requests to jeff@em-education.com.</h4>
+</div>
+
+<% if current_user && current_user.role=="teacher" %>
+    <div class="ribbon">
+        
+        <table class="table-borderless">
+            <tr>
+                <td>Class:</td>
+                <td class="spacer"></td>
+                <% current_user.own_seminars.order(:name).limit(8).each do |seminar| %>
+                    
+                    <td class="<%= 'highlighted' if (@seminar && @seminar==seminar) %>">
+                        <h5>
+                            <% if action_name == 'scoresheet' %>
+                                <%= link_to seminar.limitedName, scoresheet_url(seminar) %>
+                            <% elsif (action_name == 'preDeskConsultants' || action_name == 'deskConsultants') %>
+                                <%= link_to seminar.limitedName, new_consultancy_path(:seminar => seminar.id) %>
+                            <% elsif action_name == 'seatingChart' %>
+                                <%= link_to seminar.limitedName, seatingChart_url(seminar) %>
+                            <% elsif action_name == 'edit' %>
+                                <%= link_to seminar.limitedName, edit_seminar_path(seminar) %>
+                            <% elsif action_name == 'priorities' %>
+                                <%= link_to seminar.limitedName, priorities_path(seminar) %>
+                            <% else %>
+                                <%= link_to seminar.limitedName, seminar_path(seminar) %>
+                            <% end %>
+                            &nbsp;
+                        </h5>
+                    </td>
+                <% end %>
+            </tr>
+        </table>
+        
+        <table class="table-borderless">
+            <tr>
+                <td><%= button_to "Your teacher page", user_path(current_user), 
+                        class: "btn btn-lg btn-primary", :method => :get %></td>
+                <td class="spacer"></td>
+                
+                <% if @seminar %>
+                    <td class="<%= 'highlighted' if action_name == 'scoresheet' %>"><%= link_to image_tag("scoresheet.png"), scoresheet_url(@seminar) %></td>
+                    
+                    <% if @seminar.shouldShowConsultLink %>
+                        <td class="<%= 'highlighted' if (action_name == 'preDeskConsultants' || action_name == 'deskConsultants') %>">
+                            <%= link_to image_tag("desk_consult.png"), new_consultancy_path(:seminar => @seminar.id) %>
+                        </td>
+                    <% else %>
+                        <td></td>
+                    <% end %>
+                    
+                    <td class="<%= 'highlighted' if action_name == 'edit' %>"><%= link_to image_tag("objectives.png"), edit_seminar_path(@seminar) %></td>
+                    <td class="<%= 'highlighted' if action_name == 'priorities' %>"><%= link_to image_tag("priorities.png"), priorities_path(@seminar) %></td>
+                <% end %>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                
+                <% if @seminar %>
+                    <td class="<%= 'highlighted' if action_name == 'scoresheet' %> center"><b>Scoresheet</b></td>
+                    
+                    <% if @seminar.shouldShowConsultLink %>
+                        <td class="<%= 'highlighted' if (action_name == 'preDeskConsultants' || action_name == 'deskConsultants') %> center">
+                            <b>Desk Consultants</b>
+                        </td>
+                    <% else %>
+                        <td></td>
+                    <% end %>
+                    
+                    <td class="<%= 'highlighted' if action_name == 'edit' %> center"><b>Objectives</b></td>
+                    <td class="<%= 'highlighted' if action_name == 'priorities' %> center"><b>Priorities</b></td>
+                <% end %>
+            </tr>
+        </table>
+    </div>
+<% end %>
+
+<br/>

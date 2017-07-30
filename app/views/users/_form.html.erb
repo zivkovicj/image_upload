@@ -1,92 +1,26 @@
-<%= form_for(user) do |f| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
 
-      <ul>
-      <% user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :first_name %>
-    <%= f.text_field :first_name %>
-  </div>
+<%= form_for(@user) do |f| %>
+  <%= render 'shared/error_messages', object: @user %>
+  
+  <%= f.label :title %>
+  <%= f.select :title, ["Mrs.", "Mr.", "Miss", "Ms.", "Dr."] %>
 
-  <div class="field">
-    <%= f.label :last_name %>
-    <%= f.text_field :last_name %>
-  </div>
 
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.text_field :email %>
-  </div>
+  <%= f.label :first_name %>
+  <%= f.text_field :first_name, class: 'form-control' %>
+  
+  <%= f.label :last_name %>
+  <%= f.text_field :last_name, class: 'form-control' %>
 
-  <div class="field">
-    <%= f.label :current_class %>
-    <%= f.number_field :current_class %>
-  </div>
+  <%= f.label :email %>
+  <%= f.email_field :email, class: 'form-control' %>
 
-  <div class="field">
-    <%= f.label :password_digest %>
-    <%= f.text_field :password_digest %>
-  </div>
+  <%= f.label :password %>
+  <%= f.password_field :password, class: 'form-control' %>
 
-  <div class="field">
-    <%= f.label :remember_digest %>
-    <%= f.text_field :remember_digest %>
-  </div>
+  <%= f.label :password_confirmation %>
+  <%= f.password_field :password_confirmation, class: 'form-control' %>
 
-  <div class="field">
-    <%= f.label :role %>
-    <%= f.text_field :role %>
-  </div>
-
-  <div class="field">
-    <%= f.label :activation_digest %>
-    <%= f.text_field :activation_digest %>
-  </div>
-
-  <div class="field">
-    <%= f.label :activated %>
-    <%= f.check_box :activated %>
-  </div>
-
-  <div class="field">
-    <%= f.label :activated_at %>
-    <%= f.datetime_select :activated_at %>
-  </div>
-
-  <div class="field">
-    <%= f.label :reset_digest %>
-    <%= f.text_field :reset_digest %>
-  </div>
-
-  <div class="field">
-    <%= f.label :reset_sent_at %>
-    <%= f.datetime_select :reset_sent_at %>
-  </div>
-
-  <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title %>
-  </div>
-
-  <div class="field">
-    <%= f.label :last_login %>
-    <%= f.datetime_select :last_login %>
-  </div>
-
-  <div class="field">
-    <%= f.label :username %>
-    <%= f.text_field :username %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <%= f.submit yield(:button_text), class: "btn btn-primary" %>
 <% end %>

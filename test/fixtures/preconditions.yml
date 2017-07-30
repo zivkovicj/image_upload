@@ -4,8 +4,36 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+
+pc30to40:
+    preassign: objective_30
+    mainassign: objective_40
+
+pc40to60:
+    preassign: objective_40
+    mainassign: objective_60
+
+pc50to60:
+    preassign: objective_50
+    mainassign: objective_60
+
+pc80to70:
+    preassign: objective_80
+    mainassign: objective_70
+    
+pc100to110:  # preassignToAdd and subPreassign
+    preassign: objective_100
+    mainassign: objective_110
+    
+
+three: # alreadyPreassignedToSuper
+    mainassign: objective_150
+    preassign: objective_130
+    
+four: #alreadyPreassignedToMainMain
+    mainassign: objective_140
+    preassign: objective_120
+    
+five: # mainMain and superMain
+    mainassign: objective_150
+    preassign: objective_140

@@ -1,0 +1,122 @@
+
+
+<div class="row">
+  <div class="col-sm-4">
+    <div class="requestBox consultantBox">
+      <div class="singleOption lowSingOpt">
+        <h3 class="center"><strong>Consultant Request</strong></h3>
+      </div>
+      <br/>
+      <% if @teachOptions && @teachOptions.first %>
+        <% @teachOptions.each do |reqOption| %>
+          <% score = @student.objective_students.find_by(:objective_id => reqOption.id) %>
+          <% if reqOption.id == @ss.teach_request %>
+            <% highClass = 'highSingOpt' %>
+          <% else %>
+            <% highClass = 'lowSingOpt' %>
+          <% end %>
+          <div class="<%= highClass %> singleOption teachReqOption center hoverHigh" id="<%= reqOption.name %>" reqId="<%= reqOption.id %>" ss_id="<%= @ss.id %>" >
+            <%= reqOption.name %><br/>
+            <%= score.points %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="singleOption lowSingOpt">
+          <h4>If you'd like to be a consultant, make sure to pass some objectives soon.</h4>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="requestBox apprenticeBox">
+      <div class="singleOption lowSingOpt">
+        <h3 class="center"><strong>Apprentice Request</strong></h3>
+      </div>
+      <br/>
+      <% if @learnOptions && @learnOptions.first %>
+        <% @learnOptions.each do |reqOption| %>
+          <% score = @student.objective_students.find_by(:objective_id => reqOption.id) %>
+          <% if reqOption.id == @ss.learn_request %>
+            <% highClass = 'highSingOpt' %>
+          <% else %>
+            <% highClass = 'lowSingOpt' %>
+          <% end %>
+          <div class="<%= highClass %> singleOption learnReqOption center hoverHigh" reqId="<%= reqOption.id %>" ss_id="<%= @ss.id %>" id="<%= reqOption.name %>">
+            <%= reqOption.name %><br/>
+            <%= score.points %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="singleOption lowSingOpt">
+          <h4>You've scored 100% on every available objective! </h4>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="requestBox preferenceBox">
+      <div class="singleOption lowSingOpt">
+        <h3 class="center"><strong>Your Preference</strong></h3>
+      </div>
+      <br/>
+      <% if @teachOptions && @learnOptions && !!@teachOptions.first && !!@learnOptions.first %>
+        <% [['Consultant',2],['Either Is Okay',1],['Apprentice',0]].each do |choice| %>
+          <% if choice[1] == @ss.pref_request %>
+            <% highClass = 'highSingOpt' %>
+          <% else %>
+            <% highClass = 'lowSingOpt' %>
+          <% end %>
+          <div class="<%= highClass %> singleOption prefReqOption requestBox center hoverHigh" reqId="<%= choice[1] %>" ss_id="<%= @ss.id %>" id="<%= choice[0] %>" >
+            <%= choice[0] %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="singleOption highSingOpt">
+          <% if @teachOptions && !!@teachOptions.first %>
+            <h4>Consultant</h4>
+          <% end %>
+          <% if @learnOptions && !!@learnOptions.first %>
+            <h4>Apprentice</h4>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+  
+<br/>
+
+<div class="row">
+  <div class="col-sm-6">
+    <% if @learnOptions && @learnOptions.first %>
+      <div class="singleOption lowSingOpt">
+        <% suggestion = @learnOptions.first %>
+        <% if suggestion %>
+          <% score = @student.objective_students.find_by(:objective_id => suggestion.id) %>
+          <h3>Suggested objective for you to study next:</h3>
+          <h4>&emsp;&emsp;<%= suggestion.name %>&emsp;&emsp; <small>Your Score:</small> <%= score.points %></h4>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-sm-6">
+    <div class="singleOption lowSingOpt center">
+      <h3><%= yield(:scores_label) %></h3><br/>
+      <table class="marginTable">
+        <% this_ss = @student.seminar_students.find_by(:seminar_id => @seminar.id) %>
+        <% @seminar.objectives.order(:name).each do |objective| %>
+            <tr>
+              <td><%= objective.name %></td>
+              <td><%= @student_scores.find_by(:objective => objective).points %></td>
+            </tr>
+        <% end %>
+      </table>
+      <br/>
+    </div>
+  </div>
+</div>
+
+
+
+
+

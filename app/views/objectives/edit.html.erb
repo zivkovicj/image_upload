@@ -1,6 +1,7 @@
-<h1>Editing Objective</h1>
+<% provide(:title, 'Edit Objective') %>
+<% provide(:button_text, 'Save Changes') %>
 
-<%= render 'form', objective: @objective %>
+<% provide(:headerText, "Edit Objective") %>
+<% provide(:headerPic, "objectives.png") %>
 
-<%= link_to 'Show', @objective %> |
-<%= link_to 'Back', objectives_path %>
+<%= render 'form' %>

@@ -1,2 +1,0 @@
-class SeminarUser < ApplicationRecord
-end

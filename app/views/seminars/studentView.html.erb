@@ -1,0 +1,28 @@
+<% provide(:scores_label, 'Your Scores in All Objectives') %>
+<% provide(:button_text, 'Change Your Requests') %>
+
+<div class="row">
+    <h1>&emsp;&emsp;<%= @student.fullName %>&emsp;&emsp; <small><%= @seminar.name %>&emsp; <%= @teacher.nameWithTitle %></small></h1>
+</div>
+
+<div class="singleOption">
+    <h2>Quizzes Available</h2>
+    </br>
+    
+    <% if @unlocked_by_desk_consult.count > 0 %>
+        <h3>Desk Consultant Objectives</h3>
+        <ul>
+            <% @unlocked_by_desk_consult.each do |quiz| %>
+                <li id="quiz_<%= quiz.id %>">
+                    <%= link_to quiz.name, :controller => "quizzes", :action => "new", :objective_id => quiz.id %>
+                </li>
+            <% end %>
+        </ul>
+    <% end %>
+</div>
+
+</br>
+</br>
+
+<%= render 'shared/teach_requests' %>
+

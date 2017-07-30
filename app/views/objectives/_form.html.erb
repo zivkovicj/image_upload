@@ -1,17 +1,90 @@
-<%= form_for(objective) do |f| %>
-  <% if objective.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(objective.errors.count, "error") %> prohibited this objective from being saved:</h2>
+<!-- Don't include options for pre-Reqs that this assigment is already a pre-req for -->
+<!-- That would create an an impossible loop -->
 
-      <ul>
-      <% objective.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+
+
+<div id="dialog2" title="Objective Pre-Requisites">
+  Students will not be assigned an objective until after they have passed all pre-requisites for that objective.
+</div>
+
+<%= render 'shared/pre_req_dialog' %>
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@objective) do |a| %>
+    
+      <%= render 'shared/error_messages', object: @objective %>
+      
+      <div class="singleOption">
+        <h2>Objective Created by: <%= @createdLabel %> &nbsp;</h2>
+        </br>
+        <%= a.hidden_field :user_id, :value => @objective.user_id %>
+        <% if @assignPermission != "other" %>
+          <%= a.collection_radio_buttons :extent, [['public', 'Public Objective'] ,['private', 'Private Objective']],
+                           :first, :last, { item_wrapper_tag: false } do |b| %>
+            <label class="radio-inline">
+              <%= b.radio_button %> &nbsp; <%= b.label %>
+            </label>
+          <% end %>
+        <% else %>
+          </br>
+          </br>
+          You may only edit an objective that you have created. You may use this window to choose which classes this objective is assigned to.
+          <%= a.hidden_field :extent, :value => @objective.extent %>
+        <% end %>
+      </div>
+      
+      <div class="singleOption">
+        <h2>Name &nbsp;</h2>
+        <% if @assignPermission != "other" %>
+          <%= a.text_area :name, {class: 'form-control short-field text-area', :id => "name"} %>
+        <% else %>
+          <h4><%= @objective.name %></h4>
+        <% end %>
+      </div>
+      
+      <% if @assignPermission != "admin" %>
+        <div class="singleOption" id="seminars_to_include">
+          <h2>Classes To Include This Objective</h2>
+          <table>
+          <thead>
+            <tr>
+              <td>Include?</td>
+              <td>Class</td>
+            </tr>
+          </thead>
+            <%= a.collection_check_boxes(:seminar_ids, current_user.own_seminars.order(:name), :id, :name) do |b| %>
+              <% classType = "none" %>
+              <% classType = "boulderfist" if (!@objective.seminar_ids.include?(b.object.id) && @objective.preassigns.count > 0) %>
+              <tr>
+                <td width="20%"><%= b.check_box(:class => classType, :id => b.object.name) %></td>
+                <td><%= b.label %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+        <br/>
       <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit %>
+ 
+      <%= render :partial => 'shared/include_checks', 
+        :locals => {:list_for_checks => @pre_req_list,
+          :check_box_name => "objective[preassign_ids][]",
+          :inclusion_var => @objective.preassigns, :boulderfist => false,
+          :include_word => "pre-requisite", :include_on => "for this objective",
+          :model_name => "objective"} %>
+      
+      <%= render :partial => 'shared/include_checks', 
+        :locals => {:list_for_checks => @labels,
+          :check_box_name => "objective[label_ids][]",
+          :inclusion_var => @objective.labels, :boulderfist => false,
+          :include_word => "labels", :include_on => "on the assessment for this objective",
+          :model_name => "objective"} %>
+      
+      <br/><br/>
+      <%# @objective.preassign_ids = [] %>
+      <%= a.submit yield(:button_text), class: "btn btn-primary" %>
+    <% end %>
   </div>
-<% end %>
+</div>

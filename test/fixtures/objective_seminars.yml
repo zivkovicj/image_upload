@@ -1,11 +1,47 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+
+
+one-one:
+    seminar: one
+    objective: objective_10
+    priority: 2
+    
+one-two:
+    seminar: one
+    objective: objective_20
+    priority: 2
+    
+one-three:
+    seminar: one
+    objective: objective_30
+    priority: 2
+    
+one-four:
+    seminar: one
+    objective: objective_40
+    priority: 2
+    
+one-five:
+    seminar: one
+    objective: objective_50
+    priority: 2
+    
+one-six:
+    seminar: one
+    objective: objective_60
+    priority: 2
+    
+two-seven:
+    seminar: two
+    objective: objective_70
+    priority: 2
+    
+two-eight:
+    seminar: two
+    objective: objective_80
+    priority: 2
+    
+two-nine:
+    seminar: two
+    objective: objective_90
+    priority: 2

@@ -1,5 +1,8 @@
-<h1>New Objective</h1>
+<% provide(:title, 'New Objective') %>
+<% provide(:button_text, 'Create a New Objective') %>
 
-<%= render 'form', objective: @objective %>
+<% provide(:headerText, "New Objective") %>
+<% provide(:headerPic, 'objectives.png') %>
 
-<%= link_to 'Back', objectives_path %>
+<%= render 'form' %>
+

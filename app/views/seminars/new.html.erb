@@ -1,5 +1,7 @@
-<h1>New Seminar</h1>
 
-<%= render 'form', seminar: @seminar %>
+<% provide(:title, 'New Class') %>
+<% provide(:button_text, 'Create a New Class') %>
+<h1>New Class</h1>
 
-<%= link_to 'Back', seminars_path %>
+<%= render "form" %>
+

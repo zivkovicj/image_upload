@@ -1,11 +1,28 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+one:
+  name: 1st Period
+  teacher: archer
+  consultantThreshold: 70
+
+two:
+  name: 2nd Period
+  teacher: archer
+  consultantThreshold: 70
+
+three:
+  name: 3rd Period
+  teacher: archer
+  consultantThreshold: 70
+  
+three:
+  name: Zacky's first period
+  teacher: zacky
+  consultantThreshold: 70
+  
+<% 30.times do |n| %>
+seminar_<%= n %>:
+  name:  <%= "Seminar #{n}" %>
+  teacher: archer
+  consultantThreshold: 70
+<% end %>

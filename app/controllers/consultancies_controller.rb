@@ -1,74 +1,72 @@
 class ConsultanciesController < ApplicationController
-  before_action :set_consultancy, only: [:show, :edit, :update, :destroy]
+    
+    include DeskConsultants
+    include RankObjectivesByNeed
 
-  # GET /consultancies
-  # GET /consultancies.json
-  def index
-    @consultancies = Consultancy.all
-  end
-
-  # GET /consultancies/1
-  # GET /consultancies/1.json
-  def show
-  end
-
-  # GET /consultancies/new
-  def new
-    @consultancy = Consultancy.new
-  end
-
-  # GET /consultancies/1/edit
-  def edit
-  end
-
-  # POST /consultancies
-  # POST /consultancies.json
-  def create
-    @consultancy = Consultancy.new(consultancy_params)
-
-    respond_to do |format|
-      if @consultancy.save
-        format.html { redirect_to @consultancy, notice: 'Consultancy was successfully created.' }
-        format.json { render :show, status: :created, location: @consultancy }
-      else
-        format.html { render :new }
-        format.json { render json: @consultancy.errors, status: :unprocessable_entity }
-      end
+    def new
+        @seminar = Seminar.find(params[:seminar])
+        @teacher = @seminar.teacher
+        @students = @seminar.students.order(:last_name)
+        current_user.update!(:current_class => @seminar.id)
+        @consultancy = Consultancy.new()
     end
-  end
-
-  # PATCH/PUT /consultancies/1
-  # PATCH/PUT /consultancies/1.json
-  def update
-    respond_to do |format|
-      if @consultancy.update(consultancy_params)
-        format.html { redirect_to @consultancy, notice: 'Consultancy was successfully updated.' }
-        format.json { render :show, status: :ok, location: @consultancy }
-      else
-        format.html { render :edit }
-        format.json { render json: @consultancy.errors, status: :unprocessable_entity }
-      end
+    
+    def create
+        @seminar = Seminar.includes(:seminar_students).find(params[:consultancy][:seminar])
+        
+        check_if_date_already()
+        check_if_ten()
+        
+        @teacher = @seminar.teacher
+        @cThresh = @seminar.consultantThreshold
+        @consultancy = Consultancy.create(:seminar => @seminar)
+        
+        @students = setup_present_students()
+        @rankAssignsByNeed = rankAssignsByNeed(@seminar)
+        @objectiveIds = @rankAssignsByNeed.map(&:id)
+        @scores = ObjectiveStudent.where(objective_id: @objectiveIds)
+        setupStudentHash()
+        #setobjectivesAndScores(false)
+        setupRankByConsulting()
+        setupScoreHash()
+        setupProfList()
+        
+        # Each function in these steps is only called once. But I wrote them as
+        # separate functions in order to better test the individual pieces.
+        chooseConsultants()
+        placeApprenticesByRequests()
+        placeApprenticesByMastery()
+        checkForLoneStudents()
+        newPlaceForLoneStudents()
+        # assignSGSections()
+        areSomeUnplaced()
+        
+        current_user.update!(:current_class => @seminar.id)
+        render 'show'
     end
-  end
-
-  # DELETE /consultancies/1
-  # DELETE /consultancies/1.json
-  def destroy
-    @consultancy.destroy
-    respond_to do |format|
-      format.html { redirect_to consultancies_url, notice: 'Consultancy was successfully destroyed.' }
-      format.json { head :no_content }
+    
+    def show
+        @consultancy = Consultancy.find(params[:id])
+        @seminar = Seminar.find(params[:seminar])
+        @teacher = @seminar.teacher
     end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_consultancy
-      @consultancy = Consultancy.find(params[:id])
+    
+    def index
+        @seminar = Seminar.find(params[:seminar])
+        @consultancies = Consultancy.where(:seminar => @seminar)
     end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def consultancy_params
-      params.fetch(:consultancy, {})
-    end
+    
+    private
+    
+        def check_if_date_already()
+            date = Date.today
+            old_consult = @seminar.consultancies.where(:created_at => date.midnight..date.end_of_day).first
+            old_consult.destroy if old_consult
+        end
+        
+        def check_if_ten()
+            if @seminar.consultancies.count > 9
+                @seminar.consultancies.order('created_at asc').first.destroy
+            end
+        end
 end

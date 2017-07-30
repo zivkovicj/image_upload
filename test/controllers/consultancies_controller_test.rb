@@ -1,3 +1,6 @@
+
+=begin
+
 require 'test_helper'
 
 class ConsultanciesControllerTest < ActionDispatch::IntegrationTest
@@ -46,3 +49,5 @@ class ConsultanciesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to consultancies_url
   end
 end
+
+=end

@@ -1,3 +1,5 @@
+
+=begin
 require 'test_helper'
 
 class ObjectiveSeminarsControllerTest < ActionDispatch::IntegrationTest
@@ -46,3 +48,5 @@ class ObjectiveSeminarsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to objective_seminars_url
   end
 end
+
+=end

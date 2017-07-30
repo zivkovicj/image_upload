@@ -2,9 +2,12 @@ class User < ApplicationRecord
     attr_accessor :remember_token, :activation_token, :reset_token
     before_save   :downcase_stuff
     before_create :create_activation_digest
+    before_destroy  :destroy_associated_records
     
-    has_many :seminars, dependent: :destroy, foreign_key: "teacher_id"
-    has_many    :users, through: :seminars
+    #foreign_key: "teacher_id"
+    
+    has_many    :own_seminars, :class_name => "Seminar", foreign_key: 'teacher_id'
+    has_many    :students, through: :own_seminars
     has_many    :objectives
     has_many    :questions
     has_many    :labels
@@ -65,7 +68,7 @@ class User < ApplicationRecord
         
     # Sends activation email
     def send_activation_email
-        UserMailer.account_activation(self).deliver_now
+        #UserMailer.account_activation(self).deliver_now
     end
     
     # Sets the password reset attributes
@@ -115,6 +118,15 @@ class User < ApplicationRecord
         def create_activation_digest
           self.activation_token  = User.new_token
           self.activation_digest = User.digest(activation_token)
+        end
+        
+        def destroy_associated_records
+            Objective.where(:user => self).each do |objective|
+                objective.destroy
+            end
+            self.own_seminars.each do |seminar|
+                seminar.destroy
+            end
         end
     
         

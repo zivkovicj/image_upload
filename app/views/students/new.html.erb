@@ -1,0 +1,62 @@
+<% provide(:title, 'New Students') %>
+<% provide(:headerText, "New Students") %>
+<% provide(:headerPic, 'question.png') %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+<%= "For: #{Seminar.find(current_user.current_class).name}" %><br/>
+
+<br/>
+<h4>Only the first name and last name are required. You may leave the rest 
+blank. If you do, EM Education will create the missing info.</h4>
+<br/>
+<h5>The default username will combine the student's initials and student number.
+The default password will be exactly the same as the username.</h5>
+<br/>
+
+<%= form_tag students_path do %>
+  <table class="table-borderless">
+    <tr>
+      <th></th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Student Number</th>
+      <th>Username</th>
+      <th>Password</th>
+      <th>email</th>
+    </tr>
+    <% @student_group.each_with_index do |student, index| %>
+      <% if index < 25 %>
+        <% hoggle = "show-from-start" %>
+      <% elsif index >= 25 && index < 35 %>
+        <% hoggle = "click-1" %>
+      <% elsif index >= 35 && index < 45 %>
+        <% hoggle = "click-2" %>
+      <% else %>
+        <% hoggle = "click-3" %>
+      <% end %>
+      <tr class=<%= hoggle %>>
+        <td><%= index+1 %></td>
+        <td><%= text_field_tag "students[][first_name]", "", id: "first_name_#{index}", :class => "new-student-input" %></td>
+        <td><%= text_field_tag "students[][last_name]", "", id: "last_name_#{index}",   :class => "new-student-input" %></td>
+        <td><%= text_field_tag "students[][student_number]", "", id: "student_number_#{index}",   :class => "new-student-input" %></td> 
+        <td><%= text_field_tag "students[][username]", "", :class => "new-student-input" %></td> 
+        <td><%= text_field_tag "students[][password]", "",  :class => "new-student-input" %></td>
+        <td><%= text_field_tag "students[][email]", "",  :class => "new-student-input" %></td> 
+        
+        <%= fields_for :ss do |a| %>
+          <%= a.hidden_field :seminar_id, :value => current_user.current_class %>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+  
+  <br/>
+  <div class="actions">
+    <%= submit_tag "Create these student accounts" %>
+  </div>
+<% end %>
+
+<p id="add-more-button">
+  Add rows for ten more students
+</p>

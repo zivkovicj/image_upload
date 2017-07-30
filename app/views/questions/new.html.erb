@@ -1,5 +1,81 @@
-<h1>New Question</h1>
+<% provide(:title, 'New Questions') %>
+<% provide(:headerText, "New Questions") %>
+<% provide(:headerPic, 'question.png') %>
 
-<%= render 'form', question: @question %>
+<% choice_array = [:choice_0, :choice_1, :choice_2, :choice_3, :choice_4,
+        :choice_5] %>
 
-<%= link_to 'Back', questions_path %>
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<%= form_tag questions_path do %>
+    <%= fields_for :whole_group do |w| %>
+        <div class="singleOption">
+            <h2>Questions Created by: <%= @createdLabel %> &nbsp;</h2>
+            </br>
+            <input type="hidden" name="user_id" value="<%= @question.user_id %>">
+            <table><tr>
+                <td width="10%"><input type="radio" name="extent" id="public" value="public" checked="checked"/></td>
+                <td>Public Question</td>
+                <td width = "20%" class="borderless"></td>
+                <td width="10%"><input type="radio" name="extent" id="private" value="private" /></td>
+                <td>Private Question</td></tr>
+            </table>
+            
+            <h2>Label</h2>
+            <table>
+                <% @labels.each do |lab| %><tr>
+                    <% checkery = lab.id == 1 ? "checked='checked'" : "" %>
+                    <td width="20%"><input type="radio" name="label" id="label_<%= lab.id %>" value=<%= lab.id %> <%= checkery %> /></td>
+                    <td><%= lab.name %></td>
+                </tr><% end %>
+            </table>
+        </div>
+    <% end %>
+    </br>
+
+    <% @question_group.each_with_index do |question, index| %>
+        <% dex = index + 1 %>
+        <div class="container singleOption">
+            <div class="row">
+                <div class="col-sm-5">
+                    Question <%= dex %>
+                    <h2>Prompt &nbsp;</h2>
+                    <textarea cols="15" rows="6" id="prompt_<%= dex %>" name="questions[<%= index.to_i %>][prompt]"></textarea>
+                    </br>
+                    <h2>Image</h2>
+                    <table>
+                        <% Picture.all.each do |picture| %>
+                            <tr>
+                                <td width="20%"><input type="radio" value="<%= picture.id %>" name="questions[<%= index.to_i %>][picture_id]" id="question_<%= dex %>_picture" /></td>
+                                <td><%= image_tag(picture.image_url.to_s) %></td>
+                            </tr>
+                        <% end %>
+                    </table>
+                </div>
+                <div class="col-sm-1"></div>
+                <div class="col-sm-4">
+                    <h2>Answer Choices</h2>
+                    <table class="table-borderless"><thead>
+                        <th>Correct? &nbsp;</th>
+                        <th>&emsp; Answer Choice</th>
+                    </thead><tbody>
+                        <% 6.times do |n| %>
+                            <tr><div class="row">
+                                <% checkery = (n == 0 ? "checked='checked'" : "") %>
+                                <% which_choice = choice_array[n] %>
+                                <td><input type="radio" value="<%= n %>" name="questions[<%= index.to_i %>][whichIsCorrect]" id="question_<%= dex %>_whichIsCorrect_<%= n %>" <%= checkery %> /></td>
+                                <td><input type="text" name="questions[<%= index.to_i %>][choice_<%= n %>]" id="question_<%= dex %>_choice_<%= n %>" /></td>
+                            </div></tr>
+                        <% end %>
+                    </tbody></table>
+                </div>
+            </div>
+        </div>
+        </br>
+    <% end %>
+    
+    <div class="actions">
+        <%= submit_tag "Create These Questions" %>
+    </div>
+<% end %>

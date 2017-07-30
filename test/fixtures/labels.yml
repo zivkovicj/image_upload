@@ -1,11 +1,22 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  extent: MyString
-  user: one
-
+  id: 1
+  name: Unlabeled
+  extent: public
+  
 two:
-  name: MyString
-  extent: MyString
-  user: two
+  name: Admin_label
+  extent: public
+
+three:
+  name: User_label
+  extent: private
+  
+four:
+  name: Other_Label_Public
+  extent: public
+  
+five:
+  name: Other_Label_Private
+  extent: private

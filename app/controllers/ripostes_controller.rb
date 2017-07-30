@@ -1,74 +1,28 @@
 class RipostesController < ApplicationController
-  before_action :set_riposte, only: [:show, :edit, :update, :destroy]
-
-  # GET /ripostes
-  # GET /ripostes.json
-  def index
-    @ripostes = Riposte.all
-  end
-
-  # GET /ripostes/1
-  # GET /ripostes/1.json
-  def show
-  end
-
-  # GET /ripostes/new
-  def new
-    @riposte = Riposte.new
-  end
-
-  # GET /ripostes/1/edit
-  def edit
-  end
-
-  # POST /ripostes
-  # POST /ripostes.json
-  def create
-    @riposte = Riposte.new(riposte_params)
-
-    respond_to do |format|
-      if @riposte.save
-        format.html { redirect_to @riposte, notice: 'Riposte was successfully created.' }
-        format.json { render :show, status: :created, location: @riposte }
-      else
-        format.html { render :new }
-        format.json { render json: @riposte.errors, status: :unprocessable_entity }
-      end
+    
+    def edit
+        @riposte = Riposte.find(params[:id])
+        @question = @riposte.question
     end
-  end
-
-  # PATCH/PUT /ripostes/1
-  # PATCH/PUT /ripostes/1.json
-  def update
-    respond_to do |format|
-      if @riposte.update(riposte_params)
-        format.html { redirect_to @riposte, notice: 'Riposte was successfully updated.' }
-        format.json { render :show, status: :ok, location: @riposte }
-      else
-        format.html { render :edit }
-        format.json { render json: @riposte.errors, status: :unprocessable_entity }
-      end
+    
+    def update
+        @riposte = Riposte.find(params[:id])
+        @question = @riposte.question
+        @quiz = @riposte.quiz
+        
+        perc = 0
+        n = params[:whichIsCorrect][:whichIsCorrect].to_i
+        stud_answer = @question.read_attribute(:"choice_#{n}")
+        @riposte.update(:stud_answer => stud_answer)
+        perc = @riposte.poss if @question.correct_answers.include?(stud_answer)
+        @riposte.update(:tally => perc)
+        
+        if @riposte == @quiz.ripostes.last
+            redirect_to quiz_path(@quiz)
+        else
+            next_riposte = @quiz.ripostes.find_by(:position => @riposte.position + 1)
+            redirect_to  edit_riposte_path(next_riposte)
+        end
     end
-  end
-
-  # DELETE /ripostes/1
-  # DELETE /ripostes/1.json
-  def destroy
-    @riposte.destroy
-    respond_to do |format|
-      format.html { redirect_to ripostes_url, notice: 'Riposte was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_riposte
-      @riposte = Riposte.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def riposte_params
-      params.fetch(:riposte, {})
-    end
+    
 end

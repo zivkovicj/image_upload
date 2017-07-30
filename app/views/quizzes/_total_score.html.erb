@@ -1,0 +1,26 @@
+
+
+<div class="singleOption container">
+    <div class="row">
+        <div class="col-sm-4">
+            <h2>This Score: <%= @total_score %> %</h2>
+            <% current_num = num_of_stars(@total_score) %>
+            <%# @quiz.update(:total_score => 66) %>
+            <h5><%= render 'quizzes/stars', num: current_num  %>
+            <%= pluralize(current_num, 'Star') %></h5>
+            
+            </br>
+            <% old_num = num_of_stars(@old_points) %>
+            <h5>Your previous score: <%= @old_points %> % <br>
+            <%= pluralize(old_num, 'Star') %></h5>
+        </div>
+        
+        <div class="col-sm-6">
+            <% flap = current_num - old_num %>
+            <% new_stars = [flap,0].max %>
+            <h1>New Stars: <%= render 'quizzes/stars', num: new_stars  %></h1>
+            <h2><%= pluralize(new_stars, 'Star') %></h2>
+        </div>
+    </div>
+</div>
+</br>

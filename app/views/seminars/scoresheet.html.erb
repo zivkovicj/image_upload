@@ -1,0 +1,57 @@
+<% provide(:title, "#{@seminar.name} Scoresheet") %>
+
+<%= render 'shared/navribbon' %><br/>
+<%= render 'shared/teacher_name_and_edit' %><br/>
+<%= render 'shared/class_and_edit' %>
+
+
+<h1><%= "#{@seminar.name} Scoresheet" %></h1>
+
+<div>
+  <%= button_tag "Hide Scores", :id => "toggle_text", :first_text => "Hide Scores", :second_text => "Show Scores" %>
+</div>
+
+<br/>
+<div>
+  <table class="table-borderless scoreTable" id="scoreTable">
+    <thead class="table-borderless">
+      <th class="table-borderless">Student</th>
+      <th class="rotate table-borderless"><div><span>Total Points</span></div></th>
+      <% @objectives.each_with_index do |objective, index| %>
+        <th class="rotate table-borderless"><div><span>
+          <%= link_to objective.shortName, edit_objective_path(objective) %>
+        </span></div></th>
+      <% end %>
+    </thead>
+    <tbody>
+      <% @students.each do |student| %>
+        <tr>
+          <td><h4><%= link_to student.lastNameFirst, edit_teaching_requests_url(student) %> </h4></td>
+          <td class="themScores"><%= student.total_points(@scores) %></td>
+          <% this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id) %>
+          <% @objectives.each do |objective| %>
+            <% thisScore = @scores.find_by(:objective_id => objective.id, :student_id => student.id) %>
+            <td class="themScores steelPanther">
+              <% if thisScore %>
+                <%= best_in_place thisScore, :points, :inner_class => "scoreInput" %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+  
+<div>
+  <h3> <%= pluralize(@students.count, "Student") %> </h3>
+</div>
+
+<div>
+  <%= button_to "Create a New Objective", new_objective_path, :method => :get, class: "btn btn-lg btn-primary" %><br/>
+  <%= button_to "Create New Students", new_student_path, :method => :get, class: "btn btn-lg btn-primary" %><br/>
+  <%= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %><br/>
+</div>
+
+<%= button_to "Your Teacher Profile", @seminar.teacher,
+  class: "btn btn-lg btn-primary", :method => :get %>

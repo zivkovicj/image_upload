@@ -1,0 +1,58 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% (1..50).each do |n| %>
+ss_<%= n %>:
+  seminar: one
+  student: student_<%= n %>
+  teach_request:
+  learn_request:
+  pref_request:
+  present: true
+<% end %>
+
+<% (51..70).each do |n| %>
+ss_<%= n %>:
+  seminar: two
+  student: student_<%= n %>
+  teach_request:
+  learn_request:
+  pref_request:
+  present: true
+<% end %> 
+
+<% (71..90).each do |n| %>
+ss_<%= n %>:
+  seminar: three
+  student: student_<%= n %>
+  teach_request:
+  learn_request:
+  pref_request:
+  present: true
+<% end %> 
+
+# A second seminar_student for student_1 (natalie) to test what happens when students are in two different seminars
+ss_100:
+  seminar: two
+  student: student_1
+  teach_request:
+  learn_request:
+  pref_request:
+  present: true
+  
+# A second seminar_student for student_2 (martha) for testing students who have two different teachers
+ss_101:
+  seminar: three
+  student: student_2
+  teach_request:
+  learn_request:
+  pref_request:
+  present: true
+  
+five:
+  seminar: five
+  student: student_51
+  teach_request:
+  learn_request:
+  pref_request:
+  present: true
+  

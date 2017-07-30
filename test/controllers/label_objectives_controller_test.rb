@@ -1,3 +1,6 @@
+
+=begin
+
 require 'test_helper'
 
 class LabelObjectivesControllerTest < ActionDispatch::IntegrationTest
@@ -46,3 +49,5 @@ class LabelObjectivesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to label_objectives_url
   end
 end
+
+=end

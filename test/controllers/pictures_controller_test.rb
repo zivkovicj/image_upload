@@ -1,49 +1,53 @@
+
+=begin
+
 require 'test_helper'
 
-class PicturesControllerTest < ActionController::TestCase
+class PicturesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @picture = pictures(:one)
   end
 
   test "should get index" do
-    get :index
+    get pictures_url
     assert_response :success
-    assert_not_nil assigns(:pictures)
   end
 
   test "should get new" do
-    get :new
+    get new_picture_url
     assert_response :success
   end
 
   test "should create picture" do
     assert_difference('Picture.count') do
-      post :create, picture: {  }
+      post pictures_url, params: { picture: { image: @picture.image, label_id: @picture.label_id, name: @picture.name } }
     end
 
-    assert_redirected_to picture_path(assigns(:picture))
+    assert_redirected_to picture_url(Picture.last)
   end
 
   test "should show picture" do
-    get :show, id: @picture
+    get picture_url(@picture)
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, id: @picture
+    get edit_picture_url(@picture)
     assert_response :success
   end
 
   test "should update picture" do
-    patch :update, id: @picture, picture: {  }
-    assert_redirected_to picture_path(assigns(:picture))
+    patch picture_url(@picture), params: { picture: { image: @picture.image, label_id: @picture.label_id, name: @picture.name } }
+    assert_redirected_to picture_url(@picture)
   end
 
   test "should destroy picture" do
     assert_difference('Picture.count', -1) do
-      delete :destroy, id: @picture
+      delete picture_url(@picture)
     end
 
-    assert_redirected_to pictures_path
+    assert_redirected_to pictures_url
   end
 end
+
+=end

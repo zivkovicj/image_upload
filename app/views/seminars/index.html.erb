@@ -1,25 +1,47 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, 'All Classes') %>
 
-<h1>Seminars</h1>
+      <%= button_to "Back to Your Profile", user_path(current_user), 
+         class: "btn btn-lg btn-primary", :method => :get, :id => "back_button" %>
+
+<h1>All Classes</h1>
+
+<%= render :partial => 'shared/searchField', 
+  :locals => {:whichPath => seminars_path,
+              :attrLabel1 => "Name", :attrLabel2 => "Teacher ID", :attrLabel3 => nil, :attrLabel4 => nil, :attrLabel5 => nil,
+              :attrData1 => :name,   :attrData2 => :teacher_id, :attrData3 => nil, :attrData4 => nil, :attrData5 => nil} %>
+
+<%= will_paginate %>
 
 <table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @seminars.each do |seminar| %>
+    <thead>
       <tr>
-        <td><%= link_to 'Show', seminar %></td>
-        <td><%= link_to 'Edit', edit_seminar_path(seminar) %></td>
-        <td><%= link_to 'Destroy', seminar, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>Delete</td>
+        <td>Id</td>
+        <td>Name</td>
+        <td>Teacher</td>
+        <td>Student Count</td>
+        <td>Created_at</td>
+        <td>Updated_at</td>
+        <td>consultantThreshold</td>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @seminars.each do |seminar| %>
+        <tr class="users">
+          <td><%= link_to "delete", seminar, method: :delete,
+                          data: { confirm: "Are you sure?" } %></td>
+          <td><%= link_to seminar.id, seminar %></td>
+          <td><%= link_to seminar.name, seminar %></td>
+          <% teacherId = seminar.teacher.id %>
+          <% teacher = User.find(teacherId) %>
+          <td><%= teacherId %> <%= teacher.last_name %></td>
+          <td><%= seminar.students.count %></td>
+          <td><%= seminar.created_at.strftime("%Y-%m-%d") %></td>
+          <td><%= seminar.updated_at.strftime("%Y-%m-%d") %></td>
+          <td><%= seminar.consultantThreshold %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<br>
-
-<%= link_to 'New Seminar', new_seminar_path %>
+<%= will_paginate %>

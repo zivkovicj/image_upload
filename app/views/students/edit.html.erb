@@ -1,0 +1,56 @@
+<% provide(:title, 'Edit/Remove Student') %>
+<% provide(:button_text, 'Save changes') %>
+
+
+
+<% def confirmMessage(seminar)
+    "Remove #{@student.first_name} from #{seminar.name}? This cannot be undone. 
+    Are you sure?"
+  end  
+%>
+
+<% if current_user.role == "teacher" %>
+  <%= "#{current_user.role.capitalize} #{current_user.title} #{current_user.last_name} is editing." %><br/><br/>
+  <% if current_user.current_class && current_user != @user %>
+    <%= render 'shared/back-link' %><br/>
+    
+    <% current_user.own_seminars.each do |seminar| %>
+      <% if seminar.students.include?(@student) %>
+        <% thisAula = seminar.aulas.find_by(student_id: @student.id) %>
+        <%= button_to "Remove student from #{seminar.name}", thisAula, 
+            :method => :delete, data: { confirm: confirmMessage(seminar) }, 
+            class: "btn btn-lg btn-primary" %><br/>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<br/>
+
+
+  
+  <br/>
+
+<%= form_for(@student) do |f| %>
+  <%= render 'shared/error_messages', object: @student %>
+  
+  <%= f.label :first_name %>
+  <%= f.text_field :first_name, class: 'form-control' %>
+  
+  <%= f.label :last_name %>
+  <%= f.text_field :last_name, class: 'form-control' %>
+
+  <%= f.label "Student Number" %>
+  <%= f.text_field :student_number, class: 'form-control' %>
+
+  <%= f.label :username %>
+  <%= f.text_field :username, class: 'form-control' %>
+  
+  <%= f.label :password %>
+  <%= f.password_field :password, class: 'form-control' %>
+  
+  <%= f.label :email %>
+  <%= f.email_field :email, class: 'form-control' %>
+
+  <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+<% end %>

@@ -1,22 +1,75 @@
 Rails.application.routes.draw do
-  
-  resources :teams
-  resources :consultancies
-  resources :ripostes
-  resources :quizzes
-  resources :label_objectives
-  resources :objective_seminars
-  resources :objective_users
-  resources :preconditions
-  resources :objectives
-  resources :seminar_users
-  resources :seminars
-  resources :users
-  resources :questions
-  resources :labels
-  root   'static_pages#home'
 
+  get 'labels/new'
+
+  get 'labels/create'
+
+  get 'labels/edit'
+
+  get 'labels/update'
+
+  get 'labels/index'
+
+  get 'labels/destroy'
+
+  get 'scores/update'
+
+  root   'static_pages#home'
+  get    '/help',    to: 'static_pages#help'
+  get    '/about',   to: 'static_pages#about'
+  get    '/contact', to: 'static_pages#contact'
+  get    '/partner', to: 'static_pages#partner'
+  get   '/materials', to: 'static_pages#materials', :as => "materials"
+  get    '/signup',  to: 'users#new'
+  get    '/login',   to: 'sessions#new'
+  post   '/login',   to: 'sessions#create'
+  delete '/logout',  to: 'sessions#destroy'
+  get     '/seminar_students/:id', to: 'seminar_students#removeFromClass'
+  put     '/seminar_students/:id', to: 'seminar_students#ajaxUpdate'
+  
+  post '/objective_seminars/edit', to: 'objective_seminars#edit'
+  post '/objective_seminars/update', to: 'objective_seminars#update'
+  
+  post '/label_objectives/edit', to: 'label_objectives#edit'
+  post '/label_objectives/update', to: 'label_objectives#update'
+  
+  get '/seminars/priorities/:id',    to: 'seminars#priorities', :as => "priorities"
+  
+  get    '/seminars/scoresheet/:id', to: 'seminars#scoresheet', 
+    :as => "scoresheet"
+    
+  get    '/seminars/seatingChart/:id', to: 'seminars#seatingChart', 
+    :as => "seatingChart"
+  get    '/seminars/newChartByAchievement/:id', to: 'seminars#newChartByAchievement', 
+    :as => "newChartByAchievement"
+  get   '/seminars/studentView/:id', to: 'seminars#studentView',
+    :as => "studentView"
+    
+  post   '/seminars/studentView/:id', to: 'seminars#studentView'
+  
+  get 'students/edit_teaching_requests/:id', to: 'students#edit_teaching_requests',
+    :as => "edit_teaching_requests"
+    
+  get '/objectives/quantities/:id',    to: 'objectives#quantities', :as => "quantities"
+  
+  
+  
+  resources :account_activations, only: [:edit]
+  resources :objective_seminars
+  resources :objective_students
+  resources :objectives
+  resources :seminar_students
+  resources :consultancies, only: [:new, :create, :show, :index]
+  resources :labels
+  resources :password_resets, only: [:new, :create, :edit, :update]
   resources :pictures
+  resources :preconditions
+  resources :questions
+  resources :quizzes
+  resources :ripostes
+  resources :seminars
+  resources :students
+  resources :users
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

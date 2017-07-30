@@ -1,25 +1,60 @@
-<p id="notice"><%= notice %></p>
+<% provide(:title, 'All Objectives') %>
 
-<h1>Objectives</h1>
+<% provide(:headerText, 'All Objectives') %>
+<% provide(:headerPic, 'objectives.png') %>
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+      <%= button_to "Back to Your Profile", user_path(current_user), 
+         class: "btn btn-lg btn-primary", :method => :get, :id => "back_button" %>
 
-  <tbody>
-    <% @objectives.each do |objective| %>
-      <tr>
-        <td><%= link_to 'Show', objective %></td>
-        <td><%= link_to 'Edit', edit_objective_path(objective) %></td>
-        <td><%= link_to 'Destroy', objective, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render 'shared/headline' %>
 
-<br>
+<%= render :partial => 'shared/searchField', 
+  :locals => {:whichPath => objectives_path,
+              :attrLabel1 => "Name", :attrLabel2 => nil, :attrLabel3 => nil, :attrLabel4 => nil, :attrLabel5 => nil,
+              :attrData1 => :name, :attrData2 => nil, :attrData3 => nil, :attrData4 => nil, :attrData5 => nil} %>
 
-<%= link_to 'New Objective', new_objective_path %>
+
+<% if @objectives != [0] %>
+  <% if !@objectives.empty? %>
+    <%= will_paginate %>
+    
+      <table>
+        <thead>
+          <tr>
+            <td>Delete</td>
+            <td>Name</td>
+            <td>Scope</td>
+            <td>Classes</td>
+            <% if current_user.role == "admin" %>
+              <td>Created_at</td>
+              <td>Updated_at</td>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody>
+          <% @objectives.each do |objective| %>
+            <tr class="users">
+              <td><% if objective.user == current_user || current_user.role == "admin" %>
+                  <%= link_to "Delete", objective, method: :delete, :id => "delete_#{objective.id}",
+                              data: { confirm: "You are about to permanently remove all records of this objective. All scores for this objective will also be deleted. This cannot be undone."  } %>
+                  <% end %>
+            </td>
+              <td><%= link_to objective.fullName, edit_objective_path(objective), :id => "edit_#{objective.id}" %></td>
+              <td><%= objective.extent.capitalize %></td>
+              <td><%= objective.seminars.count %></td>
+              <% if current_user.role == "admin" %>
+                <td><%= objective.created_at.strftime("%Y-%m-%d") %></td>
+                <td><%= objective.updated_at.strftime("%Y-%m-%d") %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <%= will_paginate %>
+  <% else %>
+    <%# Show Nothing if @objectives is empty. That makes it so user doesn't get the "Nothing
+      found for that search method if they were just visiting that screen for the first time. %>
+  <% end %>
+<% else %>
+  <h3>Nothing found for that search.</h3>
+<% end %>
