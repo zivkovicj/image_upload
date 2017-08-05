@@ -3,10 +3,9 @@ require 'test_helper'
 class LabelsFormTest < ActionDispatch::IntegrationTest
     
     def setup
+        setup_users()
         setup_labels()
         setup_questions()
-        @admin_user = users(:michael)
-        @teacher_user = users(:archer)
         @new_name = "20.1 One-step equations with diagrams"
     end
     
@@ -14,7 +13,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
         oldLabelCount = Label.count
         @user_q.update(:label => @user_l)
         
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("Create a New Label")
         
         @user_q.reload
@@ -28,7 +27,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
         @new_label = Label.last
         assert_equal @new_name, @new_label.name
         assert_equal "public", @new_label.extent
-        assert_equal @teacher_user, @new_label.user
+        assert_equal @teacher_1, @new_label.user
         
         @user_q.reload
         assert @new_label.questions.include?(@user_q)
@@ -39,7 +38,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
     end
     
      test "admin creates label" do
-        capybara_admin_login()
+        capybara_login(@admin_user)
         click_on("Create a New Label")
         
         fill_in "name", with: @new_name
@@ -54,7 +53,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
     end
     
     test "invalid label" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("Create a New Label")
         
         # No name entered
@@ -66,7 +65,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
     end
     
     test "edit other teacher label" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on('All Labels')
         click_on(@other_l_pub.name)
         
@@ -75,7 +74,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
     end
     
     test "edit admin label" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on('All Labels')
         click_on(@admin_l.name)
         
@@ -87,7 +86,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
         new_name = "New name for this label"
         assert_not_equal new_name, @user_l.name
         
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on('All Labels')
         click_on(@user_l.name)
         
@@ -101,7 +100,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
     end
     
     test "user presence of question checkboxes" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("Create a New Label")
         
         assert_no_selector("input", :id => "question_#{@admin_q.id}")
@@ -111,7 +110,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
     end
     
     test "admin presence of question checkboxes" do
-        capybara_admin_login()
+        capybara_login(@admin_user)
         click_on("Create a New Label")
         
         assert_selector("input", :id => "question_#{@admin_q.id}")

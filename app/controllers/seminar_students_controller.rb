@@ -1,8 +1,6 @@
 class SeminarStudentsController < ApplicationController
   respond_to :html, :json
-  
   before_action :correct_ss_user, only: [:destroy, :show, :edit]
-  before_action :admin_user,    only: [:index]
   
   include AddStudentStuff
 
@@ -12,7 +10,7 @@ class SeminarStudentsController < ApplicationController
     @ss.update_attributes(ss_params)
     @seminar = Seminar.find(@ss.seminar_id)
     if (params[:ss][:teach_request])
-      if current_user.role == "teacher"
+      if current_user.type == "Teacher"
         flash[:success] = "Student request updated"
         redirect_to scoresheet_url(@seminar)
       else
@@ -69,6 +67,6 @@ class SeminarStudentsController < ApplicationController
       def correct_ss_user
         @ss = SeminarStudent.find_by(id: params[:id])
         @seminar = Seminar.find(@ss.seminar_id)
-        redirect_to login_url unless (current_user && current_user.own_seminars.include?(@seminar)) || (current_user && current_user.role == "admin")
+        redirect_to login_url unless (current_user && current_user.own_seminars.include?(@seminar)) || user_is_an_admin
       end
 end

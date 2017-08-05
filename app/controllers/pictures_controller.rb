@@ -1,5 +1,8 @@
 class PicturesController < ApplicationController
   before_action :set_picture, only: [:show, :edit, :update, :destroy]
+  before_action only: [:delete, :destroy] do
+    correct_owner(Picture)
+  end
 
   # GET /pictures
   # GET /pictures.json

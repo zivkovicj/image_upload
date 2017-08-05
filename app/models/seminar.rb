@@ -1,18 +1,13 @@
 class Seminar < ApplicationRecord
-  belongs_to  :teacher, class_name: "User"
   
+  belongs_to  :user
   has_many    :seminar_students, dependent: :destroy
   has_many    :students, through: :seminar_students
-  
   has_many    :objective_seminars, dependent: :destroy
   has_many    :objectives, through: :objective_seminars
-  
   has_many    :consultancies, dependent: :destroy
   
-  serialize :seating
-  serialize :needSeat
-  
-  validates :teacher_id, presence: true
+  validates :user_id, presence: true
   validates :name, presence: true, length: { maximum: 40 }
   validates :consultantThreshold, presence: true, numericality: { only_integer: true }
   

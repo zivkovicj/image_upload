@@ -3,17 +3,16 @@ require 'test_helper'
 class QuestionsFormTest < ActionDispatch::IntegrationTest
     
     def setup
+        setup_users()
         setup_labels()
         setup_questions()
-        @admin_user = users(:michael)
-        @teacher_user = users(:archer)
         @newPrompt = "How many Scoobers can a Scoober Doof?"
         @new_choice = ["Blubber", "Scoober Doofus", "Hardunkinchud @ Aliciousness", 
             "{The Player formerly known as Mousecop}", "Red Grange", "1073514"]
     end
     
     test "edit other question" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on('All Questions')
         click_on(@other_q_pub.shortPrompt)
         
@@ -24,7 +23,7 @@ class QuestionsFormTest < ActionDispatch::IntegrationTest
     end
     
     test "edit admin question" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on('All Questions')
         click_on(@admin_q.shortPrompt)
         
@@ -37,7 +36,7 @@ class QuestionsFormTest < ActionDispatch::IntegrationTest
     test "edit own question" do
         assert_not @user_q.correct_answers.include?("4")
         
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on('All Questions')
         click_on(@user_q.shortPrompt)
         

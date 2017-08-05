@@ -3,8 +3,8 @@ require 'test_helper'
 class QuestionsNewTest < ActionDispatch::IntegrationTest
 
     def setup
+        setup_users()
         setup_labels()
-        @teacher_user = users(:archer)
         
         @new_choice = [["Blubber", "Scoober Doofus", "Hardunkinchud @ Aliciousness", 
             "{The Player formerly known as Mousecop}", "Red Grange", "1073514"],
@@ -22,7 +22,7 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
     test "create new question" do
         oldQuestionCount = Question.count
         
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("Create New Questions")
         assert_selector('input', :id => "label_#{@admin_l.id}")
         assert_selector('input', :id => "label_#{@user_l.id}")
@@ -47,7 +47,7 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
         Question.all[-5..-1].each_with_index do |question, index|
             assert_equal @new_prompt[index], question.prompt
             assert_equal "public", question.extent
-            assert_equal @teacher_user, question.user
+            assert_equal @teacher_1, question.user
             assert_equal @user_l, question.label
             assert @user_l.questions.include?(question)
         end
@@ -71,7 +71,7 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
     test "dont create with empty prompt" do
         oldQuestionCount = Question.count
         
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("Create New Questions")
         
         fill_in "prompt_1", with: @new_prompt[0]
@@ -82,7 +82,7 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
     end
     
     test "default correct and label" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("Create New Questions")
         
         fill_in "prompt_1", with: @new_prompt[0]

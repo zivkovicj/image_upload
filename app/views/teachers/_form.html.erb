@@ -1,7 +1,7 @@
 
 
-<%= form_for(@user) do |f| %>
-  <%= render 'shared/error_messages', object: @user %>
+<%= form_for(@teacher) do |f| %>
+  <%= render 'shared/error_messages', object: @teacher %>
   
   <%= f.label :title %>
   <%= f.select :title, ["Mrs.", "Mr.", "Miss", "Ms.", "Dr."] %>

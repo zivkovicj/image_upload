@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.create(first_name: "Beef", last_name: "Stroganoff", 
+    @user = Teacher.new(first_name: "Beef", last_name: "Stroganoff", 
           email: "user@example.com", 
           password: "foobar", password_confirmation: "foobar")
   end
@@ -81,6 +81,7 @@ class UserTest < ActiveSupport::TestCase
   end
   
   test "associated seminars should be destroyed" do
+    @user.save
     @user.own_seminars.create(name: "1st period", consultantThreshold: 70)
     assert_difference 'Seminar.count', -1 do
       @user.destroy

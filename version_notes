@@ -1,4 +1,20 @@
 
+2.19  REMAKE APP IN NEW WORKSPACE--STARTED 07/18/2017
+                           PUSHED 07/30/2017
+    Start a new workspace that doesn't use the tutorial configuration
+    Destroying user's seminars and objectives needs to move from the controller to the model.
+    Look at the edit action for the users controller. It looks like it's set up to work
+    for students, not teachers.
+    Put teacher titles into the DB seeds
+    And Questions
+
+
+
+****  THIS POINT MARKS THE BEGINNING OF THE VERSION NOTES. BEFORE THIS, I WAS
+LISTING NOTES IN ASCENDING CHRONOLOGICAL ORDER.
+
+
+
 VERSION 2.11 ADD QUESTIONS TO DB
     Migrate after deploy
         There might be an issue with the migration that added created_by to objectives

@@ -39,7 +39,7 @@ class Objective < ApplicationRecord
     end
     
     def fullName
-        name[0,20] 
+        name[0,30] 
     end
     
     private

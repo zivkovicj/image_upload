@@ -6,17 +6,17 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     include RankObjectivesByNeed
     
     def setup
-        @user = users(:archer)
-        @seminar = seminars(:one)
+        setup_users()
+        setup_seminars
         setup_scores()
         @cThresh = @seminar.consultantThreshold
-        @student_1 = students(:student_1)
-        @student_2 = students(:student_2)
-        @student_3 = students(:student_3)
-        @student_4 = students(:student_4)
-        @student_5 = students(:student_5)
-        @student_6 = students(:student_6)
-        @student_7 = students(:student_7)
+        @student_1 = users(:student_1)
+        @student_2 = users(:student_2)
+        @student_3 = users(:student_3)
+        @student_4 = users(:student_4)
+        @student_5 = users(:student_5)
+        @student_6 = users(:student_6)
+        @student_7 = users(:student_7)
         
         @ss_1 = SeminarStudent.find_by(:seminar_id => @seminar.id, :student_id => @student_1.id)
         @ss_2 = SeminarStudent.find_by(:seminar_id => @seminar.id, :student_id => @student_2.id)
@@ -67,7 +67,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
             @ss_6.update(:learn_request => @objective_4)
             @ss_7.update(:teach_request => @objective_4, :pref_request => 2)
             
-        @teacher = @seminar.teacher
+        @teacher = @seminar.user
         @cThresh = @seminar.consultantThreshold
         @consultancy = Consultancy.create(:seminar => @seminar, :created_at => "2017-07-16 03:10:54")
     end
@@ -92,7 +92,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     test "simple check for screen" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("deskConsult_#{@seminar.id}")
         click_on("Create Desk Consultants Groups")
     end
@@ -265,7 +265,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @seminar.students[7].objective_students[3].destroy
         @seminar.students[8].objective_students[2].update(:points => nil)
         
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("deskConsult_#{@seminar.id}")
         click_on("Create Desk Consultants Groups")
     end
@@ -276,7 +276,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         Consultancy.create(:seminar => @seminar)
         assert_equal consult_count + 1, Consultancy.count
         
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("deskConsult_#{@seminar.id}")
         click_on("Create Desk Consultants Groups")
         assert_equal consult_count + 1, Consultancy.count
@@ -295,7 +295,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         assert_equal 10, @seminar.consultancies.count
         
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("deskConsult_#{@seminar.id}")
         click_on("Create Desk Consultants Groups")
         
@@ -304,12 +304,12 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     test "consultant quizzes showing for student" do
-        capybara_student_login(@student_1)
+        go_to_first_period
         assert_no_text("Desk Consultant Objectives")
         click_on("Account")
         click_on("Log out")
         
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("deskConsult_#{@seminar.id}")
         click_on("Create Desk Consultants Groups")
         click_on("Account")
@@ -319,7 +319,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         bad_objective = @student_1.seminars.last.objectives.last
         assert_not_equal objective, bad_objective
         
-        capybara_student_login(@student_1)
+        go_to_first_period
         assert_text("Desk Consultant Objectives")
         assert_selector('li', :id => "quiz_#{objective.id}")
         assert_no_selector('li', :id => "quiz_#{bad_objective.id}")

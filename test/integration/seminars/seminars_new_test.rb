@@ -2,8 +2,12 @@ require 'test_helper'
 
 class SeminarsNewTest < ActionDispatch::IntegrationTest
    
+    def setup
+        setup_users()
+    end
+   
    test "Create New Seminar" do
-       capybara_teacher_login()
+       capybara_login(@teacher_1)
        click_on("Create a New Class")
        
        fill_in "Name", with: "4th Period"
@@ -17,7 +21,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
    end 
    
    test "Default Threshold" do
-       capybara_teacher_login()
+       capybara_login(@teacher_1)
        click_on("Create a New Class")
        
        fill_in "Name", with: "5th Period"

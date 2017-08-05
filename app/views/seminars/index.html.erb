@@ -1,14 +1,14 @@
 <% provide(:title, 'All Classes') %>
+<% provide(:headerText, 'All Classes') %>
+<% provide(:headerPic, 'objectives.png') %>
 
-      <%= button_to "Back to Your Profile", user_path(current_user), 
-         class: "btn btn-lg btn-primary", :method => :get, :id => "back_button" %>
-
-<h1>All Classes</h1>
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
 
 <%= render :partial => 'shared/searchField', 
   :locals => {:whichPath => seminars_path,
               :attrLabel1 => "Name", :attrLabel2 => "Teacher ID", :attrLabel3 => nil, :attrLabel4 => nil, :attrLabel5 => nil,
-              :attrData1 => :name,   :attrData2 => :teacher_id, :attrData3 => nil, :attrData4 => nil, :attrData5 => nil} %>
+              :attrData1 => :name,   :attrData2 => :user_id, :attrData3 => nil, :attrData4 => nil, :attrData5 => nil} %>
 
 <%= will_paginate %>
 
@@ -32,7 +32,7 @@
                           data: { confirm: "Are you sure?" } %></td>
           <td><%= link_to seminar.id, seminar %></td>
           <td><%= link_to seminar.name, seminar %></td>
-          <% teacherId = seminar.teacher.id %>
+          <% teacherId = seminar.user.id %>
           <% teacher = User.find(teacherId) %>
           <td><%= teacherId %> <%= teacher.last_name %></td>
           <td><%= seminar.students.count %></td>

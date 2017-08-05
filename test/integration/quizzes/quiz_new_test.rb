@@ -3,7 +3,7 @@ require 'test_helper'
 class NewQuizTest < ActionDispatch::IntegrationTest
     
     def setup
-        @martha = students(:student_2)
+        setup_users()
         @objective = objectives(:objective_10)
         setup_labels()
         setup_objectives()
@@ -17,11 +17,11 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         
         setup_consultancies()
         
-        capybara_student_login(@martha)
+        go_to_first_period
         click_on(@objective.name)
         
         @new_quiz = Quiz.last
-        assert_equal @new_quiz.student, @martha
+        assert_equal @new_quiz.student, @student_2
         assert_equal @new_quiz.objective, @objective
         assert_equal old_quiz_count + 1, Quiz.count
         new_riposte_count = @new_quiz.ripostes.count
@@ -32,7 +32,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     test "take quiz" do
         setup_consultancies()
         
-        capybara_student_login(@martha)
+        go_to_first_period
         click_on(@objective.name)
         
         @new_quiz = Quiz.last
@@ -66,7 +66,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         
         setup_consultancies()
         
-        capybara_student_login(@martha)
+        go_to_first_period
         click_on(@objective.name)
         
         6.times do |riposte|

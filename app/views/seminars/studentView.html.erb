@@ -2,7 +2,7 @@
 <% provide(:button_text, 'Change Your Requests') %>
 
 <div class="row">
-    <h1>&emsp;&emsp;<%= @student.fullName %>&emsp;&emsp; <small><%= @seminar.name %>&emsp; <%= @teacher.nameWithTitle %></small></h1>
+    <h1>&emsp;&emsp;<%= @student.fullName %>&emsp;&emsp; <small><%= @seminar.name %>&emsp; <%= @teacher.name_with_title %></small></h1>
 </div>
 
 <div class="singleOption">
@@ -26,3 +26,5 @@
 
 <%= render 'shared/teach_requests' %>
 
+<%= button_to "Edit Your Profile", edit_student_path(@student), 
+        class: "btn btn-lg btn-primary", :method => :get %>

@@ -3,8 +3,7 @@ require 'test_helper'
 class QuestionsIndexTest < ActionDispatch::IntegrationTest
     
     def setup
-        @admin     = users(:michael)
-        @non_admin = users(:archer)
+        setup_users()
         @admin_q = questions(:one)
         @this_teachers_q = questions(:two)
         @other_teacher_public_q = questions(:three)
@@ -13,7 +12,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     end
     
     test "index questions as admin" do
-        capybara_admin_login()
+        capybara_login(@admin_user)
         click_on("All Questions")
 
         assert_selector('a', :id => "edit_#{@admin_q.id}", :text => @admin_q.shortPrompt)
@@ -27,7 +26,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     end
     
     test "index questions as non admin" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("All Questions")
     
         assert_selector('a', :id => "edit_#{@admin_q.id}", :text => @admin_q.shortPrompt)
@@ -41,11 +40,11 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     end
     
     test "back button" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("All Questions")
         assert_selector("h1", :text => "All Questions")
-        assert_no_text("Desk-Consultant Facilitator Since:")
+        assert_not_on_teacher_page
         click_on("back_button")
-        assert_text("Desk-Consultant Facilitator Since:") 
+        assert_on_teacher_page
     end
 end

@@ -3,9 +3,8 @@ require 'test_helper'
 class SeminarsShowTest < ActionDispatch::IntegrationTest
     
     def setup
-        @user = users(:michael)
-        @teacher_user = users(:archer)
-        @seminar = seminars(:one)
+        setup_users()
+        setup_seminars
         setup_scores()
     end
     
@@ -14,7 +13,7 @@ class SeminarsShowTest < ActionDispatch::IntegrationTest
     end
     
     test "show scoresheet" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("scoresheet_#{@seminar.id}")
         assert_selector('h1', :text => "#{@seminar.name} Scoresheet")
         assert page.has_title? "#{@seminar.name} Scoresheet | EM Education"
@@ -32,7 +31,7 @@ class SeminarsShowTest < ActionDispatch::IntegrationTest
     end
     
     test "click into student view" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("scoresheet_#{@seminar.id}")
         thisStudent = @seminar.students[2]
         click_on(thisStudent.lastNameFirst)

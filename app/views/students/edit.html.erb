@@ -1,5 +1,5 @@
 <% provide(:title, 'Edit/Remove Student') %>
-<% provide(:button_text, 'Save changes') %>
+<% provide(:button_text, 'Save Changes') %>
 
 
 
@@ -9,15 +9,15 @@
   end  
 %>
 
-<% if current_user.role == "teacher" %>
-  <%= "#{current_user.role.capitalize} #{current_user.title} #{current_user.last_name} is editing." %><br/><br/>
+<% if current_user.type != "Student" %>
+  <%= "#{current_user.type} #{current_user.title} #{current_user.last_name} is editing." %><br/><br/>
   <% if current_user.current_class && current_user != @user %>
     <%= render 'shared/back-link' %><br/>
     
     <% current_user.own_seminars.each do |seminar| %>
       <% if seminar.students.include?(@student) %>
-        <% thisAula = seminar.aulas.find_by(student_id: @student.id) %>
-        <%= button_to "Remove student from #{seminar.name}", thisAula, 
+        <% this_ss = seminar.seminar_students.find_by(student_id: @student.id) %>
+        <%= button_to "Remove student from #{seminar.name}", this_ss, 
             :method => :delete, data: { confirm: confirmMessage(seminar) }, 
             class: "btn btn-lg btn-primary" %><br/>
       <% end %>
@@ -27,10 +27,6 @@
 
 <br/>
 
-
-  
-  <br/>
-
 <%= form_for(@student) do |f| %>
   <%= render 'shared/error_messages', object: @student %>
   
@@ -39,9 +35,11 @@
   
   <%= f.label :last_name %>
   <%= f.text_field :last_name, class: 'form-control' %>
-
-  <%= f.label "Student Number" %>
-  <%= f.text_field :student_number, class: 'form-control' %>
+  
+  <% if current_user.type != "Student" %>
+    <%= f.label "Student Number" %>
+    <%= f.text_field :user_number, class: 'form-control' %>
+  <% end %>
 
   <%= f.label :username %>
   <%= f.text_field :username, class: 'form-control' %>

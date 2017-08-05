@@ -4,11 +4,6 @@ module SessionsHelper
     def log_in(user)
         session[:user_id] = user.id
         user.update(:last_login => Time.now)
-        if user.role == "student"
-            session[:user_type] = "student"
-        else
-            session[:user_type] = "teacher"
-        end
     end
     
     # Remembers a user in a persistent session.
@@ -18,25 +13,21 @@ module SessionsHelper
         cookies.permanent[:remember_token] = user.remember_token
     end
     
-    def dryFindUser(user_id)
-        if session[:user_type] == "student"
-            Student.find_by(id: user_id)
-        else
-            User.find_by(id: user_id)
-        end
-    end
-    
     # Returns the user corresponding to the remember token cookie.
     def current_user
         if (user_id = session[:user_id])
-            @current_user ||= dryFindUser(user_id)
+            @current_user ||= User.find_by(id: user_id)
         elsif (user_id = cookies.signed[:user_id])
-            user = dryFindUser(user_id)
+            user = User.find_by(id: user_id)
             if user && user.authenticated?(:remember, cookies[:remember_token])
                 log_in user
                 @current_user = user
             end
         end
+    end
+    
+    def user_is_a_teacher
+        current_user&.type == "Teacher"
     end
     
     # Returns true if the given user is the current user.

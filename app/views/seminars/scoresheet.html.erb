@@ -1,7 +1,7 @@
 <% provide(:title, "#{@seminar.name} Scoresheet") %>
 
 <%= render 'shared/navribbon' %><br/>
-<%= render 'shared/teacher_name_and_edit' %><br/>
+<%= render 'shared/teacher_name_and_edit', user: @teacher %><br/>
 <%= render 'shared/class_and_edit' %>
 
 
@@ -27,7 +27,7 @@
       <% @students.each do |student| %>
         <tr>
           <td><h4><%= link_to student.lastNameFirst, edit_teaching_requests_url(student) %> </h4></td>
-          <td class="themScores"><%= student.total_points(@scores) %></td>
+          <td class="themScores"><%= student.total_points %></td>
           <% this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id) %>
           <% @objectives.each do |objective| %>
             <% thisScore = @scores.find_by(:objective_id => objective.id, :student_id => student.id) %>
@@ -53,5 +53,5 @@
   <%= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %><br/>
 </div>
 
-<%= button_to "Your Teacher Profile", @seminar.teacher,
+<%= button_to "Your Teacher Profile", @seminar.user,
   class: "btn btn-lg btn-primary", :method => :get %>

@@ -13,6 +13,29 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
   
+  def setup_users
+    @admin_user = users(:michael)
+    @teacher_1 = users(:archer)
+    @other_teacher = users(:zacky)
+    @student_1 = users(:student_1)
+    @student_2 = users(:student_2)
+    @student_3 = users(:student_3)
+  end
+  
+  def setup_seminars
+    @seminar = seminars(:one)
+  end
+  
+  def setup_consultancies()
+    c1 = seminars(:one).consultancies.create
+    t1 = c1.teams.create(:objective => objectives(:objective_10), :consultant => users(:student_2))
+    t1.students << users(:student_2)
+    t1.students << users(:student_3)
+    t1.students << users(:student_4)
+    t1.students << users(:student_5)
+    
+  end
+  
   def setup_objectives
     objectives(:objective_40).update(:user_id => users(:archer).id)
     objectives(:objective_50).update(:user_id => users(:archer).id)
@@ -76,27 +99,19 @@ class ActiveSupport::TestCase
   # Log in as a particular user
   def log_in_as(user)
     session[:user_id] = user.id
-    if user.role == "student"
-        session[:user_type] = "student"
-    else
-        session[:user_type] = "teacher"
-    end
   end
   
-  def capybara_admin_login
+  def capybara_login(user)
     visit('/')
     click_on('Log In')
-    fill_in('username', :with => 'michael@example.com')
+    fill_in('username', :with => user.email)
     fill_in('Password', :with => 'password')
     click_on('Log In')
   end
   
-  def capybara_teacher_login
-    visit('/')
-    click_on('Log In')
-    fill_in('username', :with => 'archer@example.com')
-    fill_in('Password', :with => 'password')
-    click_on('Log In')
+  def go_to_first_period
+    capybara_login(@student_2)
+    click_on('1st Period')
   end
   
   def setup_scores()
@@ -111,24 +126,44 @@ class ActiveSupport::TestCase
     end
   end
   
-  def setup_consultancies()
-    c1 = seminars(:one).consultancies.create
-    t1 = c1.teams.create(:objective => objectives(:objective_10), :consultant => students(:student_2))
-    t1.students << students(:student_2)
-    t1.students << students(:student_3)
-    t1.students << students(:student_4)
-    t1.students << students(:student_5)
+
+
+  def teacher_editing_stuff(teacher, button_text)
+    select('Mrs.', :from => 'teacher_title')
+    fill_in "teacher_first_name", with: "Burgle"
+    fill_in "teacher_last_name", with: "Cut"
+    fill_in "teacher_email", with: "Burgle@Cut.com"
+    fill_in "teacher_password", with: "bigbigbigbig"
+    fill_in "teacher_password_confirmation", with: "bigbigbigbig"
+    click_on(button_text)
+  
+    this_teacher = teacher || Teacher.last
+    this_teacher.reload
+    assert_equal "Mrs.", this_teacher.title
+    assert_equal "Burgle", this_teacher.first_name
+    assert_equal "Cut", this_teacher.last_name
+    assert_equal "burgle@cut.com", this_teacher.email
+    assert this_teacher.authenticate("bigbigbigbig")
   end
   
-  def capybara_student_login(student)
-    visit('/')
-    click_on('Log In')
-    fill_in('username', :with => student.username)
-    fill_in('Password', :with => 'password')
-    click_on('Log In')
-    click_on('1st Period')
+  def assert_on_teacher_page
+    assert_text("Teacher Since:")
+  end
+  
+  def assert_not_on_teacher_page
+    assert_no_text("Teacher Since:")
+  end
+  
+  def assert_on_admin_page
+    assert_text("Admin Control Page")
+  end
+  
+  def assert_not_on_admin_page
+    assert_no_text("Admin Control Page")
   end
 end
+
+
 
 class ActionDispatch::IntegrationTest
   
@@ -144,16 +179,8 @@ class ActionDispatch::IntegrationTest
   
   # Log in as a particular user.
   def log_in_as(user, password: 'password', remember_me: '1')
-    if user.role == "student"
-        post login_path, params: { session: { email: user.username,
-                                        password: password,
-                                        remember_me: remember_me } }
-        session[:user_type] = "student"
-    else
         post login_path, params: { session: { email: user.email,
                                         password: password,
                                         remember_me: remember_me } }
-        session[:user_type] = "teacher"
-    end
   end
 end

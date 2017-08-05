@@ -3,15 +3,13 @@ require 'test_helper'
 class StudentsIndexTest < ActionDispatch::IntegrationTest
 
   def setup
-    @admin     = users(:michael)
-    @non_admin = users(:archer)
-    @student = students(:student_1)
-    @seminar = seminars(:one)
+    setup_users()
+    setup_seminars
   end
 
   test "Student Index" do
     @admin     = users(:michael)
-    log_in_as(@admin)
+    log_in_as(@admin_user)
     get students_path
     assert_template 'students/index'
     assert_select 'div.pagination'
@@ -20,16 +18,16 @@ class StudentsIndexTest < ActionDispatch::IntegrationTest
       assert_select 'a[href=?]', student_path(student), text: "delete"
     end
     assert_difference 'Student.count', -1 do
-      delete student_path(@student)
+      delete student_path(@student_1)
     end
   end
   
   test "students back button" do
-    capybara_admin_login()
+    capybara_login(@admin_user)
     click_on("Students Index")
-    assert_selector("h1", :text => "Search for Students")
-    assert_no_text("Desk-Consultant Facilitator Since:")
+    assert_selector("h1", :text => "All Students")
+    assert_not_on_admin_page
     click_on("back_button")
-    assert_text("Desk-Consultant Facilitator Since:") 
+    assert_on_admin_page
   end
 end

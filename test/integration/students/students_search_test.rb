@@ -3,26 +3,23 @@ require 'test_helper'
 class StudentsSearchTest < ActionDispatch::IntegrationTest
 
   def setup
-    @admin     = users(:michael)
-    @non_admin = users(:archer)
-    @seminar = seminars(:one)
-    @student_1 = students(:student_1)
-    @student_2 = students(:student_2)
-    @student_80 = students(:student_80)
-    @seminar = seminars(:one)
+    setup_users()
+    setup_seminars
+    @student_80 = users(:student_80)
+    setup_seminars
   end
   
   test 'Test Searching' do
-    capybara_teacher_login()
+    capybara_login(@teacher_1)
     click_on('1st Period')
     click_on('Add an Existing Student')
     
     assert_no_text(@student_1.lastNameFirst)
-    fill_in "searchField", with: @student_1.student_number
+    fill_in "searchField", with: @student_1.user_number
     click_button('Search')
     assert_text(@student_1.lastNameFirst)
     
-    fill_in "searchField", with: @student_2.student_number
+    fill_in "searchField", with: @student_2.user_number
     click_button('Search')
     assert_text(@student_2.lastNameFirst)
     assert_no_text(@student_1.lastNameFirst)
@@ -56,7 +53,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   
   
   test 'Add Student to Class with Buttons' do
-    capybara_teacher_login()
+    capybara_login(@teacher_1)
     click_on('1st Period')
     click_on('Add an Existing Student')
     
@@ -69,7 +66,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     
     # Search for and add the student
     assert_no_text(@student_1.lastNameFirst)
-    fill_in "searchField", with: @student_80.student_number
+    fill_in "searchField", with: @student_80.user_number
     click_button('Search')
     assert_text(@student_80.lastNameFirst)
     click_button('Add to this class')

@@ -1,7 +1,6 @@
 class ObjectiveStudentsController < ApplicationController
   respond_to :html, :json
-  
-  before_action :admin_user,    only: [:index, :destroy]
+  before_action :redirect_for_non_admin,    only: [:index, :destroy]
   
   def index
     @objective_students = ObjectiveStudent.paginate(page: params[:page])

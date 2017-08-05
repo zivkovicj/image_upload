@@ -2,7 +2,7 @@ module ModelMethods
     extend ActiveSupport::Concern
     
     def shortName
-        name[0,22].split.map(&:capitalize).join(' ')
+        name[0,20].split.map(&:capitalize).join(' ')
     end
     
     module ClassMethods

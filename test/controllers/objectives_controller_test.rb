@@ -3,10 +3,8 @@ require 'test_helper'
 class ObjectivesControllerTest < ActionDispatch::IntegrationTest
   
   def setup
-    @user = users(:michael)
-    @teacher_user = users(:archer)
-    @wrong_teacher = users(:zacky)
-    @seminar = seminars(:one)
+    setup_users()
+    setup_seminars
     @objective = objectives(:objective_20)
     @objective40 = objectives(:objective_40)
     setup_objectives()
@@ -15,13 +13,13 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "objectives index test" do
-    log_in_as(@user)
+    log_in_as(@teacher_1)
     get objectives_path
     assert_template 'objectives/index'
   end
   
   test "objectives index as non-admin" do
-    log_in_as(@teacher_user)
+    log_in_as(@teacher_1)
     get objectives_path
     # Should test that admin gets delete links for publics
     # Non-admin doesn't get those links.
@@ -30,7 +28,7 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
   test "edit as non-admin" do
     oldName = @objective.name
     
-    log_in_as(@teacher_user)
+    log_in_as(@teacher_1)
     patch objective_path(@objective), params: { objective: { name:  "Burgersauce",
                                           seminar_id: @seminar.id } }
                                           
@@ -41,7 +39,7 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
   test "edit without login" do
     oldName = @objective.name
     
-    log_in_as(@teacher_user)
+    log_in_as(@teacher_1)
     patch objective_path(@objective), params: { objective: { name:  "Burgersauce",
                                           seminar_id: @seminar.id } }
                                           
@@ -68,7 +66,7 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
     assert_equal @ss.teach_request, oldId
     assert_equal @second_ss.learn_request, oldId
     
-    capybara_teacher_login()
+    capybara_login(@teacher_1)
     click_on("All Objectives")
     click_on("delete_#{@objective40.id}")
     
@@ -85,15 +83,15 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
   end
   
   test "wrong user can't delete" do
-    log_in_as @wrong_teacher
+    log_in_as @other_teacher
     assert_no_difference 'Objective.count' do
       delete objective_path(@objective40)
     end
   end
 
   test "successful objective edit" do
-    log_in_as(@teacher_user)
-    assignToEdit = Objective.where(:user_id => @teacher_user.id).first
+    log_in_as(@teacher_1)
+    assignToEdit = Objective.where(:user_id => @teacher_1.id).first
     
     get seminar_path(@seminar)
     get edit_objective_path(assignToEdit)
@@ -105,16 +103,6 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to quantities_path(assignToEdit)
     assignToEdit.reload
     assert_equal name.downcase,  assignToEdit.name
-  end
-  
-  test "correct number of checkboxes" do
-    numChecks = Objective.where(:extent => "public").count
-    numChecks += Objective.where(:user => @teacher_user).count
-    
-    log_in_as(@teacher_user)
-    get edit_seminar_path(@seminar)
-    get edit_objective_path(@objective)
-    #assert_select "input[type=checkbox]", count: numChecks
   end
   
 

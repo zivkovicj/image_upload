@@ -39,10 +39,10 @@ The default password will be exactly the same as the username.</h5>
         <td><%= index+1 %></td>
         <td><%= text_field_tag "students[][first_name]", "", id: "first_name_#{index}", :class => "new-student-input" %></td>
         <td><%= text_field_tag "students[][last_name]", "", id: "last_name_#{index}",   :class => "new-student-input" %></td>
-        <td><%= text_field_tag "students[][student_number]", "", id: "student_number_#{index}",   :class => "new-student-input" %></td> 
-        <td><%= text_field_tag "students[][username]", "", :class => "new-student-input" %></td> 
-        <td><%= text_field_tag "students[][password]", "",  :class => "new-student-input" %></td>
-        <td><%= text_field_tag "students[][email]", "",  :class => "new-student-input" %></td> 
+        <td><%= text_field_tag "students[][user_number]", "", id: "user_number_#{index}",   :class => "new-student-input" %></td> 
+        <td><%= text_field_tag "students[][username]", "", id: "username_#{index}", :class => "new-student-input" %></td> 
+        <td><%= text_field_tag "students[][password]", "", id: "password_#{index}", :class => "new-student-input" %></td>
+        <td><%= text_field_tag "students[][email]", "", id: "email_#{index}", :class => "new-student-input" %></td> 
         
         <%= fields_for :ss do |a| %>
           <%= a.hidden_field :seminar_id, :value => current_user.current_class %>

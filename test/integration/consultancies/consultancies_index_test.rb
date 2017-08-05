@@ -3,14 +3,13 @@ require 'test_helper'
 class ConsultanciesIndexTest < ActionDispatch::IntegrationTest
     
     def setup
-        @seminar = seminars(:one)
+        setup_seminars
 
     
     end
     
-    
     test "index consultancies" do
-        capybara_teacher_login()
+        capybara_login(@seminar.user)
         click_on("index_consult_#{@seminar.id}")
     end
     

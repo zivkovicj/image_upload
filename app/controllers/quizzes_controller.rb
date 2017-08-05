@@ -10,7 +10,6 @@ class QuizzesController < ApplicationController
             label.questions.order("RANDOM()").limit(quant).each do |quest|
                 quest_collect.push([quest.id, lo.point_value])
             end
-            debugger
         end
         
         quest_collect.shuffle.each_with_index do |q_info, index|

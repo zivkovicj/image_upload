@@ -3,27 +3,25 @@ require 'test_helper'
 class SessionsHelperTest < ActionView::TestCase
     
     def setup
-        @user = users(:michael)
-        @teacher_user = users(:archer)
-        @student = students(:student_1)
-        remember(@user)
+        setup_users()
+        remember(@teacher_1)
     end
     
     test "current_user returns right user" do
-        log_in_as @teacher_user
-        assert_equal @teacher_user, current_user
+        log_in_as @teacher_1
+        assert_equal @teacher_1, current_user
         assert is_logged_in?
     end
     
     test "current_user returns nil when remember digest is wrong" do
-        @user.update_attribute(:remember_digest, User.digest(User.new_token))
+        @teacher_1.update_attribute(:remember_digest, User.digest(User.new_token))
         assert_nil current_user
     end
     
     test "current_user gives a student when needed" do
-        log_in_as @student
-        assert_not_equal @user, current_user
-        assert_equal @student, current_user
+        log_in_as @student_1
+        assert_not_equal @teacher_1, current_user
+        assert_equal @student_1, current_user
         assert is_logged_in?
     end
     

@@ -3,9 +3,9 @@ require 'test_helper'
 class SeminarTest < ActiveSupport::TestCase
 
   def setup
-    @user = users(:michael)
+    setup_users()
     # This code is not idiomatically correct.
-    @seminar = @user.own_seminars.build(name: "1st Period", consultantThreshold: 70)
+    @seminar = @teacher_1.own_seminars.build(name: "1st Period", consultantThreshold: 70)
   end
 
   test "should be valid" do
@@ -13,7 +13,7 @@ class SeminarTest < ActiveSupport::TestCase
   end
 
   test "Teacher id should be present" do
-    @seminar.teacher_id = nil
+    @seminar.user_id = nil
     assert_not @seminar.valid?
   end
   

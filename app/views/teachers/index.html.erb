@@ -1,0 +1,52 @@
+<% provide(:title, 'All Teachers') %>
+
+<% provide(:headerText, "All Teachers" ) %>
+<% provide(:headerPic, "question.png") %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<%= render :partial => 'shared/searchField', 
+  :locals => {:whichPath => teachers_path,
+              :attrLabel1 => "ID", :attrLabel2 => "Last Name", :attrLabel3 => "First Name", :attrLabel4 => "E-Mail", :attrLabel5 => nil,
+              :attrData1 => :id,       :attrData2 => :last_name,  :attrData3 => :first_name, :attrData4 => :email, :attrData5 => nil} %>
+
+<%= will_paginate %>
+
+<table class="users">
+  <thead>
+    <tr>
+      <td>Delete</td>
+      <td>Id</td>
+      <td>Last Name</td>
+      <td>First Name</td>
+      <td>email</td>
+      <td>Seminar Count</td>
+      <td>Student Count</td>
+      <td>last_login</td>
+      <td>created_at</td>
+    </tr>
+  </thead>
+  <tbody>
+    <% @teachers.each do |teacher| %>
+      <tr class="users">
+        <td><%= link_to "delete", teacher, method: :delete,
+                        data: { confirm: "Are you sure?" }, :id => "delete_#{teacher.id}" %></td>
+                        
+        <td><%= link_to teacher.id, teacher %></td>
+        <td><%= link_to teacher.name_with_title, edit_teacher_path(teacher) %></td>
+        <td><%= link_to teacher.first_name, teacher %></td>
+        <td><%= teacher.email %></td>
+        <td><%= teacher.own_seminars.count %></td>
+        <td><%= teacher.students.count %></td>
+        <td><%= teacher.last_login.strftime("%Y-%m-%d") %></td>
+        <td><%= teacher.created_at.strftime("%Y-%m-%d") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate %>
+
+<br/>
+<%= link_to "Add New Teacher", signup_path(), class: "btn btn-lg btn-primary" %>

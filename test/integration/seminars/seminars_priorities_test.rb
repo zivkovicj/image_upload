@@ -3,16 +3,16 @@ require 'test_helper'
 class SeminarsPrioritiesTest < ActionDispatch::IntegrationTest
     
     def setup
-        @seminar = seminars(:one)
+        setup_users()
+        setup_seminars
         
         @os_2 = @seminar.objective_seminars[2]
         @os_3 = @seminar.objective_seminars[3]
- 
         
     end
     
     test "change objective priorities" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("#{@seminar.name} priorities")
         
         choose("#{@os_2.id}_3")

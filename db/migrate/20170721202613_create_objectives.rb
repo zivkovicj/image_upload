@@ -3,7 +3,7 @@ class CreateObjectives < ActiveRecord::Migration[5.0]
     create_table :objectives do |t|
       t.string  :name
       t.string  :extent
-      t.integer :user_id, foreign_key: true
+      t.references :user, foreign_key: true
       
       t.timestamps
     end

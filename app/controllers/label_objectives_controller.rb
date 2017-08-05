@@ -10,7 +10,7 @@ class LabelObjectivesController < ApplicationController
             @lo.update(:quantity => value[:quantity])
             @lo.update(:point_value => value[:point_value])
         end
-        redirect_to user_path(current_user)
+        redirect_to current_user
     end
  
 end

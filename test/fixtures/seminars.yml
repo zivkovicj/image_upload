@@ -2,27 +2,27 @@
 
 one:
   name: 1st Period
-  teacher: archer
+  user: archer
   consultantThreshold: 70
 
 two:
   name: 2nd Period
-  teacher: archer
+  user: archer
   consultantThreshold: 70
 
 three:
   name: 3rd Period
-  teacher: archer
+  user: archer
   consultantThreshold: 70
   
 three:
   name: Zacky's first period
-  teacher: zacky
+  user: zacky
   consultantThreshold: 70
   
 <% 30.times do |n| %>
 seminar_<%= n %>:
   name:  <%= "Seminar #{n}" %>
-  teacher: archer
+  user: archer
   consultantThreshold: 70
 <% end %>

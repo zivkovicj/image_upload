@@ -5,7 +5,7 @@ module SetPermissions
     
     def setPermissions(target)
       thisId = target.user_id
-      if current_user.role == "admin"
+      if current_user.type == "Admin"
           @assignPermission = "admin"
       else
         if thisId == current_user.id
@@ -18,7 +18,7 @@ module SetPermissions
       if thisId == 0
         @createdLabel = "EM Education"
       else
-        @createdLabel = User.find(thisId).nameWithTitle
+        @createdLabel = User.find(thisId).name_with_title
       end
     end
     

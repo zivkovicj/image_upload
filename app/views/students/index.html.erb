@@ -1,20 +1,20 @@
 <% provide(:title, 'All Students') %>
+<% provide(:headerText, 'All Students') %>
+<% provide(:headerPic, 'objectives.png') %>
 
-      <%= button_to "Back to Your Profile", user_path(current_user), 
-         class: "btn btn-lg btn-primary", :method => :get, :id => "back_button" %>
-
-<h1>Search for Students</h1>
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
 
 <%= render :partial => 'shared/searchField', 
   :locals => {:whichPath => students_path,
               :attrLabel1 => "Student Number", :attrLabel2 => "Last Name", :attrLabel3 => "First Name", :attrLabel4 => "E-Mail", :attrLabel5 => "ID", 
-              :attrData1 => :student_number,       :attrData2 => :last_name,  :attrData3 => :first_name, :attrData4 => :email, :attrData5 => :id} %>
+              :attrData1 => :user_number,       :attrData2 => :last_name,  :attrData3 => :first_name, :attrData4 => :email, :attrData5 => :id} %>
 
 
 <% if @students != [0] %>
   <% if !@students.empty? %>
     <%= will_paginate %>
-      <% if current_user.role == "admin" %>
+      <% if current_user.type == "Admin" %>
         <table>
           <thead>
             <tr>
@@ -22,7 +22,7 @@
               <td>id</td>
               <td>Name</td>
               <td>email</td>
-              <td>student_number</td>
+              <td>Student Number</td>
               <td>username</td>
               <td>Seminar Count</td>
               <td>last_login</td>
@@ -34,10 +34,10 @@
               <tr class="users">
                 <td><%= link_to "delete", student, method: :delete,
                                 data: { confirm: "Are you sure?" } %></td>
-                <td><%= link_to student.id, student %></td>
-                <td><%= link_to student.lastNameFirst %></td>
+                <td><%= link_to student.id, edit_student_path(student) %></td>
+                <td><%= link_to student.lastNameFirst, edit_student_path(student)  %></td>
                 <td>email</td>
-              <td><%= student.student_number %></td>
+              <td><%= student.user_number %></td>
               <td><%= student.username %></td>
               <td><%= student.seminars.count %></td>
               <td><%= student.last_login.strftime("%Y-%m-%d") %></td>
@@ -51,7 +51,7 @@
           <% @students.each do |student| %>
             <li>
               <strong><%= student.lastNameFirst %></strong>
-              &emsp; Student Number:<%= student.student_number %>
+              &emsp; Student Number:<%= student.user_number %>
               <% if @seminar.students.include?(student) == false %>
                 <%= form_for(@ss) do |a| %>
                   <%= a.hidden_field :seminar_id, :value => @seminar.id %>

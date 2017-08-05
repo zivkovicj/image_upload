@@ -1,0 +1,51 @@
+<% provide(:title, "#{@admin.name_with_title}") %>
+
+<%= render 'shared/teacher_name_and_edit', user: @admin %>
+
+<p><strong>Admin Control Page</strong></p>
+
+
+<% if current_user == @admin %>
+  <div>
+    <br/><%= button_to 'Teachers Index', teachers_path, class: "btn btn-lg btn-primary",
+      :method => :get %>
+    <br/><%= button_to 'Students Index', students_path, class: "btn btn-lg btn-primary",
+      :method => :get %>
+    <br/><%= button_to 'Seminars Index', seminars_path, class: "btn btn-lg btn-primary",
+      :method => :get %>
+  </div>
+<% end %>
+
+<div>
+  <div class="row">
+    <div class="col-sm-4">
+      <%= button_to "Create New Questions", new_question_path, 
+        class: "btn btn-lg btn-primary", :method => :get %>
+    </div>
+    <div class="col-sm-4">
+      <%= button_to "Create a New Label", new_label_path, 
+        class: "btn btn-lg btn-primary", :method => :get %>
+    </div>
+    <div class="col-sm-4">
+      <%= button_to "Create a New Objective", new_objective_path, 
+        class: "btn btn-lg btn-primary", :method => :get %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <%= button_to 'All Questions', questions_path, class: "btn btn-lg btn-primary",
+          :method => :get %>
+    </div>
+    <div class="col-sm-4">
+      <%= button_to 'All Labels', labels_path, class: "btn btn-lg btn-primary",
+          :method => :get %>
+    </div>
+    <div class="col-sm-4">
+      <%= button_to 'All Objectives', objectives_path, class: "btn btn-lg btn-primary",
+          :method => :get %>
+    </div>
+  </div>
+</div>
+
+<%= button_to 'Upload Pictures', new_picture_path, class: "btn btn-lg btn-primary",
+          :method => :get %>

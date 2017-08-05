@@ -20,7 +20,7 @@ module DeskConsultants
     def setupProfList()
         # The main array that is actually used is profList, which sorts students
         # by their total scores
-        @profList = @students.sort {|a,b| a.total_points(@scores) <=> b.total_points(@scores)}
+        @profList = @students.sort {|a,b| a.total_points <=> b.total_points}
     end
     
     # Rank students by their adjusted consultant points.

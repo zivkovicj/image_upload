@@ -20,14 +20,14 @@
       <%= will_paginate %>
         <% @labels.each do |label| %>
           <table>
-            <% if current_user.role == "admin" %>
+            <% if current_user.type == "Admin" %>
               <tr>
                 <td><%= label.created_at.strftime("%Y-%m-%d") %></td>
                 <td><%= label.updated_at.strftime("%Y-%m-%d") %></td>
               </tr>
             <% end %>
             <tr class="users">
-              <td><% if label.user == current_user || current_user.role == "admin" %>
+              <td><% if label.user == current_user || current_user.type == "Admin" %>
                   <%= link_to "Delete", label, method: :delete, :id => "delete_#{label.id}",
                               data: { confirm: "You are about to permanently remove all records of this label. All questions for this label will also be deleted. This cannot be undone."  } %>
                   <% end %>

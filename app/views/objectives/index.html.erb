@@ -1,11 +1,8 @@
 <% provide(:title, 'All Objectives') %>
-
 <% provide(:headerText, 'All Objectives') %>
 <% provide(:headerPic, 'objectives.png') %>
 
-      <%= button_to "Back to Your Profile", user_path(current_user), 
-         class: "btn btn-lg btn-primary", :method => :get, :id => "back_button" %>
-
+<%= render 'shared/back-link' %>
 <%= render 'shared/headline' %>
 
 <%= render :partial => 'shared/searchField', 
@@ -25,7 +22,7 @@
             <td>Name</td>
             <td>Scope</td>
             <td>Classes</td>
-            <% if current_user.role == "admin" %>
+            <% if current_user.type == "Admin" %>
               <td>Created_at</td>
               <td>Updated_at</td>
             <% end %>
@@ -34,7 +31,7 @@
         <tbody>
           <% @objectives.each do |objective| %>
             <tr class="users">
-              <td><% if objective.user == current_user || current_user.role == "admin" %>
+              <td><% if objective.user == current_user || current_user.type == "Admin" %>
                   <%= link_to "Delete", objective, method: :delete, :id => "delete_#{objective.id}",
                               data: { confirm: "You are about to permanently remove all records of this objective. All scores for this objective will also be deleted. This cannot be undone."  } %>
                   <% end %>
@@ -42,7 +39,7 @@
               <td><%= link_to objective.fullName, edit_objective_path(objective), :id => "edit_#{objective.id}" %></td>
               <td><%= objective.extent.capitalize %></td>
               <td><%= objective.seminars.count %></td>
-              <% if current_user.role == "admin" %>
+              <% if current_user.type == "Admin" %>
                 <td><%= objective.created_at.strftime("%Y-%m-%d") %></td>
                 <td><%= objective.updated_at.strftime("%Y-%m-%d") %></td>
               <% end %>

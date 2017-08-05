@@ -1,7 +1,7 @@
 <% provide(:title, "#{@seminar.name} Desk Consultants") %>
 
 <%= render 'shared/navribbon' %><br/>
-<%= render 'shared/teacher_name_and_edit' %><br/>
+<%= render 'shared/teacher_name_and_edit', user: @teacher %><br/>
 <%= render 'shared/class_and_edit' %>
 
 <div class="singleOption lowSingOpt">

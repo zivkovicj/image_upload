@@ -1,8 +1,9 @@
 class SeminarsController < ApplicationController
     before_action :logged_in_user, only: [:create]
-    before_action :correct_user, only: [:delete, :destroy, :show, :edit, :scoresheet,
-        :seatingChart, :preDeskConsultants, :deskConsultants, :newChartByAchievement]
-    before_action :admin_user,    only: [:index] 
+    before_action only: [:delete, :destroy, :show, :edit, :scoresheet, :seatingChart, :newChartByAchievement] do
+        correct_owner(Seminar)
+    end
+    before_action :redirect_for_non_admin,    only: [:index] 
     
     include RankObjectivesByNeed
     include SetObjectivesAndScores
@@ -35,7 +36,7 @@ class SeminarsController < ApplicationController
   
     def show
         @seminar = Seminar.find(params[:id])
-        @teacher = @seminar.teacher
+        @teacher = @seminar.user
         set_objectives_and_scores(false)
         @students = @seminar.students.order(:last_name)
         current_user.update!(:current_class => @seminar.id)
@@ -45,7 +46,7 @@ class SeminarsController < ApplicationController
         @student = Student.find(params[:student])
         @seminar = Seminar.find(params[:id])
         @ss = @student.seminar_students.find_by(:seminar => @seminar)
-        @teacher = @seminar.teacher
+        @teacher = @seminar.user
         
         rankAssignsByNeed = rankAssignsByNeed(@seminar)
         @teachOptions = teachOptions(@student, rankAssignsByNeed, @seminar.consultantThreshold, 10)
@@ -62,7 +63,7 @@ class SeminarsController < ApplicationController
     
     def scoresheet
         @seminar = Seminar.find(params[:id])
-        @teacher = @seminar.teacher
+        @teacher = @seminar.user
         @students = @seminar.students.order(:last_name)
         set_objectives_and_scores(false)
         current_user.update!(:current_class => @seminar.id)
@@ -75,9 +76,9 @@ class SeminarsController < ApplicationController
     def newChartByAchievement
         @seminar = Seminar.find(params[:id])
         @students = @seminar.students.order(:last_name)
-        @teacher = @seminar.teacher
+        @teacher = @seminar.user
         set_objectives_and_scores(false)
-        profList = @seminar.students.sort {|a,b| a.total_points(@scores) <=> b.total_points(@scores)}
+        profList = @students.sort {|a,b| a.total_points <=> b.total_points}
         @tempSeating = []
         profList.each do |student|
             @tempSeating.push(student.id)
@@ -129,7 +130,7 @@ class SeminarsController < ApplicationController
     
     def destroy
         @seminar = Seminar.find(params[:id])
-        @user = @seminar.teacher
+        @user = @seminar.user
         @seminar.destroy
         flash[:success] = "Class Deleted"
         redirect_to @user
@@ -143,7 +144,7 @@ class SeminarsController < ApplicationController
     private 
         def readySeating
             @seminar = Seminar.find(params[:id])
-            @teacher = @seminar.teacher
+            @teacher = @seminar.user
             @students = @seminar.students.order(:last_name)
             #if @seminar.seating.blank?
                 #tempSeating = []
@@ -165,13 +166,13 @@ class SeminarsController < ApplicationController
         end
         
         def seminarParamsWithoutSeating
-            params.require(:seminar).permit(:name, :teacher_id, :consultantThreshold, objective_ids: [])
+            params.require(:seminar).permit(:name, :user_id, :consultantThreshold, objective_ids: [])
         
         end
         
         def correct_user
             @seminar = Seminar.find(params[:id])
-            redirect_to(login_url) unless current_user && (current_user.own_seminars.include?(@seminar) || current_user.role == "admin")
+            redirect_to(login_url) unless current_user && (current_user.own_seminars.include?(@seminar) || current_user.type == "Admin")
         end
         
 end

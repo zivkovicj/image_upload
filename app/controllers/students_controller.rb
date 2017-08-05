@@ -1,6 +1,6 @@
 class StudentsController < ApplicationController
   before_action :correct_student,   only: [:edit, :update]
-  before_action :admin_or_teacher, only: [:destroy]
+  before_action :redirect_for_non_admin, only: [:destroy]
   
   include AddStudentStuff
   include RankObjectivesByNeed
@@ -18,11 +18,12 @@ class StudentsController < ApplicationController
     params["students"].each do |student|
       if student["first_name"] != "" && student["last_name"] != ""
         @student = Student.new(multi_params(student))
+        @student.password = student["password"] if student["password"]
         if @student.save
-          autoInfo(@student)   #autoinfo makes a student_number, username, and password if they're blank
+          auto_info
+          @student.save
           @ss = @student.seminar_students.create(:seminar => @seminar)
-          
-          addToSeatingChart(@seminar, @student)
+          #addToSeatingChart(@seminar, @student)
           scoresForNewStudent(@seminar, @student)
         end
       end
@@ -36,9 +37,9 @@ class StudentsController < ApplicationController
       @students = Student.paginate(page: params[:page]).search(params[:search], params[:whichParam])
     end
     
-    if current_user.role == "admin"
+    if current_user.type == "Admin"
       @students ||= Student.paginate(page: params[:page])
-    elsif current_user.role == "student"
+    elsif current_user.type == "Student"
       redirect_to login_url
     else
       @students ||= []
@@ -54,9 +55,9 @@ class StudentsController < ApplicationController
   def update
     @student = Student.find(params[:id])
     if @student.update_attributes(student_params)
-      autoInfo(@student)
+      auto_info
       flash[:success] = "Profile updated"
-      if current_user.role == "teacher" && current_user.current_class
+      if current_user.type == "Teacher" && current_user.current_class
         @seminar = Seminar.find(current_user.current_class)
         redirect_to scoresheet_url(@seminar)
       else
@@ -69,7 +70,7 @@ class StudentsController < ApplicationController
 
   def edit
     @student = Student.find(params[:id])
-    if current_user.role == "teacher" && current_user.current_class
+    if current_user.type == "Teacher" && current_user.current_class
       @seminar = Seminar.find(current_user.current_class)
       @ss = SeminarStudent.find_by(:student_id => @student.id, :seminar_id => @seminar.id)
     end
@@ -96,77 +97,48 @@ class StudentsController < ApplicationController
   
     def student_params
       params.require(:student).permit(:first_name, :last_name, :email,
-        :password, :password_confirmation, :username, :student_number)
+        :password, :password_confirmation, :username, :user_number)
     end
     
     def multi_params(my_params)
       my_params.permit(:first_name, :last_name, :email,
-        :password, :password_confirmation, :username, :student_number)
+        :password_digest, :username, :user_number)
     end
     
-    # Generates a unique username, based on initials and student number
-    def makeUsername(student)
-        firstInitial = student.first_name[0,1].downcase
-        lastInitial = student.last_name[0,1].downcase
-        student_number = student.student_number
-        username = "#{firstInitial}#{lastInitial}#{student_number}"
-        if Student.find_by(:username => username) == nil
-            return username
-        else
-            firstDown = student.first_name.downcase
-            username = "#{firstDown}#{lastInitial}#{student_number}"
-            if Student.find_by(:username => username) == nil
-                return username
-            else
-                lastDown = student.last_name.downcase
-                username = "#{firstInitial}#{lastDown}#{student_number}"
-                if Student.find_by(:username => username) == nil
-                    return username
-                else
-                    username = "#{firstDown}#{lastDown}#{student_number}"
-                    if Student.find_by(:username => username) == nil
-                        return username
-                    else
-                        flash[:notice] = "Could not generate an automatic username
-                            for this student. You will need to create a username
-                            if you want this student to be able to log in."
-                        return nil
-                    end
-                end
-            end
-        end
-    end
-    
-    def autoInfo(student)   # Auto-generate missing info for students
-      @student.role = "student"
-      updated = false
-      
-      if student.student_number.blank?
-        student.student_number = student.id
-        updated = true
-      end
-      
-      if student.username.blank?
-        student.username = makeUsername(student)
-        updated = true
-      end
-      
-      if student.password.blank?
-        student.password = "#{student.student_number}"
-        updated = true
-      end
-      
-      student.save! if updated
-    end
-
     # Confirms the correct student.
     def correct_student
       @student = Student.find(params[:id])
-      redirect_to(login_url) unless (session[:user_id] == @student.id || (current_user && current_user.role == "teacher" && current_user.students.include?(@student)))
+      redirect_to(login_url) unless (@student == current_user || user_is_an_admin || (user_is_a_teacher && current_user.students.include?(@student)))
     end
     
-    def admin_or_teacher
-      @student = Student.find(params[:id])
-      redirect_to(root_url) unless (current_user.role == "teacher" && current_user.students.include?(@student)) || current_user.role == "admin"
+    def make_username()
+      firstInitial = @student.first_name[0,1].downcase
+      lastInitial = @student.last_name[0,1].downcase
+      user_number = @student.user_number
+      @student_number = @student.user_number
+      username = "#{firstInitial}#{lastInitial}#{user_number}"
+      return username if User.find_by(:username => username) == nil
+      
+      firstDown = @student.first_name.downcase
+      username = "#{firstDown}#{lastInitial}#{user_number}"
+      return username if User.find_by(:username => username) == nil
+
+      lastDown = @student.last_name.downcase
+      username = "#{firstInitial}#{lastDown}#{user_number}"
+      return username if User.find_by(:username => username) == nil
+
+      username = "#{firstDown}#{lastDown}#{user_number}"
+      return username if User.find_by(:username => username) == nil
+
+      flash[:notice] = "Could not generate an automatic username
+          for #{@student.first_name} #{@student.last_name}, and possibly other users."
+      return nil
+    end
+    
+    def auto_info   # Auto-generate missing info for students
+      @student.title = "Awesome" if @student.title.blank?
+      @student.user_number = @student.id if @student.user_number.blank?
+      @student.username = make_username() if @student.username.blank?
+      @student.password = "#{@student.user_number}" if @student.password_digest.blank?
     end
 end

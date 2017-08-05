@@ -7,45 +7,41 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Admin
-User.create!(first_name:  "Jeff",
+Admin.create!(first_name:  "Jeff",
              last_name:   "Zivkovic",
              title: "Mr.",
              email: "zivkovic.jeff@gmail.com",
              password:              "foobar",
              password_confirmation: "foobar",
-             role: "admin",
              activated: true,
              activated_at: Time.zone.now)
              
-jeff = User.first
+jeff = Admin.first
 
-User.create!(first_name:  "Second",
+Admin.create!(first_name:  "Second",
              last_name:   "InCommand",
              title: "Mr.",
              email: "noobsauce@gmail.com",
              password:              "foobar",
              password_confirmation: "foobar",
-             role: "admin",
              activated: true,
              activated_at: Time.zone.now)
  
-User.create!(first_name:  "Business",
+Admin.create!(first_name:  "Business",
              last_name:   "Partner",
              title: "Mrs.",
              email: "businesspartner@gmail.com",
              password:              "foobar",
              password_confirmation: "foobar",
-             role: "admin",
              activated: true,
              activated_at: Time.zone.now)
              
-User.create!(first_name:  "Last",
+Admin.create!(first_name:  "Last",
              last_name:   "Admin",
              title: "Ms.",
              email: "lastadmin@gmail.com",
              password:              "foobar",
              password_confirmation: "foobar",
-             role: "admin",
              activated: true,
              activated_at: Time.zone.now)
 
@@ -58,26 +54,25 @@ title_array = ["Mrs.", "Mr.", "Miss", "Ms.", "Dr."]
   which_title = rand(title_array.length)
   email = "example-#{n+1}@railstutorial.org"
   password = "password"
-  User.create!(first_name:  first_name,
+  Teacher.create!(first_name:  first_name,
                last_name:   last_name,
                email: email,
                title: title_array[which_title],
                password:              password,
                password_confirmation: password,
-               role: "teacher",
                activated: true,
                activated_at: Time.zone.now)
 end
 
 # Seminars
 Seminar.create!(name: "1st Period",
-                teacher_id: 5,
+                user_id: 5,
                 consultantThreshold: 70)
 Seminar.create!(name: "2nd Period",
-                teacher_id: 5,
+                user_id: 5,
                 consultantThreshold: 70)
 Seminar.create!(name: "Another Teacher, First  Period",
-                teacher_id: 6,
+                user_id: 6,
                 consultantThreshold: 70)
                 
 # objectives
@@ -105,8 +100,7 @@ end
   @student = Student.create!(first_name:  first_name,
                last_name:   last_name,
                email: email,
-               password:              password,
-               role: "student")
+               password:              password)
    SeminarStudent.create!(seminar_id: 1, student_id: @student.id)
 end
 
@@ -122,8 +116,7 @@ SeminarStudent.create!(seminar_id: 2, student_id: 18)
   @student = Student.create!(first_name:  first_name,
                last_name:   last_name,
                email: email,
-               password:              password,
-               role: "student")
+               password:              password)
    SeminarStudent.create!(seminar_id: 2, student_id: @student.id)
 end
 
@@ -135,13 +128,12 @@ end
   @student = Student.create!(first_name:  first_name,
                last_name:   last_name,
                email: email,
-               password:              password,
-               role: "student")
+               password:              password)
    SeminarStudent.create!(seminar_id: 3, student_id: @student.id)
 end
 
 Student.all.each do |student|
-    student.update(:student_number => student.id)
+    student.update(:user_number => student.id)
     student.update(:username => "#{student.first_name[0,1]}#{student.last_name[0,1]}#{student.id}")
     student.update(:password => "#{student.id}")
 end
@@ -170,7 +162,7 @@ subtract_label = Label.create(:name => "Subtracting Numbers", :extent => "public
 multiply_label = Label.create(:name => "Multiplying Numbers", :extent => "public", :user => jeff)
 divide_label = Label.create(:name => "Dividing Numbers", :extent => "public", :user => jeff)
 
-teacher_user = User.find_by(:email => "example-1@railstutorial.org")
+teacher_user = Teacher.first
 Label.create(:name => "Intercept from Graphs", :extent => "public", :user => teacher_user)
 Label.create(:name => "Intercept from Equations", :extent => "public", :user => teacher_user)
 Label.create(:name => "Intercept from Tables", :extent => "public", :user => teacher_user)

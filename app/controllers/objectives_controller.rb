@@ -1,6 +1,8 @@
 class ObjectivesController < ApplicationController
-  before_action :correct_user, only: [:delete, :destroy]
-  #before_action :admin_user,    only: []
+  
+  before_action only: [:delete, :destroy] do
+    correct_owner(Objective)
+  end
   
   include BuildPreReqLists
   include SetPermissions
@@ -34,16 +36,16 @@ class ObjectivesController < ApplicationController
   
   def index
     if !params[:search].blank?
-      if current_user.role == "admin"
+      if current_user.type == "Admin"
         @objectives = Objective.paginate(page: params[:page]).search(params[:search], params[:whichParam])
       else
         @objectives = Objective.where("user_id = ? OR extent = ?", current_user, "public").paginate(page: params[:page]).search(params[:search], params[:whichParam])
       end
     end
     
-    if current_user.role == "admin"
+    if current_user.type == "Admin"
       @objectives ||= Objective.paginate(page: params[:page])
-    elsif current_user.role == "student"
+    elsif current_user.type == "Student"
       redirect_to login_url
     else
       @objectives ||= Objective.where("user_id = ? OR extent = ?", current_user.id, "public").paginate(page: params[:page])
@@ -64,7 +66,7 @@ class ObjectivesController < ApplicationController
     if newName.blank?
       params[:objective][:name] = @objective.name 
     end
-    if current_user.id == @objective.user_id || current_user.role =="admin"
+    if current_user.id == @objective.user_id || current_user.type =="Admin"
       if @objective.update_attributes(objective_params)
         flash[:success] = "Objective Updated"
         redirect_to quantities_path(@objective)
@@ -76,7 +78,7 @@ class ObjectivesController < ApplicationController
     else
       if @objective.update_attributes(limited_objective_params)
         flash[:success] = "Objective Updated"
-        redirect_to user_path(current_user)
+        redirect_to current_user
       else
         @labels = labels_to_offer
         @pre_req_list = build_pre_req_list(@objective)
@@ -119,11 +121,6 @@ class ObjectivesController < ApplicationController
         
         def limited_objective_params
             params.require(:objective).permit(seminar_ids: [])
-        end
-        
-        def correct_user
-          @objective = Objective.find_by(id: params[:id])
-          redirect_to login_url unless (current_user && @objective.user == current_user) || (current_user && current_user.role == "admin")
         end
         
         def new_objective_stuff

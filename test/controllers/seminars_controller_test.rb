@@ -5,21 +5,19 @@ class SeminarsControllerTest < ActionDispatch::IntegrationTest
   include SetObjectivesAndScores
   
   def setup
-    @user = users(:michael)
-    @teacher_user = users(:archer)
-    @zacky = users(:zacky)
-    @seminar = seminars(:one)
+    setup_users()
+    setup_seminars
     setup_scores()
   end
   
   test "seminars index test" do
-    log_in_as(@user)
+    log_in_as(@admin_user)
     get seminars_path
     assert_template 'seminars/index'
   end
   
   test "seminars index as non-admin" do
-    log_in_as(@teacher_user)
+    log_in_as(@teacher_1)
     get seminars_path
     assert_redirected_to login_url
   end
@@ -32,7 +30,7 @@ class SeminarsControllerTest < ActionDispatch::IntegrationTest
   end
   
   test "should redirect destroy when logged in as wrong user" do
-    log_in_as @zacky
+    log_in_as @other_teacher
     assert_no_difference 'Seminar.count' do
       delete seminar_path(@seminar)
     end
@@ -41,7 +39,7 @@ class SeminarsControllerTest < ActionDispatch::IntegrationTest
   
   test "should delete when logged in" do
   # Also checks that objectives and seminar_students are automatically deleted.
-    log_in_as @teacher_user
+    log_in_as @teacher_1
     oldAssignCount = ObjectiveSeminar.count
     thisClassAssigns = @seminar.objectives.count
     assert_operator thisClassAssigns, :>, 0
@@ -53,11 +51,11 @@ class SeminarsControllerTest < ActionDispatch::IntegrationTest
     end
     assert_equal oldAssignCount - thisClassAssigns, ObjectiveSeminar.count
     assert_equal old_ss_count - this_class_ss, SeminarStudent.count
-    assert_redirected_to @teacher_user
+    assert_redirected_to @teacher_1
   end
   
   test "delete seminar_students upon deleting class" do
-    log_in_as @teacher_user
+    log_in_as @teacher_1
     num_ss = -1 * @seminar.seminar_students.count
     assert_difference 'SeminarStudent.count', num_ss do
       delete seminar_path(@seminar)  
@@ -71,7 +69,7 @@ class SeminarsControllerTest < ActionDispatch::IntegrationTest
   end
   
   test "empty class name" do
-    log_in_as @teacher_user
+    log_in_as @teacher_1
     assert_no_difference 'Seminar.count' do
       post '/seminars/', params: { seminar: { name: " ",  consultantThreshold: 70 } }
     end
@@ -79,7 +77,7 @@ class SeminarsControllerTest < ActionDispatch::IntegrationTest
   end
   
   test "class name too long" do
-    log_in_as @teacher_user
+    log_in_as @teacher_1
     assert_no_difference 'Seminar.count' do
       post '/seminars/', params: { seminar: { name: "a"*41,  consultantThreshold: 70 } }
     end

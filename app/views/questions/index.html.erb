@@ -19,14 +19,14 @@
       <%= will_paginate %>
         <% @questions.each do |question| %>
           <table>
-            <% if current_user.role == "admin" %>
+            <% if current_user.type == "Admin" %>
               <tr>
                 <td><%= question.created_at.strftime("%Y-%m-%d") %></td>
                 <td><%= question.updated_at.strftime("%Y-%m-%d") %></td>
               </tr>
             <% end %>
             <tr class="users">
-              <td><% if question.user == current_user || current_user.role == "admin" %>
+              <td><% if question.user == current_user || current_user.type == "Admin" %>
                   <%= link_to "Delete", question, method: :delete, :id => "delete_#{question.id}",
                               data: { confirm: "You are about to permanently remove all records of this question. All scores for this question will also be deleted. This cannot be undone."  } %>
                   <% end %>

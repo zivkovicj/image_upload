@@ -3,13 +3,13 @@ require 'test_helper'
 class LabelsIndexTest < ActionDispatch::IntegrationTest
     
     def setup
-        @admin     = users(:michael)
-        @non_admin = users(:archer)
+        setup_users()
         setup_labels()
+        @old_label_count = Label.count
     end
     
     test "index labels as admin" do
-        capybara_admin_login()
+        capybara_login(@admin_user)
         click_on("All Labels")
 
         assert_selector('a', :id => "edit_#{@admin_l.id}", :text => @admin_l.name)
@@ -20,10 +20,13 @@ class LabelsIndexTest < ActionDispatch::IntegrationTest
         assert_selector('a', :id => "delete_#{@other_l_pub.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@other_l_priv.id}", :text => @other_l_priv.name)
         assert_selector('a', :id => "delete_#{@other_l_priv.id}", :text => "Delete")
+        
+        click_on("delete_#{@admin_l.id}")
+        assert @old_label_count - 1, Label.count
     end
     
     test "index labels as non admin" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("All Labels")
     
         assert_selector('a', :id => "edit_#{@admin_l.id}", :text => @admin_l.name)
@@ -37,11 +40,11 @@ class LabelsIndexTest < ActionDispatch::IntegrationTest
     end
     
     test "back button" do
-        capybara_teacher_login()
+        capybara_login(@teacher_1)
         click_on("All Labels")
         assert_selector("h1", :text => "All Labels")
-        assert_no_text("Desk-Consultant Facilitator Since:")
+        assert_not_on_teacher_page
         click_on("back_button")
-        assert_text("Desk-Consultant Facilitator Since:") 
+        assert_on_teacher_page
     end
 end

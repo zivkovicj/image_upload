@@ -3,13 +3,12 @@ require 'test_helper'
 class SeminarsIndexTest < ActionDispatch::IntegrationTest
 
   def setup
-    @admin     = users(:michael)
-    @non_admin = users(:archer)
-    @seminar = seminars(:one)
+    setup_users
+    setup_seminars
   end
 
   test "seminar index" do
-    log_in_as(@admin)
+    log_in_as(@admin_user)
     get seminars_path
     assert_template 'seminars/index'
     assert_select 'div.pagination'
@@ -23,17 +22,17 @@ class SeminarsIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "Seminar index as non-admin" do
-    log_in_as(@non_admin)
+    log_in_as(@teacher_1)
     get seminars_path
     assert_redirected_to login_url
   end
   
   test "seminars back button" do
-      capybara_admin_login()
+      capybara_login(@admin_user)
       click_on("Seminars")
       assert_selector("h1", :text => "All Classes")
-      assert_no_text("Desk-Consultant Facilitator Since:")
+      assert_not_on_admin_page
       click_on("back_button")
-      assert_text("Desk-Consultant Facilitator Since:") 
+      assert_on_admin_page
   end
 end

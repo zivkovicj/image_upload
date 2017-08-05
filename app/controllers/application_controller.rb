@@ -13,9 +13,27 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  #Confirms an admin user.
-  def admin_user
-    redirect_to(login_url) unless current_user && current_user.role == "admin"
+  def user_is_an_admin
+    current_user&.type == "Admin"
+  end
+  
+
+  
+  def redirect_for_non_admin
+    redirect_to(login_url) unless user_is_an_admin
+  end
+  
+  def correct_user()
+    @user = User.find(params[:id])
+    redirect_to(login_url) unless (current_user?(@user) || user_is_an_admin)
+  end
+  
+  def correct_owner(which_model)
+    @object = which_model.find(params[:id])
+    unless(@object.user == current_user || user_is_an_admin)
+      flash[:danger] = "You do not have permission for this action"
+      redirect_to(login_url) 
+    end
   end
   
   def changeDowncase

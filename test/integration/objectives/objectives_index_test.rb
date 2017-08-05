@@ -3,8 +3,7 @@ require 'test_helper'
 class ObjectivesIndexTest < ActionDispatch::IntegrationTest
 
   def setup
-    @admin     = users(:michael)
-    @non_admin = users(:archer)
+    setup_users()
     @publicobjective = objectives(:objective_30)
     @thisTeachersobjective = objectives(:objective_40)
     @otherTeachersobjective = objectives(:objective_160)
@@ -12,7 +11,7 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "index objectives as admin" do
-    capybara_admin_login()
+    capybara_login(@admin_user)
     click_on("All Objectives")
 
     assert_selector('a', :id => "edit_#{@publicobjective.id}", :text => @publicobjective.fullName)
@@ -24,7 +23,7 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "index objectives as non admin" do
-    capybara_teacher_login()
+    capybara_login(@teacher_1)
     click_on("All Objectives")
     
     assert_selector('a', :id => "edit_#{@publicobjective.id}", :text => @publicobjective.fullName)
@@ -36,10 +35,10 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
   end
   
   test "back button" do
-    capybara_teacher_login()
+    capybara_login(@teacher_1)
     click_on("All Objectives")
-    assert_no_text("Desk-Consultant Facilitator Since:")
+    assert_not_on_teacher_page
     click_on("back_button")
-    assert_text("Desk-Consultant Facilitator Since:") 
+    assert_on_teacher_page
   end
 end

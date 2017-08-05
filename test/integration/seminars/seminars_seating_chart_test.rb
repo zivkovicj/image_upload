@@ -5,7 +5,7 @@ class SeminarsSeatingChartTest < ActionDispatch::IntegrationTest
     def setup
         @user = users(:michael)
         @teacher_user = users(:archer)
-        @seminar = seminars(:one)
+        setup_seminars
         @student = students(:student_1)
     end
     

@@ -5,9 +5,9 @@ class ConsultanciesController < ApplicationController
 
     def new
         @seminar = Seminar.find(params[:seminar])
-        @teacher = @seminar.teacher
+        @teacher = @seminar.user
         @students = @seminar.students.order(:last_name)
-        current_user.update!(:current_class => @seminar.id)
+        current_user.update(:current_class => @seminar.id)
         @consultancy = Consultancy.new()
     end
     
@@ -17,7 +17,7 @@ class ConsultanciesController < ApplicationController
         check_if_date_already()
         check_if_ten()
         
-        @teacher = @seminar.teacher
+        @teacher = @seminar.user
         @cThresh = @seminar.consultantThreshold
         @consultancy = Consultancy.create(:seminar => @seminar)
         
@@ -48,7 +48,7 @@ class ConsultanciesController < ApplicationController
     def show
         @consultancy = Consultancy.find(params[:id])
         @seminar = Seminar.find(params[:seminar])
-        @teacher = @seminar.teacher
+        @teacher = @seminar.user
     end
     
     def index

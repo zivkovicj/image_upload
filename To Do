@@ -1,47 +1,88 @@
 EM Education Main Site
 
 
-
 ADVERTISE TO FIND ANOTHER TEACHER WILLING TO TRY THE PROGRAM THIS YEAR
  
 BEFORE AUG 15, TRY TO INCLUDE CUMULATIVE STARS IN THE SCORESHEET
 
     
+    
+2.20 SINGLE-TABLE INHERITANCE
 
-REMAKE APP IN NEW WORKSPACE
+    V One table for User
+        V Sub-table for teacher
+        V Sub-table for admin
+        V Sub-table for student
+    
+    V Update the seeds
+    
+    V Change "student_number" to "user_number" so that teachers can have Id numbers
+    
+    V Functions for auto username, etc. should be moved from the student controller to the user model
+        V Put them as a before_save functions
+    
+    V Admin cannot create seminars. That would cause errors because a seminar has a teacher_id
+    
+    V Look for all uses of the word "role"
+    
+    V Search for all instances of student_number
 
-    V Start a new workspace that doesn't use the tutorial configuration
+    V All of the calls to  'shared/teacher_name_and_edit' need input for the user: variable
+    
+    V Capybara tests to replace all user tests that became teacher tests.
 
-    V Destroying user's seminars and objectives needs to move from the controller to the model.
+    V Look for all instances of user_path or users_path
     
-    V Look at the edit action for the users controller. It looks like it's set up to work
-    for students, not teachers.
-    
-    V Put teacher titles into the DB seeds
-    
-    V And Questions
-    
-    After deploy, migrate, reset, and seed with heroku
-    
-    
+    V Student test for when password is present
 
+    V It seems to be allowing a student and a teacher with the same e-mail
 
-SINGLE-TABLE INHERITANCE
-
-    One table for User
+    V The total_points function in the Student model was made more efficient
     
-    Sub-table for teacher
+    V correct_user functions moved to the application controller
+        Changed name to correct_owner
     
-    Sub-table for admin
+    V Some calls to user_is_an_admin need to be redirect_for_non_admin
     
-    Sub-table for student
+    V Added tests for editing students.
     
-    EM Logo
+    V Try to dry up the instances of current_user && current_user.type a little bit
+    
+    V The require "rubygems" line was no longer necessary, but keep it in mind in case of UI failure
+    
+    V I think that the "users" controller and views will no longer be necessary
+    
+    V Mr. Z School Logo
 
     Try to figure out why the debug info window is no longer showing.
 
     
-  
+
+
+    
+
+PRE-TEST QUIZ UNLOCKS    
+    
+    Many quizzes can be set are pre-tests so that they are open to every student
+        upon joining that class.
+    
+    Rename assignjoin to objective_seminar to fit join table convention
+        
+    This should be edited on the next page after editing a class. It only lists
+        the objectives that are already in that class. Teacher can check which ones
+        should be pre-test objectives. Doing this adjusts a column in the objective_seminar
+        model.
+        
+    When new students join the class, the pre-tests are open to them.
+    
+    Lowest-level quizzes are shown. Higher-level quizzes are shown if the student
+        is ready for them.
+        
+    The logo in the footer links to Desk Consultants.com
+
+FILL-IN QUESTIONS
+    Free-answer questions
+        
 IMAGES WITH QUESTIONS
 
     Public/Private Extent for Pictures
@@ -61,29 +102,18 @@ IMAGES WITH QUESTIONS
     The second screen will only offer the pictures that correspond to the chosen label.
     
     List options for labels when uploading a new image
-    
-
-PRE-TEST QUIZ UNLOCKS    
-    
-    Many quizzes can be set are pre-tests so that they are open to every student
-        upon joining that class.
-    
-    Rename assignjoin to objective_seminar to fit join table convention
-        
-    This should be edited on the next page after editing a class. It only lists
-        the objectives that are already in that class. Teacher can check which ones
-        should be pre-test objectives. Doing this adjusts a column in the objective_seminar
-        model.
-        
-    
-    
-    When new students join the class, the pre-tests are open to them.
-    
-    Lowest-level quizzes are shown. Higher-level quizzes are shown if the student
-        is ready for them.
  
-CUMULATIVE STARS      
-        
+CUMULATIVE STARS
+
+TRY TO CHANGE CURRENT_CLASS TABLE DB ATTRIBUTE TO SESSION ATTRIBUTE
+
+CURRENT CLASS AS A REFERENCE, NOT AN INTEGER    
+    
+    After deploy, migrate, reset, and seed with heroku
+
+  
+
+  
 LOCK A QUIZ AFTER A STUDENT TAKES IT
     Should allow two attemps in the same day
     
@@ -104,20 +134,40 @@ TEACHER MANUAL QUIZ UNLOCKS
 FIGURE OUT WHY ALL STUDENTS START OUT BEING MARKED AS ABSENT
 
 
-TEACHER CAN ADJUST CONSULTANCY
+LINK TO THE MATERIALS SITE SO THAT I CAN SHARE THE MATERIALS I'VE CREATED
 
-CAPYBARA TEST FOR EDITING TEACHER
-
-IMPROVED CONSULTANT ORDER
+    Change the heroku name
     
-    RankByConsulting should be based on @seminar.consultancies.where(:consultant => student)
-        That part is easy. But testing it will take some time.
+    Make sure that everything is functioning for the regular site in case people start using it.
+    
+    Add "Coming Soon: Goals" to the Teacher show page.
+    
+    Need an icon for every class. Seminar, Teacher, etc.
+    
+    Update the materials site
+
+
+QUESTIONS AND PICTURES INDEX
+
+   Test that incorrect user cannot delete any records from models with correct_owner function
+
+     IMPROVED CONSULTANT ORDER
+    
+    RankByConsulting should be based on how long it's been since a student has served as a consultant in the given class period.
+    
+    Find the median of "Since Consulting" days. Half it.
+        Add that half-median to the students who have requested to be consultant more often
+        Subtract that half-median from the students who have requested not to be consultant.
         
     Redo the tests that used to depend on :adjustedConsultingPoints
     
     By looking at currently-created teams, I'm losing the feature that gives new students
     a break period before they are asked to be consultants. That should come back
     in some form.
+
+TEACHER CAN ADJUST CONSULTANCY
+
+
 
 STUDY LINKS
 
@@ -127,8 +177,7 @@ STUDY LINKS
     
     Students can view them and follow the path.
 
-FILL-IN QUESTIONS
-    Free-answer questions
+
 
 IMPROVE PERFORMANCE OF DESK-CONSULTANTS MAKER    
 
@@ -168,6 +217,7 @@ ACCOUNT ACTIVATIONS
 
 NEED TO REDO ALL THE STUFF ABOUT MAILERS
 
+ADMIN CAN CREATE NEW ADMIN
 
 
 
@@ -323,6 +373,11 @@ NEED TO REDO ALL THE STUFF ABOUT MAILERS
         
         "Has_objective" method should probably be removed and replaced with rails
             association
+            
+        Nearly every page has the info to show the title, header, etc. Can that be dried?
+        
+        Right now the "total_points" function adds scores for all of a student's classes.
+            Some day it needs to only add points for one individual class. 
         
 Write separate tests for each section of Desk Consultants
     All the tests passed line 229 in newplaceforlonestudents even though the live site
@@ -467,7 +522,7 @@ setobjectivesAndScores is a private method in the seminars controller. Would wor
 if moved to a concern.
 
 After performing a search, the search option should default to the previously-used attribute,
-instead of defaulting to student_number
+instead of defaulting to user_number
 
 Add a feature where teachers can post links for their students.
 

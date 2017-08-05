@@ -1,0 +1,84 @@
+<% provide(:title, "#{@teacher.name_with_title}") %>
+
+<%= render 'shared/teacher_name_and_edit', user: @teacher %>
+
+<p><strong><%= @teacher.type.capitalize %></strong></p>
+
+<p>
+  <% if !@teacher.activated? %>
+    <p>Account not yet activated. Please check your e-mail for the activation link.</p>
+  <% else %>
+    <strong>"Mr. Z School" Teacher Since: &emsp;</strong><%= @teacher.created_at %>
+  <% end %>
+</p>
+
+
+<div>
+  <h3> <%= pluralize(@teacher.own_seminars.count, "Class") %> </h3>
+  <table>
+    <thead>
+      <th></th>
+      <th>Scoresheet</th>
+      <th>Desk Consultants</th>
+      <th>Objectives</th>
+      <th>Priorities</th>
+      <th>Consultancies</th>
+    </thead>
+    <% @own_seminars.order(:name).each do |s| %>
+      <tr>
+        <td><h4><%= link_to s.name, edit_seminar_path(s) %></h4></td>
+        <td><%= link_to image_tag("scoresheet.png"), scoresheet_url(s), :id => "scoresheet_#{s.id}" %></td>
+        <td>
+          <% if s.shouldShowConsultLink %>
+            <%= link_to image_tag("desk_consult.png"), new_consultancy_path(:seminar => s.id), :id => "deskConsult_#{s.id}" %>
+          <% end %>
+        </td>
+        <td><%= link_to image_tag("objectives.png"), edit_seminar_path(s) %></td>
+        <td><%= link_to image_tag("priorities.png"), priorities_path(s), :id => "#{s.name} priorities" %></td>
+        <td><%= link_to "Consultancies", consultancies_path(:seminar => s.id), :id => "index_consult_#{s.id}" %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<br/>
+
+<% if @teacher.type == "Teacher" %>
+  <div class="row">
+      <%= button_to "Create a New Class", "/seminars/new/", 
+        class: "btn btn-lg btn-primary", :method => :get %>
+  </div>
+<% end %>
+
+<div>
+  <div class="row">
+    <div class="col-sm-4">
+      <%= button_to "Create New Questions", new_question_path, 
+        class: "btn btn-lg btn-primary", :method => :get %>
+    </div>
+    <div class="col-sm-4">
+      <%= button_to "Create a New Label", new_label_path, 
+        class: "btn btn-lg btn-primary", :method => :get %>
+    </div>
+    <div class="col-sm-4">
+      <%= button_to "Create a New Objective", new_objective_path, 
+        class: "btn btn-lg btn-primary", :method => :get %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      <%= button_to 'All Questions', questions_path, class: "btn btn-lg btn-primary",
+          :method => :get %>
+    </div>
+    <div class="col-sm-4">
+      <%= button_to 'All Labels', labels_path, class: "btn btn-lg btn-primary",
+          :method => :get %>
+    </div>
+    <div class="col-sm-4">
+      <%= button_to 'All Objectives', objectives_path, class: "btn btn-lg btn-primary",
+          :method => :get %>
+    </div>
+  </div>
+</div>
+
+<%= button_to 'Upload Pictures', new_picture_path, class: "btn btn-lg btn-primary",
+          :method => :get %>

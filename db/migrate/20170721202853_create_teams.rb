@@ -7,7 +7,5 @@ class CreateTeams < ActiveRecord::Migration[5.0]
       t.integer  :bracket
       t.timestamps
     end
-    
-    add_reference  :users, :teams
   end
 end

@@ -1,5 +1,9 @@
 class QuestionsController < ApplicationController
   
+  before_action only: [:delete, :destroy] do
+    correct_owner(Question)
+  end
+  
   include SetPermissions
   include LabelsList
   
@@ -26,7 +30,7 @@ class QuestionsController < ApplicationController
     
     if one_saved
       flash[:success] = "Questions Created"
-      redirect_to user_path(current_user)
+      redirect_to current_user
     else
       new_question_stuff()
       setPermissions(@question)
@@ -48,7 +52,7 @@ class QuestionsController < ApplicationController
       initial_list = Question.where(label_id: params[:label_ids])
     end
     
-    if current_user.role == "admin"
+    if current_user.type == "Admin"
       second_list = initial_list
     else
       second_list = initial_list.where("user_id = ? OR extent = ?", current_user.id, "public")
@@ -79,7 +83,7 @@ class QuestionsController < ApplicationController
     set_correct_answers(correct_num)
     if @question.update_attributes(question_params)
       flash[:success] = "Question Updated"
-      redirect_to user_path(current_user)
+      redirect_to current_user
     else
       render 'edit'
     end

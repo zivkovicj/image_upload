@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 20170725202419) do
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_objectives_on_user_id"
   end
 
   create_table "pictures", force: :cascade do |t|
@@ -151,11 +152,11 @@ ActiveRecord::Schema.define(version: 20170725202419) do
 
   create_table "seminars", force: :cascade do |t|
     t.string   "name"
-    t.integer  "teacher_id"
+    t.integer  "user_id"
     t.integer  "consultantThreshold"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-    t.index ["teacher_id"], name: "index_seminars_on_teacher_id"
+    t.index ["user_id"], name: "index_seminars_on_user_id"
   end
 
   create_table "student_teams", id: false, force: :cascade do |t|
@@ -164,20 +165,6 @@ ActiveRecord::Schema.define(version: 20170725202419) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["student_id", "team_id"], name: "index_student_teams_on_student_id_and_team_id"
-  end
-
-  create_table "students", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "email"
-    t.string   "password_digest"
-    t.integer  "student_number"
-    t.string   "username"
-    t.string   "role"
-    t.datetime "last_login"
-    t.integer  "current_class"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
   end
 
   create_table "teams", force: :cascade do |t|
@@ -192,25 +179,24 @@ ActiveRecord::Schema.define(version: 20170725202419) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string   "type"
+    t.string   "title"
     t.string   "first_name"
     t.string   "last_name"
-    t.string   "email"
-    t.integer  "current_class"
+    t.string   "username"
     t.string   "password_digest"
+    t.string   "email"
+    t.integer  "user_number"
+    t.integer  "current_class"
     t.string   "remember_digest"
-    t.string   "role"
     t.string   "activation_digest"
     t.boolean  "activated"
     t.datetime "activated_at"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
-    t.string   "title"
     t.datetime "last_login"
-    t.string   "username"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
-    t.integer  "teams_id"
-    t.index ["teams_id"], name: "index_users_on_teams_id"
   end
 
 end

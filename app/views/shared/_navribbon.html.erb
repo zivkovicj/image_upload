@@ -4,7 +4,7 @@
     to occur. Please send problems, suggestions, or requests to jeff@em-education.com.</h4>
 </div>
 
-<% if current_user && current_user.role=="teacher" %>
+<% if user_is_a_teacher %>
     <div class="ribbon">
         
         <table class="table-borderless">
@@ -37,7 +37,7 @@
         
         <table class="table-borderless">
             <tr>
-                <td><%= button_to "Your teacher page", user_path(current_user), 
+                <td><%= button_to "Your teacher page", current_user, 
                         class: "btn btn-lg btn-primary", :method => :get %></td>
                 <td class="spacer"></td>
                 
