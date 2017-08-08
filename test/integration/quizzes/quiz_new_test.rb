@@ -4,7 +4,6 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users()
-        @objective = objectives(:objective_10)
         setup_labels()
         setup_objectives()
         setup_questions()
@@ -18,11 +17,11 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         setup_consultancies()
         
         go_to_first_period
-        click_on(@objective.name)
+        begin_quiz
         
         @new_quiz = Quiz.last
         assert_equal @new_quiz.student, @student_2
-        assert_equal @new_quiz.objective, @objective
+        assert_equal @new_quiz.objective, @objective_10
         assert_equal old_quiz_count + 1, Quiz.count
         new_riposte_count = @new_quiz.ripostes.count
         assert new_riposte_count > 0
@@ -30,11 +29,10 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "take quiz" do
-        setup_consultancies()
-        
+        setup_consultancies
         go_to_first_period
-        click_on(@objective.name)
-        
+        begin_quiz
+        assert_no_text("Your Scores in All Objectives")
         @new_quiz = Quiz.last
         assert @new_quiz.ripostes.count > 0
         assert_nil @new_quiz.total_score
@@ -43,23 +41,16 @@ class NewQuizTest < ActionDispatch::IntegrationTest
             assert_nil riposte.tally
         end
         
-        assert_no_text("Your Scores in All Objectives")
+        answer_quiz_randomly
         
-        6.times do
-            choose("choice_bubble_1")
-            click_on("Next Question")
-        end
-        
-        click_on("Back to Your Class Page")
         assert_text("Your Scores in All Objectives")
-        
-        @new_quiz = Quiz.last
         @new_quiz.reload
         assert_not_nil @new_quiz.total_score
         @new_quiz.ripostes.each do |riposte|
             assert_not riposte.tally.blank?
             assert_not_nil riposte.tally
         end
+        assert @student_2.quizzes.include?(@new_quiz)
     end
     
     test "100_total_score" do
@@ -67,7 +58,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         setup_consultancies()
         
         go_to_first_period
-        click_on(@objective.name)
+        begin_quiz
         
         6.times do |riposte|
             this_id = current_path[/\d+/].to_i

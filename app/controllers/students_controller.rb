@@ -3,7 +3,6 @@ class StudentsController < ApplicationController
   before_action :redirect_for_non_admin, only: [:destroy]
   
   include AddStudentStuff
-  include RankObjectivesByNeed
   include TeachAndLearnOptions
   
   def new
@@ -29,7 +28,7 @@ class StudentsController < ApplicationController
       end
     end
     flash[:success] = "Students added to class"
-    redirect_to scoresheet_url(@seminar)
+    redirect_to scoresheet_seminar_url(@seminar)
   end
   
   def index
@@ -59,7 +58,7 @@ class StudentsController < ApplicationController
       flash[:success] = "Profile updated"
       if current_user.type == "Teacher" && current_user.current_class
         @seminar = Seminar.find(current_user.current_class)
-        redirect_to scoresheet_url(@seminar)
+        redirect_to scoresheet_seminar_url(@seminar)
       else
         redirect_to @student
       end
@@ -78,14 +77,14 @@ class StudentsController < ApplicationController
   
   def edit_teaching_requests
     @student = Student.find(params[:id])
-    @seminar = Seminar.find(current_user.current_class)
+    @seminar = Seminar.includes(:objective_seminars).find(current_user.current_class)
     blap = @seminar.objectives.map(&:id)
     @student_scores = ObjectiveStudent.where(objective_id: blap, student_id: @student.id)
+    @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
     @ss = SeminarStudent.find_by(:student_id => @student.id, :seminar_id => @seminar.id)
     
-    @rankAssignsByNeed = rankAssignsByNeed(@seminar)
-    @teachOptions = teachOptions(@student, @rankAssignsByNeed, @seminar.consultantThreshold, 10)
-    @learnOptions = learnOptions(@student, @rankAssignsByNeed, 10)
+    @teach_options = teach_options(@student, @seminar, 5)
+    @learn_options = learn_options(@student, @seminar, 5)
   end
 
   def destroy

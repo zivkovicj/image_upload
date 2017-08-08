@@ -10,7 +10,7 @@ module RankObjectivesByNeed
             seminar.objective_seminars.each do |os|
                 preArray.push(os.objective) if os.priority == n
             end
-            littleArray = preArray.sort_by{|x| [x.studentsInNeed(seminar)]}
+            littleArray = preArray.sort_by{|x| [x.students_in_need(seminar)]}
             littleArray.reverse!
             littleArray.each do |objective|
                 assignArray.push(objective) 

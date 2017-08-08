@@ -97,22 +97,22 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         click_on("Create Desk Consultants Groups")
     end
     
-    test "checkIfReady Test" do
+    test "check_if_ready Test" do
         mainAssign = objectives(:objective_60)
         preAssign1 = objectives(:objective_50)
         preAssign2 = objectives(:objective_40)
         
         @student_1.objective_students.find_by(:objective_id => preAssign1.id).update(:points => 0)
         @student_1.objective_students.find_by(:objective_id => preAssign2.id).update(:points => 0)
-        assert_not @student_1.checkIfReady(mainAssign)
+        assert_not @student_1.check_if_ready(mainAssign)
         
         @student_2.objective_students.find_by(:objective_id => preAssign1.id).update(:points => 100)
         @student_2.objective_students.find_by(:objective_id => preAssign2.id).update(:points => 100)
-        assert @student_2.checkIfReady(mainAssign)
+        assert @student_2.check_if_ready(mainAssign)
         
         @student_3.objective_students.find_by(:objective_id => preAssign1.id).update(:points => 0)
         @student_3.objective_students.find_by(:objective_id => preAssign2.id).update(:points => 100)
-        assert_not @student_3.checkIfReady(mainAssign)
+        assert_not @student_3.check_if_ready(mainAssign)
     end
     
     test "desk consultants methods" do
@@ -142,9 +142,9 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
             # Only 5 students are ready for @objective_2, even though
             # eleven students are deficient in that objective. Because it has a
             # pre-requisite which students are also deficient in.
-            assert_equal 5, @objective_2.studentsInNeed(@seminar)
+            assert_equal 5, @objective_2.students_in_need(@seminar)
             @student_2.objective_students.find_by(:objective_id => @objective_2.id).update(:points => 25)
-            assert_equal 6, @objective_2.studentsInNeed(@seminar)
+            assert_equal 6, @objective_2.students_in_need(@seminar)
         
         # rankAssignsByNeed()
             @rankAssignsByNeed = rankAssignsByNeed(@seminar)
@@ -178,6 +178,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
             
         # consultantsList
             setupStudentHash()
+            @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
             chooseConsultants()
             
             # @student_1 was the first student in @rankByConsulting, but she only 
@@ -241,6 +242,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         set_objectives_and_scores(false)
         setupRankByConsulting()
         @rankAssignsByNeed = rankAssignsByNeed(@seminar)
+        @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
         
         setupScoreHash()
         setupProfList()
@@ -320,7 +322,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_not_equal objective, bad_objective
         
         go_to_first_period
-        assert_text("Desk Consultant Objectives")
+        assert_text("Desk Consultants Objectives")
         assert_selector('li', :id => "quiz_#{objective.id}")
         assert_no_selector('li', :id => "quiz_#{bad_objective.id}")
     end

@@ -3,6 +3,7 @@ class ObjectiveSeminar < ApplicationRecord
     belongs_to :objective
     
     attribute :priority, :integer, default: 2
+    attribute :pretest, :integer, default: 0
     
     before_create :createScores, :addPreReqs
     

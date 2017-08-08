@@ -5,25 +5,28 @@ class SeminarTest < ActiveSupport::TestCase
   def setup
     setup_users()
     # This code is not idiomatically correct.
-    @seminar = @teacher_1.own_seminars.build(name: "1st Period", consultantThreshold: 70)
+    @test_seminar = @teacher_1.own_seminars.build(name: "1st Period", consultantThreshold: 70)
   end
 
   test "should be valid" do
-    assert @seminar.valid?
+    assert @test_seminar.valid?
   end
 
   test "Teacher id should be present" do
-    @seminar.user_id = nil
-    assert_not @seminar.valid?
+    @test_seminar.user_id = nil
+    assert_not @test_seminar.valid?
   end
   
   test "name should be present" do
-    @seminar.name = "   "
-    assert_not @seminar.valid?
+    @test_seminar.name = "   "
+    assert_not @test_seminar.valid?
   end
 
   test "name should be less than 40 characters" do
-    @seminar.name = "a" * 41
-    assert_not @seminar.valid?
+    @test_seminar.name = "a" * 41
+    assert_not @test_seminar.valid?
   end
+  
+  
+  
 end

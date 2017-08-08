@@ -10,17 +10,6 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         setup_objectives()
         setup_labels()
         setup_questions()
-        @objective_30 = objectives(:objective_30)
-        @objective_40 = objectives(:objective_40)
-        @objective_50 = objectives(:objective_50)
-        @ownAssign = objectives(:objective_60)
-        @assignToAdd = objectives(:objective_70)
-        @subPreassign = objectives(:objective_100)
-        @preassignToAdd = objectives(:objective_110)
-        @alreadyPreassignedToMainMain = objectives(:objective_120)
-        @alreadyPreassignedToSuper = objectives(:objective_130)
-        @mainMainAssign = objectives(:objective_140)
-        @superMainAssign = objectives(:objective_150)
         
     end
     
@@ -110,7 +99,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         check("check_#{@assignToAdd.id}")
         click_on('Update Class')
         
-        assert_text("Edit #{@seminar.name} Priorities")
+        assert_text("Edit #{@seminar.name} Pre-Tests")
         
         @seminar.reload
         

@@ -7,8 +7,8 @@
         <h3 class="center"><strong>Consultant Request</strong></h3>
       </div>
       <br/>
-      <% if @teachOptions && @teachOptions.first %>
-        <% @teachOptions.each do |reqOption| %>
+      <% if @teach_options && @teach_options.first %>
+        <% @teach_options.each do |reqOption| %>
           <% score = @student.objective_students.find_by(:objective_id => reqOption.id) %>
           <% if reqOption.id == @ss.teach_request %>
             <% highClass = 'highSingOpt' %>
@@ -33,8 +33,8 @@
         <h3 class="center"><strong>Apprentice Request</strong></h3>
       </div>
       <br/>
-      <% if @learnOptions && @learnOptions.first %>
-        <% @learnOptions.each do |reqOption| %>
+      <% if @learn_options && @learn_options.first %>
+        <% @learn_options.each do |reqOption| %>
           <% score = @student.objective_students.find_by(:objective_id => reqOption.id) %>
           <% if reqOption.id == @ss.learn_request %>
             <% highClass = 'highSingOpt' %>
@@ -59,7 +59,7 @@
         <h3 class="center"><strong>Your Preference</strong></h3>
       </div>
       <br/>
-      <% if @teachOptions && @learnOptions && !!@teachOptions.first && !!@learnOptions.first %>
+      <% if @teach_options && @learn_options && !!@teach_options.first && !!@learn_options.first %>
         <% [['Consultant',2],['Either Is Okay',1],['Apprentice',0]].each do |choice| %>
           <% if choice[1] == @ss.pref_request %>
             <% highClass = 'highSingOpt' %>
@@ -72,10 +72,10 @@
         <% end %>
       <% else %>
         <div class="singleOption highSingOpt">
-          <% if @teachOptions && !!@teachOptions.first %>
+          <% if @teach_options && !!@teach_options.first %>
             <h4>Consultant</h4>
           <% end %>
-          <% if @learnOptions && !!@learnOptions.first %>
+          <% if @learn_options && !!@learn_options.first %>
             <h4>Apprentice</h4>
           <% end %>
         </div>
@@ -88,9 +88,9 @@
 
 <div class="row">
   <div class="col-sm-6">
-    <% if @learnOptions && @learnOptions.first %>
+    <% if @learn_options && @learn_options.first %>
       <div class="singleOption lowSingOpt">
-        <% suggestion = @learnOptions.first %>
+        <% suggestion = @learn_options.first %>
         <% if suggestion %>
           <% score = @student.objective_students.find_by(:objective_id => suggestion.id) %>
           <h3>Suggested objective for you to study next:</h3>

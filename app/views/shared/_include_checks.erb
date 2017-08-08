@@ -10,37 +10,32 @@
     
         <% 2.times do |n| %>
             <h2><%= scope_words[n] %> <%= include_word.capitalize.pluralize(2) %></h2>
-            <div class="container">
-                <div class="row">
-                    <% if split_list[n].count > 0 %>
-                        <% split_list[n].in_groups(2) do |group| %>
-                            <div class="col-sm-2">
-                                <table>
-                                    <thead>
-                                        <td width="20%">Include?</td>
-                                        <td><%= include_word.capitalize %></td>
-                                    </thead>
-                                    <tbody>
-                                        <% group.each do |thisObjective| %>
-                                            <% if thisObjective %>
-                                                <% if boulderfist %>
-                                                    <% classType = (thisObjective.preassigns.count > 0 ? "boulderfist" : "none" ) %>
-                                                <% end %>
-                                                <tr>
-                                                    <td width="20%"><%= check_box_tag(check_box_name, thisObjective.id, inclusion_var.include?(thisObjective), :id => "check_#{thisObjective.id}") %></td>
-                                                    <td><%= thisObjective.shortName %></td>
-                                                </tr>
-                                            <% end %>
+            <div class="container"><div class="row">
+                <% if split_list[n].count > 0 %>
+                    <% split_list[n].in_groups(2) do |group| %>
+                        <div class="col-sm-2">
+                            <table><thead>
+                                <td width="20%">Include?</td>
+                                <td><%= include_word.capitalize %></td>
+                            </thead><tbody>
+                                <% group.each do |this_object| %>
+                                    <% if this_object %>
+                                        <% if boulderfist %>
+                                            <% classType = (this_object.preassigns.count > 0 ? "boulderfist" : "none" ) %>
                                         <% end %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <% end %>
-                    <% else %>
-                        </br>&emsp;Nothing here right now.
+                                        <tr>
+                                            <td width="20%"><%= check_box_tag(check_box_name, this_object.id, inclusion_var.include?(this_object), :id => "check_#{this_object.id}") %></td>
+                                            <td><%= this_object.shortName %></td>
+                                        </tr>
+                                    <% end %>
+                                <% end %>
+                            </tbody></table>
+                        </div>
                     <% end %>
-                </div> 
-            </div>
+                <% else %>
+                    </br>&emsp;Nothing here right now.
+                <% end %>
+            </div></div>
             <br/>
         <% end %>
     

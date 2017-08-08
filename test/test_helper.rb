@@ -37,6 +37,20 @@ class ActiveSupport::TestCase
   end
   
   def setup_objectives
+    @objective_10 = objectives(:objective_10)
+    @objective_30 = objectives(:objective_30)
+    @objective_40 = objectives(:objective_40)
+    @objective_50 = objectives(:objective_50)
+    @ownAssign = objectives(:objective_60)
+    @assignToAdd = objectives(:objective_70)
+    @objective_80 = objectives(:objective_80)
+    @subPreassign = objectives(:objective_100)
+    @preassignToAdd = objectives(:objective_110)
+    @alreadyPreassignedToMainMain = objectives(:objective_120)
+    @alreadyPreassignedToSuper = objectives(:objective_130)
+    @mainMainAssign = objectives(:objective_140)
+    @superMainAssign = objectives(:objective_150)
+    
     objectives(:objective_40).update(:user_id => users(:archer).id)
     objectives(:objective_50).update(:user_id => users(:archer).id)
     objectives(:objective_60).update(:user_id => users(:archer).id)
@@ -91,14 +105,40 @@ class ActiveSupport::TestCase
     end
   end
   
-  # Returns true if a test user is logged in.
+  def setup_scores()
+    Seminar.all.each do |seminar|
+      seminar.objectives.each do |objective|
+        seminar.students.each do |student|
+          if student.objective_students.find_by(:objective_id => objective.id) == nil
+            student.objective_students.create(:objective_id => objective.id, :points => 75)
+          end
+        end
+      end
+    end
+  end
+  
   def is_logged_in?
     !session[:user_id].nil?
   end
   
-  # Log in as a particular user
   def log_in_as(user)
     session[:user_id] = user.id
+  end
+  
+  def assert_on_teacher_page
+    assert_text("Teacher Since:")
+  end
+  
+  def assert_not_on_teacher_page
+    assert_no_text("Teacher Since:")
+  end
+  
+  def assert_on_admin_page
+    assert_text("Admin Control Page")
+  end
+  
+  def assert_not_on_admin_page
+    assert_no_text("Admin Control Page")
   end
   
   def capybara_login(user)
@@ -114,20 +154,25 @@ class ActiveSupport::TestCase
     click_on('1st Period')
   end
   
-  def setup_scores()
-    Seminar.all.each do |seminar|
-      seminar.objectives.each do |objective|
-        seminar.students.each do |student|
-          if student.objective_students.find_by(:objective_id => objective.id) == nil
-            student.objective_students.create(:objective_id => objective.id, :points => 75)
-          end
-        end
-      end
+  def establish_objectives(seminar)
+    (0..3).each do |n|
+      this_obj = instance_variable_set("@obj_#{n}", seminar.objectives[n])
+      instance_variable_set("@os_#{n}", this_obj.objective_seminars.find_by(:seminar => seminar))
     end
   end
   
-
-
+  def begin_quiz
+    click_on(@objective_10.name)
+  end
+  
+  def answer_quiz_randomly
+    6.times do
+      choose("choice_bubble_1")
+      click_on("Next Question")
+    end
+    click_on("Back to Your Class Page")
+  end
+  
   def teacher_editing_stuff(teacher, button_text)
     select('Mrs.', :from => 'teacher_title')
     fill_in "teacher_first_name", with: "Burgle"
@@ -146,20 +191,11 @@ class ActiveSupport::TestCase
     assert this_teacher.authenticate("bigbigbigbig")
   end
   
-  def assert_on_teacher_page
-    assert_text("Teacher Since:")
-  end
-  
-  def assert_not_on_teacher_page
-    assert_no_text("Teacher Since:")
-  end
-  
-  def assert_on_admin_page
-    assert_text("Admin Control Page")
-  end
-  
-  def assert_not_on_admin_page
-    assert_no_text("Admin Control Page")
+  def reload_oss
+    @os_0.reload
+    @os_1.reload
+    @os_2.reload
+    @os_3.reload
   end
 end
 

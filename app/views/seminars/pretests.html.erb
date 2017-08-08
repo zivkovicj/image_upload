@@ -1,0 +1,25 @@
+
+<% provide(:headerText, "Edit #{@seminar.name} Pre-Tests") %>
+<% provide(:headerPic, "priorities.png") %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<h2>Would you like any of the objectives for this class to be considered Pre-Tests?</h2>
+<h3>These objectives will be offered to students as soon as they enroll in the class.</h3>
+
+<%= form_tag update_pretests_objective_seminars_path do %>
+    <input type="hidden" name="seminar_id" value="<%= @seminar.id %>">
+
+    <table>
+        <% @os.each do |os| %>
+            <% obj = os.objective %>
+            <tr>
+                <td><%= check_box_tag 'pretest_on[]', os.id, os.pretest > 0, {:id => "pretest_on_#{obj.id}"} %></td>
+                <td><%= obj.name %></td>
+            </tr>
+        <% end %>
+    </table>
+
+    <%= submit_tag "Update Pretests" %>
+<% end %>

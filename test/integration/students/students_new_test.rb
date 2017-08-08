@@ -33,7 +33,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         
         fill_in ("first_name_6"), :with => "Chick"
         fill_in ("last_name_6"), :with => "with Username"
-        fill_in ("username_6"), :with => "my_username"
+        fill_in ("username_6"), :with => "My_Username"  #Caps that should be downcased
         
         fill_in ("first_name_7"), :with => "Dude"
         fill_in ("last_name_7"), :with => "with Email"

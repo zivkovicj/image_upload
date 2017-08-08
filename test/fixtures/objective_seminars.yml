@@ -4,44 +4,53 @@
 one-one:
     seminar: one
     objective: objective_10
+    pretest: 0
     priority: 2
     
 one-two:
     seminar: one
     objective: objective_20
+    pretest: 0
     priority: 2
     
 one-three:
     seminar: one
     objective: objective_30
+    pretest: 1
     priority: 2
     
 one-four:
     seminar: one
     objective: objective_40
+    pretest: 0
     priority: 2
     
 one-five:
     seminar: one
     objective: objective_50
+    pretest: 0
     priority: 2
     
 one-six:
     seminar: one
     objective: objective_60
+    pretest: 0
     priority: 2
     
 two-seven:
     seminar: two
     objective: objective_70
+    pretest: 0
     priority: 2
     
 two-eight:
     seminar: two
     objective: objective_80
+    pretest: 0
     priority: 2
     
 two-nine:
     seminar: two
     objective: objective_90
+    pretest: 0
     priority: 2

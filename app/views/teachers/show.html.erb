@@ -27,14 +27,14 @@
     <% @own_seminars.order(:name).each do |s| %>
       <tr>
         <td><h4><%= link_to s.name, edit_seminar_path(s) %></h4></td>
-        <td><%= link_to image_tag("scoresheet.png"), scoresheet_url(s), :id => "scoresheet_#{s.id}" %></td>
+        <td><%= link_to image_tag("scoresheet.png"), scoresheet_seminar_url(s), :id => "scoresheet_#{s.id}" %></td>
         <td>
           <% if s.shouldShowConsultLink %>
             <%= link_to image_tag("desk_consult.png"), new_consultancy_path(:seminar => s.id), :id => "deskConsult_#{s.id}" %>
           <% end %>
         </td>
-        <td><%= link_to image_tag("objectives.png"), edit_seminar_path(s) %></td>
-        <td><%= link_to image_tag("priorities.png"), priorities_path(s), :id => "#{s.name} priorities" %></td>
+        <td><%= link_to image_tag("objectives.png"), edit_seminar_path(s), :id => "edit_seminar_#{s.id}" %></td>
+        <td><%= link_to image_tag("priorities.png"), priorities_seminar_path(s), :id => "#{s.name} priorities" %></td>
         <td><%= link_to "Consultancies", consultancies_path(:seminar => s.id), :id => "index_consult_#{s.id}" %></td>
       </tr>
     <% end %>

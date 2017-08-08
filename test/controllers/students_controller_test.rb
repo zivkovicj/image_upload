@@ -36,7 +36,7 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
                                               email: "e@mail.com",
                                               password:              "valid",
                                               password_confirmation: "valid" } }
-        assert_redirected_to scoresheet_path(@seminar)
+        assert_redirected_to scoresheet_seminar_path(@seminar)
         @student_3.reload
         assert_equal "Valid", @student_3.first_name
     end

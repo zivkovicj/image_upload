@@ -100,7 +100,7 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
     patch objective_path(assignToEdit), params: { objective: { name:  name,
                                               seminar_id: @seminar.id } }
     assert_not flash.empty?
-    assert_redirected_to quantities_path(assignToEdit)
+    assert_redirected_to quantities_objective_path(assignToEdit)
     assignToEdit.reload
     assert_equal name.downcase,  assignToEdit.name
   end

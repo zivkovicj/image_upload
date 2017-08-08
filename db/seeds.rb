@@ -85,10 +85,8 @@ assignNameArray = [[1,"Add and Subtract Numbers"],[1,"Multiply and Divide Number
     
 assignNameArray.each_with_index do |objective, index|
     @objective = Objective.create(name: objective[1], :user => jeff)
-    ObjectiveSeminar.create(:seminar_id => objective[0], :objective => @objective, :priority => 2)
+    ObjectiveSeminar.create(:seminar_id => objective[0], :objective => @objective, :priority => 2, :pretest => 0)
 end
-
-
 
 
 # Students       
@@ -134,7 +132,7 @@ end
 
 Student.all.each do |student|
     student.update(:user_number => student.id)
-    student.update(:username => "#{student.first_name[0,1]}#{student.last_name[0,1]}#{student.id}")
+    student.update(:username => "#{student.first_name[0,1].downcase}#{student.last_name[0,1].downcase}#{student.id}")
     student.update(:password => "#{student.id}")
 end
 
@@ -152,7 +150,6 @@ Student.all.each do |student|
         end
     end
 end
-
 
 Label.create(:name => "Label for Pictures", :extent => "public", :user => jeff)
 Label.create(:name => "Other Label for Pictures", :extent => "public", :user => jeff)

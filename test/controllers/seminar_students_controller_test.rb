@@ -22,7 +22,7 @@ class SeminarStudentsControllerTest < ActionDispatch::IntegrationTest
     end
     @seminar.reload
     #assert_equal @seminar.seating.count, (seatChartCount - 1)
-    assert_redirected_to scoresheet_url(@seminar)
+    assert_redirected_to scoresheet_seminar_url(@seminar)
   end
   
   test "Must be logged in as correct user" do

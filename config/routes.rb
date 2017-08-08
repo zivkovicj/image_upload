@@ -1,19 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'labels/new'
-
-  get 'labels/create'
-
-  get 'labels/edit'
-
-  get 'labels/update'
-
-  get 'labels/index'
-
-  get 'labels/destroy'
-
-  get 'scores/update'
-
   root   'static_pages#home'
   get    '/help',    to: 'static_pages#help'
   get    '/about',   to: 'static_pages#about'
@@ -24,52 +10,63 @@ Rails.application.routes.draw do
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
-  get     '/seminar_students/:id', to: 'seminar_students#removeFromClass'
-  put     '/seminar_students/:id', to: 'seminar_students#ajaxUpdate'
+  #get     '/seminar_students/:id', to: 'seminar_students#removeFromClass'
+  #put     '/seminar_students/:id', to: 'seminar_students#ajaxUpdate'
   
-  post '/objective_seminars/edit', to: 'objective_seminars#edit'
-  post '/objective_seminars/update', to: 'objective_seminars#update'
+  #post '/objective_seminars/edit', to: 'objective_seminars#edit'
+  #post '/objective_seminars/update_priorities', to: 'objective_seminars#update_priorities'
   
-  post '/label_objectives/edit', to: 'label_objectives#edit'
-  post '/label_objectives/update', to: 'label_objectives#update'
+  #post '/label_objectives/edit', to: 'label_objectives#edit'
+  #post '/label_objectives/update', to: 'label_objectives#update'
   
-  get '/seminars/priorities/:id',    to: 'seminars#priorities', :as => "priorities"
-  
-  get    '/seminars/scoresheet/:id', to: 'seminars#scoresheet', 
-    :as => "scoresheet"
+  #get    '/seminars/scoresheet/:id', to: 'seminars#scoresheet', 
+    #:as => "scoresheet"
+  #get   '/seminars/student_view/:id', to: 'seminars#student_view',
+    #:as => "student_view"
     
-  get    '/seminars/seatingChart/:id', to: 'seminars#seatingChart', 
-    :as => "seatingChart"
-  get    '/seminars/newChartByAchievement/:id', to: 'seminars#newChartByAchievement', 
-    :as => "newChartByAchievement"
-  get   '/seminars/studentView/:id', to: 'seminars#studentView',
-    :as => "studentView"
-    
-  post   '/seminars/studentView/:id', to: 'seminars#studentView'
+  #post   '/seminars/student_view/:id', to: 'seminars#student_view'
   
-  get 'students/edit_teaching_requests/:id', to: 'students#edit_teaching_requests',
-    :as => "edit_teaching_requests"
+  #get 'students/edit_teaching_requests/:id', to: 'students#edit_teaching_requests',
+    #:as => "edit_teaching_requests"
     
-  get '/objectives/quantities/:id',    to: 'objectives#quantities', :as => "quantities"
+  #get '/objectives/quantities/:id',    to: 'objectives#quantities', :as => "quantities"
   
   
   
   resources :admins
   resources :account_activations, only: [:edit]
-  resources :objective_seminars
-  resources :objective_students
-  resources :objectives
-  resources :seminar_students
   resources :consultancies, only: [:new, :create, :show, :index]
   resources :labels
+  resources :label_objectives do
+    post 'update_quantities', on: :collection
+  end
+  resources :objective_seminars do
+    post 'update_pretests', on: :collection
+    post 'update_priorities', on: :collection
+  end
+  resources :objective_students
+  resources :objectives do
+    get 'quantities', on: :member
+  end
   resources :password_resets, only: [:new, :create, :edit, :update]
   resources :pictures
   resources :preconditions
   resources :questions
   resources :quizzes
   resources :ripostes
-  resources :seminars
-  resources :students
+  resources :seminars do
+    get 'pretests', on: :member
+    get 'priorities', on: :member
+    get 'scoresheet', on: :member
+    get 'student_view', on: :member
+  end
+  resources :seminar_students do
+    get 'removeFromClass', on: :member
+    put 'ajaxUpdate', on: :member
+  end
+  resources :students do
+    get 'edit_teaching_requests', on: :member
+  end
   resources :teachers
   
   # The priority is based upon order of creation: first created -> highest priority.

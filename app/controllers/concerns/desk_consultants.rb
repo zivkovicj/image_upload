@@ -53,7 +53,7 @@ module DeskConsultants
         os = objective.objective_seminars.find_by(:seminar => @seminar)
         @scoreHash[objective.id] = Hash.new
         @scoreHash[objective.id][:priority] = os.priority
-        @scoreHash[objective.id][:need] = objective.studentsInNeed(@seminar)
+        @scoreHash[objective.id][:need] = objective.students_in_need(@seminar)
         @students.each do |student|
           @scoreHash[objective.id][student.id] = Hash.new
           thisScore = student.objective_students.find_by(:objective_id => objective.id)
@@ -63,7 +63,7 @@ module DeskConsultants
             @scoreHash[objective.id][student.id][:score] = 0
           end
           
-          @scoreHash[objective.id][student.id][:ready] = student.checkIfReady(objective)
+          @scoreHash[objective.id][student.id][:ready] = student.check_if_ready(objective)
         end
       end
     end
@@ -73,8 +73,9 @@ module DeskConsultants
       # Bracket 0 = normal
       # Bracket 1 = unplaced students
       # Bracket 2 = absent students
-      new_team = @consultancy.teams.create(:objective => req, :bracket => bracket)
-      new_team.update(:consultant => stud) if isConsult
+      new_team = @consultancy.teams.build(:objective => req, :bracket => bracket)
+      new_team.consultant = stud if isConsult
+      new_team.save
       new_team.students << stud
       @scoreHash[req.id][:need] -= 3
     end
@@ -120,9 +121,10 @@ module DeskConsultants
               next
             end
           end
-          # If the request didn't work out, look at the student's teachOptions
-          @teachOptions = teachOptions(student, @rankAssignsByNeed, @cThresh, 3)
-          @teachOptions.each do |objective|
+          # If the request didn't work out, look at the student's teach_options
+          @student_scores = student.objective_students.where(objective_id: @objectiveIds)
+          @teach_options = teach_options(student, @seminar, 3)
+          @teach_options.each do |objective|
             if @scoreHash[objective.id][:need] > 0
               establish_new_group(student, objective, 4, 0, 3)
               break

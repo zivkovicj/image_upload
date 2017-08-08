@@ -25,7 +25,7 @@ class ObjectivesController < ApplicationController
     
     if @objective.save
       flash[:success] = "Objective Created"
-      redirect_to quantities_path(@objective)
+      redirect_to quantities_objective_path(@objective)
     else
       new_objective_stuff()
       setPermissions(@objective)
@@ -69,7 +69,7 @@ class ObjectivesController < ApplicationController
     if current_user.id == @objective.user_id || current_user.type =="Admin"
       if @objective.update_attributes(objective_params)
         flash[:success] = "Objective Updated"
-        redirect_to quantities_path(@objective)
+        redirect_to quantities_objective_path(@objective)
       else
         @labels = labels_to_offer
         @pre_req_list = build_pre_req_list(@objective)

@@ -2,34 +2,36 @@ module TeachAndLearnOptions
     extend ActiveSupport::Concern
     
     # Creates the list of objectives the student is qualified to be a consultant for
-    def teachOptions(student, rankAssignsByNeed, cThresh, listLimit)
-        teachOptArray = []
-        [[cThresh,99],[100,100]].each do |n|
-            rankAssignsByNeed.each do |objective|
-                this_score = student.objective_students.find_by(:objective_id => objective.id)
+    def teach_options(student, seminar, list_limit)
+        teach_opt_array = []
+        [[seminar.consultantThreshold,99],[100,100]].each do |n|
+            @seminar.objective_seminars.each do |os|
+                obj = os.objective
+                this_score = @student_scores.find_by(:objective => obj)
                 if this_score
-                    thisPoints = this_score.points
-                    teachOptArray.push(objective) if (thisPoints >= n[0] && thisPoints <= n[1])
+                    this_points = this_score.points
+                    teach_opt_array.push(obj) if (this_points >= n[0] && this_points <= n[1])
                 end
             end
-            break if teachOptArray.length > listLimit
+            break if teach_opt_array.length > list_limit
         end
-        return teachOptArray
+        return teach_opt_array
     end
     
     # Creates the list of objectives the student is ready to learn
-    def learnOptions(student, rankAssignsByNeed, listLimit)
-        learnOptArray = []
+    def learn_options(student, seminar, list_limit)
+        learn_opt_array = []
         [[0,74],[75,90]].each do |n|
-            rankAssignsByNeed.each do |objective|
-                if student.checkIfReady(objective)
-                    thisPoints = student.objective_students.find_by(:objective_id => objective.id).points
-                    learnOptArray.push(objective) if (thisPoints >= n[0] && thisPoints <= n[1])
+            @oss.each do |os|
+                obj = os.objective
+                if student.check_if_ready(obj)
+                    this_points = @student_scores.find_by(:objective => obj).points
+                    learn_opt_array.push(obj) if (this_points >= n[0] && this_points <= n[1])
                 end
-                break if learnOptArray.length >= listLimit
+                break if learn_opt_array.length >= list_limit
             end
         end
-        return learnOptArray
+        return learn_opt_array
     end
     
 end

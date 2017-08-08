@@ -6,82 +6,55 @@ ADVERTISE TO FIND ANOTHER TEACHER WILLING TO TRY THE PROGRAM THIS YEAR
 BEFORE AUG 15, TRY TO INCLUDE CUMULATIVE STARS IN THE SCORESHEET
 
     
-    
-2.20 SINGLE-TABLE INHERITANCE
-
-    V One table for User
-        V Sub-table for teacher
-        V Sub-table for admin
-        V Sub-table for student
-    
-    V Update the seeds
-    
-    V Change "student_number" to "user_number" so that teachers can have Id numbers
-    
-    V Functions for auto username, etc. should be moved from the student controller to the user model
-        V Put them as a before_save functions
-    
-    V Admin cannot create seminars. That would cause errors because a seminar has a teacher_id
-    
-    V Look for all uses of the word "role"
-    
-    V Search for all instances of student_number
-
-    V All of the calls to  'shared/teacher_name_and_edit' need input for the user: variable
-    
-    V Capybara tests to replace all user tests that became teacher tests.
-
-    V Look for all instances of user_path or users_path
-    
-    V Student test for when password is present
-
-    V It seems to be allowing a student and a teacher with the same e-mail
-
-    V The total_points function in the Student model was made more efficient
-    
-    V correct_user functions moved to the application controller
-        Changed name to correct_owner
-    
-    V Some calls to user_is_an_admin need to be redirect_for_non_admin
-    
-    V Added tests for editing students.
-    
-    V Try to dry up the instances of current_user && current_user.type a little bit
-    
-    V The require "rubygems" line was no longer necessary, but keep it in mind in case of UI failure
-    
-    V I think that the "users" controller and views will no longer be necessary
-    
-    V Mr. Z School Logo
-
-    Try to figure out why the debug info window is no longer showing.
-
-    
 
 
     
 
-PRE-TEST QUIZ UNLOCKS    
+2.21 PRE-TEST QUIZ UNLOCKS--STARTED 08/05/17
     
-    Many quizzes can be set are pre-tests so that they are open to every student
-        upon joining that class.
-    
-    Rename assignjoin to objective_seminar to fit join table convention
+    Goal of this update: Many quizzes can be set as pre-tests so that they are open to every student upon joining that class.
         
-    This should be edited on the next page after editing a class. It only lists
-        the objectives that are already in that class. Teacher can check which ones
-        should be pre-test objectives. Doing this adjusts a column in the objective_seminar
-        model.
-        
-    When new students join the class, the pre-tests are open to them.
+    VThis attribute is edited between the first seminar editing screen and the priorities. It only lists the objectives that are already in that class. 
+        V Teacher can check which objectives should be considered as pre-test objectives. Doing this adjusts a column in the objective_seminar model.
     
-    Lowest-level quizzes are shown. Higher-level quizzes are shown if the student
-        is ready for them.
+    V ObjectiveSeminar model needs column for pre-test
+        I'm coding that as an integer, not a boolean. That way, in the future, I might be able to set some pre-tests to open during 2nd or 3rd term
+            instead of opening them all at the beginning.
+    
+    V Create the view with the checklists
+        V Ensure that checks are working to adjust the pre-test attribute
+        Ensure that routing to the next screen is still functioning.
         
-    The logo in the footer links to Desk Consultants.com
+    V Test pretests and priorities for a new seminar
+    
+    V Test a view that includes desk consultants objectives and pretest objectives both
+    
+    V When new students join the class, the pre-tests are open to them.
+        V Lowest-level quizzes are offered immediately. Higher-level quizzes are offered if the student is ready for them.
+        Test in seminar model should also check that unwanted assignments don't appear in pretest offerings
+    
+    V Objectives where student has scored 100 removed from pretest offerings
+    
+    V Objectives that student has attempted twice removed from pretest offerings
+    
+    V Guard if a team has no objective so that student does not get an error in the view.
+    
+    V Make sure to downcase usernames or it creates a problem with finding them
+    
+    V Try to Eager load in a few spots
+    
+    V has_not_scored_100 needs to apply to consultant objectives as well as pretest objectives
+    
+    V Put the checkbox updating into on transaction so that servers, etc. never see the intermediate state.
+    
+    Clean up the routes file now that I know about :collection and :member
 
 FILL-IN QUESTIONS
     Free-answer questions
+    
+    
+        
+        
         
 IMAGES WITH QUESTIONS
 
@@ -105,6 +78,22 @@ IMAGES WITH QUESTIONS
  
 CUMULATIVE STARS
 
+    The logo in the footer links to Desk Consultants.com. It should link to the new, correct site.
+
+
+OPTION TO COPY A CLASS
+
+    Include settings for objective and pretest.
+        But the name must be unique
+        
+    When creating/editing a class, the first screen shows only the field for class name
+    
+    When creating a class, there is a list of already-created classes. The teacher can choose one of them to copy.
+    
+    Other screens have the option to "Go back to your profile" or "Continue to set pretests" or "Continue to set priorities"
+    
+    
+
 TRY TO CHANGE CURRENT_CLASS TABLE DB ATTRIBUTE TO SESSION ATTRIBUTE
 
 CURRENT CLASS AS A REFERENCE, NOT AN INTEGER    
@@ -112,16 +101,22 @@ CURRENT CLASS AS A REFERENCE, NOT AN INTEGER
     After deploy, migrate, reset, and seed with heroku
 
   
+STUDENT VIEW INTO MULTIPLE SUB-VIEWS
+
 
   
 LOCK A QUIZ AFTER A STUDENT TAKES IT
-    Should allow two attemps in the same day
+    Count the number of attempts since the most recent time working that objective with desk consultants
+        If there are more than one, that quiz is no longer offered to the student.
     
     Or else close after one attempt if the day ends
     
 
 FIX TESTS FOR DESK CONSULTANTS
-
+    
+    
+    Also, rank assignments by need should be based on the most requested, not the highest need. Maybe.
+        That should at least run quicker, because requested is a simple column in the join table. Not a method that looks at every student's readiness. 
 
 TEACHER MANUAL QUIZ UNLOCKS
 
@@ -130,6 +125,8 @@ TEACHER MANUAL QUIZ UNLOCKS
         
     Or through objective to check which quizzes should be unlocked for which
         student.
+        
+    Or unlock a quiz for an entire class.
 
 FIGURE OUT WHY ALL STUDENTS START OUT BEING MARKED AS ABSENT
 
@@ -192,13 +189,9 @@ MORE QUIZ UNLOCKS
         
         Don't show a quiz available if it has no questions
     
-
-
-    
-TEACHER MASS QUIZ UNLOCKS        
     
     
-    
+IN-APP GOAL TRACKING   
 
         
     
@@ -220,8 +213,6 @@ NEED TO REDO ALL THE STUFF ABOUT MAILERS
 ADMIN CAN CREATE NEW ADMIN
 
 
-
-
     But there also needs to be an "Unlock quizzes" button in case students
        are taking them on a different day. 
          
@@ -241,7 +232,7 @@ ADMIN CAN CREATE NEW ADMIN
     Almost all of these updates and little stuff in-between.
         
         Find a better way to choose objectives during DeskConsultants.
-            Calling teachOptions during the function around line 109 is heavily 
+            Calling teach_options during the function around line 109 is heavily 
                 time-consuming.
         
         Cumulative total of student's stars
@@ -377,7 +368,9 @@ ADMIN CAN CREATE NEW ADMIN
         Nearly every page has the info to show the title, header, etc. Can that be dried?
         
         Right now the "total_points" function adds scores for all of a student's classes.
-            Some day it needs to only add points for one individual class. 
+            Some day it needs to only add points for one individual class.
+            
+Ensure that students cannot url into unauthorized objectives 
         
 Write separate tests for each section of Desk Consultants
     All the tests passed line 229 in newplaceforlonestudents even though the live site
@@ -390,9 +383,7 @@ Then the UI of the scoresheet (Entering scores won't be as necessary when in-app
 
 Some students can be exempt from certain objectives.
 
-Saving records of consultant groups.
 
-Add in-app goals
 
 Adjust scores to keep a record so that students can have multiple scores in the
 same objective. And make landmark dates for term endings.
@@ -532,7 +523,7 @@ did not.
 http://thesassway.com/beginner/how-to-structure-a-sass-project
 
 Something about Kylie Christensen's account. Causes her unable to log in. When I
-try to log in as myself afterward, I get an error that points to the studentview
+try to log in as myself afterward, I get an error that points to the student_view
 action. The "Please Log In." flash message only appears when 
 
 Home screen should offer log in space instead of having to click the log in button.
@@ -597,7 +588,7 @@ Print list of student names and passwords
 reconfigure rankAssignsByNeed to sort the objectives by two attributes, so it doesn't have
 to keep looping through all of the objectives three times.
 
-It's awkward that "StudentView" is in the seminar controller. It should be in the 
+It's awkward that "student_view" is in the seminar controller. It should be in the 
 student controller.
 
 Add Instructions in the Help menu

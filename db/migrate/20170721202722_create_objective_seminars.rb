@@ -4,6 +4,7 @@ class CreateObjectiveSeminars < ActiveRecord::Migration[5.0]
       t.references :seminar, foreign_key: true
       t.references :objective, foreign_key: true
       t.integer  :priority
+      t.integer  :pretest
       t.timestamps
     end
     

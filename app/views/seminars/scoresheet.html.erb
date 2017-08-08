@@ -26,7 +26,7 @@
     <tbody>
       <% @students.each do |student| %>
         <tr>
-          <td><h4><%= link_to student.lastNameFirst, edit_teaching_requests_url(student) %> </h4></td>
+          <td><h4><%= link_to student.lastNameFirst, edit_teaching_requests_student_url(student) %> </h4></td>
           <td class="themScores"><%= student.total_points %></td>
           <% this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id) %>
           <% @objectives.each do |objective| %>

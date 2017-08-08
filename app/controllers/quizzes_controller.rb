@@ -17,7 +17,6 @@ class QuizzesController < ApplicationController
         end
         
         redirect_to edit_riposte_path(@quiz.ripostes.first)
-    
     end
     
     def show

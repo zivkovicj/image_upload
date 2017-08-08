@@ -13,6 +13,7 @@ class ConsultanciesController < ApplicationController
     
     def create
         @seminar = Seminar.includes(:seminar_students).find(params[:consultancy][:seminar])
+        @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
         
         check_if_date_already()
         check_if_ten()
@@ -24,7 +25,6 @@ class ConsultanciesController < ApplicationController
         @students = setup_present_students()
         @rankAssignsByNeed = rankAssignsByNeed(@seminar)
         @objectiveIds = @rankAssignsByNeed.map(&:id)
-        @scores = ObjectiveStudent.where(objective_id: @objectiveIds)
         setupStudentHash()
         #setobjectivesAndScores(false)
         setupRankByConsulting()

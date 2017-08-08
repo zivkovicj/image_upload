@@ -12,10 +12,10 @@ class SeminarStudentsController < ApplicationController
     if (params[:ss][:teach_request])
       if current_user.type == "Teacher"
         flash[:success] = "Student request updated"
-        redirect_to scoresheet_url(@seminar)
+        redirect_to scoresheet_seminar_url(@seminar)
       else
         flash[:success] = "Your requests were updated"
-        redirect_to studentView_path(@seminar)
+        redirect_to student_view_seminar_path(@seminar)
       end
     else
       respond_with @ss
@@ -34,7 +34,7 @@ class SeminarStudentsController < ApplicationController
     addToSeatingChart(@seminar, @student)
     scoresForNewStudent(@seminar, @student)
     
-    redirect_to scoresheet_url(@seminar)
+    redirect_to scoresheet_seminar_url(@seminar)
   end
   
   def ajaxUpdate
@@ -55,7 +55,7 @@ class SeminarStudentsController < ApplicationController
     
     #Redirect
     flash[:success] = "Student removed from class period"
-    redirect_to scoresheet_url(@seminar)
+    redirect_to scoresheet_seminar_url(@seminar)
   end
 
   private

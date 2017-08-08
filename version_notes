@@ -1,4 +1,36 @@
 
+
+
+
+
+
+
+2.20 SINGLE-TABLE INHERITANCE--STARTED 07/30/17
+                             --PUSHED 08/05/17
+    One table for User
+        Sub-table for teacher
+        Sub-table for admin
+        Sub-table for student
+    Update the seeds
+    Change "student_number" to "user_number" so that teachers can have Id numbers
+        Search for all instances of student_number
+    Look for all uses of the word "role"
+    All of the calls to  'shared/teacher_name_and_edit' need input for the user: variable
+    Capybara tests to replace all user tests that became teacher tests.
+    Look for all instances of user_path or users_path
+    Student test for when password is present
+    Don't allow a student and a teacher with the same e-mail
+    The total_points function in the Student model was made more efficient
+    correct_user functions moved to the application controller
+        Changed name to correct_owner
+    Some calls to user_is_an_admin need to be redirect_for_non_admin
+    Added tests for editing students.
+    Dried up instances of current_user && current_user.type
+    The require "rubygems" line was no longer necessary, but keep it in mind in case of UI failure
+    "Users" controller and views are no longer be necessary
+    Mr. Z School Logo
+
+
 2.19  REMAKE APP IN NEW WORKSPACE--STARTED 07/18/2017
                            PUSHED 07/30/2017
     Start a new workspace that doesn't use the tutorial configuration

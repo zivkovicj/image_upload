@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20170725202419) do
     t.integer  "seminar_id"
     t.integer  "objective_id"
     t.integer  "priority"
+    t.integer  "pretest"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.index ["objective_id", "seminar_id"], name: "index_objective_seminars_on_objective_id_and_seminar_id"

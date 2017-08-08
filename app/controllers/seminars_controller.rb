@@ -5,25 +5,24 @@ class SeminarsController < ApplicationController
     end
     before_action :redirect_for_non_admin,    only: [:index] 
     
-    include RankObjectivesByNeed
     include SetObjectivesAndScores
     include TeachAndLearnOptions
     
     def new
         @seminar = Seminar.new
         @seminar.consultantThreshold = 70
-        current_user.update!(:current_class => @seminar.id)
+        update_current_class
     end
     
     def create
         @seminar = current_user.own_seminars.build(seminarParamsWithoutSeating)
         if @seminar.save
             flash[:success] = "Class Created"
-            redirect_to scoresheet_url(@seminar)
+            update_current_class
+            redirect_to pretests_seminar_path(@seminar)
         else
             render 'seminars/new'
         end
-        current_user.update!(:current_class => @seminar.id) if @seminar.valid?
     end
 
     def index
@@ -39,56 +38,12 @@ class SeminarsController < ApplicationController
         @teacher = @seminar.user
         set_objectives_and_scores(false)
         @students = @seminar.students.order(:last_name)
-        current_user.update!(:current_class => @seminar.id)
-    end
-    
-    def studentView
-        @student = Student.find(params[:student])
-        @seminar = Seminar.find(params[:id])
-        @ss = @student.seminar_students.find_by(:seminar => @seminar)
-        @teacher = @seminar.user
-        
-        rankAssignsByNeed = rankAssignsByNeed(@seminar)
-        @teachOptions = teachOptions(@student, rankAssignsByNeed, @seminar.consultantThreshold, 10)
-        @learnOptions = learnOptions(@student, rankAssignsByNeed, 10)
-        
-        set_objectives_and_scores(false)
-        @student_scores = @student.objective_students.where(objective_id: @objectiveIds)
-        
-        blap = @student.teams.map(&:objective_id)
-        @unlocked_by_desk_consult = @seminar.objectives.find(blap)
-        
-        current_user.update(:current_class => @seminar.id)
-    end
-    
-    def scoresheet
-        @seminar = Seminar.find(params[:id])
-        @teacher = @seminar.user
-        @students = @seminar.students.order(:last_name)
-        set_objectives_and_scores(false)
-        current_user.update!(:current_class => @seminar.id)
-    end
-    
-    def seatingChart
-        readySeating
-    end
-    
-    def newChartByAchievement
-        @seminar = Seminar.find(params[:id])
-        @students = @seminar.students.order(:last_name)
-        @teacher = @seminar.user
-        set_objectives_and_scores(false)
-        profList = @students.sort {|a,b| a.total_points <=> b.total_points}
-        @tempSeating = []
-        profList.each do |student|
-            @tempSeating.push(student.id)
-        end
-        current_user.update!(:current_class => @seminar.id)
+        update_current_class
     end
     
     def edit
         @seminar = Seminar.find(params[:id])
-        current_user.update!(:current_class => @seminar.id)
+        update_current_class
     end
 
     def update
@@ -111,21 +66,15 @@ class SeminarsController < ApplicationController
                 end
                 flash[:success] = "Class Updated"
             end
-            current_user.update!(:current_class => @seminar.id)
+            update_current_class
             redirect_to seatingChart_url
         else
             if @seminar.update_attributes(seminarParamsWithoutSeating)
                 flash[:success] = "Class Updated"
             end
-            current_user.update!(:current_class => @seminar.id)
-            redirect_to priorities_path(@seminar)
+            update_current_class
+            redirect_to pretests_seminar_path(@seminar)
         end
-    end
-    
-    def priorities
-        @seminar = Seminar.find(params[:id])
-        @os = @seminar.objective_seminars.sort_by{|x| [x.objective.name]}
-        current_user.update!(:current_class => @seminar.id)
     end
     
     def destroy
@@ -136,10 +85,64 @@ class SeminarsController < ApplicationController
         redirect_to @user
     end
     
-    def to_boolean(str)
-        str == 'true'
+    def newChartByAchievement
+        @seminar = Seminar.find(params[:id])
+        @students = @seminar.students.order(:last_name)
+        @teacher = @seminar.user
+        set_objectives_and_scores(false)
+        profList = @students.sort {|a,b| a.total_points <=> b.total_points}
+        @tempSeating = []
+        profList.each do |student|
+            @tempSeating.push(student.id)
+        end
+        update_current_class
+    end
+    
+    def pretests
+        @seminar = Seminar.find(params[:id])
+        @os = @seminar.objective_seminars.sort_by{|x| [x.objective.name]}
+        update_current_class
+    end
+    
+    def priorities
+        @seminar = Seminar.find(params[:id])
+        @os = @seminar.objective_seminars.sort_by{|x| [x.objective.name]}
+        update_current_class
     end
 
+    def scoresheet
+        @seminar = Seminar.find(params[:id])
+        @teacher = @seminar.user
+        @students = @seminar.students.order(:last_name)
+        set_objectives_and_scores(false)
+        update_current_class
+    end
+    
+    def seatingChart
+        readySeating
+    end
+    
+    def student_view
+        @student = Student.includes(:objective_students).find(params[:student])
+        @seminar = Seminar.includes(:objective_seminars).find(params[:id])
+        @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
+        @objectives = @seminar.objectives.order(:name)
+        objective_ids = @objectives.map(&:id)
+        @student_scores = @student.objective_students.where(:objective_id => objective_ids)
+        
+        @ss = @student.seminar_students.find_by(:seminar => @seminar) # Is this needed?
+        @teacher = @seminar.user
+        
+        @teach_options = teach_options(@student, @seminar, 5)
+        @learn_options = learn_options(@student, @seminar, 5)
+        
+        #set_objectives_and_scores(false)
+        
+        @desk_consulted_objectives = @student.desk_consulted_objectives(@seminar)
+        @all_pretest_objectives = @seminar.all_pretest_objectives(@student)
+        
+        update_current_class
+    end
     
     private 
         def readySeating
@@ -158,7 +161,7 @@ class SeminarsController < ApplicationController
                #@seminar.needSeat = []
                #@seminar.save
             #end
-            current_user.update!(:current_class => @seminar.id)
+            update_current_class
         end
         
         def seminarParamsWithSeating
@@ -173,6 +176,10 @@ class SeminarsController < ApplicationController
         def correct_user
             @seminar = Seminar.find(params[:id])
             redirect_to(login_url) unless current_user && (current_user.own_seminars.include?(@seminar) || current_user.type == "Admin")
+        end
+        
+        def update_current_class
+            current_user.update(:current_class => @seminar.id)
         end
         
 end

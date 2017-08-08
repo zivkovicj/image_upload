@@ -4,7 +4,7 @@ class LabelObjectivesController < ApplicationController
 
     end
     
-    def update
+    def update_quantities
         params[:syl].each do |key, value|
             @lo = LabelObjective.find(key)
             @lo.update(:quantity => value[:quantity])
