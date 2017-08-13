@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 20170725202419) do
   end
 
   create_table "questions", force: :cascade do |t|
+    t.string   "style"
     t.text     "prompt"
     t.string   "extent"
     t.integer  "user_id"

@@ -1,0 +1,27 @@
+
+<% provide(:title, 'New Questions') %>
+<% provide(:headerText, "Details for New Questions") %>
+<% provide(:headerPic, 'question.png') %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<div class="singleOption">
+    <h3><%= @extent.capitalize %> <%= @style.capitalize %> Questions &emsp;&emsp; Label: <%= @label.name %></h3>
+</div>
+</br>
+
+<%= form_tag create_group_questions_path do %>
+    <% @question_group.each_with_index do |question, index| %>
+        <%= hidden_field_tag "questions[#{index.to_i}][extent]", @extent %>
+        <%= hidden_field_tag "questions[#{index.to_i}][label_id]", @label.id %>
+        <%= hidden_field_tag "questions[#{index.to_i}][style]", @style %>
+        <% @question = question %>
+        <%= render 'prompt_and_answers', :locals =>{:index => index, :style => @style} %>
+        </br>
+    <% end %>
+    
+    <div class="actions">
+        <%= submit_tag "Create These Questions" %>
+    </div>
+<% end %>

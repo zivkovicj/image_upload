@@ -1,6 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+
+
 one:
+  style: multiple-choice
   prompt: A admin-created question
   correct_answers: ["0"]
   choice_0: 0
@@ -10,10 +13,11 @@ one:
   choice_4: 4
   choice_5: 5
   extent: public
-  user_id: 0
-  label: one
+  user: michael
+  label: admin_label
 
 two:
+  style: multiple-choice
   prompt: A user-created question
   correct_answers: ["0"]
   choice_0: 0
@@ -23,13 +27,12 @@ two:
   choice_4: 4
   choice_5: 5
   extent: public
-  user_id: 0
-  label: one
+  label: user_label
   extent: private
-  user_id: 0
-  label: one
+  user: archer
   
 three:
+  style: multiple-choice
   prompt: A different_user_public
   correct_answers: ["0"]
   choice_0: 0
@@ -39,13 +42,12 @@ three:
   choice_4: 4
   choice_5: 5
   extent: public
-  user_id: 0
-  label: one
+  label: other_label_public
   extent: public
-  user_id: 0
-  label: one
+  user: zacky
   
 four:
+  style: multiple-choice
   prompt: A different_user_private
   correct_answers: ["0"]
   choice_0: 0
@@ -55,14 +57,13 @@ four:
   choice_4: 4
   choice_5: 5
   extent: public
-  user_id: 0
-  label: one
+  label: other_label_private
   extent: private
-  user_id: 0
-  label: one
+  user: zacky
   
 five:
-  prompt: A More_user_created_for_testing_label_objectives
+  style: multiple-choice
+  prompt: More_user_created_for_testing_label_objectives
   correct_answers: ["0"]
   choice_0: 0
   choice_1: 1
@@ -71,37 +72,44 @@ five:
   choice_4: 4
   choice_5: 5
   extent: public
-  user_id: 0
-  label: one
+  label: user_label
   extent: public
-  user_id: 0
-  label: one
+  user: archer
   
 <% 30.times do |n| %>
 question_<%= n+5 %>:
+  style: multiple-choice
   prompt: Admin_question_<%= n %>
   correct_answers: ["0"]
   choice_0: 0
   choice_1: 1
   choice_2: 2
   extent: public
-  user_id: 0
-  label: one
+  label: admin_label
   extent: public
-  user_id: 0
-  label: one
+  user: michael
 <% end %>
 
 <% 10.times do |n| %>
 question_<%= n+100 %>:
+  style: multiple-choice
   prompt: User_question_<%= n %>
   correct_answers: ["0"]
   choice_0: 0
   choice_1: 1
   extent: public
-  user_id: 0
-  label: one
+  label: user_label
   extent: public
-  user_id: 0
-  label: one
+  user: archer
+<% end %>
+
+<% 10.times do |n| %>
+question_<%= n+200 %>:
+  style: fill-in
+  prompt: Fill-in_question_<%= n %>
+  correct_answers: ["Yes","Absolutely","Of Course"]
+  extent: public
+  label: fill_in_label
+  extent: public
+  user: michael
 <% end %>

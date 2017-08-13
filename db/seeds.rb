@@ -203,8 +203,8 @@ Label.first.pictures << Picture.first
 Label.first.pictures << Picture.second
 Label.second.pictures << Picture.third
 
-10.times do |n|
-    question = Question.new(:user => jeff, :extent => "public")
+(1..10).each do |n|
+    question = Question.new(:user => jeff, :extent => "public", :style => "multiple-choice")
     r = rand(10 * n)
     s = rand(6 * n)
     prompt_string = "What is #{r} + #{s} ?"
@@ -217,7 +217,7 @@ Label.second.pictures << Picture.third
     question.label = add_label
     question.save
     
-    question = Question.new(:user => jeff, :extent => "public")
+    question = Question.new(:user => jeff, :extent => "public", :style => "multiple-choice")    
     r = rand(9 * n)
     s = rand(5 * n)
     prompt_string = "What is #{r} - #{s} ?"
@@ -230,20 +230,20 @@ Label.second.pictures << Picture.third
     question.label = subtract_label
     question.save
     
-    question = Question.new(:user => jeff, :extent => "public")
+    question = Question.new(:user => jeff, :extent => "public", :style => "multiple-choice")
     r = rand(12)
     prompt_string = "What is #{n} x #{r} ?"
     question.prompt = prompt_string
     question.choice_0 = n * r
     question.choice_1 = n * (r + 1)
     question.choice_2 = n * (r - 1) 
-    question.choice_3 = (n + 1) * r
+    question.choice_3 = n * r
     question.choice_4 = (n - 1) * r
-    question.correct_answers = ["#{n * r}"]
+    question.correct_answers = ["#{(n) * r}"]
     question.label = multiply_label
     question.save
     
-    question = Question.new(:user => jeff, :extent => "public")
+    question = Question.new(:user => jeff, :extent => "public", :style => "multiple-choice")
     r = rand(12)
     prompt_string = "What is #{n * r} / #{n} ?"
     question.prompt = prompt_string
@@ -254,6 +254,15 @@ Label.second.pictures << Picture.third
     question.choice_4 = 2 * r
     question.correct_answers = ["#{r}"]
     question.label = divide_label
+    question.save
+    
+    question = Question.new(:user => jeff, :extent => "public", :style => "fill-in")
+    r = rand(10 * n)
+    s = rand(6 * n)
+    prompt_string = "What is #{r} + #{s} ?"
+    question.prompt = prompt_string
+    question.correct_answers = ["#{r + s}"]
+    question.label = add_label
     question.save
 end
 

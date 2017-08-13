@@ -13,9 +13,7 @@ class Question < ApplicationRecord
   validates :prompt, :presence => true
   validates :extent, :presence => true
   
-
-  
-  def shortPrompt
+  def short_prompt
       prompt[0,30]
   end
   

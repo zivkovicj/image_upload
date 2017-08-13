@@ -1,22 +1,33 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+
+
+unlabeled_label:
   id: 1
+  user: michael
   name: Unlabeled
   extent: public
   
-two:
+admin_label:
+  user: michael
   name: Admin_label
   extent: public
 
-three:
+user_label:
+  user: archer
   name: User_label
   extent: private
   
-four:
+other_label_public:
+  user: zacky
   name: Other_Label_Public
   extent: public
   
-five:
+other_label_private:
+  user: zacky
   name: Other_Label_Private
   extent: private
+
+fill_in_label:
+  name: Fill-in Label
+  extent: public

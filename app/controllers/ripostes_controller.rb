@@ -11,10 +11,22 @@ class RipostesController < ApplicationController
         @quiz = @riposte.quiz
         
         perc = 0
-        n = params[:whichIsCorrect][:whichIsCorrect].to_i
-        stud_answer = @question.read_attribute(:"choice_#{n}")
+        case @question.style
+        when "multiple-choice"
+            n = params[:whichIsCorrect][:whichIsCorrect].to_i
+            stud_answer = @question.read_attribute(:"choice_#{n}")
+            perc = @riposte.poss if @question.correct_answers.include?(stud_answer)
+        when "fill-in"
+            stud_answer = params[:stud_answer]
+            @question.correct_answers.each do |correct_answer|
+                if stud_answer.downcase.gsub(/\s+/, "") == correct_answer.downcase.gsub(/\s+/, "")
+                    perc = @riposte.poss
+                    break
+                end
+            end
+        end
+        
         @riposte.update(:stud_answer => stud_answer)
-        perc = @riposte.poss if @question.correct_answers.include?(stud_answer)
         @riposte.update(:tally => perc)
         
         if @riposte == @quiz.ripostes.last

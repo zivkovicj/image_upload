@@ -5,8 +5,6 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
   def setup
     setup_users()
     setup_seminars
-    @objective = objectives(:objective_20)
-    @objective40 = objectives(:objective_40)
     setup_objectives()
     setup_scores()
 
@@ -26,25 +24,25 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
   end
   
   test "edit as non-admin" do
-    oldName = @objective.name
+    oldName = @objective_20.name
     
     log_in_as(@teacher_1)
-    patch objective_path(@objective), params: { objective: { name:  "Burgersauce",
+    patch objective_path(@objective_20), params: { objective: { name:  "Burgersauce",
                                           seminar_id: @seminar.id } }
                                           
-    @objective.reload
-    assert_equal oldName, @objective.name
+    @objective_20.reload
+    assert_equal oldName, @objective_20.name
   end
   
   test "edit without login" do
-    oldName = @objective.name
+    oldName = @objective_20.name
     
     log_in_as(@teacher_1)
-    patch objective_path(@objective), params: { objective: { name:  "Burgersauce",
+    patch objective_path(@objective_20), params: { objective: { name:  "Burgersauce",
                                           seminar_id: @seminar.id } }
                                           
-    @objective.reload
-    assert_equal oldName, @objective.name
+    @objective_20.reload
+    assert_equal oldName, @objective_20.name
   end
 
   test "delete an objective" do
@@ -52,7 +50,7 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
     # and resets student requests
 
     oldobjectiveCount = Objective.count
-    oldId = @objective40.id
+    oldId = @objective_40.id
     oldScoreCount = ObjectiveStudent.count
     old_os_count = ObjectiveSeminar.count
     studentCount = @seminar.students.count
@@ -68,7 +66,7 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
     
     capybara_login(@teacher_1)
     click_on("All Objectives")
-    click_on("delete_#{@objective40.id}")
+    click_on("delete_#{@objective_40.id}")
     
     assert Precondition.where(:mainassign_id => oldId).count == 0
     assert Precondition.where(:preassign_id => oldId).count == 0
@@ -85,7 +83,7 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
   test "wrong user can't delete" do
     log_in_as @other_teacher
     assert_no_difference 'Objective.count' do
-      delete objective_path(@objective40)
+      delete objective_path(@objective_40)
     end
   end
 

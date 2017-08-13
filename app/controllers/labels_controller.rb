@@ -74,7 +74,7 @@ class LabelsController < ApplicationController
       question_list = (current_user.type == "Admin" ? Question.all : Question.where(:user => current_user))
       
       question_list.all.each do |question|
-        build_list.push([question.id, question.shortPrompt, question.label])
+        build_list.push([question.id, question.short_prompt, question.label])
       end
       
       return build_list

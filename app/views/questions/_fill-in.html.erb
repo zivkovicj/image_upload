@@ -1,0 +1,11 @@
+
+
+<h2>Correct Answers</h2>
+<h3>A student may enter any of the answers below to earn credit.</h3>
+
+<% 6.times do |n| %>
+    <% default_text = @question.correct_answers.present? ? @question.correct_answers[n] : "" %>
+    <div class="row">
+        <input type="text" name="questions[<%= @index.to_i %>][choice_<%= n %>]" id="question_<%= @index %>_choice_<%= n %>" value="<%= default_text %>" />
+    </div>
+<% end %>

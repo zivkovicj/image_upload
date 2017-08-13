@@ -5,34 +5,34 @@
 objective_10:
   name: percentages
   extent: "public"
-  user_id: 0
+  user: michael
 
   
 objective_20:
   name: slope
   extent: "public"
-  user_id: 0
+  user: michael
 
 objective_30:
   name: intercept
   extent: "public"
-  user_id: 0
+  user: archer
   
 objective_40:
   name: irrational numbers
   extent: "private"
-  user_id: 0
+  user: archer
   
 objective_50:
   name: pythagorean theorem
   extent: "private"
-  user_id: 0
+  user: archer
 
   
 objective_60:
   name: volume of cylinders
   extent: "private"
-  user_id: 0
+  user: archer
 
   
 # Second Seminar
@@ -40,54 +40,59 @@ objective_60:
 objective_70:
   name: add integers on a number line
   extent: "public"
-  user_id: 0
+  user: archer
 
   
 objective_80:
   name: integers block model
   extent: "public"
-  user_id: 0
+  user: archer
 
   
 objective_90:
   name: subtract integers
   extent: "private"
-  user_id: 0
+  user: archer
 
 # No seminars yet
 
 objective_100:
   name: equations 1
   extent: "public"
-  user_id: 0
+  user: archer
   
 objective_110:
   name: equations 2
   extent: "public"
-  user_id: 0
+  user: archer
 
 objective_120:
   name: equations 3
   extent: "private"
-  user_id: 0
+  user: archer
   
 objective_130:
   name: equations 4
   extent: "private"
-  user_id: 0  
+  user: archer  
   
 objective_140:
   name: equations 5
   extent: "private"
-  user_id: 0
+  user: archer
   
 objective_150:
   name: equations 6
   extent: "private"
-  user_id: 0
+  user: archer
   
 # Created by another teacher
 objective_160:
   name: flagellates
   extent: "private"
-  user_id: 0
+  user: zacky
+  
+fill-in:
+  name: Fill-in Questions Only
+  extent: public
+  user: archer

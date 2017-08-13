@@ -35,7 +35,7 @@
               <td>Label: <%= question.label.name if question.label %></td>
             </tr>
             <tr>
-              <td colspan="3"><%= link_to question.shortPrompt, edit_question_path(question), :id => "edit_#{question.id}" %></td>
+              <td colspan="3"><%= link_to question.short_prompt, edit_question_path(question), :id => "edit_#{question.id}" %></td>
             </tr>
             <tr>
               <td colspan = "3">

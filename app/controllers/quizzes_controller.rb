@@ -15,7 +15,6 @@ class QuizzesController < ApplicationController
         quest_collect.shuffle.each_with_index do |q_info, index|
             @quiz.ripostes.create(:question_id => q_info[0], :position => index+1, :poss => q_info[1]) 
         end
-        
         redirect_to edit_riposte_path(@quiz.ripostes.first)
     end
     

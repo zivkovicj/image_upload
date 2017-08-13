@@ -38,71 +38,36 @@ class ActiveSupport::TestCase
   
   def setup_objectives
     @objective_10 = objectives(:objective_10)
+    @objective_20 = objectives(:objective_20)
     @objective_30 = objectives(:objective_30)
     @objective_40 = objectives(:objective_40)
     @objective_50 = objectives(:objective_50)
-    @ownAssign = objectives(:objective_60)
-    @assignToAdd = objectives(:objective_70)
+    @own_assign = objectives(:objective_60)
+    @assign_to_add = objectives(:objective_70)
     @objective_80 = objectives(:objective_80)
-    @subPreassign = objectives(:objective_100)
-    @preassignToAdd = objectives(:objective_110)
-    @alreadyPreassignedToMainMain = objectives(:objective_120)
-    @alreadyPreassignedToSuper = objectives(:objective_130)
-    @mainMainAssign = objectives(:objective_140)
-    @superMainAssign = objectives(:objective_150)
-    
-    objectives(:objective_40).update(:user_id => users(:archer).id)
-    objectives(:objective_50).update(:user_id => users(:archer).id)
-    objectives(:objective_60).update(:user_id => users(:archer).id)
-    objectives(:objective_90).update(:user_id => users(:archer).id)
-    objectives(:objective_120).update(:user_id => users(:archer).id)
-    objectives(:objective_130).update(:user_id => users(:archer).id)
-    objectives(:objective_140).update(:user_id => users(:archer).id)
-    objectives(:objective_150).update(:user_id => users(:archer).id)
-    objectives(:objective_160).update(:user_id => users(:zacky).id)
-    
-    assign_for_quiz = objectives(:objective_10)
-    assign_for_quiz.label_objectives.create(:label => @admin_l, :quantity => 4)
-    assign_for_quiz.label_objectives.create(:label => @user_l, :quantity => 2, :point_value => 2)
+    @sub_preassign = objectives(:objective_100)
+    @preassign_to_add = objectives(:objective_110)
+    @already_preassign_to_main = objectives(:objective_120)
+    @already_preassign_to_super = objectives(:objective_130)
+    @main_objective = objectives(:objective_140)
+    @super_objective = objectives(:objective_150)
+    @other_teacher_objective = objectives(:objective_160)
   end
   
   def setup_labels
-    labels(:one).update(:user => users(:michael))
-    labels(:two).update(:user => users(:michael))
-    labels(:three).update(:user => users(:archer))
-    labels(:four).update(:user => users(:zacky))
-    labels(:five).update(:user => users(:zacky))
-    
-    @unlabeled_l = labels(:one)
-    @admin_l = labels(:two)
-    @user_l = labels(:three)
-    @other_l_pub = labels(:four)
-    @other_l_priv = labels(:five)
+    @unlabeled_l = labels(:unlabeled_label)
+    @admin_l = labels(:admin_label)
+    @user_l = labels(:user_label)
+    @other_l_pub = labels(:other_label_public)
+    @other_l_priv = labels(:other_label_private)
+    @fill_in_label = labels(:fill_in_label)
   end
   
   def setup_questions
-    questions(:one).update(:user => users(:michael))
-    questions(:two).update(:user => users(:archer))
-    questions(:three).update(:user => users(:zacky))
-    questions(:four).update(:user => users(:zacky))
-    
-    questions(:one).update(:label => labels(:two))
-    questions(:two).update(:label => labels(:three))
-    questions(:three).update(:label => labels(:four))
-    questions(:four).update(:label => labels(:five))
-    
     @admin_q = questions(:one)
     @user_q = questions(:two)
     @other_q_pub = questions(:three)
     @other_q_priv = questions(:four)
-    
-    30.times do |n|
-      Question.find_by(:prompt => "Admin_question_#{n}").update(:user => users(:michael), :label => (@admin_l))
-    end
-    
-    10.times do |n|
-      Question.find_by(:prompt => "User_question_#{n}").update(:user => users(:archer), :label => (@user_l))
-    end
   end
   
   def setup_scores()
@@ -196,6 +161,14 @@ class ActiveSupport::TestCase
     @os_1.reload
     @os_2.reload
     @os_3.reload
+  end
+  
+  def fill_prompt(a)
+    fill_in "prompt_#{a}", with: @new_prompt[a]
+  end
+    
+  def fill_choice(a, b)
+    fill_in "question_#{a}_choice_#{b}", with: @new_choice[a][b]
   end
 end
 

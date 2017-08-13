@@ -1,13 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  objective: 
-  label: 
-  quantity: 1
+for_quiz:
+  label: admin_label
+  objective: objective_10
+  quantity: 4
   point_value: 1
+  
+for_quiz_2:
+  label: user_label
+  objective: objective_10
+  quantity: 2
+  point_value: 2
 
-two:
-  objective: 
-  label: 
-  quantity: 1
-  point_value: 1
+fill-in:
+  objective: fill-in
+  label: fill_in_label
+  quantity: 7
+  point_value: 2

@@ -8,22 +8,25 @@ class QuestionsController < ApplicationController
   include LabelsList
   
   def new
-    new_question_stuff()
-    setPermissions(@question)
+    @labels = labels_to_offer()
+  end
+  
+  def details
+    @extent = params[:extent]
+    @label = Label.find(params[:label])
+    @style = params[:style]
+    create_question_group
   end
 
-  def create
+  def create_group
     one_saved = false
     
-    params["questions"].each do |question|
-      if params["questions"][question][:prompt].blank? == false
-        @question = Question.new(multi_params(params["questions"][question]))
-        @question.user_id = params[:user_id]
-        @question.label_id = params[:label]
-        @question.extent = params[:extent]
-        ensure_essentials()
-        correct_num = set_correct_num(params["questions"][question][:whichIsCorrect])
-        set_correct_answers(correct_num)
+    params["questions"].each do |n|
+      if params["questions"][n][:prompt].blank? == false
+        @question = Question.new(multi_params(params["questions"][n]))
+        @question.user = current_user
+        ensure_essentials
+        set_correct_answers(params["questions"][n])
         one_saved = true if @question.save
       end
     end
@@ -32,9 +35,11 @@ class QuestionsController < ApplicationController
       flash[:success] = "Questions Created"
       redirect_to current_user
     else
-      new_question_stuff()
-      setPermissions(@question)
-      render 'new'
+      @extent = params["questions"]["0"][:extent]
+      @label = Label.find(params["questions"]["0"][:label_id])
+      @style = params["questions"]["0"][:style]
+      create_question_group
+      render 'details'
     end
   end
 
@@ -74,14 +79,16 @@ class QuestionsController < ApplicationController
     @question = Question.find(params[:id])
     @labels = labels_to_offer()
     setPermissions(@question)
+    render 'show' if @assignPermission == "other"
   end
 
   def update
     @question = Question.find(params[:id])
-    ensure_essentials()
-    correct_num = set_correct_num(params[:question][:whichIsCorrect])
-    set_correct_answers(correct_num)
-    if @question.update_attributes(question_params)
+    ensure_essentials
+    @question.label_id = params[:label]
+    @question.extent = params[:extent]
+    set_correct_answers(params["questions"]["0"])
+    if @question.update_attributes(multi_params(params["questions"]["0"]))
       flash[:success] = "Question Updated"
       redirect_to current_user
     else
@@ -94,40 +101,41 @@ class QuestionsController < ApplicationController
   
   private
     def question_params
-      params.require(:question).permit(:prompt, :extent, :user_id, :label_id,
+      params.require(:question).permit(:style, :prompt, :extent, :user_id, :label_id,
         :choice_0, :choice_1, :choice_2, :choice_3, :choice_4, :choice_5, :picture_id)
     end
     
     def multi_params(my_params)
       my_params.permit(:prompt, :choice_0, :choice_1, :choice_2, :choice_3,
-        :choice_4, :choice_5)
+        :choice_4, :choice_5, :user_id, :label_id, :extent, :style)
     end
     
-    def ensure_essentials()
+    def create_question_group
+      @question_group = []
+      5.times do
+        @question_group << Question.new
+      end
+    end
+    
+    def ensure_essentials
       @question.update(:choice_0 => "First Choice") if @question.choice_0.blank?
-      @question.update(:choice_1 => "Second Choice") if @question.choice_1.blank?
+      @question.update(:choice_1 => "Second Choice") if @question.choice_1.blank? if @question.style == "multiple-choice"
     end
     
-    def set_correct_num(param_num)
-      a = param_num ? param_num.to_i : 0
-      return a
-    end
-    
-    def set_correct_answers(correct_num)
-      correct_value = @question.read_attribute(:"choice_#{correct_num}")
-      correct_value ||= "Correct Answer"
+    def set_correct_answers(these_params)
       correct_array = []
-      correct_array.push(correct_value)
+      case @question.style
+      when 'multiple-choice'
+        param_num = these_params[:whichIsCorrect]
+        correct_num = param_num ? param_num.to_i : 0
+        correct_value = @question.read_attribute(:"choice_#{correct_num}")
+        correct_value ||= "Correct Answer"
+        correct_array.push(correct_value)
+      when 'fill-in'
+        correct_array = (0..5).map { |i| these_params[:"choice_#{i}"] }.select(&:present?)
+      end
       @question.update(:correct_answers => correct_array)
     end
     
-    def new_question_stuff()
-      label_1 = Label.find(1)
-      @question_group = []
-      5.times do
-        @question_group << Question.new(:user_id => current_user.id, :label_id => label_1.id)
-      end
-      @labels = labels_to_offer()
-      @question = @question_group[0]
-    end
+    
 end

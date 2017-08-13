@@ -1,0 +1,34 @@
+<% index = locals[:index] %>
+<% style = locals[:style] %>
+
+<div class="container singleOption">
+    <div class="row">
+        <div class="col-sm-5">
+            Question <%= index + 1 %>
+            
+            <h2>Prompt &nbsp;</h2>
+            <textarea cols="15" rows="6" id="prompt_<%= index %>" name="questions[<%= index.to_i %>][prompt]"><%= @question.prompt %></textarea>
+            
+            </br>
+            <h2>Image</h2>
+            <table>
+                <% Picture.all.each do |picture| %>
+                    <tr>
+                        <td width="20%"><input type="radio" value="<%= picture.id %>" name="questions[<%= index.to_i %>][picture_id]" id="question_<%= index %>_picture" /></td>
+                        <td><%= image_tag(picture.image_url.to_s) %></td>
+                    </tr>
+                <% end %>
+            </table>
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-4">
+            <% @index = index %>
+            <%= render :partial => "#{style}", :locals =>{:index => index} %>
+            
+        </div>
+    </div>
+</div>
+
+
+
+

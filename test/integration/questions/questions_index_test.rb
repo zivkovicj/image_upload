@@ -15,13 +15,13 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
         capybara_login(@admin_user)
         click_on("All Questions")
 
-        assert_selector('a', :id => "edit_#{@admin_q.id}", :text => @admin_q.shortPrompt)
+        assert_selector('a', :id => "edit_#{@admin_q.id}", :text => @admin_q.short_prompt)
         assert_selector('a', :id => "delete_#{@admin_q.id}", :text => "Delete")
-        assert_selector('a', :id => "edit_#{@this_teachers_q.id}", :text => @this_teachers_q.shortPrompt)
+        assert_selector('a', :id => "edit_#{@this_teachers_q.id}", :text => @this_teachers_q.short_prompt)
         assert_selector('a', :id => "delete_#{@this_teachers_q.id}", :text => "Delete")
-        assert_selector('a', :id => "edit_#{@other_teacher_public_q.id}", :text => @other_teacher_public_q.shortPrompt)
+        assert_selector('a', :id => "edit_#{@other_teacher_public_q.id}", :text => @other_teacher_public_q.short_prompt)
         assert_selector('a', :id => "delete_#{@other_teacher_public_q.id}", :text => "Delete")
-        assert_selector('a', :id => "edit_#{@other_teacher_private_q.id}", :text => @other_teacher_private_q.shortPrompt)
+        assert_selector('a', :id => "edit_#{@other_teacher_private_q.id}", :text => @other_teacher_private_q.short_prompt)
         assert_selector('a', :id => "delete_#{@other_teacher_private_q.id}", :text => "Delete")
     end
     
@@ -29,13 +29,13 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("All Questions")
     
-        assert_selector('a', :id => "edit_#{@admin_q.id}", :text => @admin_q.shortPrompt)
+        assert_selector('a', :id => "edit_#{@admin_q.id}", :text => @admin_q.short_prompt)
         assert_selector('a', :id => "delete_#{@admin_q.id}", :text => "Delete", :count => 0)
-        assert_selector('a', :id => "edit_#{@this_teachers_q.id}", :text => @this_teachers_q.shortPrompt)
+        assert_selector('a', :id => "edit_#{@this_teachers_q.id}", :text => @this_teachers_q.short_prompt)
         assert_selector('a', :id => "delete_#{@this_teachers_q.id}", :text => "Delete")
-        assert_selector('a', :id => "edit_#{@other_teacher_public_q.id}", :text => @other_teacher_public_q.shortPrompt)
+        assert_selector('a', :id => "edit_#{@other_teacher_public_q.id}", :text => @other_teacher_public_q.short_prompt)
         assert_selector('a', :id => "delete_#{@other_teacher_public_q.id}", :text => "Delete",:count => 0)
-        assert_selector('a', :id => "edit_#{@other_teacher_private_q.id}", :text => @other_teacher_private_q.shortPrompt, :count => 0)
+        assert_selector('a', :id => "edit_#{@other_teacher_private_q.id}", :text => @other_teacher_private_q.short_prompt, :count => 0)
         assert_selector('a', :id => "delete_#{@other_teacher_private_q.id}", :text => "Delete", :count => 0)
     end
     

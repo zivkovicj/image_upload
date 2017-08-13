@@ -1,0 +1,40 @@
+<% q_num = action_name == "new" ? 2 : 1 %>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2><%= "Question".pluralize(q_num) %> Created by: <%= @createdLabel %> &nbsp;</h2>
+            </br>
+            <table><tr>
+                <td width="10%"><input type="radio" name="extent" id="public" value="public" checked="checked"/></td>
+                <td>Public <%= "Question".pluralize(q_num) %></td>
+                <td width = "20%" class="borderless"></td>
+                <td width="10%"><input type="radio" name="extent" id="private" value="private" /></td>
+                <td>Private <%= "Question".pluralize(q_num) %></td></tr>
+            </table>
+            
+            <% if action_name == "new" %>
+                <h2>Style</h2>
+                <table>
+                    <% [["multiple-choice", 'Multiple Choice'] ,["fill-in", 'Fill-in']].each_with_index do |z, index| %><tr>
+                        <td width="20%"><% checkery = index == 0 ? "checked='checked'" : "" %>
+                        <input type="radio" name="style" id="style_<%= z[0] %>" value=<%= z[0] %> <%= checkery %> /></td>
+                        <td><%= z[1] %></td>
+                    </tr><% end %>
+                </table>
+            <% else %>
+                <h3>Style: <%= @question.style.capitalize %></h3>
+            <% end %>
+        </div>
+        
+        <div class="col-sm-6">
+            <h2>Label</h2>
+            <table>
+                <% @labels.each do |lab| %><tr>
+                    <% checkery = lab.id == 1 ? "checked='checked'" : "" %>
+                    <td width="20%"><input type="radio" name="label" id="label_<%= lab.id %>" value=<%= lab.id %> <%= checkery %> /></td>
+                    <td><%= lab.name %></td>
+                </tr><% end %>
+            </table>
+        </div>
+    </div>
+</div>

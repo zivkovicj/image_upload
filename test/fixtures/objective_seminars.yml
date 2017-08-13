@@ -37,6 +37,12 @@ one-six:
     pretest: 0
     priority: 2
     
+one-fill-in:
+    seminar: one
+    objective: fill-in
+    pretest: 1
+    priority: 2
+    
 two-seven:
     seminar: two
     objective: objective_70

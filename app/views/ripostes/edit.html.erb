@@ -3,25 +3,8 @@
 </div>
 </br>
 
-<% thisOrder = [0,1,2,3,4,5].shuffle %>
-
 <%= form_for(@riposte) do |r| %>
-    <table>
-        <div class="container">
-            <% 6.times do |n| %>
-                <% x = thisOrder[n] %>
-                <% answer_text = @question.read_attribute("choice_#{x}") %>
-                <% if !answer_text.blank? %>
-                    <tr>
-                        <td width="50%"><%= radio_button :whichIsCorrect, :whichIsCorrect, x, :id => "choice_bubble_#{x}" %></td>
-                        <td><%= answer_text %></td>
-                    </tr>
-                <% end %>
-            <% end %>
-        </div>
-    </table>
-    
+    <%= render :partial => "/ripostes/#{@question.style}" %>
     </br>
-    
     <%= r.submit "Next Question", class: "btn btn-primary" %>
 <% end %>

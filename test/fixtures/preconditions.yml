@@ -5,6 +5,10 @@
 # below each fixture, per the syntax in the comments below
 #
 
+pc_10_to_20:
+    preassign: objective_10
+    mainassign: objective_20
+
 pc30to40:
     preassign: objective_30
     mainassign: objective_40

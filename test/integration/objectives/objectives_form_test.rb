@@ -10,7 +10,6 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         setup_objectives()
         setup_labels()
         setup_questions()
-        
     end
     
     test "new objective button from main user page" do
@@ -90,25 +89,25 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         old_os_count = ObjectiveSeminar.count
         studToCheck = @seminar.students[11]
         
-        assert_not @seminar.objectives.include?(@assignToAdd)
-        assert_nil studToCheck.objective_students.find_by(:objective_id => @assignToAdd.id)
+        assert_not @seminar.objectives.include?(@assign_to_add)
+        assert_nil studToCheck.objective_students.find_by(:objective_id => @assign_to_add.id)
         
         capybara_login(@teacher_1)
         click_on('1st Period')
         
-        check("check_#{@assignToAdd.id}")
+        check("check_#{@assign_to_add.id}")
         click_on('Update Class')
         
         assert_text("Edit #{@seminar.name} Pre-Tests")
         
         @seminar.reload
         
-        # Adds two objectives because @assignToAdd has one preReq
+        # Adds two objectives because @assign_to_add has one preReq
         assert_equal old_os_count + 2, ObjectiveSeminar.count
-        assert @seminar.objectives.include?(@assignToAdd)
-        assert @seminar.objectives.include?(@assignToAdd.preassigns.first)
+        assert @seminar.objectives.include?(@assign_to_add)
+        assert @seminar.objectives.include?(@assign_to_add.preassigns.first)
         @seminar.students.each do |student|
-            assert_not_nil student.objective_students.find_by(:objective_id => @assignToAdd.id)
+            assert_not_nil student.objective_students.find_by(:objective_id => @assign_to_add.id)
         end
         
     end
@@ -117,11 +116,11 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         @objective_80 = objectives(:objective_80)
         ObjectiveSeminar.create(:seminar_id => @seminar.id, :objective_id => @objective_80.id)
         old_os_count = ObjectiveSeminar.count
-        assert @assignToAdd.preassigns.include?(@objective_80)
+        assert @assign_to_add.preassigns.include?(@objective_80)
         
         capybara_login(@teacher_1)
         click_on('1st Period')
-        check("check_#{@assignToAdd.id}")
+        check("check_#{@assign_to_add.id}")
         click_on('Update Class')
 
         assert_equal old_os_count + 1, ObjectiveSeminar.count
@@ -130,182 +129,182 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     
     test "scores for preReqs" do
         thisStudent = @seminar.students[11]
-        assert_nil thisStudent.objective_students.find_by(:objective_id => @alreadyPreassignedToMainMain.id)
-        assert @mainMainAssign.preassigns.include?(@alreadyPreassignedToMainMain)
+        assert_nil thisStudent.objective_students.find_by(:objective_id => @already_preassign_to_main.id)
+        assert @main_objective.preassigns.include?(@already_preassign_to_main)
         
         capybara_login(@teacher_1)
         click_on('1st Period')
-        check("check_#{@mainMainAssign.id}")
+        check("check_#{@main_objective.id}")
         click_on('Update Class')
         
         @seminar.students.each do |student|
-            assert_not_nil student.objective_students.find_by(:objective_id => @alreadyPreassignedToMainMain.id)
+            assert_not_nil student.objective_students.find_by(:objective_id => @already_preassign_to_main.id)
         end
     end
     
     test "add seminar to objective" do
-        assert_not @seminar.objectives.include?(@assignToAdd)
+        assert_not @seminar.objectives.include?(@assign_to_add)
         studToCheck = @seminar.students[11]
-        assert_nil studToCheck.objective_students.find_by(:objective_id => @assignToAdd.id)
+        assert_nil studToCheck.objective_students.find_by(:objective_id => @assign_to_add.id)
         
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@assignToAdd.fullName)
+        click_on(@assign_to_add.fullName)
         check(@seminar.name)
         
         click_on("Save Changes")
         
-        assert @seminar.objectives.include?(@assignToAdd)
+        assert @seminar.objectives.include?(@assign_to_add)
         
         @seminar.students.each do |student|
-            assert_not_nil student.objective_students.find_by(:objective_id => @assignToAdd.id)
+            assert_not_nil student.objective_students.find_by(:objective_id => @assign_to_add.id)
         end
     end
     
     test "teacher edits public objective" do
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@assignToAdd.fullName)
+        click_on(@objective_20.fullName)
         check(@seminar.name)
         
         assert_text("You may only edit an objective that you have created. You may use this window to choose which classes this objective is assigned to.")
         assert_no_selector('input', :id => "name", :visible => true)
-        assert_selector('li', :text => @assignToAdd.preassigns.first.shortName)
-        assert_no_selector('input', :id => "#{@assignToAdd.name}", :visible => true)
+        assert_selector('li', :text => @objective_20.preassigns.first.shortName)
+        assert_no_selector('input', :id => "#{@objective_20.name}", :visible => true)
     end
     
     test "edit other teacher objective" do
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@assignToAdd.fullName)
+        click_on(@objective_20.fullName)
         check(@seminar.name)
         
         assert_text("You may only edit an objective that you have created. You may use this window to choose which classes this objective is assigned to.")
         assert_no_selector('input', :id => "name", :visible => true)
-        assert_selector('li', :text => @assignToAdd.preassigns.first.shortName)
-        assert_no_selector('input', :id => "#{@assignToAdd.name}", :visible => true)
+        assert_selector('li', :text => @objective_20.preassigns.first.shortName)
+        assert_no_selector('input', :id => "#{@objective_20.name}", :visible => true)
     end
     
     test "user edits own objective" do
-        assert_not @ownAssign.preassigns.include?(@assignToAdd)
-        assert_not @ownAssign.labels.include?(@user_l)
+        assert_not @own_assign.preassigns.include?(@assign_to_add)
+        assert_not @own_assign.labels.include?(@user_l)
         old_label_objective_count = LabelObjective.count
         
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@ownAssign.fullName)
+        click_on(@own_assign.fullName)
         assert_no_text("You may only edit an objective that you have created. You may use this window to choose which classes this objective is assigned to.")
         
         new_name = "Boobenfarten"
         fill_in "name", with: new_name
-        check("check_#{@assignToAdd.id}")
+        check("check_#{@assign_to_add.id}")
         check("check_#{@user_l.id}")
         check("check_#{@admin_l.id}")
         click_on("Save Changes")
         
-        @ownAssign.reload
-        label_objective_1 = @ownAssign.label_objectives.find_by(:label => @user_l)
-        label_objective_2 = @ownAssign.label_objectives.find_by(:label => @admin_l)
+        @own_assign.reload
+        label_objective_1 = @own_assign.label_objectives.find_by(:label => @user_l)
+        label_objective_2 = @own_assign.label_objectives.find_by(:label => @admin_l)
         select('2', :from => "syl_#{label_objective_1.id}_quantity")
         select('3', :from => "syl_#{label_objective_2.id}_quantity")
         click_on("Update these quantities")
         
-        @ownAssign.reload
+        @own_assign.reload
         label_objective_1.reload
         label_objective_2.reload
-        assert_equal new_name.downcase, @ownAssign.name
-        assert @ownAssign.preassigns.include?(@assignToAdd)
-        assert @ownAssign.labels.include?(@user_l)
+        assert_equal new_name.downcase, @own_assign.name
+        assert @own_assign.preassigns.include?(@assign_to_add)
+        assert @own_assign.labels.include?(@user_l)
         assert_equal old_label_objective_count + 2, LabelObjective.count
         assert_equal 2, label_objective_1.quantity
         assert_equal 3, label_objective_2.quantity
     end
     
     test "delete label_objective" do
-        @ownAssign.label_objectives.create(:label => @admin_l)
-        @ownAssign.label_objectives.create(:label => @user_l)
-        label_objective_2 = @ownAssign.label_objectives.find_by(:label => @admin_l)
+        @own_assign.label_objectives.create(:label => @admin_l)
+        @own_assign.label_objectives.create(:label => @user_l)
+        label_objective_2 = @own_assign.label_objectives.find_by(:label => @admin_l)
         old_label_objective_count = LabelObjective.count
-        old_label_count = @ownAssign.labels.count
-        assert_not_nil @ownAssign.label_objectives.find_by(:label => @admin_l)
+        old_label_count = @own_assign.labels.count
+        assert_not_nil @own_assign.label_objectives.find_by(:label => @admin_l)
        
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@ownAssign.fullName)
+        click_on(@own_assign.fullName)
         uncheck("check_#{@admin_l.id}")
         click_on("Save Changes")
         
         assert_no_selector('input', :id => "syl_#{label_objective_2.id}_quantity")
         click_on("Update these quantities")
         
-        @ownAssign.reload
-        assert_equal old_label_count - 1, @ownAssign.labels.count
+        @own_assign.reload
+        assert_equal old_label_count - 1, @own_assign.labels.count
         assert_equal old_label_objective_count - 1, LabelObjective.count
     end
     
     test "objective name error" do
-        oldName = @ownAssign.name
+        oldName = @own_assign.name
         
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@ownAssign.fullName)
+        click_on(@own_assign.fullName)
         
         fill_in "name", with: ""
         click_on("Save Changes")
         
-        @ownAssign.reload
-        assert_equal oldName, @ownAssign.name
+        @own_assign.reload
+        assert_equal oldName, @own_assign.name
     end
     
     test "add subpreassigns and supermainassigns" do
         oldPreconditionCount = Precondition.count
         
-        assert @superMainAssign.preassigns.include?(@mainMainAssign)
-        assert @superMainAssign.preassigns.include?(@alreadyPreassignedToSuper)
-        assert @mainMainAssign.preassigns.include?(@alreadyPreassignedToMainMain)
-        assert_not @superMainAssign.preassigns.include?(@preassign)
-        assert_not @superMainAssign.preassigns.include?(@subPreassign)
-        assert_not @mainMainAssign.preassigns.include?(@preassignToAdd)
-        assert_not @mainMainAssign.preassigns.include?(@subPreassign)
-        assert_not @mainMainAssign.preassigns.include?(@alreadyPreassignedToSuper)
+        assert @super_objective.preassigns.include?(@main_objective)
+        assert @super_objective.preassigns.include?(@already_preassign_to_super)
+        assert @main_objective.preassigns.include?(@already_preassign_to_main)
+        assert_not @super_objective.preassigns.include?(@preassign)
+        assert_not @super_objective.preassigns.include?(@sub_preassign)
+        assert_not @main_objective.preassigns.include?(@preassign_to_add)
+        assert_not @main_objective.preassigns.include?(@sub_preassign)
+        assert_not @main_objective.preassigns.include?(@already_preassign_to_super)
         
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@mainMainAssign.fullName)
+        click_on(@main_objective.fullName)
         
-        check("check_#{@preassignToAdd.id}")
-        check("check_#{@alreadyPreassignedToSuper.id}")
+        check("check_#{@preassign_to_add.id}")
+        check("check_#{@already_preassign_to_super.id}")
         click_button("Save Changes")
         
-        assert @mainMainAssign.preassigns.include?(@alreadyPreassignedToSuper)
-        assert @mainMainAssign.preassigns.include?(@preassignToAdd)
-        assert @mainMainAssign.preassigns.include?(@subPreassign)
-        assert @superMainAssign.preassigns.include?(@preassignToAdd)
-        assert @superMainAssign.preassigns.include?(@subPreassign)
+        assert @main_objective.preassigns.include?(@already_preassign_to_super)
+        assert @main_objective.preassigns.include?(@preassign_to_add)
+        assert @main_objective.preassigns.include?(@sub_preassign)
+        assert @super_objective.preassigns.include?(@preassign_to_add)
+        assert @super_objective.preassigns.include?(@sub_preassign)
         assert_equal oldPreconditionCount + 5, Precondition.count #To make sure that Preconditions were not created that would be been redundant
     end
     
     test "add prereq and class at once" do
         @otherClass = seminars(:two)
         
-        assert_not @otherClass.objectives.include?(@mainMainAssign)
-        assert_not @otherClass.objectives.include?(@preassignToAdd)
-        assert_not @otherClass.objectives.include?(@subPreassign)
-        assert_not @otherClass.objectives.include?(@alreadyPreassignedToMainMain)
+        assert_not @otherClass.objectives.include?(@main_objective)
+        assert_not @otherClass.objectives.include?(@preassign_to_add)
+        assert_not @otherClass.objectives.include?(@sub_preassign)
+        assert_not @otherClass.objectives.include?(@already_preassign_to_main)
         old_os_count = ObjectiveSeminar.count
         
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@mainMainAssign.fullName)
+        click_on(@main_objective.fullName)
         
-        check("check_#{@preassignToAdd.id}")
+        check("check_#{@preassign_to_add.id}")
         check(@otherClass.name)
         click_button("Save Changes")
         
-        assert @otherClass.objectives.include?(@mainMainAssign)
-        assert @otherClass.objectives.include?(@preassignToAdd)
-        assert @otherClass.objectives.include?(@subPreassign)
-        assert @otherClass.objectives.include?(@alreadyPreassignedToMainMain)
+        assert @otherClass.objectives.include?(@main_objective)
+        assert @otherClass.objectives.include?(@preassign_to_add)
+        assert @otherClass.objectives.include?(@sub_preassign)
+        assert @otherClass.objectives.include?(@already_preassign_to_main)
         assert_equal old_os_count + 4, ObjectiveSeminar.count
     end
    
@@ -314,16 +313,16 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         click_on('All Objectives')
         click_on(@objective_40.fullName)
         
-        assert_no_selector('input', :id => "check_#{@ownAssign.id}")
+        assert_no_selector('input', :id => "check_#{@own_assign.id}")
         assert_selector('input', :id => "check_#{@objective_30.id}")
     end
     
     test "but should appear for others" do
         capybara_login(@admin_user)
         click_on('All Objectives')
-        click_on(@superMainAssign.fullName)
+        click_on(@super_objective.fullName)
         
-        assert_selector('input', :id => "check_#{@ownAssign.id}")
+        assert_selector('input', :id => "check_#{@own_assign.id}")
     end
     
     test "teacher made no objectives" do

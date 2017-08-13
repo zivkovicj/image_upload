@@ -4,9 +4,6 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
 
   def setup
     setup_users()
-    @publicobjective = objectives(:objective_30)
-    @thisTeachersobjective = objectives(:objective_40)
-    @otherTeachersobjective = objectives(:objective_160)
     setup_objectives()
   end
 
@@ -14,24 +11,24 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     capybara_login(@admin_user)
     click_on("All Objectives")
 
-    assert_selector('a', :id => "edit_#{@publicobjective.id}", :text => @publicobjective.fullName)
-    assert_selector('a', :id => "delete_#{@publicobjective.id}", :text => "Delete")
-    assert_selector('a', :id => "edit_#{@thisTeachersobjective.id}", :text => @thisTeachersobjective.fullName)
-    assert_selector('a', :id => "delete_#{@thisTeachersobjective.id}", :text => "Delete")
-    assert_selector('a', :id => "edit_#{@otherTeachersobjective.id}", :text => @otherTeachersobjective.fullName)
-    assert_selector('a', :id => "delete_#{@otherTeachersobjective.id}", :text => "Delete")
+    assert_selector('a', :id => "edit_#{@objective_20.id}", :text => @objective_20.fullName)
+    assert_selector('a', :id => "delete_#{@objective_20.id}", :text => "Delete")
+    assert_selector('a', :id => "edit_#{@own_assign.id}", :text => @own_assign.fullName)
+    assert_selector('a', :id => "delete_#{@own_assign.id}", :text => "Delete")
+    assert_selector('a', :id => "edit_#{@other_teacher_objective.id}", :text => @other_teacher_objective.fullName)
+    assert_selector('a', :id => "delete_#{@other_teacher_objective.id}", :text => "Delete")
   end
 
   test "index objectives as non admin" do
     capybara_login(@teacher_1)
     click_on("All Objectives")
     
-    assert_selector('a', :id => "edit_#{@publicobjective.id}", :text => @publicobjective.fullName)
-    assert_selector('a', :id => "delete_#{@publicobjective.id}", :text => "Delete", :count => 0)
-    assert_selector('a', :id => "edit_#{@thisTeachersobjective.id}", :text => @thisTeachersobjective.fullName)
-    assert_selector('a', :id => "delete_#{@thisTeachersobjective.id}", :text => "Delete")
-    assert_selector('a', :id => "edit_#{@otherTeachersobjective.id}", :text => @otherTeachersobjective.fullName, :count => 0)
-    assert_selector('a', :id => "delete_#{@otherTeachersobjective.id}", :text => "Delete",:count => 0)
+    assert_selector('a', :id => "edit_#{@objective_20.id}", :text => @objective_20.fullName)
+    assert_selector('a', :id => "delete_#{@objective_20.id}", :text => "Delete", :count => 0)
+    assert_selector('a', :id => "edit_#{@own_assign.id}", :text => @own_assign.fullName)
+    assert_selector('a', :id => "delete_#{@own_assign.id}", :text => "Delete")
+    assert_selector('a', :id => "edit_#{@other_teacher_objective.id}", :text => @other_teacher_objective.fullName, :count => 0)
+    assert_selector('a', :id => "delete_#{@other_teacher_objective.id}", :text => "Delete",:count => 0)
   end
   
   test "back button" do

@@ -1,9 +1,31 @@
 
 
 
-
-
-
+2.21 PRE-TEST QUIZ UNLOCKS--STARTED 08/05/17
+                            -- PUSHED 08/08/17
+    Goal of this update: Many quizzes can be set as pre-tests so that they are open to every student upon joining that class.
+        
+    This attribute is edited between the first seminar editing screen and the priorities. It only lists the objectives that are already in that class. 
+        Teacher can check which objectives should be considered as pre-test objectives. Doing this adjusts a column in the objective_seminar model.
+    ObjectiveSeminar model needs column for pre-test
+        I'm coding that as an integer, not a boolean. That way, in the future, I might be able to set some pre-tests to open during 2nd or 3rd term
+            instead of opening them all at the beginning.
+    Create the view with the checklists
+        Ensure that checks are working to adjust the pre-test attribute
+        Ensure that routing to the next screen is still functioning.
+    Test pretests and priorities for a new seminar
+    Test a view that includes desk consultants objectives and pretest objectives both
+    When new students join the class, the pre-tests are open to them.
+        Lowest-level quizzes are offered immediately. Higher-level quizzes are offered if the student is ready for them.
+        Test in seminar model should also check that unwanted assignments don't appear in pretest offerings
+    Objectives where student has scored 100 removed from pretest offerings
+    Objectives that student has attempted twice removed from pretest offerings
+    Guard if a team has no objective so that student does not get an error in the view.
+    Make sure to downcase usernames or it creates a problem with finding them
+    Try to Eager load in a few spots
+    has_not_scored_100 needs to apply to consultant objectives as well as pretest objectives
+    Put the checkbox updating into on transaction so that servers, etc. never see the intermediate state.
+    Clean up the routes file now that I know about :collection and :member
 
 2.20 SINGLE-TABLE INHERITANCE--STARTED 07/30/17
                              --PUSHED 08/05/17

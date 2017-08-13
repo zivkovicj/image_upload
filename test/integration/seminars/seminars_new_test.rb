@@ -8,7 +8,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
    
    test "create new seminar" do
         setup_objectives
-        obj_array = [@objective_30, @objective_40, @objective_50, @ownAssign]
+        obj_array = [@objective_30, @objective_40, @objective_50, @own_assign]
         capybara_login(@teacher_1)
         click_on("Create a New Class")
        

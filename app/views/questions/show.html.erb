@@ -1,0 +1,42 @@
+<% provide(:title, 'Edit Question') %>
+<% provide(:button_text, 'Save Changes') %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<% choice_array = [:choice_0, :choice_1, :choice_2, :choice_3, :choice_4,
+        :choice_5] %>
+
+  <div class="singleOption">
+    <h2><%= @question.extent.capitalize %> Question Created by: <%= @createdLabel %></h2>
+    </br>
+    </br>
+    You are viewing the details of this question. You may not make any edits because it was created by another teacher.
+  </div>
+  </br>
+  <div class="singleOption">
+    <div class="container"><div class="row">
+        <div class="col-sm-6">
+          <h4>Label: <%= @question.label.name %></h4>
+          <h4>Style: <%= @question.style.capitalize %></h4>
+          <h2>Prompt &nbsp;</h2>
+          </br>
+          <h5><%= @question.prompt %></h5>
+        </div>
+        <div class="col-sm-6">
+          </br> 
+          <h2>Answer Choices</h2>
+          <ul>
+            <% 6.times do |n| %>
+              <% this_answer_choice = @question.read_attribute(choice_array[n]) %>
+              <% if this_answer_choice.present? %>
+                <li><% conditional_wrapper(@question.correct_answers.include?(this_answer_choice)) do %>
+                  <%= this_answer_choice %>
+                <% end %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>    
+    </div></div>
+  </div>
+</div>

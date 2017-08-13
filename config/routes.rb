@@ -10,29 +10,7 @@ Rails.application.routes.draw do
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
   delete '/logout',  to: 'sessions#destroy'
-  #get     '/seminar_students/:id', to: 'seminar_students#removeFromClass'
-  #put     '/seminar_students/:id', to: 'seminar_students#ajaxUpdate'
-  
-  #post '/objective_seminars/edit', to: 'objective_seminars#edit'
-  #post '/objective_seminars/update_priorities', to: 'objective_seminars#update_priorities'
-  
-  #post '/label_objectives/edit', to: 'label_objectives#edit'
-  #post '/label_objectives/update', to: 'label_objectives#update'
-  
-  #get    '/seminars/scoresheet/:id', to: 'seminars#scoresheet', 
-    #:as => "scoresheet"
-  #get   '/seminars/student_view/:id', to: 'seminars#student_view',
-    #:as => "student_view"
-    
-  #post   '/seminars/student_view/:id', to: 'seminars#student_view'
-  
-  #get 'students/edit_teaching_requests/:id', to: 'students#edit_teaching_requests',
-    #:as => "edit_teaching_requests"
-    
-  #get '/objectives/quantities/:id',    to: 'objectives#quantities', :as => "quantities"
-  
-  
-  
+
   resources :admins
   resources :account_activations, only: [:edit]
   resources :consultancies, only: [:new, :create, :show, :index]
@@ -51,7 +29,10 @@ Rails.application.routes.draw do
   resources :password_resets, only: [:new, :create, :edit, :update]
   resources :pictures
   resources :preconditions
-  resources :questions
+  resources :questions do
+    post 'details', on: :collection
+    post 'create_group', on: :collection
+  end
   resources :quizzes
   resources :ripostes
   resources :seminars do
