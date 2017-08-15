@@ -136,8 +136,6 @@ class SeminarsController < ApplicationController
         @teach_options = teach_options(@student, @seminar, 5)
         @learn_options = learn_options(@student, @seminar, 5)
         
-        #set_objectives_and_scores(false)
-        
         @desk_consulted_objectives = @student.desk_consulted_objectives(@seminar)
         @all_pretest_objectives = @seminar.all_pretest_objectives(@student)
         

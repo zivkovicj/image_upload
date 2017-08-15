@@ -2,20 +2,25 @@ class QuizzesController < ApplicationController
     
     def new
         @objective = Objective.find(params[:objective_id])
-        @quiz = Quiz.create(:objective => @objective, :student => current_user)
-        quest_collect = []
-        @objective.label_objectives.each do |lo|
-            quant = lo.quantity
-            label = lo.label
-            label.questions.order("RANDOM()").limit(quant).each do |quest|
-                quest_collect.push([quest.id, lo.point_value])
+        if @objective.questions.count > 0
+            @quiz = Quiz.create(:objective => @objective, :student => current_user)
+            quest_collect = []
+            @objective.label_objectives.each do |lo|
+                quant = lo.quantity
+                label = lo.label
+                label.questions.order("RANDOM()").limit(quant).each do |quest|
+                    quest_collect.push([quest.id, lo.point_value])
+                end
             end
+            
+            quest_collect.shuffle.each_with_index do |q_info, index|
+                @quiz.ripostes.create(:question_id => q_info[0], :position => index+1, :poss => q_info[1]) 
+            end
+            redirect_to edit_riposte_path(@quiz.ripostes.first)
+        else
+            flash[:danger] = "This quiz doesn't have any questions. Please alert your teacher that you cannot take this quiz until some questions are added."
+            redirect_to student_view_seminar_path(current_user.current_class, :student => current_user)
         end
-        
-        quest_collect.shuffle.each_with_index do |q_info, index|
-            @quiz.ripostes.create(:question_id => q_info[0], :position => index+1, :poss => q_info[1]) 
-        end
-        redirect_to edit_riposte_path(@quiz.ripostes.first)
     end
     
     def show

@@ -1,8 +1,25 @@
+<% provide(:title, 'All Consultancies') %>
 
+<% provide(:headerText, "All Consultancies") %>
+<% provide(:headerPic, "sierpinski.png") %>
 
-<ul>
-    <% @consultancies.each do |consultancy| %>
-        <li><%= link_to consultancy.created_at.strftime("%B-%d-%Y"), consultancy_url(consultancy, :seminar => @seminar.id) %></li>
-        </br>
-    <% end %>
-</ul>
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<% if @consultancies.empty? %>
+    </br>
+    <h4><%= no_consultancies_message %></h4>
+<% else %>
+    <ul>
+        <% @consultancies.each do |consultancy| %>
+            <li><%= link_to consultancy.created_at.strftime("%B-%d-%Y"), consultancy_url(consultancy, :seminar => @seminar.id), :id => "consultancy_#{consultancy.id}" %></li>
+            </br>
+        <% end %>
+    </ul>
+<% end %>
+</br>
+
+<h3>
+    Click the "Desk Consultants" icon to create a new consultancy group: &emsp;
+    <%= link_to image_tag("desk_consult.png"), new_consultancy_path(:seminar => @seminar.id), :id => "desk_consult_#{@seminar.id}" %>
+</h3>

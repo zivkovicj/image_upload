@@ -5,10 +5,12 @@ class LabelObjectivesController < ApplicationController
     end
     
     def update_quantities
-        params[:syl].each do |key, value|
-            @lo = LabelObjective.find(key)
-            @lo.update(:quantity => value[:quantity])
-            @lo.update(:point_value => value[:point_value])
+        if params[:syl]
+            params[:syl].each do |key, value|
+                @lo = LabelObjective.find(key)
+                @lo.update(:quantity => value[:quantity])
+                @lo.update(:point_value => value[:point_value])
+            end
         end
         redirect_to current_user
     end

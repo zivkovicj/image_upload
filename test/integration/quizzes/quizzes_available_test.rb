@@ -72,4 +72,22 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         assert_not @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
     end
     
+    test "quiz without questions" do
+        @bad_objective = Objective.create(:name => "Bad Objective")
+        @bad_objective.objective_seminars.create(:seminar => @seminar, :pretest => 1)
+        
+        go_to_first_period
+        click_on(@bad_objective.name)
+        
+        assert_no_text("Question: 1")
+    end
+    
+    test "quiz with questions" do
+        @seminar.objective_seminars.find_by(:objective => @objective_10).update(:pretest => 1)
+        go_to_first_period
+        begin_quiz
+        
+        assert_text("Question: 1")
+    end
+    
 end

@@ -16,7 +16,6 @@ class Objective < ApplicationRecord
     has_many    :label_objectives, dependent: :destroy, foreign_key: :objective_id
     has_many    :labels, through: :label_objectives
     has_many    :questions, through: :labels
-    
     has_many    :teams, dependent: :destroy
     
     belongs_to  :user
@@ -24,8 +23,6 @@ class Objective < ApplicationRecord
     validates :name, presence: true, length: { maximum: 40 }
     
     include ModelMethods
-    
-    before_save   :downcase_stuff
     
     def students_in_need(seminar)
         studsInNeed = 0
@@ -42,10 +39,6 @@ class Objective < ApplicationRecord
         name[0,30] 
     end
     
-    private
-        def downcase_stuff
-            self.name.downcase!
-        end
         
         
 

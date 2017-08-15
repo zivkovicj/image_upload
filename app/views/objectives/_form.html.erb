@@ -2,10 +2,13 @@
 <!-- That would create an an impossible loop -->
 
 
-
+<%
+=begin %>
 <div id="dialog2" title="Objective Pre-Requisites">
   Students will not be assigned an objective until after they have passed all pre-requisites for that objective.
 </div>
+<%
+=end %>
 
 <%= render 'shared/pre_req_dialog' %>
 <%= render 'shared/back-link' %>
@@ -67,11 +70,11 @@
         </div>
         <br/>
       <% end %>
- 
+      
       <%= render :partial => 'shared/include_checks', 
         :locals => {:list_for_checks => @pre_req_list,
           :check_box_name => "objective[preassign_ids][]",
-          :inclusion_var => @objective.preassigns, :boulderfist => false,
+          :inclusion_var => @objective.preassigns, :boulderfist => true,
           :include_word => "pre-requisite", :include_on => "for this objective",
           :model_name => "objective"} %>
       

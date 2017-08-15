@@ -86,22 +86,6 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
       delete objective_path(@objective_40)
     end
   end
-
-  test "successful objective edit" do
-    log_in_as(@teacher_1)
-    assignToEdit = Objective.where(:user_id => @teacher_1.id).first
-    
-    get seminar_path(@seminar)
-    get edit_objective_path(assignToEdit)
-    #assert_select "a", :href => seminar_path(@seminar), text: "Back to #{@seminar.name}"
-    name  = "Pretzels"
-    patch objective_path(assignToEdit), params: { objective: { name:  name,
-                                              seminar_id: @seminar.id } }
-    assert_not flash.empty?
-    assert_redirected_to quantities_objective_path(assignToEdit)
-    assignToEdit.reload
-    assert_equal name.downcase,  assignToEdit.name
-  end
   
 
 end

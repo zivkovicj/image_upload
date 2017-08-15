@@ -19,7 +19,7 @@ class SeminarsShowTest < ActionDispatch::IntegrationTest
         assert page.has_title? "#{@seminar.name} Scoresheet | EM Education"
         assert_match @seminar.students.count.to_s, page.body
         @seminar.students.each do |student|
-            assert_match student.lastNameFirst, page.body
+            assert_match student.last_name_first, page.body
         end
         bdth = []
         @seminar.objectives.each do |objective|
@@ -34,8 +34,8 @@ class SeminarsShowTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("scoresheet_#{@seminar.id}")
         thisStudent = @seminar.students[2]
-        click_on(thisStudent.lastNameFirst)
-        assert_selector("h1", :text => thisStudent.lastNameFirst)
+        click_on(thisStudent.last_name_first)
+        assert_selector("h1", :text => thisStudent.last_name_first)
         
     end
     

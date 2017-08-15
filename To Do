@@ -13,68 +13,76 @@ Figure out what's the deal with refreshing the "question details" screen
 
 
 
-2.22 FILL-IN QUESTIONS-- STARTED 08/08/17
-
-    Goal of this update: Offer "Fill-in" questions as an option for teacher who are writing assessments
-    
-    V Question table needs to be updated with the "style" attribute
-        V Validation must require "style" for every question
-     
-    V Test for if a question is at first invalid, but then submitted successfully
-    
-    
-    V When user begins writing questions, they first choose label and type on one screen
-        V Editing prompt and answer choices will occur on the next screen.
-        V But answer choices won't be offered for "fill-in" questions. Instead, several blanks to enter all possible answers
-        Saving these questions saves an array with many possible answers
-        
-    V When student answers, their reponse is downcased and spaces are removed.
-        V The same applies to all possible answers in the array
-        
-    V Make sure that questions can be checked and graded correctly.
-    
-    V Test changing label and extent
-    
-    V While editing a question, don't allow editing the style
-        V Test
-    
-    V Add Style for seed questions
-        V And seed a few fill-in questions
-    
-    V Instead of splitting all the different form parts by @assignPermission, redirect the user to show or edit based on that variable.
-        V Update the tests for viewing another teacher's question.
-    
-    V Test for editing fill-in questions
-    
-    V The fixtures probably don't need to load associations in the test helper anymore
-    
-    
     
     
 SEND OUT NEWS ABOUT UPDATES TO TEACHERS WHO WERE INTERESTED
+
+Goal of this update: Fix a few errors before offering the program to the teachers who have expressed interest.
  
- 
-Make the links to pictures invisible. Return them after I fix the pictures features in the next update.
+V Comment out the links to pictures. Return them after I fix the pictures features in the next update.
+
+V Teacher cannot submit an objective without selecting some labels.
+
+V The update action for the seminar_students controller is no longer needed
+
+V Test that no errors occur if a user creates an objective without any labels
+
+V There were no seeded objectives with a "public" extent. There needs to be some.
+
+V An error occurs when students try to take a quiz that doesn't have any questions.
     
-An erro occurs when students try to take a quiz that doesn't have any questions. Should I not offer those quizzes to the students?
-    
-I learned how to use "Like" in the index. So I don't think I need to downcase names anymore. I can allow users to input the names how they want.
-        
-Take another look at "boulderfist" classtype and the dialog box that it should produce
+V I learned how to use "Like" in the index. So I don't think I need to downcase names anymore. I can allow users to input the names how they want.
+
+V Take another look at "boulderfist" classtype and the dialog box that it should produce
  
-Make icons for all screens that should have one.
+V Message about having no questions should go in the quantities screen. Not on the teacher show view
+    V Test for this message
+    V And also for the message in the quantities view that a label does not have any questions.
+    
+V Make icons for all screens that should have one.
+    V Student
+    V Students
+    V Teacher
+    V Picture
+    V Multiple Consultancies
+    V Seminar
         
-In creating Consultant groups, finish creating the group that collects absent students
-       
-Teacher clicking on "Consultancies" when none exist yet.
+V Teacher clicking on "Consultancies" when none exist yet.
 
-Reorder the priorities in this To-Do list so that fixing flaws comes before features.
-
-And add something fun or interesting before adding more features as well.
-    Perhaps student comments within classes. 
+V Clicking on a class in the navribbon directs to that class show view. It should direct to the scoresheet or edit view.
 
 
 
+
+
+
+
+
+
+
+IMAGES WITH QUESTIONS
+
+Public/Private Extent for Pictures
+
+The first screen for writing questions is only for the type, extent, and label.
+
+Associate pictures with labels
+
+Make an option to associate labels with pictures
+
+Link an image to a question
+
+Display that image when the student is answering the riposte
+
+Also work on the best way to display the images while creating questions
+
+The second screen will only offer the pictures that correspond to the chosen label.
+
+List options for labels when uploading a new image
+
+Disable "Next Question" button until student chooses a response
+
+    
 CURATED QUESTIONS
 
 Should have another type of user called "Content Creator"
@@ -83,32 +91,7 @@ Admin or content creators can curate questions.
     
 Teachers can choose whether their students will see all questions, or only curated questions.
 
-
-
-IMAGES WITH QUESTIONS
-
-    Public/Private Extent for Pictures
-
-    The first screen for writing questions is only for the type, extent, and label.
-
-    Associate pictures with labels
-    
-    Make an option to associate labels with pictures
-    
-    Link an image to a question
-    
-    Display that image when the student is answering the riposte
-    
-    Also work on the best way to display the images while creating questions
-    
-    The second screen will only offer the pictures that correspond to the chosen label.
-    
-    List options for labels when uploading a new image
-    
-    Disable "Next Question" button until student chooses a response
-
-    
-    
+   
  
 CUMULATIVE STARS
 
@@ -188,16 +171,34 @@ OPTION TO COPY A CLASS
     
     
 
-TRY TO CHANGE CURRENT_CLASS TABLE DB ATTRIBUTE TO SESSION ATTRIBUTE
+
+    
+
+ADD INFO BUTTONS FOR ALL FIELDS ON ALL FORMS
+
+There's a blanked-out info button to explain pre-requisites in the objectives form.
+
+<button type="button" class="btn btn-info" id="btn-info1">?</button>
+
+The jquery for showing those info buttons needs to be dried down to one single function.
+
+
+
 
 CURRENT CLASS AS A REFERENCE, NOT AN INTEGER    
     
     After deploy, migrate, reset, and seed with heroku
+    
+    
 
   
 STUDENT VIEW INTO MULTIPLE SUB-VIEWS
 
     Students should be able to view their old quizzes.
+    
+    Won't need to setup scores in all the tests that view the student_view
+    
+    
   
 REMOVE QUIZ FROM DESK CONSULTANTS OFFERINGS AFTER STUDENT HAS TAKEN IT TWICE
     Count the number of attempts since the most recent time working that objective with desk consultants
@@ -255,6 +256,8 @@ TEACHER CAN ADJUST CONSULTANCY
 
     Then save consultancy after adjusting
 
+    In creating Consultant groups, create a group of absent students so they can be placed into groups as they arrive to class.
+
 
 
 STUDY LINKS
@@ -273,6 +276,22 @@ STUDY LINKS
 IMPROVE PERFORMANCE OF DESK-CONSULTANTS MAKER    
 
     Limit the loading of jquery library
+    
+    
+    
+    
+
+ADD SOMETHING FUN OR INTERESTING BEFORE MORE BORING FEATURES
+
+Perhaps student comments within classes. 
+
+
+
+
+TRY TO CHANGE CURRENT_CLASS TABLE DB ATTRIBUTE TO SESSION ATTRIBUTE
+
+
+
 
 
 

@@ -6,6 +6,7 @@ class SeminarStudent < ApplicationRecord
     validates :seminar_id, presence: true
     
     attribute :pref_request, :integer, default: 1
+    attribute :present, :boolean, default: true
     
     include ModelMethods
 end

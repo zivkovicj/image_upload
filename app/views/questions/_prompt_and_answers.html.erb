@@ -10,6 +10,8 @@
             <textarea cols="15" rows="6" id="prompt_<%= index %>" name="questions[<%= index.to_i %>][prompt]"><%= @question.prompt %></textarea>
             
             </br>
+<%
+=begin %>
             <h2>Image</h2>
             <table>
                 <% Picture.all.each do |picture| %>
@@ -19,6 +21,9 @@
                     </tr>
                 <% end %>
             </table>
+            
+<% 
+=end %>
         </div>
         <div class="col-sm-1"></div>
         <div class="col-sm-4">

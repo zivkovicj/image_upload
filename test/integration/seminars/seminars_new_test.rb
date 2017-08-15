@@ -17,7 +17,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         obj_array.each do |obj|
             check("check_#{obj.id}")
         end
-        click_on("Create a New Class")
+        click_on("Create This Class")
        
         @new_seminar = Seminar.last
         assert @new_seminar.name == "4th Period"

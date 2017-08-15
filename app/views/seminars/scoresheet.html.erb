@@ -1,11 +1,14 @@
 <% provide(:title, "#{@seminar.name} Scoresheet") %>
 
+<% provide(:headerText, "#{@seminar.name} Scoresheet") %>
+<% provide(:headerPic, "scoresheet.png") %>
+
+<%= render 'shared/back-link' %>
 <%= render 'shared/navribbon' %><br/>
 <%= render 'shared/teacher_name_and_edit', user: @teacher %><br/>
 <%= render 'shared/class_and_edit' %>
 
-
-<h1><%= "#{@seminar.name} Scoresheet" %></h1>
+<%= render 'shared/headline' %>
 
 <div>
   <%= button_tag "Hide Scores", :id => "toggle_text", :first_text => "Hide Scores", :second_text => "Show Scores" %>
@@ -26,7 +29,7 @@
     <tbody>
       <% @students.each do |student| %>
         <tr>
-          <td><h4><%= link_to student.lastNameFirst, edit_teaching_requests_student_url(student) %> </h4></td>
+          <td><h4><%= link_to student.last_name_first, edit_teaching_requests_student_url(student) %> </h4></td>
           <td class="themScores"><%= student.total_points %></td>
           <% this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id) %>
           <% @objectives.each do |objective| %>

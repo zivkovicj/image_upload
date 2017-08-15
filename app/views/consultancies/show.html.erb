@@ -1,11 +1,15 @@
 <% provide(:title, "#{@seminar.name} Desk Consultants") %>
 
+<% provide(:headerText, show_consultancy_headline) %>
+<% provide(:headerPic, "desk_consult.png") %>
+
 <%= render 'shared/navribbon' %><br/>
+<%= render 'shared/back-link' %>
 <%= render 'shared/teacher_name_and_edit', user: @teacher %><br/>
 <%= render 'shared/class_and_edit' %>
 
 <div class="singleOption lowSingOpt">
-&emsp;<h1 class="block"><%= image_tag("desk_consult.png") %> Desk Consultant Groups</h1>
+<%= render 'shared/headline' %>
 &emsp;&emsp;&emsp; <h4 class="studentName block">Key:</h4>
 <p class="studentName consultant block">Consultant</p>
 <p class="studentName topic block">Topic</p>

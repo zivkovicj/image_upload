@@ -1,4 +1,27 @@
 
+2.22 FILL-IN QUESTIONS-- STARTED 08/08/17
+                    --PUSHED 08/13/17
+
+    Goal of this update: Offer "Fill-in" questions as an option for teacher who are writing assessments
+    Question table needs to be updated with the "style" attribute
+        Validation must require "style" for every question
+    Test for if a question is at first invalid, but then submitted successfully
+    When user begins writing questions, they first choose label and type on one screen
+        Editing prompt and answer choices will occur on the next screen.
+        But answer choices won't be offered for "fill-in" questions. Instead, several blanks to enter all possible answers
+        Saving these questions saves an array with many possible answers
+    When comparing student answer to the correct answers, both sides is downcased and spaces are removed.
+    Make sure that questions can be checked and graded correctly.
+    Test changing label and extent
+    While editing a question, don't allow editing the style
+    Add Style for seed questions
+        And seed a few fill-in questions
+    Instead of splitting all the different form parts by @assignPermission, redirect the user to show or edit based on that variable.
+        Update the tests for viewing another teacher's question.
+    Test for editing fill-in questions
+    The fixtures probably don't need to load associations in the test helper anymore
+
+
 
 
 2.21 PRE-TEST QUIZ UNLOCKS--STARTED 08/05/17

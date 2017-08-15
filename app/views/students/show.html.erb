@@ -1,4 +1,8 @@
+<% provide(:title, @student.last_name_first) %>
+<% provide(:headerText, "Your Classes") %>
+<% provide(:headerPic, 'student.png') %>
 
+<%= render 'shared/headline' %>
 <h1><%= @student.fullName %></h1>
 
 <div class="requestBox preferenceBox">

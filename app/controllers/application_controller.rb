@@ -35,10 +35,4 @@ class ApplicationController < ActionController::Base
       redirect_to(login_url) 
     end
   end
-  
-  def changeDowncase
-    Objective.all.each do |objective|
-      objective.update(:name => objective.name.downcase)
-    end
-  end
 end

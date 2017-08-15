@@ -5,25 +5,6 @@ class SeminarStudentsController < ApplicationController
   include AddStudentStuff
 
 
-  def update
-    @ss = SeminarStudent.find(params[:id])
-    @ss.update_attributes(ss_params)
-    @seminar = Seminar.find(@ss.seminar_id)
-    if (params[:ss][:teach_request])
-      if current_user.type == "Teacher"
-        flash[:success] = "Student request updated"
-        redirect_to scoresheet_seminar_url(@seminar)
-      else
-        flash[:success] = "Your requests were updated"
-        redirect_to student_view_seminar_path(@seminar)
-      end
-    else
-      respond_with @ss
-    end
-  end
-  
-
-  
   def create
     # This method is called when the teacher adds an existing student to a class.
     # It is not called when creating a new student.
@@ -46,10 +27,6 @@ class SeminarStudentsController < ApplicationController
   def destroy
     this_ss = SeminarStudent.find(params[:id])
     @seminar = Seminar.find(this_ss.seminar_id)
-    
-    #Remove student from seating chart
-    #@seminar.seating.delete(thisSeminarStudent.student_id)
-    #@seminar.save
     
     this_ss.destroy
     

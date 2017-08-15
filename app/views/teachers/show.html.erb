@@ -30,7 +30,7 @@
         <td><%= link_to image_tag("scoresheet.png"), scoresheet_seminar_url(s), :id => "scoresheet_#{s.id}" %></td>
         <td>
           <% if s.shouldShowConsultLink %>
-            <%= link_to image_tag("desk_consult.png"), new_consultancy_path(:seminar => s.id), :id => "deskConsult_#{s.id}" %>
+            <%= link_to image_tag("desk_consult.png"), new_consultancy_path(:seminar => s.id), :id => "desk_consult_#{s.id}" %>
           <% end %>
         </td>
         <td><%= link_to image_tag("objectives.png"), edit_seminar_path(s), :id => "edit_seminar_#{s.id}" %></td>
@@ -80,5 +80,5 @@
   </div>
 </div>
 
-<%= button_to 'Upload Pictures', new_picture_path, class: "btn btn-lg btn-primary",
+<%#= button_to 'Upload Pictures', new_picture_path, class: "btn btn-lg btn-primary",
           :method => :get %>

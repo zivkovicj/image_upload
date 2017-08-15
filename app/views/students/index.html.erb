@@ -1,6 +1,6 @@
 <% provide(:title, 'All Students') %>
 <% provide(:headerText, 'All Students') %>
-<% provide(:headerPic, 'objectives.png') %>
+<% provide(:headerPic, 'students.png') %>
 
 <%= render 'shared/back-link' %>
 <%= render 'shared/headline' %>
@@ -35,7 +35,7 @@
                 <td><%= link_to "delete", student, method: :delete,
                                 data: { confirm: "Are you sure?" } %></td>
                 <td><%= link_to student.id, edit_student_path(student) %></td>
-                <td><%= link_to student.lastNameFirst, edit_student_path(student)  %></td>
+                <td><%= link_to student.last_name_first, edit_student_path(student)  %></td>
                 <td>email</td>
               <td><%= student.user_number %></td>
               <td><%= student.username %></td>
@@ -50,7 +50,7 @@
         <ul class="users">
           <% @students.each do |student| %>
             <li>
-              <strong><%= student.lastNameFirst %></strong>
+              <strong><%= student.last_name_first %></strong>
               &emsp; Student Number:<%= student.user_number %>
               <% if @seminar.students.include?(student) == false %>
                 <%= form_for(@ss) do |a| %>

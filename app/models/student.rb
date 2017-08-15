@@ -27,7 +27,7 @@ class Student < User
         "#{first_name[0,20].split.map(&:capitalize).join(' ')} #{last_name[0,20].split.map(&:capitalize).join(' ')}"
     end
     
-    def lastNameFirst
+    def last_name_first
         "#{last_name[0,20].split.map(&:capitalize).join(' ')}, #{first_name[0,20].split.map(&:capitalize).join(' ')}"
     end
     

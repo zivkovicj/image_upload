@@ -85,7 +85,7 @@ assignNameArray = [[1,"Add and Subtract Numbers"],[1,"Multiply and Divide Number
     
 assignNameArray.each_with_index do |objective, index|
     @objective = Objective.create(name: objective[1], :user => jeff)
-    ObjectiveSeminar.create(:seminar_id => objective[0], :objective => @objective, :priority => 2, :pretest => 0)
+    ObjectiveSeminar.create(:seminar_id => objective[0], :objective => @objective, :priority => 2, :pretest => 0, :extent => "public")
 end
 
 

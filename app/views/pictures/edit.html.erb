@@ -1,6 +1,11 @@
-<h1>Editing Picture</h1>
+<% provide(:title, 'Edit Picture') %>
+<% provide(:button_text, 'Save Changes') %>
+
+<% provide(:headerText, "Edit Picture") %>
+<% provide(:headerPic, "picture.png") %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @picture %> |
-<%= link_to 'Back', pictures_path %>

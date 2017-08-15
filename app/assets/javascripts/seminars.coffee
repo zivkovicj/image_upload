@@ -203,5 +203,10 @@ ready = ->
         
             $('#total_disp').text(points_poss)
     
-            
+     
+    if $('.remove_btn').length > 0
+        $('.confirm_button').hide()
+        $('.remove_btn').on "click", (event) ->
+            $('.confirm_button').fadeIn()
+          
 $(document).on('turbolinks:load', ready)

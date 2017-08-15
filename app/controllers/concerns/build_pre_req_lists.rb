@@ -4,7 +4,6 @@ module BuildPreReqLists
     include SessionsHelper
     
     def build_pre_req_list(target_assign)
-      
       bad_ids = [target_assign.id]
       target_assign.mainassigns.each do |mainassign|
         bad_ids.push(mainassign.id)

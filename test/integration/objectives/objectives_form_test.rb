@@ -3,6 +3,8 @@ require 'test_helper'
 class ObjectivesFormTest < ActionDispatch::IntegrationTest
     
     include BuildPreReqLists
+    include ObjectivesHelper
+    
     
     def setup
         setup_users()
@@ -12,10 +14,14 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         setup_questions()
     end
     
+    def submit_objective
+        click_on('Create a New Objective')
+    end
+    
     test "new objective button from main user page" do
         capybara_login(@teacher_1)
         assert_on_teacher_page
-        click_on("Create a New Objective")
+        submit_objective
         assert_selector('h1', :text => 'New Objective', :visible => true)
         assert_not_on_teacher_page
     end
@@ -27,9 +33,9 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         preReqAssign = @seminar.objectives.second
         capybara_login(@teacher_1)
         click_on('1st Period')
-        click_on('Create a New Objective')
+        submit_objective
+        
         assert_selector('div', :id => "seminars_to_include")
-
         name = "009 Compare Unit Rates"
         fill_in "name", with: name
         check("check_#{preReqAssign.id}")
@@ -37,11 +43,11 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         click_button('Create a New Objective')
         
         assert_text "Quantities and Point Values"
-        assert_text name.downcase
+        assert_text name
         
         @newAssign = Objective.last
         assert_equal oldAssignCount + 1, Objective.count
-        assert_equal "009 compare unit rates", @newAssign.name
+        assert_equal name, @newAssign.name
         assert_equal @teacher_1, @newAssign.user
         assert_equal "public", @newAssign.extent
         assert_equal 2, @newAssign.objective_seminars.first.priority
@@ -64,7 +70,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         oldPreconditionCount = Precondition.count
         preReqAssign = @seminar.objectives.second
         capybara_login(@admin_user)
-        click_on('Create a New Objective')
+        submit_objective
 
         name = "010 Destroy Unit Rates"
         fill_in "name", with: name
@@ -74,10 +80,11 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         
         @newAssign = Objective.last
         assert_equal oldAssignCount + 1, Objective.count
-        assert_equal name.downcase, @newAssign.name
+        assert_equal name, @newAssign.name
         assert_equal @admin_user, @newAssign.user
         assert_equal "public", @newAssign.extent
         assert_equal 0, @newAssign.objective_seminars.count
+        assert_equal 0, @newAssign.labels.count
         
         @newPrecondition = Precondition.last
         assert_equal oldPreconditionCount + 1, Precondition.count
@@ -212,7 +219,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         @own_assign.reload
         label_objective_1.reload
         label_objective_2.reload
-        assert_equal new_name.downcase, @own_assign.name
+        assert_equal new_name, @own_assign.name
         assert @own_assign.preassigns.include?(@assign_to_add)
         assert @own_assign.labels.include?(@user_l)
         assert_equal old_label_objective_count + 2, LabelObjective.count
@@ -332,7 +339,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         fill_in('Password', :with => 'password')
         click_on('Log In')
         
-        click_on("Create a New Objective")
+        submit_objective
         assert_text("Nothing here right now.")
     end
     
@@ -340,6 +347,49 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("New Objective")
         assert_no_text("Nothing here right now.")
+    end
+    
+    test "objective with no label" do
+        capybara_login(@teacher_1)
+        click_on("New Objective")
+        submit_objective
+        
+        assert_text(no_label_message)
+        assert_no_text(quantity_instructions)
+    end
+    
+    test "objective with label but not questions" do
+        capybara_login(@teacher_1)
+        click_on("New Objective")
+        check("check_#{@user_l.id}")
+        submit_objective
+        
+        assert_no_text(no_label_message)
+        assert_text(quantity_instructions)
+    end
+    
+    test "label with no questions" do
+        @user_l.questions.destroy_all
+        
+        capybara_login(@teacher_1)
+        click_on("New Objective")
+        check("check_#{@user_l.id}")
+        submit_objective
+        
+        @lo = @user_l.label_objectives.find_by(:objective => Objective.last)
+        assert_text(no_questions_message)
+        assert_no_selector('select', :id => "syl_#{@lo.id}_quantity")
+    end
+    
+    test "label with questions" do
+        capybara_login(@teacher_1)
+        click_on("New Objective")
+        check("check_#{@user_l.id}")
+        submit_objective
+        
+        @lo = @user_l.label_objectives.find_by(:objective => Objective.last)
+        assert_no_text(no_questions_message)
+        assert_selector('select', :id => "syl_#{@lo.id}_quantity")
     end
     
 end

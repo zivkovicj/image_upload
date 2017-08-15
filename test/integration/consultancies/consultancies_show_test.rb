@@ -93,7 +93,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
     test "simple check for screen" do
         capybara_login(@teacher_1)
-        click_on("deskConsult_#{@seminar.id}")
+        click_on("desk_consult_#{@seminar.id}")
         click_on("Create Desk Consultants Groups")
     end
     
@@ -268,7 +268,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @seminar.students[8].objective_students[2].update(:points => nil)
         
         capybara_login(@teacher_1)
-        click_on("deskConsult_#{@seminar.id}")
+        click_on("desk_consult_#{@seminar.id}")
         click_on("Create Desk Consultants Groups")
     end
     
@@ -279,7 +279,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_equal consult_count + 1, Consultancy.count
         
         capybara_login(@teacher_1)
-        click_on("deskConsult_#{@seminar.id}")
+        click_on("desk_consult_#{@seminar.id}")
         click_on("Create Desk Consultants Groups")
         assert_equal consult_count + 1, Consultancy.count
     end
@@ -298,7 +298,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_equal 10, @seminar.consultancies.count
         
         capybara_login(@teacher_1)
-        click_on("deskConsult_#{@seminar.id}")
+        click_on("desk_consult_#{@seminar.id}")
         click_on("Create Desk Consultants Groups")
         
         @seminar.reload
@@ -312,7 +312,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         click_on("Log out")
         
         capybara_login(@teacher_1)
-        click_on("deskConsult_#{@seminar.id}")
+        click_on("desk_consult_#{@seminar.id}")
         click_on("Create Desk Consultants Groups")
         click_on("Account")
         click_on("Log out")

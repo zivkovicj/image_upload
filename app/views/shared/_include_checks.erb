@@ -21,10 +21,10 @@
                                 <% group.each do |this_object| %>
                                     <% if this_object %>
                                         <% if boulderfist %>
-                                            <% classType = (this_object.preassigns.count > 0 ? "boulderfist" : "none" ) %>
+                                            <% class_type = (this_object.preassigns.count > 0 ? "boulderfist" : "none" ) %>
                                         <% end %>
                                         <tr>
-                                            <td width="20%"><%= check_box_tag(check_box_name, this_object.id, inclusion_var.include?(this_object), :id => "check_#{this_object.id}") %></td>
+                                            <td width="20%"><%= check_box_tag check_box_name, this_object.id, inclusion_var.include?(this_object), :class => "#{class_type}", :id => "check_#{this_object.id}"   %></td>
                                             <td><%= this_object.shortName %></td>
                                         </tr>
                                     <% end %>
