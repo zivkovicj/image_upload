@@ -10,7 +10,7 @@ module DeskConsultants
       stud_list = []
       @seminar.seminar_students.each do |ss|
         if ss.present
-          student = @seminar.students.find(ss.student_id)
+          student = @seminar.students.find(ss.user_id)
           stud_list.push(student)
         end
       end
@@ -49,7 +49,7 @@ module DeskConsultants
     # scoreHash
     def setupScoreHash()
       @scoreHash = Hash.new
-      @rankAssignsByNeed.each do |objective|
+      @seminar.objectives.each do |objective|
         os = objective.objective_seminars.find_by(:seminar => @seminar)
         @scoreHash[objective.id] = Hash.new
         @scoreHash[objective.id][:priority] = os.priority
@@ -76,12 +76,12 @@ module DeskConsultants
       new_team = @consultancy.teams.build(:objective => req, :bracket => bracket)
       new_team.consultant = stud if isConsult
       new_team.save
-      new_team.students << stud
+      new_team.users << stud
       @scoreHash[req.id][:need] -= 3
     end
     
     def need_placement(student)
-      !@consultancy.students.include?(student)
+      !@consultancy.users.include?(student)
     end
     
     # Choose the consultants
@@ -149,7 +149,7 @@ module DeskConsultants
             if @scoreHash[thisRequest][:priority] > 0 && thisScore < 100 && @scoreHash[thisRequest][student.id][:ready]
               @consultancy.teams.each do |team|
                 if (team.objective == thisRequest) && (team.has_room)
-                  team.students << stud
+                  team.users << stud
                   break
                 end
               end
@@ -177,7 +177,7 @@ module DeskConsultants
           # Note that the score can be >= the lowThresh to allow for zero. But
           # it must be < highThresh so that students with 100 don't get placed there
           if (studentScore < @cThresh) && @scoreHash[this_assign_id][student.id][:ready]
-            team.students << student
+            team.users << student
             placed = this_assign_id
             break
           end
@@ -188,7 +188,7 @@ module DeskConsultants
     
     def checkForLoneStudents()
       @consultancy.teams.each do |team|
-        @consultancy.teams.delete(team) if team.students.count == 1
+        @consultancy.teams.delete(team) if team.users.count == 1
       end
     end
     

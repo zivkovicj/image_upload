@@ -22,7 +22,7 @@ class ObjectiveSeminar < ApplicationRecord
                     ObjectiveSeminar.create(:objective_id => preassign.id, :seminar_id => seminar.id)
                     seminar.students.each do |student|
                         if student.objective_students.find_by(:objective_id => preassign.id) == nil
-                            ObjectiveStudent.create(:student_id => student.id, :objective_id => preassign.id)
+                            ObjectiveStudent.create(:user_id => student.id, :objective_id => preassign.id)
                         end
                     end
                 end

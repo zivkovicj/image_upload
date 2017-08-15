@@ -28,5 +28,5 @@
 
 <%= link_to "Back to Your Class Page", :method => :get, 
     :controller => "seminars", :action => "student_view",
-    :id => current_user.current_class , :student => current_user.id,
+    :id => current_user.current_class , :user => current_user.id,
     class: "btn btn-lg btn-primary" %>

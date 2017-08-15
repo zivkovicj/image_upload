@@ -84,8 +84,8 @@ assignNameArray = [[1,"Add and Subtract Numbers"],[1,"Multiply and Divide Number
     [2,"Irrationals"], [3,"Volcanos"], [3,"Evolution"], [3,"Taxonomy"], [3,"Cells"], [3,"Anatomy"]]
     
 assignNameArray.each_with_index do |objective, index|
-    @objective = Objective.create(name: objective[1], :user => jeff)
-    ObjectiveSeminar.create(:seminar_id => objective[0], :objective => @objective, :priority => 2, :pretest => 0, :extent => "public")
+    @objective = Objective.create(name: objective[1], :user => jeff, :extent => "public")
+    ObjectiveSeminar.create(:seminar_id => objective[0], :objective => @objective, :priority => 2, :pretest => 0)
 end
 
 
@@ -99,12 +99,12 @@ end
                last_name:   last_name,
                email: email,
                password:              password)
-   SeminarStudent.create!(seminar_id: 1, student_id: @student.id)
+   SeminarStudent.create!(seminar_id: 1, user_id: @student.id)
 end
 
 # Some students are registered to two class periods
-SeminarStudent.create!(seminar_id: 2, student_id: 17)
-SeminarStudent.create!(seminar_id: 2, student_id: 18)
+SeminarStudent.create!(seminar_id: 2, user_id: 17)
+SeminarStudent.create!(seminar_id: 2, user_id: 18)
 
 18.times do |n|
   first_name  = Faker::Name.first_name
@@ -115,7 +115,7 @@ SeminarStudent.create!(seminar_id: 2, student_id: 18)
                last_name:   last_name,
                email: email,
                password:              password)
-   SeminarStudent.create!(seminar_id: 2, student_id: @student.id)
+   SeminarStudent.create!(seminar_id: 2, user_id: @student.id)
 end
 
 36.times do |n|
@@ -127,7 +127,7 @@ end
                last_name:   last_name,
                email: email,
                password:              password)
-   SeminarStudent.create!(seminar_id: 3, student_id: @student.id)
+   SeminarStudent.create!(seminar_id: 3, user_id: @student.id)
 end
 
 Student.all.each do |student|
@@ -270,13 +270,13 @@ Precondition.create(:preassign => Objective.first, :mainassign => Objective.seco
 
 c1 = Seminar.first.consultancies.create()
 t1 = c1.teams.create(:consultant => Student.all[0])
-t1.students << Student.all[1]
-t1.students << Student.all[2]
-t1.students << Student.all[3]
+t1.users << Student.all[1]
+t1.users << Student.all[2]
+t1.users << Student.all[3]
 t2 = c1.teams.create(:consultant => Student.all[4])
-t2.students << Student.all[5]
-t2.students << Student.all[6]
-t2.students << Student.all[7]
+t2.users << Student.all[5]
+t2.users << Student.all[6]
+t2.users << Student.all[7]
 
     
     

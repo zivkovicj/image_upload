@@ -73,7 +73,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     
     #After adding student
     @new_aula = SeminarStudent.last
-    @new_student = Student.find(@new_aula.student_id)
+    @new_student = Student.find(@new_aula.user_id)
     assert_equal @new_student, @student_80
     assert_equal 1, @new_aula.pref_request
     assert_equal oldAulaCount + 1, SeminarStudent.count

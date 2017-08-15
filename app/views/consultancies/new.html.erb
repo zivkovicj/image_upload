@@ -17,7 +17,7 @@
                 <div class="row">
                     <% group.each do |student| %>
                         <% if student %>
-                            <% this_ss = @seminar.seminar_students.find_by(:student => student) %>
+                            <% this_ss = @seminar.seminar_students.find_by(:user => student) %>
                             <% if this_ss.present %>
                                 <% thisClass = "col-md-2 seat clickySeat" %>
                                 <% thisText = "Present" %>

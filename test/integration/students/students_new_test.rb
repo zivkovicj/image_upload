@@ -69,7 +69,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         fifth_new_student = Student.find_by(:last_name => "with Email")
         assert_equal "dude@email.com", fifth_new_student.email
         
-        @new_aula = SeminarStudent.find_by(:seminar_id => @seminar.id, :student_id => first_new_student.id)
+        @new_aula = SeminarStudent.find_by(:seminar_id => @seminar.id, :user => first_new_student)
         assert_equal 1, @new_aula.pref_request
         
         assert_text("#{@seminar.name} Scoresheet")

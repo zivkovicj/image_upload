@@ -21,7 +21,7 @@
     
     <% current_user.own_seminars.each do |seminar| %>
       <% if seminar.students.include?(@student) %>
-        <% this_ss = seminar.seminar_students.find_by(student_id: @student.id) %>
+        <% this_ss = seminar.seminar_students.find_by(user: @student) %>
         <p class="btn btn-lg btn-primary remove_btn" id="remove_btn">Remove student from <%= seminar.name %></p>
         <%= button_to "Click here to confirm that you want to remove #{@student.first_name} from #{seminar.name}", this_ss, 
             :method => :delete, class: "btn btn-lg btn-primary confirm_button" %><br/>

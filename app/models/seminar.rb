@@ -2,7 +2,7 @@ class Seminar < ApplicationRecord
   
   belongs_to  :user
   has_many    :seminar_students, dependent: :destroy
-  has_many    :students, through: :seminar_students
+  has_many    :students, through: :seminar_students, :source => :user
   has_many    :objective_seminars, dependent: :destroy
   has_many    :objectives, through: :objective_seminars
   has_many    :consultancies, dependent: :destroy
@@ -36,9 +36,9 @@ class Seminar < ApplicationRecord
   
   def scoreTransfer(fromObj, toObj)
     Objective.find(fromObj).objective_students.each do |oldScore|
-      newScore = ObjectiveStudent.find_by(:student_id => oldScore.student_id, :objective_id => toObj)
+      newScore = ObjectiveStudent.find_by(:user_id => oldScore.user_id, :objective_id => toObj)
       if newScore == nil
-        newScore = ObjectiveStudent.create(:student_id => oldScore.student_id, :objective_id => toObj)
+        newScore = ObjectiveStudent.create(:user_id => oldScore.user_id, :objective_id => toObj)
       end
       
       newScore.update(:points => oldScore.points)

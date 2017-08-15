@@ -29,10 +29,10 @@ class ActiveSupport::TestCase
   def setup_consultancies()
     c1 = seminars(:one).consultancies.create
     t1 = c1.teams.create(:objective => objectives(:objective_10), :consultant => users(:student_2))
-    t1.students << users(:student_2)
-    t1.students << users(:student_3)
-    t1.students << users(:student_4)
-    t1.students << users(:student_5)
+    t1.users << users(:student_2)
+    t1.users << users(:student_3)
+    t1.users << users(:student_4)
+    t1.users << users(:student_5)
     
   end
   
@@ -74,8 +74,8 @@ class ActiveSupport::TestCase
     Seminar.all.each do |seminar|
       seminar.objectives.each do |objective|
         seminar.students.each do |student|
-          if student.objective_students.find_by(:objective_id => objective.id) == nil
-            student.objective_students.create(:objective_id => objective.id, :points => 75)
+          if student.objective_students.find_by(:objective => objective) == nil
+            student.objective_students.create(:objective => objective, :points => 75)
           end
         end
       end

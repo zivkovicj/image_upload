@@ -71,7 +71,7 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     if current_user.type == "Teacher" && current_user.current_class
       @seminar = Seminar.find(current_user.current_class)
-      @ss = SeminarStudent.find_by(:student_id => @student.id, :seminar_id => @seminar.id)
+      @ss = SeminarStudent.find_by(:user => @student, :seminar => @seminar)
     end
   end
   
@@ -79,9 +79,9 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     @seminar = Seminar.includes(:objective_seminars).find(current_user.current_class)
     blap = @seminar.objectives.map(&:id)
-    @student_scores = ObjectiveStudent.where(objective_id: blap, student_id: @student.id)
+    @student_scores = ObjectiveStudent.where(objective_id: blap, :user => @student)
     @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
-    @ss = SeminarStudent.find_by(:student_id => @student.id, :seminar_id => @seminar.id)
+    @ss = SeminarStudent.find_by(:user => @student, :seminar => @seminar)
     
     @teach_options = teach_options(@student, @seminar, 5)
     @learn_options = learn_options(@student, @seminar, 5)

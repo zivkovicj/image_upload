@@ -123,7 +123,7 @@ class SeminarsController < ApplicationController
     end
     
     def student_view
-        @student = Student.includes(:objective_students).find(params[:student])
+        @student = Student.includes(:objective_students).find(params[:user])
         @seminar = Seminar.includes(:objective_seminars).find(params[:id])
         @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
         @objectives = @seminar.objectives.order(:name)

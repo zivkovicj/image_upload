@@ -20,7 +20,7 @@ class ObjectiveStudentsController < ApplicationController
   private
   
     def score_params
-      params.require(:objective_student).permit(:student_id, :objective_id, :points)
+      params.require(:objective_student).permit(:user_id, :objective_id, :points)
     end
 end
 

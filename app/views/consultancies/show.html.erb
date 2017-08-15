@@ -22,10 +22,10 @@
 
 
 <% def studentCell(num, groupNum, team) %>
-  <% thisClass = (team.students[num] == team.consultant ? "table with-border consultant" : "table with-border") %>
+  <% thisClass = (team.users[num] == team.consultant ? "table with-border consultant" : "table with-border") %>
   <td class = "<%= thisClass %>">
     <p class = "studentName center">
-      <% this_student = team.students[num] %>
+      <% this_student = team.users[num] %>
       <% if this_student %>
         <%= this_student.firstPlusInit %>
         <% this_score = this_student.objective_students.find_by(:objective => team.objective) %>
@@ -53,7 +53,7 @@
   <div class="singleOption lowSingOpt">
     <h3>These students were not placed in a group:</h3>
     <h4>(The most common reason is because these students have passed all available objectives)</h4>
-    <% @unplaced_team.students.each do |student| %>
+    <% @unplaced_team.users.each do |student| %>
       <p class="studentName"><%= student.firstPlusInit %></p>
     <% end %>
   </div>

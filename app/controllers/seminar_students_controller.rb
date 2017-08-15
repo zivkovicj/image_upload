@@ -10,7 +10,7 @@ class SeminarStudentsController < ApplicationController
     # It is not called when creating a new student.
     @ss = SeminarStudent.create(ss_params)
     @seminar = Seminar.find(@ss.seminar_id)
-    @student = Student.find(@ss.student_id)
+    @student = Student.find(@ss.user_id)
     
     addToSeatingChart(@seminar, @student)
     scoresForNewStudent(@seminar, @student)
@@ -37,7 +37,7 @@ class SeminarStudentsController < ApplicationController
 
   private
       def ss_params
-        params.require(:seminar_student).permit(:seminar_id, :student_id, :teach_request, 
+        params.require(:seminar_student).permit(:seminar_id, :user_id, :teach_request, 
                                   :learn_request, :pref_request, :present)
       end
       

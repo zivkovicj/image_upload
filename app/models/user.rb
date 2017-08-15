@@ -6,6 +6,7 @@ class User < ApplicationRecord
     has_many    :objectives
     has_many    :questions
     has_many    :labels
+    has_many    :quizzes
 
     validates :first_name, length: {maximum: 25},
             presence: true
@@ -90,6 +91,18 @@ class User < ApplicationRecord
         "#{title.split.map(&:capitalize).join(' ')} #{last_name.split.map(&:capitalize).join(' ')}"
     end
  
+    def has_not_scored_100(obj)
+        self.objective_students.find_by(:objective => obj).points < 100
+    end
+    
+    def has_not_tried_twice(obj)
+        self.quizzes.where(:objective => obj).count < 2 
+    end
+    
+    def desk_consulted_objectives(seminar)
+        blap = self.teams.where.not(:objective => nil).map(&:objective_id)
+        return seminar.objectives.find(blap).select{|x| self.has_not_scored_100(x)}
+    end
     
     private
 

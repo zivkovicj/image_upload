@@ -11,7 +11,7 @@
     </div>
     <br/>
     <% @student.seminars.each do |seminar| %>
-        <%= link_to student_view_seminar_path(seminar, :student => @student.id) do %>
+        <%= link_to student_view_seminar_path(seminar, :user => @student.id) do %>
             <div class="singleOption lowSingOpt linkDiv hoverHigh">
                 <h4 class="linkHeader"><%= seminar.name %></h4>
             </div>

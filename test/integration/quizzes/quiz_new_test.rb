@@ -20,7 +20,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         begin_quiz
         
         @new_quiz = Quiz.last
-        assert_equal @new_quiz.student, @student_2
+        assert_equal @new_quiz.user, @student_2
         assert_equal @new_quiz.objective, @objective_10
         assert_equal old_quiz_count + 1, Quiz.count
         new_riposte_count = @new_quiz.ripostes.count

@@ -55,7 +55,7 @@
               <% if @seminar.students.include?(student) == false %>
                 <%= form_for(@ss) do |a| %>
                   <%= a.hidden_field :seminar_id, :value => @seminar.id %>
-                  <%= a.hidden_field :student_id, :value => student.id %>
+                  <%= a.hidden_field :user_id, :value => student.id %>
                   <%= a.submit "Add to this class", class: "btn btn-primary" %>
                 <% end %>
               <% else %> 

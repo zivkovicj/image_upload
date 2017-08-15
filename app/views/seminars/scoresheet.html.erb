@@ -33,7 +33,7 @@
           <td class="themScores"><%= student.total_points %></td>
           <% this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id) %>
           <% @objectives.each do |objective| %>
-            <% thisScore = @scores.find_by(:objective_id => objective.id, :student_id => student.id) %>
+            <% thisScore = @scores.find_by(:objective => objective, :user => student) %>
             <td class="themScores steelPanther">
               <% if thisScore %>
                 <%= best_in_place thisScore, :points, :inner_class => "scoreInput" %>

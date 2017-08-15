@@ -18,13 +18,13 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @student_6 = users(:student_6)
         @student_7 = users(:student_7)
         
-        @ss_1 = SeminarStudent.find_by(:seminar_id => @seminar.id, :student_id => @student_1.id)
-        @ss_2 = SeminarStudent.find_by(:seminar_id => @seminar.id, :student_id => @student_2.id)
-        @ss_3 = SeminarStudent.find_by(:seminar_id => @seminar.id, :student_id => @student_3.id)
-        @ss_4 = SeminarStudent.find_by(:seminar_id => @seminar.id, :student_id => @student_4.id)
-        @ss_5 = SeminarStudent.find_by(:seminar_id => @seminar.id, :student_id => @student_5.id)
-        @ss_6 = SeminarStudent.find_by(:seminar_id => @seminar.id, :student_id => @student_6.id)
-        @ss_7 = SeminarStudent.find_by(:seminar_id => @seminar.id, :student_id => @student_7.id)
+        @ss_1 = SeminarStudent.find_by(:seminar_id => @seminar.id, :user_id => @student_1.id)
+        @ss_2 = SeminarStudent.find_by(:seminar_id => @seminar.id, :user_id => @student_2.id)
+        @ss_3 = SeminarStudent.find_by(:seminar_id => @seminar.id, :user_id => @student_3.id)
+        @ss_4 = SeminarStudent.find_by(:seminar_id => @seminar.id, :user_id => @student_4.id)
+        @ss_5 = SeminarStudent.find_by(:seminar_id => @seminar.id, :user_id => @student_5.id)
+        @ss_6 = SeminarStudent.find_by(:seminar_id => @seminar.id, :user_id => @student_6.id)
+        @ss_7 = SeminarStudent.find_by(:seminar_id => @seminar.id, :user_id => @student_7.id)
         
         @objective_2 = @seminar.objectives[1]
         @objective_3 = @seminar.objectives[2]
@@ -82,7 +82,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     def targetStudentCount(target_student)
         msc = 0
         @consultancy.teams.each do |team|
-            team.students.each do |student|
+            team.users.each do |student|
                 if student.last_name == target_student.last_name
                     msc += 1
                 end
@@ -175,7 +175,6 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         # profList
             setupProfList()
             
-            
         # consultantsList
             setupStudentHash()
             @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
@@ -189,12 +188,12 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
             
         # placeApprenticesByRequests
             placeApprenticesByRequests()
-            assert @consultancy.students.include?(@student_6)
+            assert @consultancy.users.include?(@student_6)
             
         # before placeApprenticesByMastery
             unplacedStudent = nil
             @profList.each do |student|
-                if @consultancy.students.include?(student) 
+                if @consultancy.users.include?(student) 
                     unplacedStudent = student
                     break
                 end
@@ -202,26 +201,26 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
             
         # during placedApprenticesByMastery
             placeApprenticesByMastery()
-            assert @consultancy.students.include?(unplacedStudent)
-            assert_not @consultancy.students.include?(@student_5)
+            assert @consultancy.users.include?(unplacedStudent)
+            assert_not @consultancy.users.include?(@student_5)
             
         # before checkForLoneStudents()
             last_group = @consultancy.teams.last
-            loneStudent = last_group.students.first
-            last_group.students.delete_all
-            last_group.students << loneStudent
+            loneStudent = last_group.users.first
+            last_group.users.delete_all
+            last_group.users << loneStudent
             
         # checkForLoneStudents
-            assert @consultancy.students.include?(loneStudent)
+            assert @consultancy.users.include?(loneStudent)
             oldLength = @consultancy.teams.count
             checkForLoneStudents()
             
             assert_equal oldLength - 1, @consultancy.teams.count
-            assert_not @consultancy.students.include?(loneStudent)
+            assert_not @consultancy.users.include?(loneStudent)
         
         # newPlaceForLoneStudents()
             newPlaceForLoneStudents()
-            assert @consultancy.students.include?(loneStudent)
+            assert @consultancy.users.include?(loneStudent)
             
         #assignSGSections
             # assignSGSections()
@@ -257,7 +256,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @seminar.students.each do |student|
             thisStudentCount = 0
             @consultancy.teams.each do |team|
-                thisStudentCount += 1 if team.students.include?(student)
+                thisStudentCount += 1 if team.users.include?(student)
             end
             assert thisStudentCount == 1
         end
