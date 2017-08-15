@@ -13,7 +13,13 @@ Figure out what's the deal with refreshing the "question details" screen
 
 
 
-    
+FLAWS NOTICED WHILE CREATING MY OWN REAL CLASSES
+
+If you dont start with any objectives, the pretests screen shouldn't show. That's pretty confusing.
+
+There was also an error upon updating priorities for a brand new class.
+
+Another error appeared upon trying to create many students at once. But didn't happen again when I tried creating just a few students.
 
 
 
