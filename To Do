@@ -14,49 +14,6 @@ Figure out what's the deal with refreshing the "question details" screen
 
 
     
-    
-SEND OUT NEWS ABOUT UPDATES TO TEACHERS WHO WERE INTERESTED
-
-Goal of this update: Fix a few errors before offering the program to the teachers who have expressed interest.
- 
-V Comment out the links to pictures. Return them after I fix the pictures features in the next update.
-
-V Teacher cannot submit an objective without selecting some labels.
-
-V The update action for the seminar_students controller is no longer needed
-
-V Test that no errors occur if a user creates an objective without any labels
-
-V There were no seeded objectives with a "public" extent. There needs to be some.
-
-V An error occurs when students try to take a quiz that doesn't have any questions.
-    
-V I learned how to use "Like" in the index. So I don't think I need to downcase names anymore. I can allow users to input the names how they want.
-
-V Take another look at "boulderfist" classtype and the dialog box that it should produce
- 
-V Message about having no questions should go in the quantities screen. Not on the teacher show view
-    V Test for this message
-    V And also for the message in the quantities view that a label does not have any questions.
-    
-V Make icons for all screens that should have one.
-    V Student
-    V Students
-    V Teacher
-    V Picture
-    V Multiple Consultancies
-    V Seminar
-        
-V Teacher clicking on "Consultancies" when none exist yet.
-
-V Clicking on a class in the navribbon directs to that class show view. It should direct to the scoresheet or edit view.
-
-
-
-
-
-
-
 
 
 
@@ -81,6 +38,9 @@ The second screen will only offer the pictures that correspond to the chosen lab
 List options for labels when uploading a new image
 
 Disable "Next Question" button until student chooses a response
+
+
+
 
     
 CURATED QUESTIONS

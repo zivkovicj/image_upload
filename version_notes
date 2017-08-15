@@ -1,4 +1,30 @@
 
+2.23 IMPORTANT FIXES BEFORE ANNOUNCING TO OTHER TEACHERS--STARTED 08/13/07
+                                                        --PUSHED 08/14/17
+Goal of this update: Fix a few errors before offering the program to the teachers who have expressed interest.
+Comment out the links to pictures. Return them after I fix the pictures features in the next update
+Make sure that teacher can submit an objective without selecting some labels.
+The update action for the seminar_students controller is no longer needed
+Test that no errors occur if a user creates an objective without any labels
+There were no seeded objectives with a "public" extent. There needs to be some.
+An error occurs when students try to take a quiz that doesn't have any questions.
+I learned how to use "Like" in the index. So I don't think I need to downcase names anymore. I can allow users to input the names how they want.
+Take another look at "boulderfist" classtype and the dialog box that it should produce
+Message about having no questions should go in the quantities screen. Not on the teacher show view
+    Test for this message
+    And also for the message in the quantities view that a label does not have any questions.
+Make icons for all screens that should have one.
+    Student
+    Students
+    Teacher
+    Picture
+    Multiple Consultancies
+    Seminar
+Teacher clicking on "Consultancies" when none exist yet.
+Clicking on a class in the navribbon directs to that class show view. It should direct to the scoresheet or edit view.
+
+
+
 2.22 FILL-IN QUESTIONS-- STARTED 08/08/17
                     --PUSHED 08/13/17
 

@@ -37,6 +37,8 @@ ActiveRecord::Schema.define(version: 20170725202419) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["label_id", "picture_id"], name: "index_label_pictures_on_label_id_and_picture_id"
+    t.index ["label_id"], name: "index_label_pictures_on_label_id"
+    t.index ["picture_id"], name: "index_label_pictures_on_picture_id"
   end
 
   create_table "labels", force: :cascade do |t|
@@ -150,6 +152,8 @@ ActiveRecord::Schema.define(version: 20170725202419) do
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.index ["seminar_id", "student_id"], name: "index_seminar_students_on_seminar_id_and_student_id"
+    t.index ["seminar_id"], name: "index_seminar_students_on_seminar_id"
+    t.index ["student_id"], name: "index_seminar_students_on_student_id"
   end
 
   create_table "seminars", force: :cascade do |t|
@@ -167,6 +171,8 @@ ActiveRecord::Schema.define(version: 20170725202419) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["student_id", "team_id"], name: "index_student_teams_on_student_id_and_team_id"
+    t.index ["student_id"], name: "index_student_teams_on_student_id"
+    t.index ["team_id"], name: "index_student_teams_on_team_id"
   end
 
   create_table "teams", force: :cascade do |t|

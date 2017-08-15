@@ -1,8 +1,8 @@
 class CreateStudentTeams < ActiveRecord::Migration[5.0]
   def change
     create_table :student_teams, id:false do |t|
-      t.integer   :student_id
-      t.integer   :team_id
+      t.references   :student, references: :user, foreign_key: true
+      t.references   :team, foreign_key: true
       t.timestamps
     end
     
