@@ -3,7 +3,7 @@ class CreateSeminarStudents < ActiveRecord::Migration[5.0]
   def change
     create_table :seminar_students do |t|
       t.references  :seminar, foreign_key: true
-      t.references  :student, references: :user, foreign_key: true
+      t.references  :user, foreign_key: true
       t.integer  :teach_request
       t.integer  :learn_request
       t.integer  :pref_request
@@ -13,6 +13,6 @@ class CreateSeminarStudents < ActiveRecord::Migration[5.0]
       t.timestamps
     end
     
-    add_index :seminar_students, [:seminar_id, :student_id]
+    add_index :seminar_students, [:seminar_id, :user_id]
   end
 end

@@ -64,14 +64,14 @@ ActiveRecord::Schema.define(version: 20170725202419) do
 
   create_table "objective_students", force: :cascade do |t|
     t.integer  "objective_id"
-    t.integer  "student_id"
+    t.integer  "user_id"
     t.integer  "points"
     t.integer  "unlocked"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.index ["objective_id", "student_id"], name: "index_objective_students_on_objective_id_and_student_id"
+    t.index ["objective_id", "user_id"], name: "index_objective_students_on_objective_id_and_user_id"
     t.index ["objective_id"], name: "index_objective_students_on_objective_id"
-    t.index ["student_id"], name: "index_objective_students_on_student_id"
+    t.index ["user_id"], name: "index_objective_students_on_user_id"
   end
 
   create_table "objectives", force: :cascade do |t|
@@ -119,13 +119,13 @@ ActiveRecord::Schema.define(version: 20170725202419) do
   end
 
   create_table "quizzes", force: :cascade do |t|
-    t.integer  "student_id"
+    t.integer  "user_id"
     t.integer  "objective_id"
     t.integer  "total_score"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.index ["objective_id"], name: "index_quizzes_on_objective_id"
-    t.index ["student_id"], name: "index_quizzes_on_student_id"
+    t.index ["user_id"], name: "index_quizzes_on_user_id"
   end
 
   create_table "ripostes", force: :cascade do |t|
@@ -143,7 +143,7 @@ ActiveRecord::Schema.define(version: 20170725202419) do
 
   create_table "seminar_students", force: :cascade do |t|
     t.integer  "seminar_id"
-    t.integer  "student_id"
+    t.integer  "user_id"
     t.integer  "teach_request"
     t.integer  "learn_request"
     t.integer  "pref_request"
@@ -151,9 +151,9 @@ ActiveRecord::Schema.define(version: 20170725202419) do
     t.integer  "consulting_stars"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.index ["seminar_id", "student_id"], name: "index_seminar_students_on_seminar_id_and_student_id"
+    t.index ["seminar_id", "user_id"], name: "index_seminar_students_on_seminar_id_and_user_id"
     t.index ["seminar_id"], name: "index_seminar_students_on_seminar_id"
-    t.index ["student_id"], name: "index_seminar_students_on_student_id"
+    t.index ["user_id"], name: "index_seminar_students_on_user_id"
   end
 
   create_table "seminars", force: :cascade do |t|
@@ -166,13 +166,13 @@ ActiveRecord::Schema.define(version: 20170725202419) do
   end
 
   create_table "student_teams", id: false, force: :cascade do |t|
-    t.integer  "student_id"
+    t.integer  "user_id"
     t.integer  "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["student_id", "team_id"], name: "index_student_teams_on_student_id_and_team_id"
-    t.index ["student_id"], name: "index_student_teams_on_student_id"
     t.index ["team_id"], name: "index_student_teams_on_team_id"
+    t.index ["user_id", "team_id"], name: "index_student_teams_on_user_id_and_team_id"
+    t.index ["user_id"], name: "index_student_teams_on_user_id"
   end
 
   create_table "teams", force: :cascade do |t|
