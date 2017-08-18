@@ -303,26 +303,4 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @seminar.reload
         assert_equal 10, @seminar.consultancies.count
     end
-    
-    test "consultant quizzes showing for student" do
-        go_to_first_period
-        assert_no_text("Desk Consultant Objectives")
-        click_on("Account")
-        click_on("Log out")
-        
-        capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
-        click_on("Create Desk Consultants Groups")
-        click_on("Account")
-        click_on("Log out")
-        
-        objective = @student_1.teams.last.objective
-        bad_objective = @student_1.seminars.last.objectives.last
-        assert_not_equal objective, bad_objective
-        
-        go_to_first_period
-        assert_text("Desk Consultants Objectives")
-        assert_selector('li', :id => "quiz_#{objective.id}")
-        assert_no_selector('li', :id => "quiz_#{bad_objective.id}")
-    end
 end

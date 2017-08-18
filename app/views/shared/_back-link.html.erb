@@ -1,14 +1,15 @@
 
 <% if current_user&.current_class %>
     <% seminar = Seminar.find(current_user.current_class) %>
-    <% back_message = "Back to #{seminar.name} Scoresheet" %>
-    <% this_link = scoresheet_seminar_url(seminar) %>
-<% else %>
-    <% if current_user.type == "Admin" %>
-        <% back_message = "Admin Page" %>
+    <% if current_user.type == "Teacher" %>
+        <% back_message = "Back to #{seminar.name} Scoresheet" %>
+        <% this_link = scoresheet_seminar_url(seminar) %>
     <% else %>
-        <% back_message = "Back to Your Profile" %>
+        <% back_message = "Back to Viewing Your Class" %>
+        <% this_link = student_view_seminar_url(seminar) %>
     <% end %>
+<% else %>
+    <% back_message = current_user.type == "Admin" ? "Admin Page" : "Back to Your Profile" %>
     <% this_link = current_user %>
 <% end %>
 

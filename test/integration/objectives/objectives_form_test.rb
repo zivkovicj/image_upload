@@ -176,7 +176,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         
         assert_text("You may only edit an objective that you have created. You may use this window to choose which classes this objective is assigned to.")
         assert_no_selector('input', :id => "name", :visible => true)
-        assert_selector('li', :text => @objective_20.preassigns.first.shortName)
+        assert_selector('li', :text => @objective_20.preassigns.first.short_name)
         assert_no_selector('input', :id => "#{@objective_20.name}", :visible => true)
     end
     
@@ -188,7 +188,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         
         assert_text("You may only edit an objective that you have created. You may use this window to choose which classes this objective is assigned to.")
         assert_no_selector('input', :id => "name", :visible => true)
-        assert_selector('li', :text => @objective_20.preassigns.first.shortName)
+        assert_selector('li', :text => @objective_20.preassigns.first.short_name)
         assert_no_selector('input', :id => "#{@objective_20.name}", :visible => true)
     end
     

@@ -14,7 +14,6 @@ class StudentsEditTest < ActionDispatch::IntegrationTest
         fill_in "student_username", with: "myusername"
         fill_in "student_password", with: "Passy McPasspass"
         fill_in "student_email", with: "my_new_mail@email.com"
-        
         click_on ("Save Changes")
         
         @student_2.reload
@@ -62,5 +61,17 @@ class StudentsEditTest < ActionDispatch::IntegrationTest
         edit_student_user_number
         student_edit_stuff
         check_student_user_number
+    end
+    
+    test "edit username to already taken" do
+        @student_1.update(:username => "beersprinkles07")
+        capybara_login(@admin_user)
+        click_on("Students Index")
+        click_on(@student_2.last_name_first)
+        
+        fill_in "student_username", with: "beersprinkles07"
+        click_on ("Save Changes")
+        
+        assert_equal "mg2", @student_2.username
     end
 end

@@ -13,13 +13,41 @@ Figure out what's the deal with refreshing the "question details" screen
 
 
 
+
+
 FLAWS NOTICED WHILE CREATING MY OWN REAL CLASSES
 
-If you dont start with any objectives, the pretests screen shouldn't show. That's pretty confusing.
 
-There was also an error upon updating priorities for a brand new class.
 
-Another error appeared upon trying to create many students at once. But didn't happen again when I tried creating just a few students.
+V Made it so that the pretest options don't show up if the teacher didn't add any objectives to the classroom. That was pretty confusing.
+
+V Clean up the new and create actions in the objectives controller
+
+V Error upon entering a student number that's too long
+    4358204269 is out of range for ActiveModel::Type::Integer with limit 4 (Stud number too long)
+
+V Eliminate the back-link on the scoresheet view because it links to itself.
+
+V Change "Label for Pictures" to Unlabeled
+
+V Short_name should include 30 digits instead of 20.
+    V Most of those forms shouldn't be displayed in the squished-centered version.
+    
+V "Quantities and Point Values" should go on a separate line
+
+V "Back to Your Class Page" should be a button.
+
+V Add a "Try Again" button for the student when she finishes a quiz?
+
+Migrate heroku after push
+    See how the user_numbers with too many digits are working in the live site.
+
+
+
+
+CUMULATIVE STARS
+
+    The logo in the footer links to Desk Consultants.com. It should link to the new, correct site.
 
 
 
@@ -46,6 +74,12 @@ List options for labels when uploading a new image
 Disable "Next Question" button until student chooses a response
 
 
+MAYBE ALLOW IMAGES AS ANSWER CHOICES. WOULD MAKE FRACTIONS MUCH NICER.
+
+
+AND WHAT ABOUT AN EQUAITON-EDITOR ANSWER BOX SO THAT STUDENTS CAN TYPE FRACTIONS
+
+    For now, might be easier to implement multi-box fill-in answers. Then the student can input the numerator and denominator.
 
 
     
@@ -59,9 +93,7 @@ Teachers can choose whether their students will see all questions, or only curat
 
    
  
-CUMULATIVE STARS
 
-    The logo in the footer links to Desk Consultants.com. It should link to the new, correct site.
 
 
 
@@ -119,7 +151,7 @@ Test that students assigned as consultants have a good score in that objectives
 
 Test that students assigned as apprentices haven't yet mastered that objective
 
-
+See what happens if users enter improper data types in different fields. And test for those.
         
 
 
@@ -256,7 +288,9 @@ Perhaps student comments within classes.
 
 TRY TO CHANGE CURRENT_CLASS TABLE DB ATTRIBUTE TO SESSION ATTRIBUTE
 
-
+Take another look at students_new_test. The test is setting the current_class to nil for some reason.
+    But don't put any more time into that issue until I find a better way to keep track of current_class, which will be in the cookies or by sending
+        parameters.
 
 
 
@@ -301,6 +335,8 @@ NEED TO REDO ALL THE STUFF ABOUT MAILERS
 
 ADMIN CAN CREATE NEW ADMIN
 
+    Admin need to be able to edit their own profile
+    
     
     
 OTHER IMPROVEMENTS

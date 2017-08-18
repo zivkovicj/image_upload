@@ -137,16 +137,5 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
         @student_3.reload
         assert_equal oldusername, @student_3.username
     end
-    
-    test "Username already taken upon new student" do
-        @student_1.update!(:username => "nabwaffle49")
-        
-        assert_no_difference 'Student.count' do
-            post students_path, params: { students: [{ first_name:  "Beavis",
-                                         last_name: "Butthead",
-                                        user_number: 17,
-                                        username: "nabwaffle49" }],
-                                 ss: { seminar_id: @seminar.id } }
-        end
-    end
+
 end

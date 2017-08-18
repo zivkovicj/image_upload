@@ -25,9 +25,10 @@ class QuizzesController < ApplicationController
     
     def show
         @quiz = Quiz.find(params[:id])
+        @objective = @quiz.objective
         
         student = current_user
-        score = student.objective_students.find_by(:objective => @quiz.objective)
+        score = student.objective_students.find_by(:objective => @objective)
         @old_points = (score == nil ? 0 : score.points) 
     
         poss = 0

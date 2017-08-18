@@ -25,7 +25,7 @@
                                         <% end %>
                                         <tr>
                                             <td width="20%"><%= check_box_tag check_box_name, this_object.id, inclusion_var.include?(this_object), :class => "#{class_type}", :id => "check_#{this_object.id}"   %></td>
-                                            <td><%= this_object.shortName %></td>
+                                            <td><%= this_object.short_name %></td>
                                         </tr>
                                     <% end %>
                                 <% end %>
@@ -43,7 +43,7 @@
         <ul>
             <% if inclusion_var.count > 0 %>
                 <% inclusion_var.each do |bloop| %>
-                      <li><%= bloop.shortName %></li>
+                      <li><%= bloop.short_name %></li>
                 <% end %>
             <% else %>
                 <li>This <%= model_name %> does not have any <%= include_word.pluralize(2) %>.</li>

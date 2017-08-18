@@ -26,7 +26,7 @@ class SeminarsShowTest < ActionDispatch::IntegrationTest
             bdth.push(objective)
         end
         bdth.each do |objective|
-           assert_selector("a", :text  => objective.shortName, count: 1)
+           assert_selector("a", :text  => objective.short_name, count: 1)
         end
     end
     

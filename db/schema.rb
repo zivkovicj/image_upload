@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170725202419) do
+ActiveRecord::Schema.define(version: 20170816220556) do
 
   create_table "consultancies", force: :cascade do |t|
     t.integer  "seminar_id"
@@ -194,7 +194,7 @@ ActiveRecord::Schema.define(version: 20170725202419) do
     t.string   "username"
     t.string   "password_digest"
     t.string   "email"
-    t.integer  "user_number"
+    t.integer  "user_number",       limit: 10
     t.integer  "current_class"
     t.string   "remember_digest"
     t.string   "activation_digest"
@@ -203,8 +203,8 @@ ActiveRecord::Schema.define(version: 20170725202419) do
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
     t.datetime "last_login"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
 end

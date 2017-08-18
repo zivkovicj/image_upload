@@ -3,7 +3,7 @@
 <%= render 'shared/headline' %>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  
     <%= form_for(@label) do |lab| %>
     
       <%= render 'shared/error_messages', object: @label %>
@@ -57,5 +57,5 @@
       <%= lab.submit yield(:button_text), class: "btn btn-primary" %>
       
     <% end %>
-  </div>
+    
 </div>

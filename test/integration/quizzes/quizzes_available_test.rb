@@ -12,7 +12,6 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
 
     test "available from pretest" do
-        @seminar.objective_seminars.find_by(:objective => @objective_10).update(:pretest => 1)
         @seminar.objective_seminars.find_by(:objective => @objective_40).update(:pretest => 0)
         @seminar.objective_seminars.find_by(:objective => @objective_50).update(:pretest => 0)
         @seminar.objective_seminars.create(:objective => @objective_80, :pretest => 1)
@@ -47,14 +46,17 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         assert @seminar.all_pretest_objectives(@student_2).include?(@main_objective)
         assert_not @seminar.all_pretest_objectives(@student_2).include?(@objective_80)
         
+        #Take the quiz again to make sure that removes it from the offerings.
         assert @seminar.all_pretest_objectives(@student_2).include?(@objective_10)
         go_to_first_period
         begin_quiz
         answer_quiz_randomly
+        click_on("Back to Your Class Page")
         
         assert @seminar.all_pretest_objectives(@student_2).include?(@objective_10)
         begin_quiz
         answer_quiz_randomly
+        click_on("Back to Your Class Page")
         
         assert_not @seminar.all_pretest_objectives(@student_2).include?(@objective_10)
     end
@@ -83,11 +85,20 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "quiz with questions" do
-        @seminar.objective_seminars.find_by(:objective => @objective_10).update(:pretest => 1)
         go_to_first_period
         begin_quiz
         
         assert_text("Question: 1")
+    end
+    
+    test "try quiz again" do
+        go_to_first_period
+        begin_quiz
+        answer_quiz_randomly
+        click_on ("Try this quiz again")
+        
+        answer_quiz_randomly
+        assert_no_text("Try this quiz again")
     end
     
 end

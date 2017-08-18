@@ -23,7 +23,6 @@ class TeachersController < ApplicationController
   def show
     @teacher = Teacher.find(params[:id])
     @own_seminars = @teacher.own_seminars
-    @teacher.update(:current_class => nil)
   end
   
   def index

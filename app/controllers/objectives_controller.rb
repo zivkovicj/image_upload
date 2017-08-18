@@ -12,9 +12,6 @@ class ObjectivesController < ApplicationController
   def new
     @objective = Objective.new()
     new_objective_stuff()
-    @labels = labels_to_offer
-    setPermissions(@objective)
-    @pre_req_list = build_pre_req_list(@objective)
   end
   
   def create
@@ -26,11 +23,9 @@ class ObjectivesController < ApplicationController
     if @objective.save
       flash[:success] = "Objective Created"
       redirect_to quantities_objective_path(@objective)
-    else
+    else # This actually shouldn't be able to happen right now, since the controller gives the objective a name
       new_objective_stuff()
-      setPermissions(@objective)
-      @pre_req_list = build_pre_req_list(@objective)
-      render 'objectives/new'
+      render 'new'
     end
   end
   
@@ -127,6 +122,9 @@ class ObjectivesController < ApplicationController
           @objective.name = "Objective #{Objective.count}"
           @objective.user = current_user
           @objective.extent = "public"
+          @labels = labels_to_offer
+          setPermissions(@objective)
+          @pre_req_list = build_pre_req_list(@objective)
         end
           
           

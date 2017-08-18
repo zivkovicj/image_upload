@@ -106,6 +106,10 @@ class ActiveSupport::TestCase
     assert_no_text("Admin Control Page")
   end
   
+  def assert_on_scoresheet
+    assert_text("#{@seminar.name} Scoresheet")
+  end
+  
   def capybara_login(user)
     visit('/')
     click_on('Log In')
@@ -127,7 +131,7 @@ class ActiveSupport::TestCase
   end
   
   def begin_quiz
-    click_on(@objective_10.name)
+    click_link("#{@objective_10.name}", match: :first)
   end
   
   def answer_quiz_randomly
@@ -135,7 +139,6 @@ class ActiveSupport::TestCase
       choose("choice_bubble_1")
       click_on("Next Question")
     end
-    click_on("Back to Your Class Page")
   end
   
   def teacher_editing_stuff(teacher, button_text)

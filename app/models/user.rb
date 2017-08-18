@@ -12,6 +12,7 @@ class User < ApplicationRecord
             presence: true
     validates :last_name, length: {maximum: 25},
             presence: true
+    validates :user_number, numericality: { only_integer: true }, unless: Proc.new { |a| a.user_number.blank? }
     
     include ModelMethods
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

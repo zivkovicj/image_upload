@@ -3,7 +3,7 @@
 <% provide(:headerText, "#{@seminar.name} Scoresheet") %>
 <% provide(:headerPic, "scoresheet.png") %>
 
-<%= render 'shared/back-link' %>
+
 <%= render 'shared/navribbon' %><br/>
 <%= render 'shared/teacher_name_and_edit', user: @teacher %><br/>
 <%= render 'shared/class_and_edit' %>
@@ -22,7 +22,7 @@
       <th class="rotate table-borderless"><div><span>Total Points</span></div></th>
       <% @objectives.each_with_index do |objective, index| %>
         <th class="rotate table-borderless"><div><span>
-          <%= link_to objective.shortName, edit_objective_path(objective) %>
+          <%= link_to objective.short_name, edit_objective_path(objective) %>
         </span></div></th>
       <% end %>
     </thead>

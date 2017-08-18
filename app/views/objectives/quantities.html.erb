@@ -1,11 +1,11 @@
 
-<% provide(:headerText, "Edit #{@objective.name} Quantities and Point Values") %>
+<% provide(:headerText, "Edit Quantities and Point Values") %>
 <% provide(:headerPic, "labels.png") %>
 
 <%= render 'shared/navribbon' %>
 <%= render 'shared/back-link' %>
 <%= render 'shared/headline' %>
-<h2><%= @objective.name %></h2>
+<h2>For: <%= @objective.name %></h2>
 
 <% point_array = *(1..10) %>
 <% points_poss = 0 %>

@@ -4,7 +4,7 @@
 one-one:
     seminar: one
     objective: objective_10
-    pretest: 0
+    pretest: 1
     priority: 2
     
 one-two:

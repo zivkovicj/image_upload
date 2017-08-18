@@ -5,20 +5,20 @@ class StudentsController < ApplicationController
   include AddStudentStuff
   include TeachAndLearnOptions
   
+  
   def new
-    @student_group = []
-    55.times do
-      @student_group << Student.new
-    end
+    new_student_stuff
   end
 
   def create
     @seminar = Seminar.find(params[:ss][:seminar_id])
+    one_saved = false
     params["students"].each do |student|
       if student["first_name"] != "" && student["last_name"] != ""
         @student = Student.new(multi_params(student))
-        @student.password = student["password"] if student["password"]
+        @student.username = 0 if Student.find_by(:username => student["username"])
         if @student.save
+          one_saved = true
           auto_info
           @student.save
           @ss = @student.seminar_students.create(:seminar => @seminar)
@@ -27,8 +27,19 @@ class StudentsController < ApplicationController
         end
       end
     end
-    flash[:success] = "Students added to class"
-    redirect_to scoresheet_seminar_url(@seminar)
+    
+    if one_saved 
+      flash[:success] = "Students added to class"
+      redirect_to scoresheet_seminar_url(@seminar)
+    else
+      new_student_stuff
+      flash[:danger] = "No students could be created."
+      render 'new'
+    end
+  end
+  
+  def show
+    @student = Student.find(params[:id])
   end
   
   def index
@@ -47,12 +58,19 @@ class StudentsController < ApplicationController
     end
   end
 
-  def show
+  def edit
     @student = Student.find(params[:id])
+    if current_user.type == "Teacher" && current_user.current_class
+      @seminar = Seminar.find(current_user.current_class)
+      @ss = SeminarStudent.find_by(:user => @student, :seminar => @seminar)
+    end
   end
 
   def update
     @student = Student.find(params[:id])
+    stud_with_username = Student.find_by(:username => params[:student][:username])
+    already_taken = stud_with_username.present? && stud_with_username != @student
+    params[:student][:username] = "0" if already_taken or params[:student][:username].blank?
     if @student.update_attributes(student_params)
       auto_info
       flash[:success] = "Profile updated"
@@ -67,13 +85,7 @@ class StudentsController < ApplicationController
     end
   end
 
-  def edit
-    @student = Student.find(params[:id])
-    if current_user.type == "Teacher" && current_user.current_class
-      @seminar = Seminar.find(current_user.current_class)
-      @ss = SeminarStudent.find_by(:user => @student, :seminar => @seminar)
-    end
-  end
+  
   
   def edit_teaching_requests
     @student = Student.find(params[:id])
@@ -95,13 +107,11 @@ class StudentsController < ApplicationController
   private
   
     def student_params
-      params.require(:student).permit(:first_name, :last_name, :email,
-        :password, :password_confirmation, :username, :user_number)
+      params.require(:student).permit(:first_name, :last_name, :email, :password, :password_confirmation, :username, :user_number)
     end
     
     def multi_params(my_params)
-      my_params.permit(:first_name, :last_name, :email,
-        :password_digest, :username, :user_number)
+      my_params.permit(:first_name, :last_name, :email, :password, :password_digest, :username, :user_number)
     end
     
     # Confirms the correct student.
@@ -110,7 +120,7 @@ class StudentsController < ApplicationController
       redirect_to(login_url) unless (@student == current_user || user_is_an_admin || (user_is_a_teacher && current_user.students.include?(@student)))
     end
     
-    def make_username()
+    def make_username
       firstInitial = @student.first_name[0,1].downcase
       lastInitial = @student.last_name[0,1].downcase
       user_number = @student.user_number
@@ -137,7 +147,14 @@ class StudentsController < ApplicationController
     def auto_info   # Auto-generate missing info for students
       @student.title = "Awesome" if @student.title.blank?
       @student.user_number = @student.id if @student.user_number.blank?
-      @student.username = make_username() if @student.username.blank?
+      @student.username = make_username if @student.username.blank? or @student.username == "0" 
       @student.password = "#{@student.user_number}" if @student.password_digest.blank?
+    end
+    
+    def new_student_stuff
+      @student_group = []
+      55.times do
+        @student_group << Student.new
+      end
     end
 end

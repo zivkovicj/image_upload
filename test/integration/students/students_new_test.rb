@@ -3,18 +3,20 @@ require 'test_helper'
 class StudentsNewTest < ActionDispatch::IntegrationTest
     
     def setup
-        setup_users()
+        setup_users
         setup_seminars
+        @old_stud_count = Student.count
     end
     
     test 'Create New Student' do
-        oldStudCount = Student.count
+        setup_users
+        
         oldAulaCount = SeminarStudent.count
         oldScoreCount = ObjectiveStudent.count
         assignmentCount = @seminar.objectives.count
         
         capybara_login(@teacher_1)
-        click_on('1st Period')
+        click_on("scoresheet_#{@seminar.id}")
         click_on('Create New Students')
         
         fill_in ("first_name_1"), :with => "Phil"
@@ -41,7 +43,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         
         click_on("Create these student accounts")
         
-        assert_equal oldStudCount+5, Student.count
+        assert_equal @old_stud_count+5, Student.count
         assert_equal oldScoreCount + (assignmentCount*5), ObjectiveStudent.count
         assert_equal oldAulaCount + 5, SeminarStudent.count
         
@@ -73,6 +75,22 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_equal 1, @new_aula.pref_request
         
         assert_text("#{@seminar.name} Scoresheet")
+    end
+    
+    test "username already taken" do
+        @student_1.update!(:username => "nabwaffle49")
+        capybara_login(@teacher_1)
+        click_on("scoresheet_#{@seminar.id}")
+        click_on('Create New Students')
+        
+        fill_in ("first_name_1"), :with => "Kid"
+        fill_in ("last_name_1"), :with => "Stealing Username"
+        fill_in ("username_1"), :with => "nabwaffle49"
+        click_on("Create these student accounts")
+        
+        this_student = Student.find_by(:last_name => "Stealing Username")
+        id_num = this_student.id
+        assert_equal "ks#{id_num}", this_student.username
     end
     
 end

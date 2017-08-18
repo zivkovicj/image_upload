@@ -19,7 +19,7 @@ class SeminarsController < ApplicationController
         if @seminar.save
             flash[:success] = "Class Created"
             update_current_class
-            redirect_to pretests_seminar_path(@seminar)
+            pretest_or_not
         else
             render 'seminars/new'
         end
@@ -73,7 +73,7 @@ class SeminarsController < ApplicationController
                 flash[:success] = "Class Updated"
             end
             update_current_class
-            redirect_to pretests_seminar_path(@seminar)
+            pretest_or_not
         end
     end
     
@@ -140,6 +140,11 @@ class SeminarsController < ApplicationController
         @all_pretest_objectives = @seminar.all_pretest_objectives(@student)
         
         update_current_class
+    end
+    
+    def pretest_or_not
+        next_path = @seminar.objectives.present? ? pretests_seminar_path(@seminar) : scoresheet_seminar_path(@seminar)
+        redirect_to next_path
     end
     
     private 

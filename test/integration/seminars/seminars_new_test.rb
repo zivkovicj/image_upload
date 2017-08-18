@@ -6,7 +6,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         setup_users()
     end
    
-   test "create new seminar" do
+    test "create new seminar" do
         setup_objectives
         obj_array = [@objective_30, @objective_40, @objective_50, @own_assign]
         capybara_login(@teacher_1)
@@ -19,13 +19,13 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         end
         click_on("Create This Class")
        
-        @new_seminar = Seminar.last
-        assert @new_seminar.name == "4th Period"
-        assert @new_seminar.consultantThreshold == 80
+        @seminar = Seminar.last
+        assert @seminar.name == "4th Period"
+        assert @seminar.consultantThreshold == 80
         obj_array.each do |obj|
-            assert @new_seminar.objectives.include?(obj)
+            assert @seminar.objectives.include?(obj)
         end
-        establish_objectives(@new_seminar)
+        establish_objectives(@seminar)
         4.times do |n|
             this_obj = instance_variable_get("@os_#{n}")
             assert_equal 0, this_obj.pretest
@@ -48,16 +48,33 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         reload_oss
         assert_equal 3, @os_2.priority
         assert_equal 0, @os_3.priority
-        assert_text("4th Period Scoresheet")
-   end 
+        assert_on_scoresheet
+    end 
    
-   test "Default Threshold" do
+    test "default threshold" do
+       old_seminar_count = Seminar.count
+       
        capybara_login(@teacher_1)
        click_on("Create a New Class")
        
        fill_in "Name", with: "5th Period"
-       @new_seminar = Seminar.last
-       assert_equal 70, @new_seminar.consultantThreshold
-   end
+       click_on("Create This Class")
+       
+       assert_equal old_seminar_count + 1, Seminar.count
+       @seminar = Seminar.last
+       assert_equal 70, @seminar.consultantThreshold
+    end
+   
+    test "class without objectives" do
+       capybara_login(@teacher_1)
+       click_on("Create a New Class")
+       
+       fill_in "Name", with: "5th Period"
+       click_on("Create This Class")
+       
+       @seminar = Seminar.last
+       assert_on_scoresheet
+       assert_no_text("Edit #{@seminar.name} Pre-Tests")
+    end
     
 end

@@ -10,7 +10,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         setup_scores()
     end
     
-    test "create new quiz" do
+    test "setup quiz" do
         old_quiz_count = Quiz.count
         old_riposte_count = Riposte.count
         
@@ -18,7 +18,6 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         
         go_to_first_period
         begin_quiz
-        
         @new_quiz = Quiz.last
         assert_equal @new_quiz.user, @student_2
         assert_equal @new_quiz.objective, @objective_10
@@ -41,6 +40,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
             assert_nil riposte.tally
         end
         answer_quiz_randomly
+        click_on("Back to Your Class Page")
         
         assert_text("Your Scores in All Objectives")
         @new_quiz.reload
