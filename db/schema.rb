@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170816220556) do
+ActiveRecord::Schema.define(version: 20170725200916) do
 
   create_table "consultancies", force: :cascade do |t|
     t.integer  "seminar_id"
@@ -29,16 +29,6 @@ ActiveRecord::Schema.define(version: 20170816220556) do
     t.index ["label_id", "objective_id"], name: "index_label_objectives_on_label_id_and_objective_id"
     t.index ["label_id"], name: "index_label_objectives_on_label_id"
     t.index ["objective_id"], name: "index_label_objectives_on_objective_id"
-  end
-
-  create_table "label_pictures", id: false, force: :cascade do |t|
-    t.integer  "label_id"
-    t.integer  "picture_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["label_id", "picture_id"], name: "index_label_pictures_on_label_id_and_picture_id"
-    t.index ["label_id"], name: "index_label_pictures_on_label_id"
-    t.index ["picture_id"], name: "index_label_pictures_on_picture_id"
   end
 
   create_table "labels", force: :cascade do |t|
@@ -194,7 +184,7 @@ ActiveRecord::Schema.define(version: 20170816220556) do
     t.string   "username"
     t.string   "password_digest"
     t.string   "email"
-    t.integer  "user_number",       limit: 10
+    t.integer  "user_number",       limit: 4
     t.integer  "current_class"
     t.string   "remember_digest"
     t.string   "activation_digest"
@@ -203,8 +193,8 @@ ActiveRecord::Schema.define(version: 20170816220556) do
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
     t.datetime "last_login"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
 end

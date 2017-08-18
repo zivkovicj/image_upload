@@ -15,7 +15,7 @@ Figure out what's the deal with refreshing the "question details" screen
 
 
 
-FLAWS NOTICED WHILE CREATING MY OWN REAL CLASSES
+2.24 HOTFIXES
 
 
 
@@ -46,6 +46,10 @@ Migrate heroku after push
 
 
 CUMULATIVE STARS
+
+    Change the description on the home page that makes it seem like the whole site is about DeskConsultants
+
+    When a student finishes a test, the new stars should be a more attractive icon, instead of the asterisk.
 
     The logo in the footer links to Desk Consultants.com. It should link to the new, correct site.
 
