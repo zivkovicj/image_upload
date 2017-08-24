@@ -500,6 +500,15 @@ th.rotate > div > span {
   color: white;
 }
 
+.student_link {
+  border: 4px solid black;
+  background: #00aaa0;
+  color: white;
+  a:visited {
+    color: white;
+  }
+}
+
 .marginTable {
   margin-left: 160px;
 }

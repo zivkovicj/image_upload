@@ -5,7 +5,7 @@ class SeminarTest < ActiveSupport::TestCase
   def setup
     setup_users()
     # This code is not idiomatically correct.
-    @test_seminar = @teacher_1.own_seminars.build(name: "1st Period", consultantThreshold: 70)
+    @test_seminar = @teacher_1.own_seminars.build(name: "1st Period", consultantThreshold: 7)
   end
 
   test "should be valid" do

@@ -1,4 +1,22 @@
 
+
+
+2.24 HOTFIXES--STARTED 08/14/17
+            --PUSHED 08/18/17
+Made it so that the pretest options don't show up if the teacher didn't add any objectives to the classroom. That was pretty confusing.
+Clean up the new and create actions in the objectives controlleR
+Error upon entering a student number that's too long
+    4358204269 is out of range for ActiveModel::Type::Integer with limit 4 (Stud number too long)
+Eliminate the back-link on the scoresheet view because it links to itself.
+Change "Label for Pictures" to Unlabeled
+Short_name should include 30 digits instead of 20.
+    Most of those forms shouldn't be displayed in the squished-centered version.
+"Quantities and Point Values" should go on a separate line
+"Back to Your Class Page" should be a button.
+Add a "Try Again" button for the student when she finishes a quiz?
+Migrate heroku after push
+
+
 2.23 IMPORTANT FIXES BEFORE ANNOUNCING TO OTHER TEACHERS--STARTED 08/13/07
                                                         --PUSHED 08/14/17
 Goal of this update: Fix a few errors before offering the program to the teachers who have expressed interest.

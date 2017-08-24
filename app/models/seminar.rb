@@ -11,6 +11,8 @@ class Seminar < ApplicationRecord
   validates :name, presence: true, length: { maximum: 40 }
   validates :consultantThreshold, presence: true, numericality: { only_integer: true }
   
+  attribute :consultantThreshold, :integer, default: 7
+  
     include ModelMethods
   
   # Limited version of semianr's name

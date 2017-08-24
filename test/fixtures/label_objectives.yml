@@ -9,8 +9,8 @@ for_quiz:
 for_quiz_2:
   label: user_label
   objective: objective_10
-  quantity: 2
-  point_value: 2
+  quantity: 6
+  point_value: 1
 
 fill-in:
   objective: fill-in

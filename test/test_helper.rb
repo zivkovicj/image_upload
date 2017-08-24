@@ -75,7 +75,7 @@ class ActiveSupport::TestCase
       seminar.objectives.each do |objective|
         seminar.students.each do |student|
           if student.objective_students.find_by(:objective => objective) == nil
-            student.objective_students.create(:objective => objective, :points => 75)
+            student.objective_students.create(:objective => objective, :points => 7)
           end
         end
       end
@@ -135,7 +135,7 @@ class ActiveSupport::TestCase
   end
   
   def answer_quiz_randomly
-    6.times do
+    10.times do
       choose("choice_bubble_1")
       click_on("Next Question")
     end
@@ -150,13 +150,13 @@ class ActiveSupport::TestCase
     fill_in "teacher_password_confirmation", with: "bigbigbigbig"
     click_on(button_text)
   
-    this_teacher = teacher || Teacher.last
-    this_teacher.reload
-    assert_equal "Mrs.", this_teacher.title
-    assert_equal "Burgle", this_teacher.first_name
-    assert_equal "Cut", this_teacher.last_name
-    assert_equal "burgle@cut.com", this_teacher.email
-    assert this_teacher.authenticate("bigbigbigbig")
+    @this_teacher = teacher || Teacher.last
+    @this_teacher.reload
+    assert_equal "Mrs.", @this_teacher.title
+    assert_equal "Burgle", @this_teacher.first_name
+    assert_equal "Cut", @this_teacher.last_name
+    assert_equal "burgle@cut.com", @this_teacher.email
+    assert @this_teacher.authenticate("bigbigbigbig")
   end
   
   def reload_oss

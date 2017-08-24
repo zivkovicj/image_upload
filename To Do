@@ -14,46 +14,47 @@ Figure out what's the deal with refreshing the "question details" screen
 
 
 
-
-2.24 HOTFIXES
-
-
-
-V Made it so that the pretest options don't show up if the teacher didn't add any objectives to the classroom. That was pretty confusing.
-
-V Clean up the new and create actions in the objectives controller
-
-V Error upon entering a student number that's too long
-    4358204269 is out of range for ActiveModel::Type::Integer with limit 4 (Stud number too long)
-
-V Eliminate the back-link on the scoresheet view because it links to itself.
-
-V Change "Label for Pictures" to Unlabeled
-
-V Short_name should include 30 digits instead of 20.
-    V Most of those forms shouldn't be displayed in the squished-centered version.
+2.25 CUMULATIVE STARS--STARTED 08/19/17
     
-V "Quantities and Point Values" should go on a separate line
+    Goal for this update: Keep track of the total number of stars that a student has earned and report that instead of the total number of points a student has earned
+    
+    V Add total_stars method to SeminarStudent that sums the stars
+    
+    EMAIL THE TEACHERS WHO HAD STARTED AN ACCOUNT IN THE OLD APP
+    
+    V When a quiz is finished, if there were any stars earned, add them to the total_stars for all seminars which include that objective
+        V The test should try twice and see if the increase works both times.
+    
+    V Show total_stars as the main feature of the student_view
+    
+    V Show total_stars as the first column of the scoresheet instead of the Total Points
+    
+    V Save a student's score as a multiple of 10.
+    
+    V When a student finishes a test, the new stars should be a more attractive icon, instead of the asterisk.
+    
+    V Consultant Threshold needs to be on a scale out of 10.
+        V Check the default
+        V And the choices for setting threshold
+        V And the seeds too.
+    
+    V Try again to fix the error that occurs when the a too-large user-number is entered.
+    
+    V The log-in form should go back to being a centered, offset column 
 
-V "Back to Your Class Page" should be a button.
+    V Change the description on the home page that makes it seem like the whole site is about DeskConsultants
 
-V Add a "Try Again" button for the student when she finishes a quiz?
+    V The logo in the footer links to Desk Consultants.com. It should link to the new, correct site.
+    
+    V Need to update last_login upon creating a new account Otherwise it's nil and creates an error in the index.
+    
+    V Links to go "Back to your Class Page" or "Try this Quiz again" are not friendly
 
-Migrate heroku after push
-    See how the user_numbers with too many digits are working in the live site.
-
-
-
-
-CUMULATIVE STARS
-
-    Change the description on the home page that makes it seem like the whole site is about DeskConsultants
-
-    When a student finishes a test, the new stars should be a more attractive icon, instead of the asterisk.
-
-    The logo in the footer links to Desk Consultants.com. It should link to the new, correct site.
-
-
+    Migrate after pushing to heroku to add total_stars column
+    
+    
+    
+    
 
 IMAGES WITH QUESTIONS
 
@@ -81,12 +82,24 @@ Disable "Next Question" button until student chooses a response
 MAYBE ALLOW IMAGES AS ANSWER CHOICES. WOULD MAKE FRACTIONS MUCH NICER.
 
 
-AND WHAT ABOUT AN EQUAITON-EDITOR ANSWER BOX SO THAT STUDENTS CAN TYPE FRACTIONS
+
+
+
+AND WHAT ABOUT AN EQUATION-EDITOR ANSWER BOX SO THAT STUDENTS CAN TYPE FRACTIONS
 
     For now, might be easier to implement multi-box fill-in answers. Then the student can input the numerator and denominator.
 
 
-    
+
+
+GROWTH POINTS
+
+    Need to add "last_growth" type column to objective_sudent
+        When a student improves score, update last_growth to today's date
+        If there is growth, but last_growth was the same day, then don't add growth points. (They need to take it again on a different day to earn those points.)
+ 
+ 
+   
 CURATED QUESTIONS
 
 Should have another type of user called "Content Creator"
@@ -203,6 +216,7 @@ STUDENT VIEW INTO MULTIPLE SUB-VIEWS
     
   
 REMOVE QUIZ FROM DESK CONSULTANTS OFFERINGS AFTER STUDENT HAS TAKEN IT TWICE
+
     Count the number of attempts since the most recent time working that objective with desk consultants
         If there are more than one, that quiz is no longer offered to the student.
     
@@ -433,9 +447,7 @@ Don't give message, "Students added to class" if zero students were added. Also,
     multi-question creator.
         
 "Has_objective" method should probably be removed and replaced with rails association
-            
-Right now the "total_points" function adds scores for all of a student's classes. Some day it needs to only add points for one individual class.
-            
+         
 Ensure that students cannot url into unauthorized objectives 
 
 Adjust scores to keep a record so that students can have multiple scores in the same objective. And make landmark dates for term endings.
@@ -578,7 +590,13 @@ It's a little bit weird that user can't leave second answer choice blank. But th
 Add an attribute to quiz called "progress" that keeps track of how many questions
     the student has answered from that quiz.  In case the student is interrupted mid-quiz.
     
-
+A better visual for the student's total stars can include some big stars for 10 and some giant stars for 100 
+    
+Allow teachers and admin to edit their user_numbers upon creation and updating
+    Offer a field in the regular form, but hide it until a button is pressed.
+    
+Right now the make_username method ends by generating a random token if the first four tries fail. If the site ever has a million users, I'll need to ensure that
+    it's generating a unique token for the username
 
 
 *** FEATURES TO CONSIDER

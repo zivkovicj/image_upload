@@ -18,9 +18,4 @@ module ApplicationHelper
         end
     end
     
-    def num_of_stars(input)
-        pre_stars = (input / 10).floor + 1
-        return [pre_stars, 10].min
-    end
-    
 end

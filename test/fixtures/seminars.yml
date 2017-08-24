@@ -3,26 +3,26 @@
 one:
   name: 1st Period
   user: archer
-  consultantThreshold: 70
+  consultantThreshold: 7
 
 two:
   name: 2nd Period
   user: archer
-  consultantThreshold: 70
+  consultantThreshold: 7
 
 three:
   name: 3rd Period
   user: archer
-  consultantThreshold: 70
+  consultantThreshold: 7
   
 three:
   name: Zacky's first period
   user: zacky
-  consultantThreshold: 70
+  consultantThreshold: 7
   
 <% 30.times do |n| %>
 seminar_<%= n %>:
   name:  <%= "Seminar #{n}" %>
   user: archer
-  consultantThreshold: 70
+  consultantThreshold: 7
 <% end %>

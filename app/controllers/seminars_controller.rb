@@ -10,7 +10,6 @@ class SeminarsController < ApplicationController
     
     def new
         @seminar = Seminar.new
-        @seminar.consultantThreshold = 70
         update_current_class
     end
     
@@ -90,7 +89,7 @@ class SeminarsController < ApplicationController
         @students = @seminar.students.order(:last_name)
         @teacher = @seminar.user
         set_objectives_and_scores(false)
-        profList = @students.sort {|a,b| a.total_points <=> b.total_points}
+        profList = @students.sort {|a,b| a.total_stars(@seminar) <=> b.total_stars(@seminar)}
         @tempSeating = []
         profList.each do |student|
             @tempSeating.push(student.id)
@@ -138,6 +137,8 @@ class SeminarsController < ApplicationController
         
         @desk_consulted_objectives = @student.desk_consulted_objectives(@seminar)
         @all_pretest_objectives = @seminar.all_pretest_objectives(@student)
+        
+        @show_quizzes = @desk_consulted_objectives.present? || @all_pretest_objectives.present?
         
         update_current_class
     end

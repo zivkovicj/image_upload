@@ -2,7 +2,7 @@
 <h1>Log in</h1>
 
 <div class="row">
-  
+  <div class="col-md-6 col-md-offset-3">
     <%= form_for(:session, url: login_path) do |f| %>
 
       <%= f.label "E-mail (for teachers) or Username (for students)" %>
@@ -28,5 +28,5 @@
 
     <p>New to Desk Consultants? <%= button_to "Sign up now!", signup_path, 
       class: "btn btn-lg btn-primary", :method => :get %></p>
-      
+  </div>
 </div>

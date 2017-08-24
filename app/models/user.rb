@@ -1,7 +1,9 @@
 class User < ApplicationRecord
-    attr_accessor :remember_token, :activation_token, :reset_token
-    before_save   :downcase_stuff
-    before_create :create_activation_digest
+    attr_accessor       :remember_token, :activation_token, :reset_token
+    before_save         :downcase_stuff
+    before_validation   :check_title, :check_user_number, :check_username, :check_password
+    before_create       :create_activation_digest
+    after_create        :update_last_login
     
     has_many    :objectives
     has_many    :questions
@@ -12,7 +14,7 @@ class User < ApplicationRecord
             presence: true
     validates :last_name, length: {maximum: 25},
             presence: true
-    validates :user_number, numericality: { only_integer: true }, unless: Proc.new { |a| a.user_number.blank? }
+    validates :user_number, numericality: { less_than_or_equal_to: 2000000000 }, unless: Proc.new { |a| a.user_number.blank? }
     
     include ModelMethods
     VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -93,7 +95,7 @@ class User < ApplicationRecord
     end
  
     def has_not_scored_100(obj)
-        self.objective_students.find_by(:objective => obj).points < 100
+        self.objective_students.find_by(:objective => obj).points < 10
     end
     
     def has_not_tried_twice(obj)
@@ -119,7 +121,48 @@ class User < ApplicationRecord
           self.activation_digest = User.digest(activation_token)
         end
     
+        def check_title
+            self.title = "Awesome" if self.title.blank?
+        end
     
+        def check_user_number
+            self.user_number = User.maximum(:id).next if self.user_number.blank? or self.user_number.abs > 2000000000
+        end
+        
+        def make_username
+          firstInitial = self.first_name[0,1].downcase
+          lastInitial = self.last_name[0,1].downcase
+          user_number = self.user_number
+          username = "#{firstInitial}#{lastInitial}#{user_number}"
+          return username if User.find_by(:username => username) == nil
+          
+          firstDown = self.first_name.downcase
+          username = "#{firstDown}#{lastInitial}#{user_number}"
+          return username if User.find_by(:username => username) == nil
+    
+          lastDown = self.last_name.downcase
+          username = "#{firstInitial}#{lastDown}#{user_number}"
+          return username if User.find_by(:username => username) == nil
+    
+          username = "#{firstDown}#{lastDown}#{user_number}"
+          return username if User.find_by(:username => username) == nil
+          
+          return SecureRandom.hex(4)
+        end
+        
+        def check_username
+            user_with_username = User.find_by(:username => self.username)
+            already_taken = user_with_username.present? && user_with_username != self
+            self.username = make_username if self.username.blank? or already_taken
+        end
+        
+        def check_password
+            self.password = "#{self.user_number}" if self.password_digest.blank?
+        end
+        
+        def update_last_login
+            self.update(:last_login => self.created_at) 
+        end
         
         
 end

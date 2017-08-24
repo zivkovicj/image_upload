@@ -16,19 +16,36 @@
     <% end %>
 <% end %>
 
+
+
 <div class="row">
-    <h1>&emsp;&emsp;<%= @student.fullName %>&emsp;&emsp; <small><%= @seminar.name %>&emsp; <%= @teacher.name_with_title %></small></h1>
+    <div class="col-sm-8 singleOption">
+        <h1>&emsp;&emsp;<%= @student.fullName %>&emsp;&emsp; </br><small><%= @seminar.name %>&emsp; <%= @teacher.name_with_title %></small></h1>
+    </div>
+    
+    <div class="col-sm-2">
+        
+    </div>
+        
+    <div class="col-sm-2">
+        <h2>Total stars</h2>
+        <h1><%= @student.total_stars(@seminar) %></h1>
+    </div>
 </div>
+</br>
+
 
 <div class="singleOption">
-    <h2>Quizzes Available</h2>
-    </br>
+    <% if @show_quizzes %>
+        <h2>Quizzes Available</h2>
+        </br>
+        
+        <% list_of_quizzes(@desk_consulted_objectives, "Desk Consultants") %>
     
-    <% list_of_quizzes(@desk_consulted_objectives, "Desk Consultants") %>
-
-    
-    <% list_of_quizzes(@all_pretest_objectives, "Pretest") %>
-    
+        <% list_of_quizzes(@all_pretest_objectives, "Pretest") %>
+    <% else %>
+        <h3>No quizzes available right now.</h3>
+    <% end %>
 </div>
 
 </br>
@@ -36,5 +53,6 @@
 
 <%= render 'shared/teach_requests' %>
 
+</br>
 <%= button_to "Edit Your Profile", edit_student_path(@student), 
         class: "btn btn-lg btn-primary", :method => :get %>

@@ -29,7 +29,7 @@ class QuizzesController < ApplicationController
         
         student = current_user
         score = student.objective_students.find_by(:objective => @objective)
-        @old_points = (score == nil ? 0 : score.points) 
+        @old_stars = (score == nil ? 0 : score.points) 
     
         poss = 0
         stud_score = 0
@@ -38,14 +38,16 @@ class QuizzesController < ApplicationController
             stud_score += (riposte.tally)
         end
         
-        new_total = ((stud_score * 100)/poss).round
-        @quiz.update(:total_score => new_total)
+        @new_total = ((stud_score * 100)/poss.to_f).round
+        @these_stars = num_of_stars(@new_total)
+        @quiz.update(:total_score => @these_stars)
+        @added_stars = @these_stars - @old_stars
         
-        if new_total > @old_points
-            score.update(:points => new_total)
-        end
-        
-        @total_score = @quiz.total_score
+        score.update(:points => @these_stars) if @added_stars > 0
+    end
+    
+    def num_of_stars(input)
+        (input/10.to_f).ceil
     end
     
 end

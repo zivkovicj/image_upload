@@ -13,6 +13,7 @@ Admin.create!(first_name:  "Jeff",
              email: "zivkovic.jeff@gmail.com",
              password:              "foobar",
              password_confirmation: "foobar",
+             user_number: 1,
              activated: true,
              activated_at: Time.zone.now)
              
@@ -24,6 +25,7 @@ Admin.create!(first_name:  "Second",
              email: "noobsauce@gmail.com",
              password:              "foobar",
              password_confirmation: "foobar",
+             user_number: 2,
              activated: true,
              activated_at: Time.zone.now)
  
@@ -33,6 +35,7 @@ Admin.create!(first_name:  "Business",
              email: "businesspartner@gmail.com",
              password:              "foobar",
              password_confirmation: "foobar",
+             user_number: 3,
              activated: true,
              activated_at: Time.zone.now)
              
@@ -42,6 +45,7 @@ Admin.create!(first_name:  "Last",
              email: "lastadmin@gmail.com",
              password:              "foobar",
              password_confirmation: "foobar",
+             user_number: 4,
              activated: true,
              activated_at: Time.zone.now)
 
@@ -60,6 +64,7 @@ title_array = ["Mrs.", "Mr.", "Miss", "Ms.", "Dr."]
                title: title_array[which_title],
                password:              password,
                password_confirmation: password,
+               user_number: n,
                activated: true,
                activated_at: Time.zone.now)
 end
@@ -67,13 +72,13 @@ end
 # Seminars
 Seminar.create!(name: "1st Period",
                 user_id: 5,
-                consultantThreshold: 70)
+                consultantThreshold: 7)
 Seminar.create!(name: "2nd Period",
                 user_id: 5,
-                consultantThreshold: 70)
+                consultantThreshold: 7)
 Seminar.create!(name: "Another Teacher, First  Period",
                 user_id: 6,
-                consultantThreshold: 70)
+                consultantThreshold: 7)
                 
 # objectives
 
@@ -98,7 +103,8 @@ end
   @student = Student.create!(first_name:  first_name,
                last_name:   last_name,
                email: email,
-               password:              password)
+               user_number: n,
+               password: password)
    SeminarStudent.create!(seminar_id: 1, user_id: @student.id)
 end
 
@@ -114,7 +120,8 @@ SeminarStudent.create!(seminar_id: 2, user_id: 18)
   @student = Student.create!(first_name:  first_name,
                last_name:   last_name,
                email: email,
-               password:              password)
+               user_number: n,
+               password: password)
    SeminarStudent.create!(seminar_id: 2, user_id: @student.id)
 end
 
@@ -126,7 +133,8 @@ end
   @student = Student.create!(first_name:  first_name,
                last_name:   last_name,
                email: email,
-               password:              password)
+               user_number: n,
+               password: password)
    SeminarStudent.create!(seminar_id: 3, user_id: @student.id)
 end
 
@@ -137,7 +145,7 @@ Student.all.each do |student|
 end
 
 # Scores
-skillMatrix = [[0,0,0,0,50,75],[0,0,50,50,75,100],[0,50,75,100,100,100]]
+skillMatrix = [[0,0,0,0,5,7],[0,0,5,5,7,10],[0,5,7,10,10,10]]
 Student.all.each do |student|
     skill = rand(3)
     student.seminar_students.each do |ss|
@@ -164,9 +172,9 @@ Label.create(:name => "Intercept from Graphs", :extent => "public", :user => tea
 Label.create(:name => "Intercept from Equations", :extent => "public", :user => teacher_user)
 Label.create(:name => "Intercept from Tables", :extent => "public", :user => teacher_user)
 
-add_and_sub_obj = Objective.find_by(:name => "add and subtract numbers")
-mult_and_div_obj = Objective.find_by(:name => "multiply and divide numbers")
-sum_obj = Objective.find_by(:name => "numbers summary")
+add_and_sub_obj = Objective.find_by(:name => "Add and Subtract Numbers")
+mult_and_div_obj = Objective.find_by(:name => "Multiply and Divide Numbers")
+sum_obj = Objective.find_by(:name => "Numbers Summary")
 
 LabelObjective.create(:label => add_label, :objective => add_and_sub_obj,
     :quantity => 2, :point_value => 2)

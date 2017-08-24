@@ -8,16 +8,18 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         @old_stud_count = Student.count
     end
     
-    test 'Create New Student' do
-        setup_users
-        
+    def go_to_create_student_view
+        capybara_login(@teacher_1)
+        click_on("scoresheet_#{@seminar.id}")
+        click_on('Create New Students')
+    end
+    
+    test 'create new student' do
         oldAulaCount = SeminarStudent.count
         oldScoreCount = ObjectiveStudent.count
         assignmentCount = @seminar.objectives.count
         
-        capybara_login(@teacher_1)
-        click_on("scoresheet_#{@seminar.id}")
-        click_on('Create New Students')
+        go_to_create_student_view
         
         fill_in ("first_name_1"), :with => "Phil"
         fill_in ("last_name_1"), :with => "Labonte"
@@ -53,6 +55,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_equal "pl#{thisId}", first_new_student.username 
         assert first_new_student.authenticate(thisId)
         assert_equal "", first_new_student.email
+        assert_equal first_new_student.created_at, first_new_student.last_login
         
         second_new_student = Student.find_by(:last_name => "Burgaboot")
         assert @seminar.students.include?(second_new_student)
@@ -79,9 +82,8 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
     
     test "username already taken" do
         @student_1.update!(:username => "nabwaffle49")
-        capybara_login(@teacher_1)
-        click_on("scoresheet_#{@seminar.id}")
-        click_on('Create New Students')
+        
+        go_to_create_student_view
         
         fill_in ("first_name_1"), :with => "Kid"
         fill_in ("last_name_1"), :with => "Stealing Username"
@@ -91,6 +93,60 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         this_student = Student.find_by(:last_name => "Stealing Username")
         id_num = this_student.id
         assert_equal "ks#{id_num}", this_student.username
+    end
+    
+    test "user_number too long" do
+        go_to_create_student_view
+        
+        fill_in ("first_name_1"), :with => "Kid"
+        fill_in ("last_name_1"), :with => "with Too-Long Username"
+        fill_in ("user_number_1"), :with => 2000000001
+        click_on("Create these student accounts")
+        
+        this_student = Student.find_by(:last_name => "with Too-Long Username")
+        id_num = this_student.id
+        assert_equal id_num, this_student.id
+    end
+    
+    test "make_username" do
+        go_to_create_student_view
+        
+        fill_in ("first_name_1"), :with => "Abigail"
+        fill_in ("last_name_1"), :with => "Barnes"
+        fill_in ("user_number_1"), :with => 5
+        
+        fill_in ("first_name_2"), :with => "Abigail"
+        fill_in ("last_name_2"), :with => "Barnes"
+        fill_in ("user_number_2"), :with => 5
+        
+        fill_in ("first_name_3"), :with => "Abigail"
+        fill_in ("last_name_3"), :with => "Barnes"
+        fill_in ("user_number_3"), :with => 5
+        
+        fill_in ("first_name_4"), :with => "Abigail"
+        fill_in ("last_name_4"), :with => "Barnes"
+        fill_in ("user_number_4"), :with => 5
+        
+        fill_in ("first_name_5"), :with => "Abigail"
+        fill_in ("last_name_5"), :with => "Barnes"
+        fill_in ("user_number_5"), :with => 5
+        
+        click_on("Create these student accounts")
+        
+        assert_equal @old_stud_count + 5, Student.count
+        
+        stud_1 = Student.all[-5]
+        assert_equal "ab5", stud_1.username
+        
+        stud_2 = Student.all[-4]
+        assert_equal "abigailb5", stud_2.username
+        
+        stud_3 = Student.all[-3]
+        assert_equal "abarnes5", stud_3.username
+        
+        stud_4 = Student.all[-2]
+        assert_equal "abigailbarnes5", stud_4.username
+        
     end
     
 end

@@ -20,7 +20,7 @@ module DeskConsultants
     def setupProfList()
         # The main array that is actually used is profList, which sorts students
         # by their total scores
-        @profList = @students.sort {|a,b| a.total_points <=> b.total_points}
+        @profList = @students.sort {|a,b| a.total_stars(@seminar) <=> b.total_stars(@seminar)}
     end
     
     # Rank students by their adjusted consultant points.
@@ -77,7 +77,7 @@ module DeskConsultants
       new_team.consultant = stud if isConsult
       new_team.save
       new_team.users << stud
-      @scoreHash[req.id][:need] -= 3
+      @scoreHash[req.id][:need] -= 3 if req
     end
     
     def need_placement(student)

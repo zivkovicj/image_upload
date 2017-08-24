@@ -9,4 +9,5 @@ class SeminarStudent < ApplicationRecord
     attribute :present, :boolean, default: true
     
     include ModelMethods
+    
 end

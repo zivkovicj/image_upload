@@ -24,18 +24,18 @@
       <th>Priorities</th>
       <th>Consultancies</th>
     </thead>
-    <% @own_seminars.order(:name).each do |s| %>
+    <% @own_seminars.order(:name).each do |sem| %>
       <tr>
-        <td><h4><%= link_to s.name, edit_seminar_path(s) %></h4></td>
-        <td><%= link_to image_tag("scoresheet.png"), scoresheet_seminar_url(s), :id => "scoresheet_#{s.id}" %></td>
+        <td><h4><%= link_to sem.name, edit_seminar_path(sem) %></h4></td>
+        <td><%= link_to image_tag("scoresheet.png"), scoresheet_seminar_url(sem), :id => "scoresheet_#{sem.id}" %></td>
         <td>
-          <% if s.shouldShowConsultLink %>
-            <%= link_to image_tag("desk_consult.png"), new_consultancy_path(:seminar => s.id), :id => "desk_consult_#{s.id}" %>
+          <% if sem.shouldShowConsultLink %>
+            <%= link_to image_tag("desk_consult.png"), new_consultancy_path(:seminar => sem.id), :id => "desk_consult_#{sem.id}" %>
           <% end %>
         </td>
-        <td><%= link_to image_tag("objectives.png"), edit_seminar_path(s), :id => "edit_seminar_#{s.id}" %></td>
-        <td><%= link_to image_tag("priorities.png"), priorities_seminar_path(s), :id => "#{s.name} priorities" %></td>
-        <td><%= link_to image_tag("sierpinski.png"), consultancies_path(:seminar => s.id), :id => "index_consult_#{s.id}" %></td>
+        <td><%= link_to image_tag("objectives.png"), edit_seminar_path(sem), :id => "edit_seminar_#{sem.id}" %></td>
+        <td><%= link_to image_tag("priorities.png"), priorities_seminar_path(sem), :id => "#{sem.name} priorities" %></td>
+        <td><%= link_to image_tag("sierpinski.png"), consultancies_path(:seminar => sem.id), :id => "index_consult_#{sem.id}" %></td>
       </tr>
     <% end %>
   </table>

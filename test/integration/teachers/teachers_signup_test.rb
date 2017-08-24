@@ -12,6 +12,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         teacher_editing_stuff(nil, 'Create My Account')
         
         assert_equal @old_teacher_count + 1, Teacher.count
+        assert_in_delta @this_teacher.created_at, @this_teacher.last_login, 1.minute
     end
     
     test "invalid signup information" do

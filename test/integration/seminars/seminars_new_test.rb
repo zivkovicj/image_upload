@@ -13,7 +13,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         click_on("Create a New Class")
        
         fill_in "Name", with: "4th Period"
-        choose('80')
+        choose('8')
         obj_array.each do |obj|
             check("check_#{obj.id}")
         end
@@ -21,7 +21,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
        
         @seminar = Seminar.last
         assert @seminar.name == "4th Period"
-        assert @seminar.consultantThreshold == 80
+        assert @seminar.consultantThreshold == 8
         obj_array.each do |obj|
             assert @seminar.objectives.include?(obj)
         end
@@ -62,7 +62,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
        
        assert_equal old_seminar_count + 1, Seminar.count
        @seminar = Seminar.last
-       assert_equal 70, @seminar.consultantThreshold
+       assert_equal 7, @seminar.consultantThreshold
     end
    
     test "class without objectives" do

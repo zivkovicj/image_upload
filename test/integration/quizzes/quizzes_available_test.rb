@@ -25,10 +25,10 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         assert @seminar.objective_is_pretest(@main_objective)
         
         #Student 1
-        @objective_40.objective_students.find_by(:user => @student_1).update(:points => 60)
-        @objective_50.objective_students.find_by(:user => @student_1).update(:points => 80)
-        @objective_80.objective_students.find_by(:user => @student_1).update(:points => 80)
-        @already_preassign_to_main.objective_students.find_by(:user => @student_1).update(:points => 60)
+        @objective_40.objective_students.find_by(:user => @student_1).update(:points => 6)
+        @objective_50.objective_students.find_by(:user => @student_1).update(:points => 8)
+        @objective_80.objective_students.find_by(:user => @student_1).update(:points => 8)
+        @already_preassign_to_main.objective_students.find_by(:user => @student_1).update(:points => 6)
         assert_not @seminar.all_pretest_objectives(@student_1).include?(@objective_40)
         assert_not @seminar.all_pretest_objectives(@student_1).include?(@objective_50)
         assert @seminar.all_pretest_objectives(@student_1).include?(@already_preassign_to_main)
@@ -36,10 +36,10 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         assert @seminar.all_pretest_objectives(@student_1).include?(@objective_80)
         
         #Student 2
-        @objective_40.objective_students.find_by(:user => @student_2).update(:points => 60)
-        @objective_50.objective_students.find_by(:user => @student_2).update(:points => 80)
-        @objective_80.objective_students.find_by(:user => @student_2).update(:points => 100)
-        @already_preassign_to_main.objective_students.find_by(:user => @student_2).update(:points => 80)
+        @objective_40.objective_students.find_by(:user => @student_2).update(:points => 6)
+        @objective_50.objective_students.find_by(:user => @student_2).update(:points => 8)
+        @objective_80.objective_students.find_by(:user => @student_2).update(:points => 10)
+        @already_preassign_to_main.objective_students.find_by(:user => @student_2).update(:points => 8)
         assert_not @seminar.all_pretest_objectives(@student_2).include?(@objective_40)
         assert_not @seminar.all_pretest_objectives(@student_2).include?(@objective_50)
         assert @seminar.all_pretest_objectives(@student_2).include?(@already_preassign_to_main)
@@ -67,10 +67,10 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         setup_consultancies
         assert @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
         
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 80)
+        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 8)
         assert @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
         
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 100)
+        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 10)
         assert_not @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
     end
     

@@ -28,7 +28,7 @@ class Objective < ApplicationRecord
         studsInNeed = 0
         seminar.students.each do |student|
             boog = student.objective_students.find_by(objective_id: id)
-            if boog and boog.points and boog.points < 70 and student.check_if_ready(self)
+            if boog and boog.points and boog.points < 7 and student.check_if_ready(self)
                 studsInNeed += 1
             end
         end

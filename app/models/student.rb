@@ -13,8 +13,8 @@ class Student < User
     
    
     # Add the total points for this student
-    def total_points()
-        objective_students.sum(:points)
+    def total_stars(seminar)
+        objective_students.where(:objective => seminar.objectives).sum(:points)
     end
     
     # Returns first name with limit plus last initial
@@ -39,7 +39,7 @@ class Student < User
     def check_if_ready(objective)
         objective.preassigns.each do |preassign|
             droog = objective_students.find_by(objective_id: preassign.id)
-            if droog and droog.points < 70
+            if droog and droog.points < 7
               return false
             end
         end
