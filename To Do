@@ -13,70 +13,25 @@ Figure out what's the deal with refreshing the "question details" screen
 
 
 
+EMAIL THE TEACHERS WHO HAD STARTED AN ACCOUNT IN THE OLD APP
 
-2.25 CUMULATIVE STARS--STARTED 08/19/17
-    
-    Goal for this update: Keep track of the total number of stars that a student has earned and report that instead of the total number of points a student has earned
-    
-    V Add total_stars method to SeminarStudent that sums the stars
-    
-    EMAIL THE TEACHERS WHO HAD STARTED AN ACCOUNT IN THE OLD APP
-    
-    V When a quiz is finished, if there were any stars earned, add them to the total_stars for all seminars which include that objective
-        V The test should try twice and see if the increase works both times.
-    
-    V Show total_stars as the main feature of the student_view
-    
-    V Show total_stars as the first column of the scoresheet instead of the Total Points
-    
-    V Save a student's score as a multiple of 10.
-    
-    V When a student finishes a test, the new stars should be a more attractive icon, instead of the asterisk.
-    
-    V Consultant Threshold needs to be on a scale out of 10.
-        V Check the default
-        V And the choices for setting threshold
-        V And the seeds too.
-    
-    V Try again to fix the error that occurs when the a too-large user-number is entered.
-    
-    V The log-in form should go back to being a centered, offset column 
 
-    V Change the description on the home page that makes it seem like the whole site is about DeskConsultants
-
-    V The logo in the footer links to Desk Consultants.com. It should link to the new, correct site.
-    
-    V Need to update last_login upon creating a new account Otherwise it's nil and creates an error in the index.
-    
-    V Links to go "Back to your Class Page" or "Try this Quiz again" are not friendly
-
-    Migrate after pushing to heroku to add total_stars column
-    
-    
     
     
 
-IMAGES WITH QUESTIONS
-
-Public/Private Extent for Pictures
-
-The first screen for writing questions is only for the type, extent, and label.
-
-Associate pictures with labels
-
-Make an option to associate labels with pictures
-
-Link an image to a question
-
-Display that image when the student is answering the riposte
-
-Also work on the best way to display the images while creating questions
-
-The second screen will only offer the pictures that correspond to the chosen label.
+2.26 IMAGES WITH QUESTIONS--STARTED 08/23/17
+Goal of this update: Allow teachers to associate uploaded images with specific questions. 
 
 List options for labels when uploading a new image
 
+Question edit form lists all the images for the selected label
+
+Display that image when the student is answering the riposte
+
 Disable "Next Question" button until student chooses a response
+
+
+
 
 
 MAYBE ALLOW IMAGES AS ANSWER CHOICES. WOULD MAKE FRACTIONS MUCH NICER.
@@ -98,6 +53,14 @@ GROWTH POINTS
         When a student improves score, update last_growth to today's date
         If there is growth, but last_growth was the same day, then don't add growth points. (They need to take it again on a different day to earn those points.)
  
+
+BENCHMARK STARS
+
+    Each student_seminar will have a benchmark stars column. When the teacher clicks the benchmark, it will save each student's current total of stars for that seminar
+    
+    There will be columns that show total stars, last benchmark, and stars since last benchmark
+    
+    This will help with marking term grades
  
    
 CURATED QUESTIONS
@@ -358,6 +321,8 @@ ADMIN CAN CREATE NEW ADMIN
     
     
 OTHER IMPROVEMENTS
+
+Public/Private Extent for Pictures
 
 Alert the teacher if she is creating a fill-in question without any correct answers
 

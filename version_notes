@@ -1,5 +1,27 @@
 
 
+2.25 CUMULATIVE STARS--STARTED 08/19/17
+                    --PUSHED 08/23/17
+    Goal for this update: Keep track of the total number of stars that a student has earned and report that instead of the total number of points a student has earned
+    Add total_stars method to SeminarStudent that sums the stars
+    When a quiz is finished, if there were any stars earned, add them to the total_stars for all seminars which include that objective
+        The test should try twice and see if the increase works both times.
+    Show total_stars as the main feature of the student_view
+    Show total_stars as the first column of the scoresheet instead of the Total Points
+    Save a student's score as a multiple of 10.
+    When a student finishes a test, the new stars should be a more attractive icon, instead of the asterisk.
+    Consultant Threshold needs to be on a scale out of 10.
+        Check the default
+        And the choices for setting threshold
+        And the seeds too.
+    Try again to fix the error that occurs when the a too-large user-number is entered.
+    The log-in form should go back to being a centered, offset column
+    Change the description on the home page that makes it seem like the whole site is about DeskConsultant
+    The logo in the footer links to Desk Consultants.com. It should link to the new, correct site.
+    Need to update last_login upon creating a new account Otherwise it's nil and creates an error in the index.
+    Links to go "Back to your Class Page" or "Try this Quiz again" are not friendly
+
+
 
 2.24 HOTFIXES--STARTED 08/14/17
             --PUSHED 08/18/17
