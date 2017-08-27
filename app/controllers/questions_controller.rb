@@ -15,6 +15,7 @@ class QuestionsController < ApplicationController
     @extent = params[:extent]
     @label = Label.find(params[:label])
     @style = params[:style]
+    @pictures = @label.pictures
     create_question_group
   end
 
@@ -22,7 +23,7 @@ class QuestionsController < ApplicationController
     one_saved = false
     
     params["questions"].each do |n|
-      if params["questions"][n][:prompt].blank? == false
+      if params["questions"][n][:prompt].present?
         @question = Question.new(multi_params(params["questions"][n]))
         @question.user = current_user
         ensure_essentials
@@ -78,6 +79,7 @@ class QuestionsController < ApplicationController
   def edit
     @question = Question.find(params[:id])
     @labels = labels_to_offer()
+    @pictures = @question.label.pictures
     setPermissions(@question)
     render 'show' if @assignPermission == "other"
   end
@@ -90,24 +92,24 @@ class QuestionsController < ApplicationController
     set_correct_answers(params["questions"]["0"])
     if @question.update_attributes(multi_params(params["questions"]["0"]))
       flash[:success] = "Question Updated"
-      redirect_to current_user
+      redirect_to questions_path
     else
       render 'edit'
     end
   end
 
   def destroy
+    @question = Question.find(params[:id])
+    if @question.destroy
+      flash[:success] = "Question deleted"
+      redirect_to questions_path
+    end
   end
   
   private
-    def question_params
-      params.require(:question).permit(:style, :prompt, :extent, :user_id, :label_id,
-        :choice_0, :choice_1, :choice_2, :choice_3, :choice_4, :choice_5, :picture_id)
-    end
-    
     def multi_params(my_params)
       my_params.permit(:prompt, :choice_0, :choice_1, :choice_2, :choice_3,
-        :choice_4, :choice_5, :user_id, :label_id, :extent, :style)
+        :choice_4, :choice_5, :user_id, :label_id, :extent, :style, :picture_id)
     end
     
     def create_question_group

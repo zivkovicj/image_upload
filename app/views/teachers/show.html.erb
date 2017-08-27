@@ -80,5 +80,7 @@
   </div>
 </div>
 
-<%#= button_to 'Upload Pictures', new_picture_path, class: "btn btn-lg btn-primary",
+<%= button_to 'Upload Pictures', new_picture_path, class: "btn btn-lg btn-primary",
           :method => :get %>
+          
+<%= button_to "All Pictures", pictures_path, class: "btn btn-lg btn-primary", :method => :get %>

@@ -5,13 +5,29 @@ require "minitest/reporters"
 require 'capybara/rails'
 Minitest::Reporters.use!
 
+CarrierWave.root = 'test/fixtures/files'
+
+class CarrierWave::Mount::Mounter
+  def store!
+    # Not storing uploads in the tests
+  end
+end
+
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
+  
   include ApplicationHelper
+  
+  include ActionDispatch::TestProcess
 
-  # Add more helper methods to be used by all tests here...
+  CarrierWave.root = Rails.root.join('test/fixtures/files')
+  
+  def after_teardown
+    super
+    CarrierWave.clean_cached_files!(0)
+  end
   
   def setup_users
     @admin_user = users(:michael)
@@ -68,6 +84,12 @@ class ActiveSupport::TestCase
     @user_q = questions(:two)
     @other_q_pub = questions(:three)
     @other_q_priv = questions(:four)
+  end
+  
+  def setup_pictures
+    @admin_p = pictures(:cheese_logo)
+    @user_p = pictures(:two)
+    @other_p = pictures(:three)
   end
   
   def setup_scores()

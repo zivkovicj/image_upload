@@ -4,58 +4,47 @@ class PicturesController < ApplicationController
     correct_owner(Picture)
   end
 
-  # GET /pictures
-  # GET /pictures.json
+  include LabelsList
+
+  def new
+    @picture = Picture.new
+    @labels = labels_to_offer
+  end
+
+  def create
+    @picture = Picture.new(picture_params)
+    @picture.user = current_user
+    
+    if @picture.save
+      flash[:success] = "New Picture Successfully Created"
+      redirect_to current_user
+    else
+      render 'new'
+    end
+  end
+
   def index
     @pictures = Picture.all
   end
 
-  # GET /pictures/1
-  # GET /pictures/1.json
   def show
   end
 
-  # GET /pictures/new
-  def new
-    @picture = Picture.new
-  end
-
-  # GET /pictures/1/edit
   def edit
+    set_picture
+    @labels = labels_to_offer
   end
 
-  # POST /pictures
-  # POST /pictures.json
-  def create
-    @picture = Picture.new(picture_params)
-
-    respond_to do |format|
-      if @picture.save
-        format.html { redirect_to @picture, notice: 'Picture was successfully created.' }
-        format.json { render :show, status: :created, location: @picture }
-      else
-        format.html { render :new }
-        format.json { render json: @picture.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /pictures/1
-  # PATCH/PUT /pictures/1.json
   def update
-    respond_to do |format|
-      if @picture.update(picture_params)
-        format.html { redirect_to @picture, notice: 'Picture was successfully updated.' }
-        format.json { render :show, status: :ok, location: @picture }
-      else
-        format.html { render :edit }
-        format.json { render json: @picture.errors, status: :unprocessable_entity }
-      end
+    @picture = Picture.find(params[:id])
+    if @picture.update(picture_params)
+      flash[:success] = "Picture Updated"
+      redirect_to current_user
+    else
+      render 'edit'
     end
   end
 
-  # DELETE /pictures/1
-  # DELETE /pictures/1.json
   def destroy
     @picture.destroy
     respond_to do |format|
@@ -72,6 +61,6 @@ class PicturesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def picture_params
-      params.require(:picture).permit(:name, :label_id, :image)
+      params.require(:picture).permit(:name, :image, label_ids: [])
     end
 end

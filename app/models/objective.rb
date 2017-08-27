@@ -13,7 +13,7 @@ class Objective < ApplicationRecord
     has_many    :preassigns, through: :preconditions, as: :mainassign, source: :preassign
     has_many    :mainassigns, through: :mainconditions, as: :preassign, source: :mainassign
     
-    has_many    :label_objectives, dependent: :destroy, foreign_key: :objective_id
+    has_many    :label_objectives, dependent: :destroy
     has_many    :labels, through: :label_objectives
     has_many    :questions, through: :labels
     has_many    :teams, dependent: :destroy

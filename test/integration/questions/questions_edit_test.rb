@@ -3,9 +3,10 @@ require 'test_helper'
 class QuestionsEditTest < ActionDispatch::IntegrationTest
     
     def setup
-        setup_users()
-        setup_labels()
-        setup_questions()
+        setup_users
+        setup_labels
+        setup_questions
+        setup_pictures
         @new_prompt = ["Where do you park the car?"]
         @new_choice = [["Bill", "Nye", "The Science Guy", 
             "Please Consider the Following", "Sodium", "1111"]]
@@ -42,6 +43,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "edit multiple choice question" do
+        assert_not_equal @user_q.picture, @user_p
         assert_not @user_q.correct_answers.include?("3")
         assert_equal "private", @user_q.extent
         assert_equal @user_l, @user_q.label
@@ -58,6 +60,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         choose('question_0_whichIsCorrect_3')
         choose("public")
         choose("label_#{@admin_l.id}")
+        choose("question_0_picture_#{@user_p.id}")
         click_on("save_changes_2")
         
         @user_q.reload
@@ -67,6 +70,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         assert_equal 1, @user_q.correct_answers.length
         assert_equal "public", @user_q.extent
         assert_equal @admin_l, @user_q.label
+        assert_equal @user_q.picture, @user_p
     end
     
     test "edit fill-in question" do

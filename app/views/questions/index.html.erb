@@ -35,7 +35,12 @@
               <td>Label: <%= question.label.name if question.label %></td>
             </tr>
             <tr>
-              <td colspan="3"><%= link_to question.short_prompt, edit_question_path(question), :id => "edit_#{question.id}" %></td>
+              <td>
+                <% if question.picture.present? %>
+                  <%= link_to image_tag(question.picture.image_url(:thumb).to_s), edit_question_path(question), :id => "schmedit_#{question.id}" %>
+                <% end %>
+              </td>
+              <td colspan="2"><%= link_to question.short_prompt, edit_question_path(question), :id => "edit_#{question.id}" %></td>
             </tr>
             <tr>
               <td colspan = "3">

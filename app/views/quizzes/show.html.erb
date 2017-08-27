@@ -2,13 +2,20 @@
 
 <div class="container">
     <% @quiz.ripostes.each do |riposte| %>
+        <% question = riposte.question %>
         <div class="container singleOption topic">
             </br>
             <div class="singleOption lowSingOpt">
-                <%= riposte.question.prompt %>
+                <div class="col-sm-6">
+                    <%= question.prompt %>
+                </div>
+                <div class="col-sm-6">
+                    <% picture = question.picture %>
+                    <%= image_tag(picture.image_url(:quiz_size).to_s) if picture.present? %>
+                </div>
             </div>
             </br>
-            <% question = riposte.question %>
+            
             <% class_type = (question.correct_answers.include?(riposte.stud_answer) ? "green" : "red") %>
             Your Response: <span class=<%= class_type %>> <%= riposte.stud_answer %></span>
             </br>

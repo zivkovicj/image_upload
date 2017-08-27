@@ -10,20 +10,23 @@
             <textarea cols="15" rows="6" id="prompt_<%= index %>" name="questions[<%= index.to_i %>][prompt]"><%= @question.prompt %></textarea>
             
             </br>
-<%
-=begin %>
-            <h2>Image</h2>
-            <table>
-                <% Picture.all.each do |picture| %>
+            <% if @pictures.present? %>
+                <h2>Image</h2>
+                <table>
                     <tr>
-                        <td width="20%"><input type="radio" value="<%= picture.id %>" name="questions[<%= index.to_i %>][picture_id]" id="question_<%= index %>_picture" /></td>
-                        <td><%= image_tag(picture.image_url.to_s) %></td>
+                        <% checkery = @question.picture.blank? ? "checked" : "" %>
+                        <td width="40%"><input type="radio" value="<%= nil %>" name="questions[<%= index %>][picture_id]" id="question_<%= index %>_picture_nil" <%= checkery %> /></td>
+                        <td>No Picture</td>
                     </tr>
-                <% end %>
-            </table>
-            
-<% 
-=end %>
+                    <% @pictures.each do |pic| %>
+                        <% checkery = pic == @question.picture ? "checked" : "" %>
+                        <tr>
+                            <td width="40%"><input type="radio" value="<%= pic.id %>" name="questions[<%= index %>][picture_id]" id="question_<%= index %>_picture_<%= pic.id %>" <%= checkery %> /></td>
+                            <td><%= image_tag(pic.image_url(:thumb).to_s) %></td>
+                        </tr>
+                    <% end %>
+                </table>
+            <% end %>
         </div>
         <div class="col-sm-1"></div>
         <div class="col-sm-4">

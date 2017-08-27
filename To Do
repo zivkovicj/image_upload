@@ -1,17 +1,14 @@
 EM Education Main Site
 
 
-ADVERTISE TO FIND A FEW MORE TEACHERS WILLING TO TRY THE PROGRAM THIS YEAR
+
+
 
 LOOK INTO GRANTS OR AGENCIES TO FUND THIS WORK FOR THE UPCOMING YEAR
  
 BEFORE AUG 15, TRY TO INCLUDE CUMULATIVE STARS IN THE SCORESHEET
 
 Be aware of whether it shows all possible correct answer when a student views her finished quiz.
-
-Figure out what's the deal with refreshing the "question details" screen
-
-
 
 EMAIL THE TEACHERS WHO HAD STARTED AN ACCOUNT IN THE OLD APP
 
@@ -20,17 +17,44 @@ EMAIL THE TEACHERS WHO HAD STARTED AN ACCOUNT IN THE OLD APP
     
 
 2.26 IMAGES WITH QUESTIONS--STARTED 08/23/17
+
 Goal of this update: Allow teachers to associate uploaded images with specific questions. 
 
-List options for labels when uploading a new image
+V List options for labels when uploading a new image
 
-Question edit form lists all the images for the selected label
+V Don't show destroy or edit button in picture index if the current_user isn't the correct one.
+    V Finish testing for this
 
-Display that image when the student is answering the riposte
+V Question edit form lists the images for the selected label
 
-Disable "Next Question" button until student chooses a response
+V Display that image when the student is answering the riposte
 
+V quiz_size needs to be bigger. about twice
 
+V Picture should also show in the quiz report
+
+V Check whether checkboxes allow for changing labels
+
+V Need option for "No picture" that is set by default
+    V And can be set if user makes a mistake in clicking a picture.
+    
+V Test changing picture in question edit form.
+    
+V Finish "destroy" controller method for questions so that questions can be deleted.
+
+V Test for editing a question and changing its picture
+
+V Test in development
+    V Test changing the image manually
+    V Test changing a question to "No picture" manually
+
+V Re-insert the line that sets current_class to nil so that when editing questions, objectives, and labels, the back-link directs to teacher's show page, not a scoresheet.
+
+V Show image thumbnail in question index
+
+Migrate to add :user to pictures
+    And make sure that no pictures have a nil user
+    
 
 
 
@@ -47,12 +71,7 @@ AND WHAT ABOUT AN EQUATION-EDITOR ANSWER BOX SO THAT STUDENTS CAN TYPE FRACTIONS
 
 
 
-GROWTH POINTS
 
-    Need to add "last_growth" type column to objective_sudent
-        When a student improves score, update last_growth to today's date
-        If there is growth, but last_growth was the same day, then don't add growth points. (They need to take it again on a different day to earn those points.)
- 
 
 BENCHMARK STARS
 
@@ -61,7 +80,27 @@ BENCHMARK STARS
     There will be columns that show total stars, last benchmark, and stars since last benchmark
     
     This will help with marking term grades
+    
+    
+    
+    
+GROWTH POINTS
+
+Need to add "last_growth" type column to objective_sudent
+    When a student improves score, update last_growth to today's date
+    If there is growth, but last_growth was the same day, then don't add growth points. (They need to take it again on a different day to earn those points.)
+
+
+
  
+DISABLE "NEXT QUESTION" BUTTON UNTIL STUDENT CHOOSES A RESPONSE
+ 
+ Test deleting of pictures
+ 
+ It's weird that a picture can have "Unlabeled" along with other labels. Should be one or the other.
+ 
+
+
    
 CURATED QUESTIONS
 
@@ -132,7 +171,15 @@ Test that students assigned as consultants have a good score in that objectives
 Test that students assigned as apprentices haven't yet mastered that objective
 
 See what happens if users enter improper data types in different fields. And test for those.
-        
+
+Deleting a question
+
+Deleting a picture
+
+All of the "edit tests" need to ensure that no changes occur if the user presses "Save Changes" without actually changing anything
+    I ran into a problem with the label for questions not checking the correct label
+    
+    
 
 
 
@@ -273,7 +320,7 @@ Take another look at students_new_test. The test is setting the current_class to
     But don't put any more time into that issue until I find a better way to keep track of current_class, which will be in the cookies or by sending
         parameters.
 
-
+Figure out what's the deal with refreshing the "question details" screen
 
 
 MORE QUIZ UNLOCKS
@@ -403,7 +450,10 @@ When creating a multiple-choice question, don't allow the user to mark a blank a
 If student has taken a quiz six times, the oldest attempt is destroyed
         
 In the quiz-finishing screen, give options for the student to change his/her consultant requests.
-            
+
+When editing a question, the user can change the label, but the pictures offered will still be the pictures for the old label. It should refresh the screen to 
+    offer picture choices to go along with the new label. Make sure to set the default check too.
+
 Teach and Learn Request should be made into an association, not just an integer.
         
 Multiple-select questions
@@ -448,9 +498,11 @@ Consultants display would look better if the group had a thick border, but the c
 
 http://thesassway.com/beginner/how-to-structure-a-sass-project
 
-Home screen should offer log in space instead of having to click the log in button.
+Home screen should offer log in space instead of having to click the log in button to reach the login form.
 
-A button where teachers can reset all request
+Add multiple pictures at once
+
+A button where teachers can reset all requests
 
 Allow teachers to delete their own accounts
 

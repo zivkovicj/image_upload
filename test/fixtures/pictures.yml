@@ -1,9 +1,16 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  image: MyString
+cheese_logo:
+  user: michael
+  name: Apple
+  image: 'cheese_logo.jpg'
 
 two:
-  name: MyString
-  image: MyString
+  user: archer
+  name: Druid
+  image: 'druid_cropped.jpg'
+
+three:
+  user: zacky
+  name: Finland Family
+  image: 'finland_family.jpg'

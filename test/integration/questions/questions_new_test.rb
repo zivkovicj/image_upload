@@ -3,8 +3,9 @@ require 'test_helper'
 class QuestionsNewTest < ActionDispatch::IntegrationTest
 
     def setup
-        setup_users()
-        setup_labels()
+        setup_users
+        setup_labels
+        setup_pictures
         
         @new_choice = [["Blubber", "Scoober Doofus", "Hardunkinchud @ Aliciousness", 
             "{The Player formerly known as Mousecop}", "Red Grange", "1073514"],
@@ -30,12 +31,14 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("Create New Questions")
         
+        assert_selector('input', :id => "style_multiple-choice") # Counterpart to a line in the questions_edit_test
         assert_selector('input', :id => "label_#{@admin_l.id}")
         assert_selector('input', :id => "label_#{@user_l.id}")
         assert_selector('input', :id => "label_#{@other_l_pub.id}")
         assert_no_selector('input', :id => "label_#{@other_l_priv.id}")
         choose("label_#{@user_l.id}")
-        assert_selector('input', :id => "style_multiple-choice") # Counterpart to a line in the questions_edit_test
+        
+        
         click_on("Create Some Questions")
         @new_prompt.each_with_index do |prompt, index|
             fill_prompt(index)
@@ -48,6 +51,10 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
         end
         choose("question_0_whichIsCorrect_2")
         choose("question_1_whichIsCorrect_0")
+        choose("question_0_picture_#{@user_p.id}")
+        choose("question_0_picture_nil")
+        choose("question_1_picture_#{@user_p.id}")
+        assert_no_selector("question_1_picture_#{@admin_p.id}")
         click_on("Create These Questions")
         
         assert_equal @old_question_count + 5, Question.count
@@ -66,12 +73,15 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
             assert_equal @new_choice[0][n], @new_question.read_attribute("choice_#{n}")
             assert_not @new_question.correct_answers.include?(@new_choice[0][n]) if n != 2
         end
+        assert @new_question.picture.blank?
+        
         @new_question_2 = Question.all[-4]
         assert_equal "Are there two questions?", @new_question_2.prompt
         assert_equal @new_choice[1][0], @new_question_2.choice_0
         assert_equal @new_choice[1][1], @new_question_2.choice_1
         assert @new_question_2.correct_answers.include?(@new_choice[1][0])
         assert_not @new_question_2.correct_answers.include?(@new_choice[1][1])
+        assert_equal @user_p, @new_question_2.picture
         
         # Need to assert redirection soon
     end

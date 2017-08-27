@@ -4,10 +4,6 @@
 <%= render 'shared/back-link' %>
 <%= render 'shared/headline' %>
 
-<% choice_array = [:choice_0, :choice_1, :choice_2, :choice_3, :choice_4,
-        :choice_5] %>
-
-
 <%= form_for(@question) do |q| %>
   <div class="row">
     <%= q.submit yield(:button_text), class: "btn btn-primary", :id => "save_changes_1" %>

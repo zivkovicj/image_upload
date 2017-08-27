@@ -9,6 +9,7 @@ class User < ApplicationRecord
     has_many    :questions
     has_many    :labels
     has_many    :quizzes
+    has_many    :pictures
 
     validates :first_name, length: {maximum: 25},
             presence: true
