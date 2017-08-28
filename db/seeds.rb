@@ -197,10 +197,11 @@ LabelObjective.create(:label => divide_label, :objective => sum_obj,
 
 pic_array = [["Labels", "app/assets/images/labels.png"],
     ["Objectives", "app/assets/images/objectives.png"],
-    ["Desk Consultants", "app/assets/images/desk_consult.png"]]
+    ["Desk Consultants", "app/assets/images/desk_consult.png"],
+    ["Untitled", "app/assets/images/Untitled_1.jpeg"]]
 
 pic_array.each do |n|
-    pic = Picture.new(:name => n[0])
+    pic = Picture.new(:name => n[0], :user => User.first)
     image_src = File.join(Rails.root, n[1])
     src_file = File.new(image_src)
     pic.image = src_file
