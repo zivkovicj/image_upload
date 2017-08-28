@@ -58,18 +58,28 @@ Migrate to add :user to pictures
 
 
 
-MAYBE ALLOW IMAGES AS ANSWER CHOICES. WOULD MAKE FRACTIONS MUCH NICER.
+HOTFIXES
 
+Screen for editing a label has headline twice.
 
+When I was logged-in as an admin, I went back to the home screen, then tried to get to my profile. It threw an error because it tried to go to the students show page.
+    
+If a label is deleted, all the questions that had that label should be changed to "Unlabeled"
 
+Listing all available questions when editing a label is super-annoying. Need to add another "Save Changes" button higer up.
+    I think I should eliminate this list of questions period.
+    I give the option to create a new label while creating questions, then it won't be tedious to add many questions to the same label.
+    
+Option to not scramble the answer choices for multiple-choice questions.
 
+"Unlabeled" should come first in every list. Maybe just start it with a zero.
 
-AND WHAT ABOUT AN EQUATION-EDITOR ANSWER BOX SO THAT STUDENTS CAN TYPE FRACTIONS
+Labels need the domain prefix.
 
-    For now, might be easier to implement multi-box fill-in answers. Then the student can input the numerator and denominator.
+Labels should be ordered by name wherever they are listed.
+    Should pictures also?
 
-
-
+Blank out links for users to upload pictures until I get that feature fixed.
 
 
 
@@ -82,7 +92,8 @@ BENCHMARK STARS
     This will help with marking term grades
     
     
-    
+        
+        
     
 GROWTH POINTS
 
@@ -368,6 +379,12 @@ ADMIN CAN CREATE NEW ADMIN
     
     
 OTHER IMPROVEMENTS
+
+maybe allow images as answer choices. would make fractions much nicer.
+
+and what about an equation-editor answer box so that students can type fractions
+
+    for now, might be easier to implement multi-box fill-in answers. then the student can input the numerator and denominator.
 
 Public/Private Extent for Pictures
 
