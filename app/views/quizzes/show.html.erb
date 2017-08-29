@@ -6,12 +6,14 @@
         <div class="container singleOption topic">
             </br>
             <div class="singleOption lowSingOpt">
-                <div class="col-sm-6">
-                    <%= question.prompt %>
-                </div>
-                <div class="col-sm-6">
-                    <% picture = question.picture %>
-                    <%= image_tag(picture.image_url(:quiz_size).to_s) if picture.present? %>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <%= question.prompt %>
+                    </div>
+                    <div class="col-sm-6">
+                        <% picture = question.picture %>
+                        <%= image_tag(picture.image_url(:quiz_size).to_s) if picture.present? %>
+                    </div>
                 </div>
             </div>
             </br>
