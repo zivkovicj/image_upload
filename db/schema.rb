@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170825033331) do
+ActiveRecord::Schema.define(version: 20170902180045) do
 
   create_table "consultancies", force: :cascade do |t|
     t.integer  "seminar_id"
@@ -167,16 +167,6 @@ ActiveRecord::Schema.define(version: 20170825033331) do
     t.index ["user_id"], name: "index_seminars_on_user_id"
   end
 
-  create_table "student_teams", id: false, force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "team_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["team_id"], name: "index_student_teams_on_team_id"
-    t.index ["user_id", "team_id"], name: "index_student_teams_on_user_id_and_team_id"
-    t.index ["user_id"], name: "index_student_teams_on_user_id"
-  end
-
   create_table "teams", force: :cascade do |t|
     t.integer  "consultancy_id"
     t.integer  "objective_id"
@@ -186,6 +176,16 @@ ActiveRecord::Schema.define(version: 20170825033331) do
     t.datetime "updated_at",     null: false
     t.index ["consultancy_id"], name: "index_teams_on_consultancy_id"
     t.index ["objective_id"], name: "index_teams_on_objective_id"
+  end
+
+  create_table "teams_users", id: false, force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "team_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_teams_users_on_team_id"
+    t.index ["user_id", "team_id"], name: "index_teams_users_on_user_id_and_team_id"
+    t.index ["user_id"], name: "index_teams_users_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

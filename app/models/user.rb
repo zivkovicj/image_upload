@@ -10,6 +10,7 @@ class User < ApplicationRecord
     has_many    :labels
     has_many    :quizzes
     has_many    :pictures
+    has_and_belongs_to_many  :teams
 
     validates :first_name, length: {maximum: 25},
             presence: true

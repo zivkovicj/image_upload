@@ -60,7 +60,7 @@ class ConsultanciesController < ApplicationController
     
         def check_if_date_already()
             date = Date.today
-            old_consult = @seminar.consultancies.where(:created_at => date.midnight..date.end_of_day).first
+            old_consult = @seminar.consultancies.find_by(:created_at => date.midnight..date.end_of_day)
             old_consult.destroy if old_consult
         end
         

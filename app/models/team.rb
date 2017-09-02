@@ -4,8 +4,7 @@ class Team < ApplicationRecord
     
     belongs_to  :consultant, class_name: "Student"
     
-    has_many   :student_teams, dependent: :destroy
-    has_many   :users, through: :student_teams
+    has_and_belongs_to_many  :users
     
     def has_room
         return false if self.users.count > 3

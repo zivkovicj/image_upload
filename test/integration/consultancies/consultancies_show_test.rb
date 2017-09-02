@@ -115,6 +115,30 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_not @student_3.check_if_ready(mainAssign)
     end
     
+    test "check_for_lone_students" do
+        @students = setup_present_students
+        bonusSetup
+        
+        setupRankByConsulting
+        @rankAssignsByNeed = rankAssignsByNeed(@seminar)
+        setupScoreHash
+        setupProfList
+        setupStudentHash
+        @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
+        chooseConsultants
+        placeApprenticesByRequests
+        placeApprenticesByMastery
+        
+        last_group = @consultancy.teams.last
+        loneStudent = last_group.users.first
+        last_group.users.delete_all
+        last_group.users << loneStudent
+        checkForLoneStudents
+        
+    end
+
+
+    
     test "desk consultants methods" do
         # setup_present_students
             @ss_2.update(:present => false)
