@@ -13,7 +13,7 @@ class TeachersController < ApplicationController
     if @teacher.save
       #@teacher.send_activation_email
       log_in @teacher
-      flash[:success] = "Welcome to Mr. Z School!"
+      flash[:success] = "Welcome to Mr.Z School!"
       redirect_to @teacher
     else
       render 'new'

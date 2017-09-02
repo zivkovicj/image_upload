@@ -1,4 +1,3 @@
-EM Education Main Site
 
 
 
@@ -14,78 +13,62 @@ EMAIL THE TEACHERS WHO HAD STARTED AN ACCOUNT IN THE OLD APP
 
 
     
-    
 
-2.26 IMAGES WITH QUESTIONS--STARTED 08/23/17
-
-Goal of this update: Allow teachers to associate uploaded images with specific questions. 
-
-V List options for labels when uploading a new image
-
-V Don't show destroy or edit button in picture index if the current_user isn't the correct one.
-    V Finish testing for this
-
-V Question edit form lists the images for the selected label
-
-V Display that image when the student is answering the riposte
-
-V quiz_size needs to be bigger. about twice
-
-V Picture should also show in the quiz report
-
-V Check whether checkboxes allow for changing labels
-
-V Need option for "No picture" that is set by default
-    V And can be set if user makes a mistake in clicking a picture.
-    
-V Test changing picture in question edit form.
-    
-V Finish "destroy" controller method for questions so that questions can be deleted.
-
-V Test for editing a question and changing its picture
-
-V Test in development
-    V Test changing the image manually
-    V Test changing a question to "No picture" manually
-
-V Re-insert the line that sets current_class to nil so that when editing questions, objectives, and labels, the back-link directs to teacher's show page, not a scoresheet.
-
-V Show image thumbnail in question index
-
-Migrate to add :user to pictures
-    And make sure that no pictures have a nil user
     
 
 
 
-HOTFIXES
+2.27  HOTFIXES--STARTED 08/30/2017
 
-Screen for editing a label has headline twice.
+V Get rid of references to "EM Education"
 
-When I was logged-in as an admin, I went back to the home screen, then tried to get to my profile. It threw an error because it tried to go to the students show page.
+V Screen for editing a label has headline twice.
+
+V When I was logged-in as an admin, I went back to the home screen, then tried to get to my profile. It threw an error because it tried to go to the students show page.
+    V Look for other instances of teacher_path and student_path that might be causing the same problem.
+    V Test
     
-If a label is deleted, all the questions that had that label should be changed to "Unlabeled"
+Desk Consultants error!!
+PG::ForeignKeyViolation: ERROR: update or delete on table "teams" violates foreign key constraint "fk_rails_8299e376e9" on table "student_teams" DETAIL: Key (id)=(15) is still referenced from table "student_teams". : DELETE FROM "teams" WHERE "teams"."id" = $1
 
-Listing all available questions when editing a label is super-annoying. Need to add another "Save Changes" button higer up.
+
+Allow deleting of labels
+    When a label is deleted, all the questions that had that label should be changed to "Unlabeled"
+
+Listing all available questions when editing a label is super-annoying. Need to add another "Save Changes" button higher up.
     I think I should eliminate this list of questions period.
     I give the option to create a new label while creating questions, then it won't be tedious to add many questions to the same label.
-    
-Option to not scramble the answer choices for multiple-choice questions.
-
-"Unlabeled" should come first in every list. Maybe just start it with a zero.
-
-Labels need the domain prefix.
 
 Labels should be ordered by name wherever they are listed.
-    Should pictures also?
 
 Blank out links for users to upload pictures until I get that feature fixed.
 
-Errors upon destroying pictures
-
 Should calculate the final quiz results before going to the quiz show page.
     The way it currently works, it submits another try when the student refreshes the screen.
+    
 
+Apprentice and Consultant request options need to be based on 10 instead of 100.
+
+
+
+NavBar links to seminar_show action. But there isn't one.
+    Test for that
+
+"New Stars" in quiz display should be minimum zero.
+
+
+
+
+SAVE STUDENT'S QUIZ PROGRESS
+
+Add an attribute to quiz called "progress" that keeps track of how many questions
+    the student has answered from that quiz.  In case the student is interrupted mid-quiz.
+
+Also, answers are being marked red if spaces are different than the sample, even though it is granting full points.
+
+
+
+    
 
 
 BENCHMARK STARS
@@ -96,8 +79,21 @@ BENCHMARK STARS
     
     This will help with marking term grades
     
-    
-        
+    Pre-tests should always go under the previously-marked benchmark
+        But only if accessed as a pre-test. If accessed because of DeskConsultants or as another reason, it should not
+            be counted in the previous benchmark.
+            
+    Don't offer pre-tests that are also offered from another reason.
+        i.e. If a student was in a D-C group for a topic, only offer that topic under "Desk Consultants Objectives"
+            Don't offer it a second time for pre-tests. Otherwise it will go in the previous benchmark, which doesn't
+               help the student.
+
+  
+
+
+STUDENT AWARDS
+
+    Students can award each other points for meeting class expectations, such as "Try your best" and "Be respectful"
         
     
 GROWTH POINTS
@@ -118,24 +114,8 @@ DISABLE "NEXT QUESTION" BUTTON UNTIL STUDENT CHOOSES A RESPONSE
 
 
    
-CURATED QUESTIONS
 
-Should have another type of user called "Content Creator"
-
-Admin or content creators can curate questions.
-    
-Teachers can choose whether their students will see all questions, or only curated questions.
-
-   
  
- 
-ORGANIZING PICTURES
-
-Organizing them by label, the way I am currently doing, is a bad idea. Teachers cannot use community pictures for their questions because they cannot
-    edit the labels of a picture. Instead, I should prompt the user for whether she wants to be offered pictures from Algebra, Geometry, etc.
-    
-Pictures will be associated with those domains.
-
 
 
 
@@ -145,6 +125,18 @@ FIX TESTS FOR DESK CONSULTANTS
 
     Also, rank assignments by need should be based on the most requested, not the highest need. Maybe.
         That should at least run quicker, because requested is a simple column in the join table. Not a method that looks at every student's readiness. 
+
+
+
+
+ORGANIZING PICTURES
+
+Fix pictures
+
+Organizing them by label, the way I am currently doing, is a bad idea. Teachers cannot use community pictures for their questions because they cannot
+    edit the labels of a picture. Instead, I should prompt the user for whether she wants to be offered pictures from Algebra, Geometry, etc.
+    
+Pictures will be associated with those domains.
 
 
 
@@ -203,6 +195,25 @@ All of the "edit tests" need to ensure that no changes occur if the user presses
     I ran into a problem with the label for questions not checking the correct label
     
     
+    
+ENABLE HTML IN QUESTIONS
+    
+    I can go a long way toward making the questions look nicer if I can just enable html when creating the prompts and answers.
+
+
+
+    
+
+CREATE LABEL WHILE CREATING QUESTION
+
+I give the option to create a new label while creating questions, then it won't be tedious to add many questions to the 
+
+
+
+VETO ANSWER-SCRAMBLING
+
+Option to not scramble the answer choices for multiple-choice questions.
+
 
 
 
@@ -230,6 +241,18 @@ There's a blanked-out info button to explain pre-requisites in the objectives fo
 
 The jquery for showing those info buttons needs to be dried down to one single function.
 
+
+
+
+CURATED QUESTIONS
+
+Should have another type of user called "Content Creator"
+
+Admin or content creators can curate questions.
+    
+Teachers can choose whether their students will see all questions, or only curated questions.
+
+   
 
 
 
@@ -633,9 +656,7 @@ When creating a new objective, should it automatically check the box for the cur
     
 It's a little bit weird that user can't leave second answer choice blank. But that's not a really big problem.
 
-Add an attribute to quiz called "progress" that keeps track of how many questions
-    the student has answered from that quiz.  In case the student is interrupted mid-quiz.
-    
+
 A better visual for the student's total stars can include some big stars for 10 and some giant stars for 100 
     
 Allow teachers and admin to edit their user_numbers upon creation and updating

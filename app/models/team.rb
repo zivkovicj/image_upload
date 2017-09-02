@@ -4,7 +4,7 @@ class Team < ApplicationRecord
     
     belongs_to  :consultant, class_name: "Student"
     
-    has_many   :student_teams
+    has_many   :student_teams, dependent: :destroy
     has_many   :users, through: :student_teams
     
     def has_room

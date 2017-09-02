@@ -16,7 +16,7 @@ module SetPermissions
       end
 
       if thisId == 0
-        @createdLabel = "EM Education"
+        @createdLabel = "Mr. Z School"
       else
         @createdLabel = User.find(thisId).name_with_title
       end

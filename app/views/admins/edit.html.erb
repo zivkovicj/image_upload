@@ -1,0 +1,18 @@
+<% provide(:title, 'Edit Admin') %>
+<% provide(:button_text, 'Save Changes') %>
+
+<% provide(:headerText, "Update Your Admin Profile" ) %>
+<% provide(:headerPic, "apple.png") %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<div class="row">
+    
+    <br/>
+    <%= render 'form' %><br/>
+    <div class="gravatar_edit">
+      <%= gravatar_for @admin %>
+      <a href="http://gravatar.com/emails" target="_blank">Change</a>
+    </div>
+</div>

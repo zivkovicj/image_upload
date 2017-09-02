@@ -1,5 +1,36 @@
 
 
+2.26 IMAGES WITH QUESTIONS--STARTED 08/23/17
+                        -- PUSHED 08/28/17
+Goal of this update: Allow teachers to associate uploaded images with specific questions. 
+
+List options for labels when uploading a new image
+Don't show destroy or edit button in picture index if the current_user isn't the correct one.
+    Finish testing for this
+Question edit form lists the images for the selected label
+Display that image when the student is answering the riposte
+quiz_size needs to be bigger. about twice
+Picture should also show in the quiz report
+Check whether checkboxes allow for changing labels
+Need option for "No picture" that is set by default
+    And can be set if user makes a mistake in clicking a picture.
+Test changing picture in question edit form.
+Finish "destroy" controller method for questions so that questions can be deleted.
+Test for editing a question and changing its picture
+Test in development
+    Test changing the image manually
+    Test changing a question to "No picture" manually
+Re-insert the line that sets current_class to nil so that when editing questions, objectives, and labels, the back-link directs to teacher's show page, not a scoresheet.
+Show image thumbnail in question index
+Migrate to add :user to pictures
+    And make sure that no pictures have a nil user
+
+
+
+
+
+
+
 2.25 CUMULATIVE STARS--STARTED 08/19/17
                     --PUSHED 08/23/17
     Goal for this update: Keep track of the total number of stars that a student has earned and report that instead of the total number of points a student has earned

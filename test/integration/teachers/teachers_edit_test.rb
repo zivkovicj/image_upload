@@ -3,7 +3,7 @@ require 'test_helper'
 class TeachersEditTest < ActionDispatch::IntegrationTest
 
     def setup
-        setup_users()
+        setup_users
         setup_seminars
     end
 
