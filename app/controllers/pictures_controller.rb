@@ -46,10 +46,16 @@ class PicturesController < ApplicationController
   end
 
   def destroy
-    @picture.destroy
-    respond_to do |format|
-      format.html { redirect_to pictures_url, notice: 'Picture was successfully destroyed.' }
-      format.json { head :no_content }
+    @picture = Picture.find(params[:id])
+    @picture.questions.each do |quest|
+      quest.update(:picture => nil)
+    end
+    @picture.labels.each do |lab|
+      lab.pictures.delete(@picture)
+    end
+    if @picture.destroy
+      flash[:success] = "Picture Deleted"
+      redirect_to pictures_path
     end
   end
 

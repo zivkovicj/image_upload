@@ -1,0 +1,11 @@
+
+<% if current_user.type == "Admin" || object.user == current_user %>
+    <td class="remove_btn" id="delete_<%= object.id %>">
+    &nbsp; Delete
+    <p class="btn btn-lg btn-primary cancel_button", id="cancel_<%= object.id %>"/>Cancel</p>
+    <%= button_to "Confirm", object, :method => :delete,
+        class: "btn btn-lg btn-primary confirm_button", :id => "confirm_#{object.id}"  %>
+    </td>
+<% else %>
+    <td></td>
+<% end %>

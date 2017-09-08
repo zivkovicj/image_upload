@@ -45,41 +45,6 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
     assert_equal oldName, @objective_20.name
   end
 
-  test "delete an objective" do
-    # also check whether it deletes scores
-    # and resets student requests
-
-    oldobjectiveCount = Objective.count
-    oldId = @objective_40.id
-    oldScoreCount = ObjectiveStudent.count
-    old_os_count = ObjectiveSeminar.count
-    studentCount = @seminar.students.count
-    assert Precondition.where(:mainassign_id => oldId).count > 0
-    assert Precondition.where(:preassign_id => oldId).count > 0
-
-    @ss = @seminar.seminar_students.first
-    @ss.update(:teach_request => oldId)
-    @second_ss = @seminar.seminar_students.second
-    @second_ss.update(:learn_request => oldId)
-    assert_equal @ss.teach_request, oldId
-    assert_equal @second_ss.learn_request, oldId
-    
-    capybara_login(@teacher_1)
-    click_on("All Objectives")
-    click_on("delete_#{@objective_40.id}")
-    
-    assert Precondition.where(:mainassign_id => oldId).count == 0
-    assert Precondition.where(:preassign_id => oldId).count == 0
-    assert_equal oldobjectiveCount - 1, Objective.count
-    assert_equal oldScoreCount - studentCount, ObjectiveStudent.count
-    assert_equal old_os_count - 1, ObjectiveSeminar.count
-    
-    @ss.reload
-    @second_ss.reload
-    assert_not_equal oldId, @ss.teach_request
-    assert_not_equal oldId, @second_ss.learn_request
-  end
-  
   test "wrong user can't delete" do
     log_in_as @other_teacher
     assert_no_difference 'Objective.count' do

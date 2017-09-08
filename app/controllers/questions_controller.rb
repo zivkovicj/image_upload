@@ -100,8 +100,10 @@ class QuestionsController < ApplicationController
 
   def destroy
     @question = Question.find(params[:id])
+    
     if @question.destroy
-      flash[:success] = "Question deleted"
+      fix_quantities
+      flash[:success] = "Question Deleted"
       redirect_to questions_path
     end
   end
@@ -137,6 +139,18 @@ class QuestionsController < ApplicationController
         correct_array = (0..5).map { |i| these_params[:"choice_#{i}"] }.select(&:present?)
       end
       @question.update(:correct_answers => correct_array)
+    end
+    
+    def fix_quantities
+      lab = @question.label
+      new_quest_count = lab.questions.count
+      if new_quest_count == 0
+        lab.label_objectives.destroy_all
+      else
+        lab.label_objectives.each do |lo|
+          lo.update(:quantity => new_quest_count) if lo.quantity > new_quest_count
+        end
+      end
     end
     
     

@@ -15,6 +15,7 @@ one:
   extent: public
   user: michael
   label: admin_label
+  picture: cheese_logo
 
 two:
   style: multiple-choice

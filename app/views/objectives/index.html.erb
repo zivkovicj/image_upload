@@ -5,7 +5,7 @@
 <%= render 'shared/back-link' %>
 <%= render 'shared/headline' %>
 
-<%= render :partial => 'shared/searchField', 
+<%= render :partial => 'shared/search_field', 
   :locals => {:whichPath => objectives_path,
               :attrLabel1 => "Name", :attrLabel2 => nil, :attrLabel3 => nil, :attrLabel4 => nil, :attrLabel5 => nil,
               :attrData1 => :name, :attrData2 => nil, :attrData3 => nil, :attrData4 => nil, :attrData5 => nil} %>
@@ -14,7 +14,6 @@
 <% if @objectives != [0] %>
   <% if !@objectives.empty? %>
     <%= will_paginate %>
-    
       <table>
         <thead>
           <tr>
@@ -23,7 +22,6 @@
             <td>Scope</td>
             <td>Classes</td>
             <% if current_user.type == "Admin" %>
-              <td>Created_at</td>
               <td>Updated_at</td>
             <% end %>
           </tr>
@@ -31,16 +29,11 @@
         <tbody>
           <% @objectives.each do |objective| %>
             <tr class="users">
-              <td><% if objective.user == current_user || current_user.type == "Admin" %>
-                  <%= link_to "Delete", objective, method: :delete, :id => "delete_#{objective.id}",
-                              data: { confirm: "You are about to permanently remove all records of this objective. All scores for this objective will also be deleted. This cannot be undone."  } %>
-                  <% end %>
-            </td>
+              <%= render 'shared/delete_and_confirm', object: objective %>
               <td><%= link_to objective.fullName, edit_objective_path(objective), :id => "edit_#{objective.id}" %></td>
               <td><%= objective.extent.capitalize %></td>
               <td><%= objective.seminars.count %></td>
               <% if current_user.type == "Admin" %>
-                <td><%= objective.created_at.strftime("%Y-%m-%d") %></td>
                 <td><%= objective.updated_at.strftime("%Y-%m-%d") %></td>
               <% end %>
             </tr>

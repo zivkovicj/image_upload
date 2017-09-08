@@ -7,7 +7,7 @@
 <%= render 'shared/headline' %>
 
 
-<%= render :partial => 'shared/searchField', 
+<%= render :partial => 'shared/search_field', 
   :locals => {:whichPath => labels_path,
               :attrLabel1 => "Name", :attrLabel2 => nil, :attrLabel3 => nil, :attrLabel4 => nil, :attrLabel5 => nil,
               :attrData1 => :name, :attrData2 => nil, :attrData3 => nil, :attrData4 => nil, :attrData5 => nil} %>
@@ -22,16 +22,11 @@
           <table>
             <% if current_user.type == "Admin" %>
               <tr>
-                <td><%= label.created_at.strftime("%Y-%m-%d") %></td>
                 <td><%= label.updated_at.strftime("%Y-%m-%d") %></td>
               </tr>
             <% end %>
             <tr class="users">
-              <td><% if label.user == current_user || current_user.type == "Admin" %>
-                  <%= link_to "Delete", label, method: :delete, :id => "delete_#{label.id}",
-                              data: { confirm: "You are about to permanently remove all records of this label. All questions for this label will also be deleted. This cannot be undone."  } %>
-                  <% end %>
-              </td>
+              <%= render 'shared/delete_and_confirm', object: label %>
               <td><%= label.extent.capitalize %></td>
             </tr>
             <tr>

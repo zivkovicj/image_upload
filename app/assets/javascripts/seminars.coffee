@@ -169,7 +169,6 @@ ready = ->
                     seminar_student:
                         present: attendance
             
-    
     if $('#scoreTable').length > 0
         $('.steelPanther').on "click", ->
             $('#scoreTable tr td').removeClass('highlighted')
@@ -179,7 +178,6 @@ ready = ->
             $('#scoreTable').find('tr :nth-child('+col+')').addClass('highlighted');
     
     if $('#dialog5').length > 0
-        console.log("Scoober Dee")
         unpressed = true
         $("#dialog5").dialog
             autoOpen: false
@@ -205,8 +203,17 @@ ready = ->
     
      
     if $('.remove_btn').length > 0
+        $('.cancel_button').hide()
         $('.confirm_button').hide()
         $('.remove_btn').on "click", (event) ->
-            $('.confirm_button').fadeIn()
+            id_to_fade = $(this).prop("id").replace('delete_','')
+            $('#confirm_'+id_to_fade).fadeIn()
+            $('#cancel_'+id_to_fade).fadeIn()
+            
+        $('.cancel_button').on "click", (event) ->
+            id_to_fade = $(this).prop("id").replace('cancel_','')
+            $('#confirm_'+id_to_fade).fadeOut()
+            $(this).fadeOut()
+            return false
           
 $(document).on('turbolinks:load', ready)

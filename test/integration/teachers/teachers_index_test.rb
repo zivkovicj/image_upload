@@ -45,7 +45,8 @@ class TeachersIndexTest < ActionDispatch::IntegrationTest
     
     capybara_login(@admin_user)
     click_on("Teachers Index")
-    click_on("delete_#{@teacher_1.id}")
+    find("#delete_#{@teacher_1.id}").click
+    click_on("confirm_#{@teacher_1.id}")
     
     assert_equal old_teacher_count - 1, Teacher.count
     assert_equal old_objective_count - archers_objectives, Objective.count

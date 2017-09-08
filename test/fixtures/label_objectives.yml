@@ -17,3 +17,9 @@ fill-in:
   label: fill_in_label
   quantity: 7
   point_value: 2
+  
+for_delete_test:
+  objective: objective_40
+  label: admin_label
+  quantity: 2
+  point_value: 2

@@ -42,7 +42,7 @@ class ActiveSupport::TestCase
     @seminar = seminars(:one)
   end
   
-  def setup_consultancies()
+  def setup_consultancies
     c1 = seminars(:one).consultancies.create
     t1 = c1.teams.create(:objective => objectives(:objective_10), :consultant => users(:student_2))
     t1.users << users(:student_2)

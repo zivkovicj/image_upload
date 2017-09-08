@@ -5,7 +5,6 @@ class Question < ApplicationRecord
   belongs_to :label
   
   has_many :ripostes, dependent: :destroy
-  has_many :questions, through: :ripostes
   belongs_to :picture
   
   serialize :correct_answers

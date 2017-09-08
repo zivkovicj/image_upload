@@ -6,14 +6,6 @@
 
 <%= render 'shared/headline' %>
 
-
-
-<% def confirmMessage(seminar)
-    "Remove #{@student.first_name} from #{seminar.name}? This cannot be undone. 
-    Are you sure?"
-  end  
-%>
-
 <% if current_user.type != "Student" %>
   <%= "#{current_user.type} #{current_user.title} #{current_user.last_name} is editing." %><br/><br/>
   <% if current_user.current_class && current_user != @user %>

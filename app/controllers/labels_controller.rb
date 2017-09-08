@@ -46,9 +46,9 @@ class LabelsController < ApplicationController
 
   def index
     if current_user.type == "Admin"
-      initial_list = Label.all
+      initial_list = Label.all.order(:name)
     else
-      initial_list = Label.where("user_id = ? OR extent = ?", current_user.id, "public")
+      initial_list = Label.where("user_id = ? OR extent = ?", current_user.id, "public").order(:name)
     end
 
     if !params[:search].blank?
@@ -61,6 +61,17 @@ class LabelsController < ApplicationController
   end
 
   def destroy
+    @label = Label.find(params[:id])
+    @label.questions.each do |quest|
+      quest.update(:label_id => 1)
+    end
+    @label.pictures.each do |pic|
+      pic.labels.delete(@label)
+    end
+    if @label.destroy
+      flash[:success] = "Label Deleted"
+      redirect_to labels_path
+    end
   end
   
   private

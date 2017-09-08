@@ -6,7 +6,7 @@
 <%= render 'shared/back-link' %>
 <%= render 'shared/headline' %>
 
-<%= render :partial => 'shared/searchField', 
+<%= render :partial => 'shared/search_field', 
   :locals => {:whichPath => teachers_path,
               :attrLabel1 => "ID", :attrLabel2 => "Last Name", :attrLabel3 => "First Name", :attrLabel4 => "E-Mail", :attrLabel5 => nil,
               :attrData1 => :id,       :attrData2 => :last_name,  :attrData3 => :first_name, :attrData4 => :email, :attrData5 => nil} %>
@@ -30,9 +30,7 @@
   <tbody>
     <% @teachers.each do |teacher| %>
       <tr class="users">
-        <td><%= link_to "delete", teacher, method: :delete,
-                        data: { confirm: "Are you sure?" }, :id => "delete_#{teacher.id}" %></td>
-                        
+        <%= render 'shared/delete_and_confirm', object: teacher %>
         <td><%= link_to teacher.id, teacher %></td>
         <td><%= link_to teacher.name_with_title, edit_teacher_path(teacher) %></td>
         <td><%= link_to teacher.first_name, teacher %></td>

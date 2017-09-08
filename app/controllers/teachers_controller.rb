@@ -47,7 +47,7 @@ class TeachersController < ApplicationController
   def destroy
     @teacher = Teacher.find(params[:id])
     if @teacher.destroy
-      flash[:success] = "Teacher deleted"
+      flash[:success] = "Teacher Deleted"
       redirect_to teachers_path
     end
   end

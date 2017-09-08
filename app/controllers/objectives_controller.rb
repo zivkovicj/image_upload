@@ -106,7 +106,7 @@ class ObjectivesController < ApplicationController
     end
     flash[:success] = "Objective Deleted"
     
-    redirect_to current_user
+    redirect_to objectives_path
   end
   
   private

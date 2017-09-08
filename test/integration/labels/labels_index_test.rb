@@ -13,16 +13,13 @@ class LabelsIndexTest < ActionDispatch::IntegrationTest
         click_on("All Labels")
 
         assert_selector('a', :id => "edit_#{@admin_l.id}", :text => @admin_l.name)
-        assert_selector('a', :id => "delete_#{@admin_l.id}", :text => "Delete")
+        assert_selector('td', :id => "delete_#{@admin_l.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@user_l.id}", :text => @user_l.name)
-        assert_selector('a', :id => "delete_#{@user_l.id}", :text => "Delete")
+        assert_selector('td', :id => "delete_#{@user_l.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@other_l_pub.id}", :text => @other_l_pub.name)
-        assert_selector('a', :id => "delete_#{@other_l_pub.id}", :text => "Delete")
+        assert_selector('td', :id => "delete_#{@other_l_pub.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@other_l_priv.id}", :text => @other_l_priv.name)
-        assert_selector('a', :id => "delete_#{@other_l_priv.id}", :text => "Delete")
-        
-        click_on("delete_#{@admin_l.id}")
-        assert @old_label_count - 1, Label.count
+        assert_selector('td', :id => "delete_#{@other_l_priv.id}", :text => "Delete")
     end
     
     test "index labels as non admin" do
@@ -30,13 +27,13 @@ class LabelsIndexTest < ActionDispatch::IntegrationTest
         click_on("All Labels")
     
         assert_selector('a', :id => "edit_#{@admin_l.id}", :text => @admin_l.name)
-        assert_selector('a', :id => "delete_#{@admin_l.id}", :text => "Delete", :count => 0)
+        assert_selector('td', :id => "delete_#{@admin_l.id}", :text => "Delete", :count => 0)
         assert_selector('a', :id => "edit_#{@user_l.id}", :text => @user_l.name)
-        assert_selector('a', :id => "delete_#{@user_l.id}", :text => "Delete")
+        assert_selector('td', :id => "delete_#{@user_l.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@other_l_pub.id}", :text => @other_l_pub.name)
-        assert_selector('a', :id => "delete_#{@other_l_pub.id}", :text => "Delete",:count => 0)
+        assert_selector('td', :id => "delete_#{@other_l_pub.id}", :text => "Delete",:count => 0)
         assert_selector('a', :id => "edit_#{@other_l_priv.id}", :text => @other_l_priv.name, :count => 0)
-        assert_selector('a', :id => "delete_#{@other_l_priv.id}", :text => "Delete", :count => 0)
+        assert_selector('td', :id => "delete_#{@other_l_priv.id}", :text => "Delete", :count => 0)
     end
     
     test "back button" do
@@ -46,5 +43,24 @@ class LabelsIndexTest < ActionDispatch::IntegrationTest
         assert_not_on_teacher_page
         click_on("back_button")
         assert_on_teacher_page
+    end
+    
+    test "delete label and change associated questions" do
+        old_label_count = Label.count
+        first_q = @admin_l.questions.first
+        first_pic = @admin_l.pictures.first
+        first_pic_label_count = first_pic.labels.count
+        
+        capybara_login(@admin_user)
+        click_on("All Labels")
+        
+        find("#delete_#{@admin_l.id}").click
+        click_on("confirm_#{@admin_l.id}")
+        
+        first_q.reload
+        first_pic.reload
+        assert_equal old_label_count - 1, Label.count
+        assert_equal @unlabeled_l, first_q.label
+        assert_equal first_pic_label_count - 1, first_pic.labels.count
     end
 end

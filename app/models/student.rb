@@ -4,7 +4,6 @@ class Student < User
     has_many   :seminars, through: :seminar_students
     has_many   :objective_students, dependent: :destroy, foreign_key: :user_id
     has_many   :consulted_teams, :class_name => "Team", foreign_key: "consultant_id"
-    #has_many   :quizzes
     
     validates_uniqueness_of :username, unless: Proc.new { |a| a.username.blank? }
     has_secure_password :validations => false, :allow_nil => true

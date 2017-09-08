@@ -82,7 +82,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         
         capybara_login(@teacher_1)
         click_on('All Questions')
-        fill_in "searchField", with: @fill_q.prompt
+        fill_in "search_field", with: @fill_q.prompt
         click_on("Search")
         click_on(@fill_q.short_prompt)
         

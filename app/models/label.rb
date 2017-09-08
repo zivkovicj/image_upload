@@ -6,8 +6,11 @@ class Label < ApplicationRecord
   has_many :label_objectives, dependent: :destroy
   has_many :objectives, through: :label_objectives
   
+  
   validates :name, :presence => true
   
   include ModelMethods
+  
+
 
 end

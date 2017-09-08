@@ -26,11 +26,7 @@
             <%= link_to 'Edit', edit_picture_path(picture), :id => "edit_#{picture.id}" %>
           <% end %>
         </td>
-        <td>
-          <% if picture.user == current_user || current_user.type == "Admin" %>
-            <%= link_to 'Delete', picture, method: :delete, data: { confirm: 'Are you sure?' }, :id => "delete_#{picture.id}" %>
-          <% end %>
-        </td>
+        <%= render 'shared/delete_and_confirm', object: picture %>
       </tr>
     <% end %>
   </tbody>

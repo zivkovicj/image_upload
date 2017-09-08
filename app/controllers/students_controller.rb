@@ -41,11 +41,11 @@ class StudentsController < ApplicationController
   
   def index
     if !params[:search].blank?
-      @students = Student.paginate(page: params[:page]).search(params[:search], params[:whichParam])
+      @students = Student.order(:last_name).paginate(page: params[:page]).search(params[:search], params[:whichParam])
     end
     
     if current_user.type == "Admin"
-      @students ||= Student.paginate(page: params[:page])
+      @students ||= Student.order(:last_name).paginate(page: params[:page])
     elsif current_user.type == "Student"
       redirect_to login_url
     else
@@ -91,7 +91,11 @@ class StudentsController < ApplicationController
   end
 
   def destroy
-    @student = Student.find(params[:id]).destroy
+    @student = Student.find(params[:id])
+    if @student.destroy
+      flash[:success] = "Student Deleted"
+      redirect_to students_path
+    end
   end
 
 
