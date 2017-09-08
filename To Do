@@ -1,8 +1,6 @@
 
 
 
-
-
 LOOK INTO GRANTS OR AGENCIES TO FUND THIS WORK FOR THE UPCOMING YEAR
  
 BEFORE AUG 15, TRY TO INCLUDE CUMULATIVE STARS IN THE SCORESHEET
@@ -12,50 +10,12 @@ Be aware of whether it shows all possible correct answer when a student views he
 EMAIL THE TEACHERS WHO HAD STARTED AN ACCOUNT IN THE OLD APP
 
 
-    
-    
-
-
-    
 
 
 
-HOTFIXES
-
-V Screen for editing a label has headline twice.
-
-V When I was logged-in as an admin, I went back to the home screen, then tried to get to my profile. It threw an error because it tried to go to the students show page.
-    
-V If a label is deleted, all the questions that had that label should be changed to "Unlabeled"
-
-V All delete buttons in all indexes should work the same as I just updated for the labels.
-    V And the tests.
-
-V Picture has associtions, so it's throwing the to_sym error
-    V Test deleting picture
-
-V Figure out how to handle the deletion of students and teachers in their indexes. Because those objects don't have a user column
-
-V Figure out what to do about teams upon deleting consultants or objectives. Teams will be left with dead links.
-
-V Right now ALL of the confirm buttons pop up when trying to delete an object. It should only pop up the appropriate button.
-
-V Labels should be ordered by name wherever they are listed.
-    V "Unlabeled" should come first in every list. Maybe just start it with a zero.
-
-If a question is deleted, the quantities for label_objectives needs to be affected. Otherwise there will be a major error when trying to create a test for that objective.
-    Either warn the user that many tests will be affected. Or don't allow deleting below the threshold for all tests that would be affected.
-
-
-
-
-
-
-FIX DISPLAY OF IMAGES
+2.28 CORRECTED IMAGE UPLOADING
 
 Need to sign up with Amazon s3 or something in order for picture uploading to work
-
-
 
 
 

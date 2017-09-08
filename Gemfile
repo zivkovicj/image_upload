@@ -17,9 +17,11 @@ gem 'jquery-turbolinks'
 gem 'jbuilder',       '2.4.1'
 gem 'best_in_place', '~> 3.1'
 gem 'responders', '~> 2.2'
-gem 'carrierwave', '~> 0.10.0'
+gem 'carrierwave', '~> 1.0.0.beta'
 gem 'mini_magick', '~> 4.3'
 gem 'capybara'
+gem 'figaro'
+gem 'fog-aws', '0.12.0'
 
 group :development, :test do
   gem 'sqlite3', '1.3.11'

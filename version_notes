@@ -1,5 +1,26 @@
 
 
+2.27 HOTFIXES, SEP 2017--STARTED 08/24/17
+                        --PUSHED 09/07/17
+
+Screen for editing a label has headline twice.
+When I was logged-in as an admin, I went back to the home screen, then tried to get to my profile. It threw an error because it tried to go to the students show page.
+If a label is deleted, all the questions that had that label should be changed to "Unlabeled"
+All delete buttons in all indexes should work the same as I just updated for the labels.
+    And the tests.
+Picture has associtions, so it's throwing the to_sym error
+    Test deleting picture
+Figure out how to handle the deletion of students and teachers in their indexes. Because those objects don't have a user column
+Figure out what to do about teams upon deleting consultants or objectives. Teams will be left with dead links.
+Right now ALL of the confirm buttons pop up when trying to delete an object. It should only pop up the appropriate button.
+Labels should be ordered by name wherever they are listed.
+    "Unlabeled" should come first in every list. Maybe just start it with a zero.
+If a question is deleted, the quantities for label_objectives needs to be affected. Otherwise there will be a major error when trying to create a test for that objective.
+    Either warn the user that many tests will be affected. Or don't allow deleting below the threshold for all tests that would be affected.
+
+
+
+
 2.26 IMAGES WITH QUESTIONS--STARTED 08/23/17
                         -- PUSHED 08/28/17
 Goal of this update: Allow teachers to associate uploaded images with specific questions. 
