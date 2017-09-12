@@ -1,16 +1,17 @@
 <% provide(:scores_label, 'Your Scores in All Objectives') %>
 <% provide(:button_text, 'Change Your Requests') %>
 
-<% def quiz_link(quiz) %>
-    <%= link_to quiz.name, :controller => "quizzes", :action => "new", :objective_id => quiz.id %>
+<% def quiz_link(quiz, age) %>
+    <% this_action = age == "new" ? "new" : "edit" %>
+    <%= link_to quiz.name, :controller => "quizzes", :action => "#{this_action}", :objective_id => quiz.id %>
 <% end %>
 
-<% def list_of_quizzes(list, category) %>
+<% def list_of_quizzes(list, category, age) %>
     <% if list.count > 0 %>
-        <h3><%= category %> Objectives</h3>
+        <h3><%= category %></h3>
         <ul><% list.each do |quiz| %>
             <li id="quiz_<%= quiz.id %>">
-                <% quiz_link(quiz) %>
+                <% quiz_link(quiz, age) %>
             </li>
         <% end %></ul>
     <% end %>
@@ -40,9 +41,11 @@
         <h2>Quizzes Available</h2>
         </br>
         
-        <% list_of_quizzes(@desk_consulted_objectives, "Desk Consultants") %>
+        <% list_of_quizzes(@unfinished_quizzes, "Unfinished Quizzes", "old") %>
+        
+        <% list_of_quizzes(@desk_consulted_objectives, "Desk Consultants Objectives", "new") %>
     
-        <% list_of_quizzes(@all_pretest_objectives, "Pretest") %>
+        <% list_of_quizzes(@all_pretest_objectives, "Pretest Objectives", "new") %>
     <% else %>
         <h3>No quizzes available right now.</h3>
     <% end %>

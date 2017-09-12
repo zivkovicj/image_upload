@@ -73,6 +73,18 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         assert_equal @user_q.picture, @user_p
     end
     
+    test "default answer choice" do
+        @user_q.update(:correct_answers => ["2"], :picture => nil)
+        
+        capybara_login(@teacher_1)
+        click_on('All Questions')
+        click_on(@user_q.short_prompt)
+        click_on("save_changes_2")
+        
+        @user_q.reload
+        assert @user_q.correct_answers.include?("3")
+    end
+    
     test "edit fill-in question" do
         @fill_q = Question.where(:style => "fill-in").first
         @fill_q.update(:user => @teacher_1)

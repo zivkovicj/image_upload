@@ -9,6 +9,7 @@ class RipostesController < ApplicationController
         @riposte = Riposte.find(params[:id])
         @question = @riposte.question
         @quiz = @riposte.quiz
+        next_riposte_num = @riposte.position + 1
         
         perc = 0
         case @question.style
@@ -28,13 +29,15 @@ class RipostesController < ApplicationController
         
         @riposte.update(:stud_answer => stud_answer)
         @riposte.update(:tally => perc)
+        @quiz.update(:progress => next_riposte_num)
         
         if @riposte == @quiz.ripostes.last
             redirect_to quiz_path(@quiz)
         else
-            next_riposte = @quiz.ripostes.find_by(:position => @riposte.position + 1)
+            next_riposte = @quiz.ripostes.find_by(:position => next_riposte_num)
             redirect_to  edit_riposte_path(next_riposte)
         end
     end
+
     
 end

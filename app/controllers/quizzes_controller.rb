@@ -3,7 +3,7 @@ class QuizzesController < ApplicationController
     def new
         @objective = Objective.find(params[:objective_id])
         if @objective.questions.count > 0
-            @quiz = Quiz.create(:objective => @objective, :user => current_user)
+            @quiz = Quiz.create(:objective => @objective, :user => current_user, :progress => 1)
             quest_collect = []
             @objective.label_objectives.each do |lo|
                 quant = lo.quantity
@@ -21,6 +21,13 @@ class QuizzesController < ApplicationController
             flash[:danger] = "This quiz doesn't have any questions. Please alert your teacher that you cannot take this quiz until some questions are added."
             redirect_to student_view_seminar_path(current_user.current_class, :user => current_user)
         end
+    end
+    
+    def edit
+        @objective = Objective.find(params[:objective_id])
+        @quiz = current_user.quizzes.find_by(:objective => @objective)
+        current_question = @quiz.progress - 1
+        redirect_to edit_riposte_path(@quiz.ripostes[current_question])
     end
     
     def show

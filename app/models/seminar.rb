@@ -33,7 +33,7 @@ class Seminar < ApplicationRecord
   end
   
   def all_pretest_objectives(stud)
-    self.objectives.select{|x| objective_is_pretest(x) && stud.has_not_scored_100(x) && stud.has_not_tried_twice(x) && stud.check_if_ready(x)}
+    self.objectives.select{|x| objective_is_pretest(x) && stud.has_not_scored_100(x) && stud.has_not_tried_twice(x) && stud.check_if_ready(x) && !stud.one_unfinished(x)}
   end
   
   def scoreTransfer(fromObj, toObj)

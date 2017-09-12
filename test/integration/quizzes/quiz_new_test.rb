@@ -69,12 +69,15 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         assert @student_2.quizzes.include?(@new_quiz)
     end
     
-    test "take fill-in quiz" do
+    test "take fill in quiz" do
         go_to_first_period
         
         click_on("Fill-in Questions Only")
+        @quiz = Quiz.last
         fill_in "stud_answer", with: "Yes"
         click_on "Next Question"
+        @quiz.reload
+        assert_equal 2, @quiz.progress
         fill_in "stud_answer", with: "No"
         click_on "Next Question"
         fill_in "stud_answer", with: "yes"
@@ -85,6 +88,8 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         click_on "Next Question"
         fill_in "stud_answer", with: "ofco urse"
         click_on "Next Question"
+        @quiz.reload
+        assert_equal 7, @quiz.progress
         fill_in "stud_answer", with: "course of"
         click_on "Next Question"
         

@@ -18,10 +18,8 @@
             </div>
             </br>
             
-            <% class_type = (question.correct_answers.include?(riposte.stud_answer) ? "green" : "red") %>
+            <% class_type = (riposte.tally == riposte.poss ? "green" : "red") %>
             Your Response: <span class=<%= class_type %>> <%= riposte.stud_answer %></span>
-            </br>
-            <%= riposte.tally %> / <%= riposte.poss %>
             </br>
             </br>
             Correct Responses:

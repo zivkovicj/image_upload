@@ -101,4 +101,37 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         assert_no_text("Try this quiz again")
     end
     
+    test "unfinished quizzes" do
+        @seminar.objective_seminars.update_all(:pretest => 0)
+        @seminar.objective_seminars.find_by(:objective => @objective_10).update(:pretest => 1)
+       
+        go_to_first_period
+        assert_no_text("Unfinished Quizzes")
+        assert_text("Pretest Objectives")
+        begin_quiz
+       
+        3.times do |n|
+            assert_text("Question: #{n+1}")
+            choose("choice_bubble_1")
+            click_on("Next Question")
+        end
+       
+        click_on("Account")
+        click_on("Log out")
+       
+        go_to_first_period
+        assert_text("Unfinished Quizzes")
+        assert_no_text("Pretest Objectives")
+        click_link("#{@objective_10.name}", match: :first) # This time the first link should go to the unfinished quiz
+        assert_text("Question: 4")                           # A little redundant with the next line, but this assertion is the most important one
+       
+        8.times do |n|
+            assert_text("Question: #{n+4}")
+            choose("choice_bubble_1")
+            click_on("Next Question")
+        end
+       
+       assert_text("This Score:")
+    end
+    
 end

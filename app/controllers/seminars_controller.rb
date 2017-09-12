@@ -135,10 +135,11 @@ class SeminarsController < ApplicationController
         @teach_options = teach_options(@student, @seminar, 5)
         @learn_options = learn_options(@student, @seminar, 5)
         
+        @unfinished_quizzes = @student.all_unfinished_quizzes(@seminar)
         @desk_consulted_objectives = @student.desk_consulted_objectives(@seminar)
         @all_pretest_objectives = @seminar.all_pretest_objectives(@student)
         
-        @show_quizzes = @desk_consulted_objectives.present? || @all_pretest_objectives.present?
+        @show_quizzes = @desk_consulted_objectives.present? || @all_pretest_objectives.present? || @unfinished_quizzes.present?
         
         update_current_class
     end

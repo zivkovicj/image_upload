@@ -10,8 +10,8 @@
 </thead><tbody>
     
     <% 6.times do |n| %>
-        <% checkery = (n == 0 ? "checked='checked'" : "") %>
         <% default_text = @question.attributes["choice_#{n}"] %>
+        <% checkery = (@question.correct_answers&.include?(default_text) ? "checked='checked'" : "") %>
         <tr><div class="row">
             <td><input type="radio" value="<%= n %>" name="questions[<%= @index.to_i %>][whichIsCorrect]" id="question_<%= @index %>_whichIsCorrect_<%= n %>" <%= checkery %> /></td>
             <td><input type="text" name="questions[<%= @index.to_i %>][choice_<%= n %>]" id="question_<%= @index %>_choice_<%= n %>" value="<%= default_text %>" /></td>

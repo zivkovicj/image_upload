@@ -1,35 +1,66 @@
 
 
 
-LOOK INTO GRANTS OR AGENCIES TO FUND THIS WORK FOR THE UPCOMING YEAR
- 
-BEFORE AUG 15, TRY TO INCLUDE CUMULATIVE STARS IN THE SCORESHEET
+Email the teachers who had started an account in the old app
+    And Maryanne
 
-Be aware of whether it shows all possible correct answer when a student views her finished quiz.
+Make the landing page do a better job of explaining and selling the app
 
-EMAIL THE TEACHERS WHO HAD STARTED AN ACCOUNT IN THE OLD APP
+Make three videos
+    There's advice to write blog articles, but videos will serve the same purpose better   
 
-
-
-
-
-2.28 CORRECTED IMAGE UPLOADING
-
-Need to sign up with Amazon s3 or something in order for picture uploading to work
+Begin uploading them and linking to them on Twitter
 
 
+Business To-Do's
+Look into this suggestion; Purchase domain and hosting from bluehost.
+    Host your web application on that host
+    
+Find Teacher's forums
 
+Tag other teacher's related profiles on Twitter
 
-
-SAVE STUDENT PROGRESS DURING QUIZZES
-
-Should calculate the final quiz results before going to the quiz show page.
-    The way it currently works, it gives results of zero when the student refreshes the screen.
+Connect on LinkedIn
 
 
 
 
-CONSULTANT STARS
+
+
+
+
+
+
+2.29 QUIZ PROGRESS
+
+Goal: Track a student's progress on a quiz so the student can resume if interrupted.
+
+V Add "progress" column to quiz table
+
+V Update this column whenever student answers a question
+
+V On student's log-in page, offer "Unfinished quizzes"
+
+V Clicking an unfinished quiz brings student to the correct riposte
+
+V Unfinished quizzes no not appear in the other offerings
+
+V Answers should not display red if the problem is with spacing
+
+V When editing a multiple-choice question, current correct answer should be the default there too
+
+Testing fail for questions that include a picture
+
+"Back to class" button should work as a whole button, not just the text
+
+Enhance security so that my code isn't getting shown
+
+Migrate after deploy
+    Set progress for all eixsting quizzes
+
+
+
+
 
 
 
@@ -46,7 +77,9 @@ This will help with marking term grades
     
     
         
-        
+CONSULTANT STARS
+ 
+ 
     
 GROWTH POINTS
 
@@ -59,10 +92,15 @@ Need to add "last_growth" type column to objective_sudent
  
 DISABLE "NEXT QUESTION" BUTTON UNTIL STUDENT CHOOSES A RESPONSE
  
- Test deleting of pictures
+Goal: Disable the "Next" button until the student gives some kind of answer
+
+Test deleting of pictures
  
- It's weird that a picture can have "Unlabeled" along with other labels. Should be one or the other.
+It's weird that a picture can have "Unlabeled" along with other labels. Should be one or the other.
  
+Add a "previous question" button
+
+
 
 
    
@@ -236,6 +274,16 @@ I give the option to create a new label while creating questions, then it won't 
 VETO ANSWER-SCRAMBLING
 
 Option to not scramble the answer choices for multiple-choice questions.
+
+
+
+
+QUIZ SCORE CALCULATION
+
+Should calculate the final quiz results before going to the quiz show page.
+    The way it currently works, it gives results of zero when the student refreshes the screen.
+    I think I'll need to add an "old_score" column to quiz table in order to get that working properly.
+
 
 
 

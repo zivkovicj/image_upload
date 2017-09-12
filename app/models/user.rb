@@ -95,6 +95,14 @@ class User < ApplicationRecord
     def name_with_title
         "#{title.split.map(&:capitalize).join(' ')} #{last_name.split.map(&:capitalize).join(' ')}"
     end
+    
+    def one_unfinished(obj)
+        self.quizzes.find_by(:objective => obj, :total_score => nil)
+    end
+ 
+    def all_unfinished_quizzes(seminar)
+        seminar.objectives.select{|x| self.one_unfinished(x) } 
+    end
  
     def has_not_scored_100(obj)
         self.objective_students.find_by(:objective => obj).points < 10
@@ -106,7 +114,7 @@ class User < ApplicationRecord
     
     def desk_consulted_objectives(seminar)
         blap = self.teams.where.not(:objective => nil).map(&:objective_id)
-        return seminar.objectives.find(blap).select{|x| self.has_not_scored_100(x)}
+        return seminar.objectives.find(blap).select{|x| self.has_not_scored_100(x) && !self.one_unfinished(x)}
     end
     
     private
