@@ -29,7 +29,7 @@ class RipostesController < ApplicationController
         
         @riposte.update(:stud_answer => stud_answer)
         @riposte.update(:tally => perc)
-        @quiz.update(:progress => next_riposte_num)
+        @quiz.update(:progress => @riposte.position)
         
         if @riposte == @quiz.ripostes.last
             redirect_to quiz_path(@quiz)
