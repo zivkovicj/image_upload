@@ -29,6 +29,10 @@ class ActiveSupport::TestCase
     CarrierWave.clean_cached_files!(0)
   end
   
+  def disable_images
+    Question.where.not(:picture_id => nil).update_all(:picture_id => nil) 
+  end
+  
   def setup_users
     @admin_user = users(:michael)
     @teacher_1 = users(:archer)

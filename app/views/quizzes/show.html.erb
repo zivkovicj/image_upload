@@ -31,20 +31,21 @@
     <% end %>
 </div>
 
-<div class="singleOption student_link">
-    <%= link_to "Back to Your Class Page", :method => :get, 
-        :controller => "seminars", :action => "student_view",
-        :id => current_user.current_class , :user => current_user.id,
-        :class => "btn btn-lg btn-primary" %>
-</div>
-</br>
-
-<div class="singleOption student_link">
-    <% if current_user.has_not_tried_twice(@objective) %>
-        <%= link_to "Try this quiz again", :controller => "quizzes", :action => "new", :objective_id => @objective.id %>
-    <% else %>
-        <p>You have already tried this quiz twice.</p>
-    <% end %>
+<div class="container">
+    <div class="row">
+        
+        <% if current_user.has_not_tried_twice(@objective) %>
+            <%= link_to "Try this quiz again", {:controller => "quizzes", :action => "new", :objective_id => @objective.id}, 
+                :class => "btn btn-lg btn-primary" %>
+        <% else %>
+            <div class="singleOption">
+                <p>You have already tried this quiz twice.</p>
+            </div>
+        <% end %>
+        
+        <%= link_to "Back to Your Class Page", {:method => :get, :controller => "seminars", :action => "student_view", :id => current_user.current_class , :user => current_user.id},
+            :class => "btn btn-lg btn-primary" %>
+    </div>
 </div>
 </br>
 

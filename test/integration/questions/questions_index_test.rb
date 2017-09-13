@@ -12,6 +12,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     end
     
     test "index questions as admin" do
+        disable_images
         capybara_login(@admin_user)
         click_on("All Questions")
 
@@ -26,6 +27,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     end
     
     test "index questions as non admin" do
+        disable_images
         capybara_login(@teacher_1)
         click_on("All Questions")
     
@@ -40,6 +42,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     end
     
     test "back button" do
+        disable_images
         capybara_login(@teacher_1)
         click_on("All Questions")
         assert_selector("h1", :text => "All Questions")
@@ -49,6 +52,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     end
     
     test "delete question" do
+        disable_images
         old_q_count = Question.count
         old_lab = @admin_q.label
         assert_not_nil old_lab
@@ -68,6 +72,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     end
     
     test "deleting last question from label deletes label_objective" do
+        disable_images
         this_lab = Label.find_by(:name => "Other_Label_Public")
         this_quest = this_lab.questions.first
         this_lab.label_objectives.create(:objective => Objective.first, :quantity => 1, :point_value => 1)

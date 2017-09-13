@@ -49,9 +49,9 @@ V Answers should not display red if the problem is with spacing
 
 V When editing a multiple-choice question, current correct answer should be the default there too
 
-Testing fail for questions that include a picture
+Testing fails for all questions that include a picture
 
-"Back to class" button should work as a whole button, not just the text
+V "Back to class" button should work as a whole button, not just the text
 
 Enhance security so that my code isn't getting shown
 
@@ -89,6 +89,19 @@ Need to add "last_growth" type column to objective_sudent
 
 
 
+
+ORGANIZING PICTURES
+
+Organizing them by label, the way I am currently doing, is a bad idea. Teachers cannot use community pictures for their questions because they cannot
+    edit the labels of a picture. Instead, I should prompt the user for whether she wants to be offered pictures from Algebra, Geometry, etc.
+    
+Pictures will be associated with those domains.
+
+Find a better way to organize the other long lists, too
+    "Labels" comes to mind first
+
+
+
  
 DISABLE "NEXT QUESTION" BUTTON UNTIL STUDENT CHOOSES A RESPONSE
  
@@ -115,12 +128,7 @@ Teachers can choose whether their students will see all questions, or only curat
    
  
  
-ORGANIZING PICTURES
 
-Organizing them by label, the way I am currently doing, is a bad idea. Teachers cannot use community pictures for their questions because they cannot
-    edit the labels of a picture. Instead, I should prompt the user for whether she wants to be offered pictures from Algebra, Geometry, etc.
-    
-Pictures will be associated with those domains.
 
 
 
