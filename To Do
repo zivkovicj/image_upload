@@ -49,7 +49,7 @@ V Answers should not display red if the problem is with spacing
 
 V When editing a multiple-choice question, current correct answer should be the default there too
 
-Testing fails for all questions that include a picture
+V Testing fails for all questions that include a picture
 
 V "Back to class" button should work as a whole button, not just the text
 
