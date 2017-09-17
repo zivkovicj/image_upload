@@ -77,7 +77,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         fill_in "stud_answer", with: "Yes"
         click_on "Next Question"
         @quiz.reload
-        assert_equal 2, @quiz.progress
+        assert_equal 1, @quiz.progress
         fill_in "stud_answer", with: "No"
         click_on "Next Question"
         fill_in "stud_answer", with: "yes"

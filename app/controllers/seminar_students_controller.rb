@@ -24,6 +24,14 @@ class SeminarStudentsController < ApplicationController
     respond_with @ss
   end
   
+  def update_benchmarks
+    seminar_id = params[:seminar]
+    params[:set_benchmark].each do |id|
+      SeminarStudent.find_by(:user_id => id, :seminar_id => seminar_id).ss_benchmark_stars
+    end
+    redirect_to scoresheet_seminar_path(seminar_id)
+  end
+  
   def destroy
     this_ss = SeminarStudent.find(params[:id])
     @seminar = Seminar.find(this_ss.seminar_id)

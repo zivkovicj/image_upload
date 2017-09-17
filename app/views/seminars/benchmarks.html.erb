@@ -1,0 +1,49 @@
+<% provide(:title, "#{@seminar.name} Benchmark Stars") %>
+
+<% provide(:headerText, "#{@seminar.name} Benchmark Stars") %>
+<% provide(:headerPic, "scoresheet.png") %>
+
+
+<%= render 'shared/navribbon' %><br/>
+<%= render 'shared/teacher_name_and_edit', user: @teacher %><br/>
+<%= render 'shared/class_and_edit' %>
+
+<%= render 'shared/headline' %>
+
+<div class="singleOption">
+    <h2>The students whose boxes are checked will have have their benchmark stars updated.</h2>
+    <h3>The new benchmark will be set to equal the student's total stars in this class.</h3>
+    <h3>This is useful to do at the end of a grading term. After you update the benchmarks, the student's current stars will show you how many stars the student has earned in the new term. </h3>
+</div>
+
+</br>
+
+<%= form_tag update_benchmarks_seminar_student_path do %>
+    <div class="container">
+        <div class="row">
+            <%= hidden_field_tag :seminar, @seminar.id %>
+                <% @seminar.students.order(:last_name).in_groups(2) do |group| %>
+                    <div class="col-md-6">
+                        <table>
+                        <% group.each do |student| %>
+                            <% if student %>
+                                <tr>
+                                    <td width="20%"><%= check_box_tag 'set_benchmark[]', student.id, true, {:id => "benchmark_#{student.id}"} %></td>
+                                    <td><%= student.last_name_first %></td>
+                                </tr>
+                            <% end %>
+                        <% end %>
+                        </table>
+                    </div>
+                <% end %>
+            
+            
+            
+        </div>
+    </div>
+    </br>
+    </br>
+    <div class="actions">
+        <%= submit_tag "Set Benchmark Stars for These Students" %>
+    </div>
+<% end %>

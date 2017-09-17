@@ -17,5 +17,4 @@ module ApplicationHelper
             concat capture(&block)
         end
     end
-    
 end

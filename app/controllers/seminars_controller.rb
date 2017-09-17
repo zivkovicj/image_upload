@@ -130,6 +130,8 @@ class SeminarsController < ApplicationController
         @student_scores = @student.objective_students.where(:objective_id => objective_ids)
         
         @ss = @student.seminar_students.find_by(:seminar => @seminar) # Is this needed?
+        @total_stars = @student.total_stars(@seminar)
+        @current_stars = @total_stars - @ss.benchmark
         @teacher = @seminar.user
         
         @teach_options = teach_options(@student, @seminar, 5)
@@ -144,9 +146,10 @@ class SeminarsController < ApplicationController
         update_current_class
     end
     
-    def pretest_or_not
-        next_path = @seminar.objectives.present? ? pretests_seminar_path(@seminar) : scoresheet_seminar_path(@seminar)
-        redirect_to next_path
+    def benchmarks
+        @seminar = Seminar.find(params[:id])
+        @teacher = @seminar.user
+        update_current_class
     end
     
     private 
@@ -167,6 +170,11 @@ class SeminarsController < ApplicationController
                #@seminar.save
             #end
             update_current_class
+        end
+        
+        def pretest_or_not
+            next_path = @seminar.objectives.present? ? pretests_seminar_path(@seminar) : scoresheet_seminar_path(@seminar)
+            redirect_to next_path
         end
         
         def seminarParamsWithSeating

@@ -40,9 +40,11 @@ Rails.application.routes.draw do
     get 'priorities', on: :member
     get 'scoresheet', on: :member
     get 'student_view', on: :member
+    get 'benchmarks', on: :member
   end
   resources :seminar_students do
     get 'removeFromClass', on: :member
+    post 'update_benchmarks', on: :member
     put 'ajaxUpdate', on: :member
   end
   resources :students do

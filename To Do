@@ -27,55 +27,96 @@ Connect on LinkedIn
 
 
 
+2.30 BENCHMARK STARS--STARTED 09/13/17
 
+Goal: Keep track of Benchmark stars. This will allow for tracking current stars. 
 
+V student_seminar needs benchmark_stars column.
 
+Teacher can go to a benchmark_stars screen to set this
+    V By default, all students are checked in order to set them at once
+    V  Teacher can uncheck some of them
+    V When submitted, benchmark stars are updated to equal the student's current stars
 
-2.29 QUIZ PROGRESS
+V Scoresheet shows total stars, benchmark stars, and current stars
+    V Current stars is simply total subtract benchmark
 
-Goal: Track a student's progress on a quiz so the student can resume if interrupted.
+V Set default benchmark to the student's total stars
 
-V Add "progress" column to quiz table
+V A bit of coloring for those columns in the scoresheet.
 
-V Update this column whenever student answers a question
+V Show benchmark and current in student_view
 
-V On student's log-in page, offer "Unfinished quizzes"
+V Temporarily remove the feature to search for existing students. 
 
-V Clicking an unfinished quiz brings student to the correct riposte
-
-V Unfinished quizzes no not appear in the other offerings
-
-V Answers should not display red if the problem is with spacing
-
-V When editing a multiple-choice question, current correct answer should be the default there too
-
-V Testing fails for all questions that include a picture
-
-V "Back to class" button should work as a whole button, not just the text
-
-Enhance security so that my code isn't getting shown
+V Add Privacy Policy to site
 
 Migrate after deploy
-    Set progress for all eixsting quizzes
-
-
-
-
-
-
-
-
-
-
-BENCHMARK STARS
-
-Each student_seminar will have a benchmark stars column. When the teacher clicks the benchmark, it will save each student's current total of stars for that seminar
+    Set all existing benchmarks to zero
+   
+   
     
-There will be columns that show total stars, last benchmark, and stars since last benchmark
+
+
+MOVE STUDENTS CLASSES
+
+V Update the static pages
+
+Move a student from one class period to another
+
+New logo
+
+
+
+
+TEACHER MANUAL QUIZ UNLOCKS
+
+    Teacher clicking student can check which quizzes should be unlocked for that
+        student.
+        
+    Or through objective to check which quizzes should be unlocked for which
+        student.
+        
+    Or unlock a quiz for an entire class.
     
-This will help with marking term grades
+    
+
+
+PRE-TESTS DON'T COUNT FOR CURRENT STARS
+
+Goal: If a student takes a pretest in pretest mode those stars should be added to the benchmark so the student doesn't receive credit in the current term.
+    
+
+
     
     
+
+
+REMOVE QUIZ FROM DESK CONSULTANTS OFFERINGS AFTER STUDENT HAS TAKEN IT TWICE
+
+Count the number of attempts since the most recent time working that objective with desk consultants
+    If there are more than one, that quiz is no longer offered to the student.
+
+Or else close after one attempt if the day ends
+
+Automatically add consultant stars
+
+
+
+
+
+HOTFIXES
+
+Can I figure out what's wrong with testing files. 
+    Possibly a better version of carrierwave. Check the tutorial article
+    
+Dry up the four buttons shown in the bottom of seminar navigation
+
+Try to eliminate some of the jquery loads. It might help with the firewall situation.
+
+Benchmark Icon
+
+
         
 CONSULTANT STARS
  
@@ -86,6 +127,16 @@ GROWTH POINTS
 Need to add "last_growth" type column to objective_sudent
     When a student improves score, update last_growth to today's date
     If there is growth, but last_growth was the same day, then don't add growth points. (They need to take it again on a different day to earn those points.)
+
+
+
+
+
+DISTRICT AND/OR SCHOOL MODEL
+
+Student and Teacher accounts need to be assigned a district.
+
+Student searching only applies within that school or district
 
 
 
@@ -331,13 +382,7 @@ Admin or content creators can curate questions.
     
 Teachers can choose whether their students will see all questions, or only curated questions.
 
-   
-=========
 
-
-
-CURRENT CLASS AS A REFERENCE, NOT AN INTEGER    
->>>>>>>>> local version
 
 
 
@@ -356,25 +401,7 @@ STUDENT VIEW INTO MULTIPLE SUB-VIEWS
     
     
   
-REMOVE QUIZ FROM DESK CONSULTANTS OFFERINGS AFTER STUDENT HAS TAKEN IT TWICE
 
-    Count the number of attempts since the most recent time working that objective with desk consultants
-        If there are more than one, that quiz is no longer offered to the student.
-    
-    Or else close after one attempt if the day ends
-    
-    Automatically add consultant stars
-    
-
-TEACHER MANUAL QUIZ UNLOCKS
-
-    Teacher clicking student can check which quizzes should be unlocked for that
-        student.
-        
-    Or through objective to check which quizzes should be unlocked for which
-        student.
-        
-    Or unlock a quiz for an entire class.
 
 
 

@@ -1,6 +1,24 @@
 
 
 
+2.29 QUIZ PROGRESS--PUSHED 09/13/17
+
+Goal: Track a student's progress on a quiz so the student can resume if interrupted.
+Add "progress" column to quiz table
+Update this column whenever student answers a question
+On student's log-in page, offer "Unfinished quizzes"
+Clicking an unfinished quiz brings student to the correct riposte
+Unfinished quizzes no not appear in the other offerings
+Answers should not display red if the problem is with spacing
+When editing a multiple-choice question, current correct answer should be the default there too
+Testing fails for all questions that include a picture
+"Back to class" button should work as a whole button, not just the text
+Enhance security so that my code isn't getting shown
+Migrate after deploy
+    Set progress for all eixsting quizzes
+
+
+
 2.28 CORRECTED IMAGE UPLOADING--STARTED 09/07/17
                             --PUSHED 09/08/17
 

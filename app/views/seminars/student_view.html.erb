@@ -20,17 +20,18 @@
 
 
 <div class="row">
-    <div class="col-sm-8 singleOption">
+    <div class="col-sm-7 singleOption">
         <h1>&emsp;&emsp;<%= @student.fullName %>&emsp;&emsp; </br><small><%= @seminar.name %>&emsp; <%= @teacher.name_with_title %></small></h1>
     </div>
     
-    <div class="col-sm-2">
+    <div class="col-sm-1">
         
     </div>
         
-    <div class="col-sm-2">
-        <h2>Total stars</h2>
-        <h1><%= @student.total_stars(@seminar) %></h1>
+    <div class="col-sm-4">
+        <h2>Current Stars for this Grading Term</h2>
+        <h1><%= @current_stars %></h1>
+        <h3>Total stars: <%= @total_stars %></h3>
     </div>
 </div>
 </br>

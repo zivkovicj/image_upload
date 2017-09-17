@@ -19,7 +19,9 @@
   <table class="table-borderless scoreTable" id="scoreTable">
     <thead class="table-borderless">
       <th class="table-borderless">Student</th>
-      <th class="rotate table-borderless"><div><span>Total Stars</span></div></th>
+      <th class="rotate table-borderless consultant"><div><span>Current Stars</span></div></th>
+      <th class="rotate table-borderless consultant"><div><span>Benchmark Stars</span></div></th>
+      <th class="rotate table-borderless consultant"><div><span>Total Stars</span></div></th>
       <% @objectives.each_with_index do |objective, index| %>
         <th class="rotate table-borderless"><div><span>
           <%= link_to objective.short_name, edit_objective_path(objective) %>
@@ -30,7 +32,12 @@
       <% @students.each do |student| %>
         <tr>
           <td><h4><%= link_to student.last_name_first, edit_teaching_requests_student_url(student) %> </h4></td>
-          <td class="themScores"><%= student.total_stars(@seminar) %></td>
+          <% total_stars = student.total_stars(@seminar) %>
+          <% benchmark = student.seminar_students.find_by(:seminar => @seminar).benchmark %>
+          <% current_stars = total_stars - benchmark %>
+          <td class="themScores consultant"><%= current_stars %></td>
+          <td class="themScores consultant"><%= benchmark %></td>
+          <td class="themScores consultant"><%= total_stars %></td>
           <% this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id) %>
           <% @objectives.each do |objective| %>
             <% thisScore = @scores.find_by(:objective => objective, :user => student) %>
@@ -53,7 +60,9 @@
 <div>
   <%= button_to "Create a New Objective", new_objective_path, :method => :get, class: "btn btn-lg btn-primary" %><br/>
   <%= button_to "Create New Students", new_student_path, :method => :get, class: "btn btn-lg btn-primary" %><br/>
-  <%= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %><br/>
+  <%#= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %><br/>
+  <%= button_to "Set Benchmark Stars", benchmarks_seminar_path(@seminar), :method => :get, class: "btn btn-lg btn-primary" %><br/>
+  
 </div>
 
 <%= button_to "Your Teacher Profile", @seminar.user,

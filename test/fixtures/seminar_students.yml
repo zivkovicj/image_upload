@@ -8,6 +8,7 @@ ss_<%= n %>:
   learn_request:
   pref_request:
   present: true
+  benchmark: 0
 <% end %>
 
 <% (51..70).each do |n| %>
@@ -18,6 +19,7 @@ ss_<%= n %>:
   learn_request:
   pref_request:
   present: true
+  benchmark: 0
 <% end %> 
 
 <% (71..90).each do |n| %>
@@ -28,6 +30,7 @@ ss_<%= n %>:
   learn_request:
   pref_request:
   present: true
+  benchmark: 0
 <% end %> 
 
 # A second seminar_student for student_1 (natalie) to test what happens when students are in two different seminars
@@ -38,6 +41,7 @@ ss_100:
   learn_request:
   pref_request:
   present: true
+  benchmark: 0
   
 # A second seminar_student for student_2 (martha) for testing students who have two different teachers
 ss_101:
@@ -47,6 +51,7 @@ ss_101:
   learn_request:
   pref_request:
   present: true
+  benchmark: 0
   
 five:
   seminar: five
@@ -55,4 +60,5 @@ five:
   learn_request:
   pref_request:
   present: true
+  benchmark: 0
   
