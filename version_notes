@@ -2,6 +2,22 @@
 
 
 
+2.31 MOVE STUDENTS--STARTED 09/19/17
+
+Goal: When teacher looks at a student, there's an option to move the student to a different class
+    Underneath remove button, there's a "move" button
+    The class choices are there from the beginning, but hidden. They appear when "move" button is pressed
+    Clicking one of the classes creates a stud_sem
+    Then deletes the old one
+        Will need to add a parameter to the "add student" form to determine whether an old ss should be deleted.
+Fix Removing a Student From a Class
+Don't offer classes that the student is already in
+New logo
+Add to_unhide to themScores
+Outline color for confirm buttons
+
+
+
 2.30 BENCHMARK STARS--STARTED 09/13/17
 Goal: Keep track of Benchmark stars. This will allow for tracking current stars. 
 student_seminar needs benchmark_stars column.

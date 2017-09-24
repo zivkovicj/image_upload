@@ -12,7 +12,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     end
     
     test "index questions as admin" do
-        disable_images
+        #disable_images
         capybara_login(@admin_user)
         click_on("All Questions")
 
