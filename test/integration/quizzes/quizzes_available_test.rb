@@ -125,7 +125,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         click_link("#{@objective_10.name}", match: :first) # This time the first link should go to the unfinished quiz
         assert_text("Question: 4")                           # A little redundant with the next line, but this assertion is the most important one
        
-        8.times do |n|
+        7.times do |n|
             assert_text("Question: #{n+4}")
             choose("choice_bubble_1")
             click_on("Next Question")

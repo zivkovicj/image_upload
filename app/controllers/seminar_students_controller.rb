@@ -7,6 +7,7 @@ class SeminarStudentsController < ApplicationController
 
   def create
     # This method is called when the teacher adds an existing student to a class.
+    # Or moves a student to a different class. 
     # It is not called when creating a new student.
     @ss = SeminarStudent.create(ss_params)
     @seminar = Seminar.find(@ss.seminar_id)
@@ -14,6 +15,9 @@ class SeminarStudentsController < ApplicationController
     
     addToSeatingChart(@seminar, @student)
     scoresForNewStudent(@seminar, @student)
+    
+    old_ss_id = params[:seminar_student][:is_move]
+    SeminarStudent.find(old_ss_id).destroy if old_ss_id
     
     redirect_to scoresheet_seminar_url(@seminar)
   end

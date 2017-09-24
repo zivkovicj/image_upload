@@ -44,7 +44,7 @@ class StudentsEditTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("scoresheet_#{@seminar.id}")
         click_on(@student_2.last_name_first)
-        click_on("Edit/Remove Student")
+        click_on("Edit/Move Student")
         assert_selector('input', :id => "student_user_number")
         
         edit_student_user_number

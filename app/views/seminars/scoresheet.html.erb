@@ -35,13 +35,13 @@
           <% total_stars = student.total_stars(@seminar) %>
           <% benchmark = student.seminar_students.find_by(:seminar => @seminar).benchmark %>
           <% current_stars = total_stars - benchmark %>
-          <td class="themScores consultant"><%= current_stars %></td>
-          <td class="themScores consultant"><%= benchmark %></td>
-          <td class="themScores consultant"><%= total_stars %></td>
+          <td class="themScores to_unhide consultant"><%= current_stars %></td>
+          <td class="themScores to_unhide consultant"><%= benchmark %></td>
+          <td class="themScores to_unhide consultant"><%= total_stars %></td>
           <% this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id) %>
           <% @objectives.each do |objective| %>
             <% thisScore = @scores.find_by(:objective => objective, :user => student) %>
-            <td class="themScores steelPanther">
+            <td class="themScores to_unhide steelPanther">
               <% if thisScore %>
                 <%= best_in_place thisScore, :points, :inner_class => "scoreInput" %>
               <% end %>

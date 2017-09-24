@@ -138,13 +138,13 @@ ready = ->
                 $('.seatButt').prop("disabled",false)
     
     $('#toggle_text').on "click", ->
-        if $('.themScores').hasClass("currently_hidden")
-            $('.themScores').fadeIn()
-            $('.themScores').removeClass("currently_hidden")
+        if $('.to_unhide').hasClass("currently_hidden")
+            $('.to_unhide').fadeIn()
+            $('.to_unhide').removeClass("currently_hidden")
             $(this).text($(this).attr("first_text"))
         else
-            $('.themScores').fadeOut()
-            $('.themScores').addClass("currently_hidden")
+            $('.to_unhide').fadeOut()
+            $('.to_unhide').addClass("currently_hidden")
             $(this).text($(this).attr("second_text"))
    
    
@@ -206,9 +206,11 @@ ready = ->
         $('.cancel_button').hide()
         $('.confirm_button').hide()
         $('.remove_btn').on "click", (event) ->
+            
             id_to_fade = $(this).prop("id").replace('delete_','')
             $('#confirm_'+id_to_fade).fadeIn()
             $('#cancel_'+id_to_fade).fadeIn()
+            console.log(id_to_fade)
             
         $('.cancel_button').on "click", (event) ->
             id_to_fade = $(this).prop("id").replace('cancel_','')

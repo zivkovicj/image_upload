@@ -10,13 +10,26 @@
   <%= "#{current_user.type} #{current_user.title} #{current_user.last_name} is editing." %><br/><br/>
   <% if current_user.current_class && current_user != @user %>
     <%= render 'shared/back-link' %><br/>
+    <% class_list = current_user.own_seminars.select{|x| !@student.seminars.find_by(:id => x)} %>
+    <% if !class_list.empty? %>
+      <% move_string = "Move #{@student.first_name} to a different class" %>
+      <p class="btn btn-lg btn-primary remove_btn" id="toggle_text", first_text="Hide Move Buttons", second_text="<%= move_string %>"><%= move_string %></p>
+      <% class_list.each do |seminar| %>
+        <%= form_for(@new_ss) do |a| %>
+          <%= a.hidden_field :seminar_id, :value => seminar.id %>
+          <%= a.hidden_field :user_id, :value => @student.id %>
+          <%= a.hidden_field :is_move, :value => @ss.id %>
+          <%= a.submit "Move to #{seminar.name}", class: "btn btn-lg btn-primary to_unhide currently_hidden" %>
+        <% end %>
+      <% end %>
+    <% end %>
     
-    <% current_user.own_seminars.each do |seminar| %>
+    <% current_user.own_seminars.each_with_index do |seminar, index| %>
       <% if seminar.students.include?(@student) %>
         <% this_ss = seminar.seminar_students.find_by(user: @student) %>
-        <p class="btn btn-lg btn-primary remove_btn" id="remove_btn">Remove student from <%= seminar.name %></p>
+        <p class="btn btn-lg btn-primary remove_btn" id="delete_<%= index %>">Remove <%= @student.first_name %> from <%= seminar.name %></p>
         <%= button_to "Click here to confirm that you want to remove #{@student.first_name} from #{seminar.name}", this_ss, 
-            :method => :delete, class: "btn btn-lg btn-primary confirm_button" %><br/>
+            :method => :delete, :id => "confirm_#{index}", class: "btn btn-lg btn-primary confirm_button" %><br/>
       <% end %>
     <% end %>
   <% end %>

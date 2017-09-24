@@ -60,6 +60,7 @@ class StudentsController < ApplicationController
     if current_user.type == "Teacher" && current_user.current_class
       @seminar = Seminar.find(current_user.current_class)
       @ss = SeminarStudent.find_by(:user => @student, :seminar => @seminar)
+      @new_ss = SeminarStudent.new
     end
   end
 

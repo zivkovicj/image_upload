@@ -1,6 +1,25 @@
 
 
 
+
+2.30 BENCHMARK STARS--STARTED 09/13/17
+Goal: Keep track of Benchmark stars. This will allow for tracking current stars. 
+student_seminar needs benchmark_stars column.
+Teacher can go to a benchmark_stars screen to set this
+    By default, all students are checked in order to set them at once
+     Teacher can uncheck some of them
+    When submitted, benchmark stars are updated to equal the student's current stars
+Scoresheet shows total stars, benchmark stars, and current stars
+    Current stars is simply total subtract benchmark
+Set default benchmark to the student's total stars
+A bit of coloring for those columns in the scoresheet.
+Show benchmark and current in student_view
+Temporarily remove the feature to search for existing students. 
+Add Privacy Policy to site
+Migrate after deploy
+    Set all existing benchmarks to zero
+
+
 2.29 QUIZ PROGRESS--PUSHED 09/13/17
 
 Goal: Track a student's progress on a quiz so the student can resume if interrupted.

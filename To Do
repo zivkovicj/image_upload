@@ -25,47 +25,30 @@ Connect on LinkedIn
 
 
 
+8.31 MOVE STUDENTS--STARTED 09/19/17
 
-
-2.30 BENCHMARK STARS--STARTED 09/13/17
-
-Goal: Keep track of Benchmark stars. This will allow for tracking current stars. 
-
-V student_seminar needs benchmark_stars column.
-
-Teacher can go to a benchmark_stars screen to set this
-    V By default, all students are checked in order to set them at once
-    V  Teacher can uncheck some of them
-    V When submitted, benchmark stars are updated to equal the student's current stars
-
-V Scoresheet shows total stars, benchmark stars, and current stars
-    V Current stars is simply total subtract benchmark
-
-V Set default benchmark to the student's total stars
-
-V A bit of coloring for those columns in the scoresheet.
-
-V Show benchmark and current in student_view
-
-V Temporarily remove the feature to search for existing students. 
-
-V Add Privacy Policy to site
-
-Migrate after deploy
-    Set all existing benchmarks to zero
-   
-   
+Goal: When teacher looks at a student, there's an option to move the student to a different class
+    V Underneath remove button, there's a "move" button
+    V The class choices are there from the beginning, but hidden. They appear when "move" button is pressed
+    V Clicking one of the classes creates a stud_sem
+    V Then deletes the old one
+        V Will need to add a parameter to the "add student" form to determine whether an old ss should be deleted.
     
+    
+V Fix Removing a Student From a Class
+
+V Test 
+
+V Don't offer classes that the student is already in
+
+V New logo
+
+V Add to_unhide to themScores
 
 
-MOVE STUDENTS CLASSES
+V Outline color for confirm buttons
 
-V Update the static pages
-
-Move a student from one class period to another
-
-New logo
-
+test_take_fill_in_quiz#NewQuizTest
 
 
 
@@ -79,6 +62,8 @@ TEACHER MANUAL QUIZ UNLOCKS
         
     Or unlock a quiz for an entire class.
     
+    Move and Remove could use a small icon. Just a small red or green arrow. Red points left, green points right.
+
     
 
 
@@ -117,6 +102,11 @@ Try to eliminate some of the jquery loads. It might help with the firewall situa
 Benchmark Icon
 
 
+
+SHARE CLASSES WITH OTHER TEACHERS
+
+
+
         
 CONSULTANT STARS
  
@@ -138,6 +128,7 @@ Student and Teacher accounts need to be assigned a district.
 
 Student searching only applies within that school or district
 
+When student searching is reinstated, I might need to add a pameter to the form to make sure that it doesn't delete the student's old sem_stud
 
 
 

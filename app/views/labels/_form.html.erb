@@ -44,7 +44,7 @@
         </div>
         <table>
           <%= lab.collection_check_boxes(:question_ids, @questions, :first, :second) do |b| %>
-            <% this_class = (b.object[2] == 1 ? "themScores currently_hidden" : "") %>
+            <% this_class = (b.object[2] == 1 ? "to_unhide currently_hidden" : "") %>
             <tr class="<%= this_class %>">
               <td width="20%"><%= b.check_box(:value => b.object[0], :id => "question_#{b.object[0]}") %></td>
               <td><%= b.label %></td>

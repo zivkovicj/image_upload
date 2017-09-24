@@ -10,7 +10,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   end
   
   test 'Test Searching' do
-    omit
+    skip
     capybara_login(@teacher_1)
     click_on('1st Period')
     click_on('Add an Existing Student')
@@ -54,7 +54,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   
   
   test 'Add Student to Class with Buttons' do
-    omit
+    skip
     first_assign = @seminar.objectives.first
     @student_80.objective_students.create(:objective => first_assign, :points => 8)   # for testing the benchmark
     

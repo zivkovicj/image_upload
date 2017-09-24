@@ -26,7 +26,7 @@ class QuizzesController < ApplicationController
     def edit
         @objective = Objective.find(params[:objective_id])
         @quiz = current_user.quizzes.find_by(:objective => @objective)
-        current_question = @quiz.progress - 1
+        current_question = @quiz.progress
         redirect_to edit_riposte_path(@quiz.ripostes[current_question])
     end
     
