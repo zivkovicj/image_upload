@@ -26,6 +26,9 @@ class StudentsIndexTest < ActionDispatch::IntegrationTest
       capybara_login(@admin_user) 
       click_on("Students Index")
       
+      fill_in "search_field", with: this_stud.id
+      choose('Id')
+      click_button('Search')
       find("#delete_#{this_stud.id}").click
       click_on("confirm_#{this_stud.id}")
 

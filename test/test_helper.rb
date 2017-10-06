@@ -37,9 +37,16 @@ class ActiveSupport::TestCase
     @admin_user = users(:michael)
     @teacher_1 = users(:archer)
     @other_teacher = users(:zacky)
+    @unverified_teacher = users(:user_1)
     @student_1 = users(:student_1)
     @student_2 = users(:student_2)
     @student_3 = users(:student_3)
+    @other_school_student = users(:other_school_student)
+    @student_90 = users(:student_90)
+  end
+  
+  def setup_schools
+    @school = schools(:school_1)
   end
   
   def setup_seminars
@@ -147,6 +154,12 @@ class ActiveSupport::TestCase
   def go_to_first_period
     capybara_login(@student_2)
     click_on('1st Period')
+  end
+  
+  def go_to_create_student_view
+    capybara_login(@teacher_1)
+    click_on("scoresheet_#{@seminar.id}")
+    click_on('Create New Students')
   end
   
   def establish_objectives(seminar)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914031950) do
+ActiveRecord::Schema.define(version: 20170924201308) do
 
   create_table "consultancies", force: :cascade do |t|
     t.integer  "seminar_id"
@@ -144,6 +144,16 @@ ActiveRecord::Schema.define(version: 20170914031950) do
     t.index ["quiz_id"], name: "index_ripostes_on_quiz_id"
   end
 
+  create_table "schools", force: :cascade do |t|
+    t.string   "name"
+    t.string   "city"
+    t.string   "state"
+    t.integer  "mentor_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mentor_id"], name: "index_schools_on_mentor_id"
+  end
+
   create_table "seminar_students", force: :cascade do |t|
     t.integer  "seminar_id"
     t.integer  "user_id"
@@ -209,6 +219,11 @@ ActiveRecord::Schema.define(version: 20170914031950) do
     t.datetime "last_login"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.integer  "school_id"
+    t.integer  "verified"
+    t.integer  "sponsor_id"
+    t.index ["school_id"], name: "index_users_on_school_id"
+    t.index ["sponsor_id"], name: "index_users_on_sponsor_id"
   end
 
 end

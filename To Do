@@ -1,16 +1,12 @@
 
 
 
-Email the teachers who had started an account in the old app
-    And Maryanne
-
 Make the landing page do a better job of explaining and selling the app
 
 Make three videos
     There's advice to write blog articles, but videos will serve the same purpose better   
 
 Begin uploading them and linking to them on Twitter
-
 
 Business To-Do's
 Look into this suggestion; Purchase domain and hosting from bluehost.
@@ -29,144 +25,79 @@ Connect on LinkedIn
 
 
 
-2.32HOTFIXES
+2.33 SCHOOL--STARTED 09/24/17
 
-Can I figure out what's wrong with testing files. 
-    Possibly a better version of carrierwave. Check the tutorial article
-    
-    config.fog_provider = 'fog/aws'                        # required
-    
-Dry up the four buttons shown in the bottom of seminar navigation
+Goal of this update: Student and Teacher accounts need to be assigned to a school.
+    Searching for students can only occur within a school.
+    Except for admin
 
-Try to eliminate some of the jquery loads. It might help with the firewall situation.
+Migration
+    School Model
+        Name
+        City
+        State
+        Mentor
+    User
+        School_id
+        Verified (Only applies to teacher)
+        Sponsor (The teacher that created the student or last added the student to a class)
+
+V When a teacher starts a new account, first show a "School" page
+    V Choose from list of existing schools
+    Or field and button to start a new one
+        V State picker selection box
+    V First teacher to create a school becomes that school's mentor
+    
+V Approval by mentors
+    V When mentor logs in, if their school has unverified teachers, button to appove is offered
+        V This button appears at the top of the teacher's view page.
+        V Test that the message doesn't appear if all teachers are verified
+    V Once approved, all students created by new teacher have their school field updated
+
+Searching
+    V Approved teachers can find students from the teacher's same school
+    V But not from other schools
+    V Unapproved teachers can find students they've sponsored
+
+Migrate
+    Update school_id
+    Sponsor
+    Verified
+
+
+
+
+
+IMPROVED CONSULTANT ORDER
+
+Goal of this update: AdjustedConsultPoints should be based on the number of days since the last time that student was consultant.
+
+Then it should take the student's request into account by simply adding a bit for those who request positively. Then multiplying by a small factor.
+    Subtract then divide for those who request negatively.
+
+Tests for those aspects.
+
+RankByConsulting should be based on how long it's been since a student has served as a consultant in the given class period.
+
+Marking students absent is failing again!
+
+Navigating between classes is also failing.
 
 Benchmark Icon
 
+School Icon
+
+Q/A
+    If a teacher signs in, but doesn't have a school, send them to school-choosing view
+    Test and re-route for incomplete school info
+
 Move and Remove could use a small icon. Just a small red or green arrow. Red points left, green points right.
-
-
-
-
-
-
-TEACHER MANUAL QUIZ UNLOCKS
-
-Teacher clicking student can check which quizzes should be unlocked for that
-    student.
     
-Or through objective to check which quizzes should be unlocked for which
-    student.
-    
-Or unlock a quiz for an entire class.
+Redo the tests that used to depend on :adjustedConsultingPoints
 
+When a teacher adds a student to his/her class, change that student's sponsor.
 
-    
-
-
-DISTRICT AND/OR SCHOOL MODEL
-
-Student and Teacher accounts need to be assigned a district.
-
-Student searching only applies within that school or district
-
-When student searching is reinstated, I might need to add a pameter to the form to make sure that it doesn't delete the student's old sem_stud
-
-
-
-
-
-SHARE CLASSES WITH OTHER TEACHERS
-
-
-
-
-
-
-PRE-TESTS DON'T COUNT FOR CURRENT STARS
-
-Goal: If a student takes a pretest in pretest mode those stars should be added to the benchmark so the student doesn't receive credit in the current term.
-    
-
-
-    
-    
-
-
-REMOVE QUIZ FROM DESK CONSULTANTS OFFERINGS AFTER STUDENT HAS TAKEN IT TWICE
-
-Count the number of attempts since the most recent time working that objective with desk consultants
-    If there are more than one, that quiz is no longer offered to the student.
-
-Or else close after one attempt if the day ends
-
-Automatically add consultant stars
-
-
-
-
-
-
-
-
-
-
-        
-CONSULTANT STARS
- 
- 
-    
-GROWTH POINTS
-
-Need to add "last_growth" type column to objective_sudent
-    When a student improves score, update last_growth to today's date
-    If there is growth, but last_growth was the same day, then don't add growth points. (They need to take it again on a different day to earn those points.)
-
-
-
-
-
-
-
-ORGANIZING PICTURES
-
-Organizing them by label, the way I am currently doing, is a bad idea. Teachers cannot use community pictures for their questions because they cannot
-    edit the labels of a picture. Instead, I should prompt the user for whether she wants to be offered pictures from Algebra, Geometry, etc.
-    
-Pictures will be associated with those domains.
-
-Find a better way to organize the other long lists, too
-    "Labels" comes to mind first
-
-
-
- 
-DISABLE "NEXT QUESTION" BUTTON UNTIL STUDENT CHOOSES A RESPONSE
- 
-Goal: Disable the "Next" button until the student gives some kind of answer
-
-Test deleting of pictures
- 
-It's weird that a picture can have "Unlabeled" along with other labels. Should be one or the other.
- 
-Add a "previous question" button
-
-
-
-
-   
-CURATED QUESTIONS
-
-Should have another type of user called "Content Creator"
-
-Admin or content creators can curate questions.
-    
-Teachers can choose whether their students will see all questions, or only curated questions.
-
-   
- 
- 
-
-
+Searching doesn't give an empty message when there's a student from another school that should show up.
 
 
 
@@ -183,20 +114,13 @@ FIX TESTS FOR DESK CONSULTANTS
 
 
 
-ORGANIZING PICTURES
-
-Fix pictures
-
-Organizing them by label, the way I am currently doing, is a bad idea. Teachers cannot use community pictures for their questions because they cannot
-    edit the labels of a picture. Instead, I should prompt the user for whether she wants to be offered pictures from Algebra, Geometry, etc.
-    
-Pictures will be associated with those domains.
-
-
-
 
 TESTS TO ADD
-    
+
+Test that "verify other teachers" message only appears for the mentor teacher
+
+Only mentors can url the verify screen
+
 If user goes to "Create New Objective" through a seminar view, re-route to that seminar. If not, re-route to user page.
     
 students_edit_test is in the test/controllers folder. Should probably move to integration
@@ -248,7 +172,166 @@ Deleting a picture
 All of the "edit tests" need to ensure that no changes occur if the user presses "Save Changes" without actually changing anything
     I ran into a problem with the label for questions not checking the correct label
     
+
+
+
+
+
+
+
+HOTFIXES
+
+Make sure errors show up correctly when incomplete school info is entered. 
+
+Make clear to the user whether she is choosing an existing school or creating one
+    Probably by changing the text on the button. 
+
+School should be displayed on many views
+
+Admin should be verified by default?
+
+Dry up the four buttons shown in the bottom of seminar navigation
+
+Try to eliminate some of the jquery loads. It might help with the firewall situation.
+
+
+
+
+
+
+
+REMOVE QUIZ FROM DESK CONSULTANTS OFFERINGS AFTER STUDENT HAS TAKEN IT TWICE
+
+Count the number of attempts since the most recent time working that objective with desk consultants
+    If there are more than one, that quiz is no longer offered to the student.
+
+Or else close after one attempt if the day ends
+
+Automatically add consultant stars
+
+
+
+
+
+
+TEACHER MANUAL QUIZ UNLOCKS
+
+Teacher clicking student can check which quizzes should be unlocked for that
+    student.
     
+Or through objective to check which quizzes should be unlocked for which
+    student.
+    
+Or unlock a quiz for an entire class.
+
+
+
+
+PRE-TESTS DON'T COUNT FOR CURRENT STARS
+
+Goal: If a student takes a pretest in pretest mode those stars should be added to the benchmark so the student doesn't receive credit in the current term.
+    
+
+
+   
+
+
+SHARE CLASSES WITH OTHER TEACHERS
+
+
+
+
+FEEDBACK MECHANISM
+
+
+
+
+        
+CONSULTANT STARS
+ 
+ 
+    
+GROWTH POINTS
+
+Need to add "last_growth" type column to objective_sudent
+    When a student improves score, update last_growth to today's date
+    If there is growth, but last_growth was the same day, then don't add growth points. (They need to take it again on a different day to earn those points.)
+
+
+
+
+
+
+
+ORGANIZING PICTURES
+
+Organizing them by label, the way I am currently doing, is a bad idea. Teachers cannot use community pictures for their questions because they cannot
+    edit the labels of a picture. Instead, I should prompt the user for whether she wants to be offered pictures from Algebra, Geometry, etc.
+    
+Pictures will be associated with those domains.
+
+Find a better way to organize the other long lists, too
+    "Labels" comes to mind first
+
+Fix pictures
+
+Organizing them by label, the way I am currently doing, is a bad idea. Teachers cannot use community pictures for their questions because they cannot
+    edit the labels of a picture. Instead, I should prompt the user for whether she wants to be offered pictures from Algebra, Geometry, etc.
+    
+Pictures will be associated with those domains.
+
+
+
+ 
+DISABLE "NEXT QUESTION" BUTTON UNTIL STUDENT CHOOSES A RESPONSE
+ 
+Goal: Disable the "Next" button until the student gives some kind of answer
+
+Test deleting of pictures
+ 
+It's weird that a picture can have "Unlabeled" along with other labels. Should be one or the other.
+ 
+Add a "previous question" button
+
+
+
+
+   
+CURATED QUESTIONS
+
+Should have another type of user called "Content Creator"
+
+Admin or content creators can curate questions.
+    
+Teachers can choose whether their students will see all questions, or only curated questions.
+
+   
+ 
+
+
+
+
+
+
+
+BETTER U/I FOR CONSULTANCIES
+
+Teacher show page has one button for consultancies. This leads to showing the most recent arrangement.
+    Two buttons at top:
+        Create a new arrangment
+        View past arrangments
+        
+        
+
+
+TEACHERS CAN INVITE OTHER TEACHERS TO THE SCHOOL
+
+When they do, the invited teacher's e-mail is auto-filled so that it matches the addess that was invited.
+
+The school is also auto-filled.
+
+
+   
     
 ENABLE HTML IN QUESTIONS
     
@@ -295,8 +378,6 @@ There's a blanked-out info button to explain pre-requisites in the objectives fo
 
 The jquery for showing those info buttons needs to be dried down to one single function.
 
-<<<<<<<<< saved version
-
 All of the "edit tests" need to ensure that no changes occur if the user presses "Save Changes" without actually changing anything
     I ran into a problem with the label for questions not checking the correct label
     
@@ -305,20 +386,6 @@ All of the "edit tests" need to ensure that no changes occur if the user presses
 ENABLE HTML IN QUESTIONS
     
     I can go a long way toward making the questions look nicer if I can just enable html when creating the prompts and answers.
-
-
-
-    
-
-CREATE LABEL WHILE CREATING QUESTION
-
-I give the option to create a new label while creating questions, then it won't be tedious to add many questions to the 
-
-
-
-VETO ANSWER-SCRAMBLING
-
-Option to not scramble the answer choices for multiple-choice questions.
 
 
 
@@ -331,20 +398,6 @@ Should calculate the final quiz results before going to the quiz show page.
 
 
 
-
-
-OPTION TO COPY A CLASS
-
-    Include settings for objective and pretest.
-        But the name must be unique
-        
-    When creating/editing a class, the first screen shows only the field for class name
-    
-    When creating a class, there is a list of already-created classes. The teacher can choose one of them to copy.
-    
-    Other screens have the option to "Go back to your profile" or "Continue to set pretests" or "Continue to set priorities"
-    
-    
 
 
     
@@ -404,23 +457,18 @@ LINK TO THE MATERIALS SITE SO THAT I CAN SHARE THE MATERIALS I'VE CREATED
     Update the materials site
 
 
+
+AJAX STUDENT ADDING, SIMILAR TO CLASSDOJO
+
+
+
+
 QUESTIONS AND PICTURES INDEX
 
    Test that incorrect user cannot delete any records from models with correct_owner function
+   
+   
 
-IMPROVED CONSULTANT ORDER
-    
-    RankByConsulting should be based on how long it's been since a student has served as a consultant in the given class period.
-    
-    Find the median of "Since Consulting" days. Half it.
-        Add that half-median to the students who have requested to be consultant more often
-        Subtract that half-median from the students who have requested not to be consultant.
-        
-    Redo the tests that used to depend on :adjustedConsultingPoints
-    
-    By looking at currently-created teams, I'm losing the feature that gives new students
-    a break period before they are asked to be consultants. That should come back
-    in some form.
 
 TEACHER CAN ADJUST CONSULTANCY
 
@@ -467,6 +515,8 @@ Take another look at students_new_test. The test is setting the current_class to
 Figure out what's the deal with refreshing the "question details" screen
 
 
+
+
 MORE QUIZ UNLOCKS
     
     Unlock quiz if student has clicked at least two "study links"
@@ -509,6 +559,13 @@ ADMIN CAN CREATE NEW ADMIN
 
     Admin need to be able to edit their own profile
     
+
+
+MENTOR CAN REMOVE TEACHERS FROM A SCHOOL
+
+When that happens, all students sponsored by that teacher are removed from the school
+
+
     
     
 OTHER IMPROVEMENTS

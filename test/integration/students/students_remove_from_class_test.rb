@@ -15,8 +15,7 @@ class StudentsRemoveFromClassTest < ActionDispatch::IntegrationTest
         click_on("scoresheet_#{@seminar.id}")
         click_on(@student_2.last_name_first)
         click_on("Edit/Move Student")
-        #debugger
-        find("#delete_30").click
+        find("#delete_6").click
         @student = @student_2
         click_on(confirm_remove_student)
         

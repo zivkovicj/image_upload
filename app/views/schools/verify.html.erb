@@ -1,0 +1,28 @@
+<% provide(:title, "Verify Teachers") %>
+
+<% provide(:headerText, "Verify Teacchers") %>
+<% provide(:headerPic, "scoresheet.png") %>
+
+<%= render 'shared/headline' %>
+
+<h3>These teachers have asked to be included in your school. Please verify whether these teachers actually work at <%= @school.name %></h3>
+
+<%= form_tag verify_update_school_path(@school) do %>
+    <table>
+        <tr>
+            <th>Approve</th>
+            <th>Decline</th>
+        </tr>
+        <% @unverified_teachers.each do |teacher| %>
+            <tr>
+                <td width="20%"><input type="radio" name="teacher[<%= teacher.id %>]" id="teacher_<%= teacher.id %>_approve" value="1"></td>
+                <td width="20%"><input type="radio" name="teacher[<%= teacher.id %>]" id="teacher_<%= teacher.id %>_decline" value="-1"></td>
+                <td><h4><%= teacher.name_with_title %></h4></td>
+            </tr>
+        <% end %>
+    </table>
+    
+    </br>
+    <%= submit_tag "Submit these approvals" %>
+<% end %>
+

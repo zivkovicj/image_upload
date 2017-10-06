@@ -24,7 +24,7 @@ ss_<%= n %>:
 
 <% (71..90).each do |n| %>
 ss_<%= n %>:
-  seminar: three
+  seminar: four
   user: student_<%= n %>
   teach_request:
   learn_request:

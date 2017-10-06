@@ -10,6 +10,9 @@ michael:
   activated: true
   activated_at: <%= Time.zone.now %>
   last_login: <%= Time.now %>
+  verified: 1
+  school: nil
+  sponsor: nil
   
 archer:
   title: Mr.
@@ -21,6 +24,9 @@ archer:
   activated: true
   activated_at: <%= Time.zone.now %>
   last_login: <%= Time.now %>
+  verified: 1
+  school: school_1
+  sponsor: nil
   
 zacky:
   title: Mr.
@@ -32,6 +38,10 @@ zacky:
   activated: true
   activated_at: <%= Time.zone.now %>
   last_login: <%= Time.now %>
+  verified: 1
+  school: school_1
+  sponsor: nil
+  
   
 <% 30.times do |n| %>
 user_<%= n %>:
@@ -44,6 +54,9 @@ user_<%= n %>:
   activated: true
   activated_at: <%= Time.zone.now %>
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: nil
 <% end %>
 
 
@@ -59,8 +72,9 @@ student_1:
   username: nl1
   type: Student
   last_login: Sun, 09 Apr 2017 23:56:14 UTC +00:00
-  
- 
+  verified: 0
+  school: school_1
+  sponsor: archer
   
   
 student_2:
@@ -72,6 +86,10 @@ student_2:
   username: mg2
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
+
 
 student_3:
   first_name: daphnee
@@ -82,6 +100,9 @@ student_3:
   username: dv3
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_4:
   first_name: kaylee
@@ -92,6 +113,10 @@ student_4:
   username: kd4
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
+
 
 student_5:
   first_name: brandon
@@ -102,6 +127,10 @@ student_5:
   username: bs5
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
+
   
 student_6:
   first_name: walker
@@ -112,6 +141,10 @@ student_6:
   username: wp6
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
+
   
 student_7:
   first_name: allison
@@ -122,6 +155,10 @@ student_7:
   username: ah7
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
+
   
 student_8:
   first_name: katee
@@ -132,6 +169,10 @@ student_8:
   username: km8
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
+
   
 student_9:
   first_name: ashlin
@@ -142,6 +183,10 @@ student_9:
   username: ah9
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
+
   
 student_10:
   first_name: tevita
@@ -152,6 +197,10 @@ student_10:
   username: tv10
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
+
   
 student_11:
   first_name: angel
@@ -162,6 +211,10 @@ student_11:
   username: as11
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
+
   
 student_12:
   first_name: ruthie
@@ -172,6 +225,9 @@ student_12:
   username: rc12
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_13:
   first_name: beth
@@ -182,6 +238,9 @@ student_13:
   username: bg13
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_14:
   first_name: anna
@@ -192,6 +251,9 @@ student_14:
   username: ab14
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_15:
   first_name: angela
@@ -202,6 +264,9 @@ student_15:
   username: ar15
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_16:
   first_name: apolonia
@@ -211,6 +276,11 @@ student_16:
   user_number: 16
   username: as16
   type: Student
+  last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
+  
 
 student_17:
   first_name: dylan
@@ -221,6 +291,9 @@ student_17:
   username: dn17
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_18:
   first_name: niquolette
@@ -231,6 +304,9 @@ student_18:
   username: nm18
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_19:
   first_name: niles
@@ -241,6 +317,9 @@ student_19:
   username: nh19
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_20:
   first_name: shauntel
@@ -251,6 +330,9 @@ student_20:
   username: sp20
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
 
 student_21:
   first_name: haylee
@@ -261,6 +343,9 @@ student_21:
   username: ha21
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_22:
   first_name: hope
@@ -271,6 +356,9 @@ student_22:
   username: hc22
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_23:
   first_name: jared
@@ -281,6 +369,9 @@ student_23:
   username: jn23
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_24:
   first_name: bruce
@@ -291,6 +382,9 @@ student_24:
   username: bt24
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_25:
   first_name: jade
@@ -301,6 +395,9 @@ student_25:
   username: ja25
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_26:
   first_name: emmanuel
@@ -311,6 +408,9 @@ student_26:
   username: eg26
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_27:
   first_name: brandi
@@ -321,6 +421,9 @@ student_27:
   username: bm27
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_28:
   first_name: rhiannon
@@ -331,6 +434,9 @@ student_28:
   username: rb28
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_29:
   first_name: marcus
@@ -341,6 +447,9 @@ student_29:
   username: ms29
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_30:
   first_name: taylor
@@ -351,6 +460,9 @@ student_30:
   username: to30
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_31:
   first_name: cheyanne
@@ -361,6 +473,9 @@ student_31:
   username: cc31
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
 
 student_32:
   first_name: rashelle
@@ -371,6 +486,9 @@ student_32:
   username: rg32
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_33:
   first_name: samantha
@@ -381,6 +499,9 @@ student_33:
   username: sb33
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_34:
   first_name: mccoy
@@ -391,6 +512,9 @@ student_34:
   username: rb34
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
 
 student_35:
   first_name: alex
@@ -401,6 +525,9 @@ student_35:
   username: ar35
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_36:
   first_name: gage
@@ -411,6 +538,9 @@ student_36:
   username: gr36
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_37:
   first_name: morgan
@@ -421,6 +551,9 @@ student_37:
   username: mh37
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_38:
   first_name: danni
@@ -431,6 +564,9 @@ student_38:
   username: dn38
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_39:
   first_name: dakota
@@ -441,6 +577,9 @@ student_39:
   username: dn39
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_40:
   first_name: jeffrey
@@ -451,6 +590,9 @@ student_40:
   username: jn40
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_41:
   first_name: aj
@@ -461,6 +603,9 @@ student_41:
   username: aa41
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_42:
   first_name: taden
@@ -471,6 +616,9 @@ student_42:
   username: tg42
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_43:
   first_name: ceaira
@@ -481,6 +629,9 @@ student_43:
   username: ch43
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_44:
   first_name: kacee
@@ -491,6 +642,9 @@ student_44:
   username: km44
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_45:
   first_name: wyatt
@@ -501,6 +655,9 @@ student_45:
   username: ww45
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_46:
   first_name: brenda
@@ -511,6 +668,9 @@ student_46:
   username: bb46
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_47:
   first_name: danijela
@@ -521,6 +681,9 @@ student_47:
   username: df47
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_48:
   first_name: perla
@@ -531,6 +694,8 @@ student_48:
   username: pp48
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+
   
 student_49:
   first_name: tieni
@@ -541,6 +706,9 @@ student_49:
   username: tt49
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_50:
   first_name: audrey
@@ -551,6 +719,9 @@ student_50:
   username: aa50
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
 
 
   
@@ -565,6 +736,9 @@ student_51:
   username: sz51
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_52:
   first_name: bradyn
@@ -575,6 +749,9 @@ student_52:
   username: bl52
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_53:
   first_name: caleb
@@ -585,6 +762,9 @@ student_53:
   username: cu53
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_54:
   first_name: maddylynn
@@ -595,6 +775,9 @@ student_54:
   username: mw54
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_55:
   first_name: dj
@@ -605,6 +788,9 @@ student_55:
   username: dt55
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_56:
   first_name: kate
@@ -615,6 +801,10 @@ student_56:
   username: kb56
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
+
   
 student_57:
   first_name: levi
@@ -625,6 +815,9 @@ student_57:
   username: la57
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_58:
   first_name: dominic
@@ -635,6 +828,9 @@ student_58:
   username: la58
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_59:
   first_name: garrett
@@ -645,6 +841,9 @@ student_59:
   username: gh59
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_60:
   first_name: seth
@@ -655,6 +854,9 @@ student_60:
   username: sb60
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_61:
   first_name: zack
@@ -665,6 +867,9 @@ student_61:
   username: zb61
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_62:
   first_name: berenice
@@ -675,6 +880,9 @@ student_62:
   username: bg62
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_63:
   first_name: nelson
@@ -685,6 +893,9 @@ student_63:
   username: ns63
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_64:
   first_name: anthony
@@ -695,6 +906,9 @@ student_64:
   username: ak64
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_65:
   first_name: abby
@@ -705,6 +919,9 @@ student_65:
   username: aw65
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_66:
   first_name: taelor
@@ -715,6 +932,9 @@ student_66:
   username: tb66
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_67:
   first_name: anthony
@@ -725,6 +945,9 @@ student_67:
   username: aa67
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_68:
   first_name: victor
@@ -735,6 +958,9 @@ student_68:
   username: vh68
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_69:
   first_name: anthony
@@ -745,6 +971,9 @@ student_69:
   username: ab69
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 student_70:
   first_name: michael
@@ -755,6 +984,9 @@ student_70:
   username: mm70
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: archer
   
 # Third Seminar. Another Teacher
 
@@ -767,6 +999,9 @@ student_71:
   username: nh71
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_72:
   first_name: austin
@@ -777,6 +1012,9 @@ student_72:
   username: ac72
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_73:
   first_name: cortney
@@ -787,6 +1025,9 @@ student_73:
   username: cm73
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_74:
   first_name: scott
@@ -797,6 +1038,9 @@ student_74:
   username: sn74
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_75:
   first_name: johnny
@@ -807,6 +1051,9 @@ student_75:
   username: to75
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_76:
   first_name: lacy
@@ -817,6 +1064,9 @@ student_76:
   username: ls76
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
 
 student_77:
   first_name: jessica
@@ -827,6 +1077,9 @@ student_77:
   username: jt77
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_78:
   first_name: leandra
@@ -837,6 +1090,9 @@ student_78:
   username: la78
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_79:
   first_name: suni
@@ -847,6 +1103,9 @@ student_79:
   username: sg79
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_80:
   first_name: john
@@ -857,6 +1116,9 @@ student_80:
   username: jd80
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_81:
   first_name: travis
@@ -867,6 +1129,9 @@ student_81:
   username: td81
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_82:
   first_name: thomas
@@ -877,6 +1142,9 @@ student_82:
   username: te82
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_83:
   first_name: autumn
@@ -887,6 +1155,9 @@ student_83:
   username: af83
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_84:
   first_name: ashlee
@@ -897,6 +1168,9 @@ student_84:
   username: ag84
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_85:
   first_name: marissa
@@ -907,6 +1181,9 @@ student_85:
   username: mm85
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_86:
   first_name: cody
@@ -917,6 +1194,9 @@ student_86:
   username: cj86
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_87:
   first_name: kayla
@@ -927,6 +1207,9 @@ student_87:
   username: km87
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_88:
   first_name: sammi
@@ -937,6 +1220,9 @@ student_88:
   username: sp88
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_89:
   first_name: sienna
@@ -947,6 +1233,9 @@ student_89:
   username: ss89
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
   
 student_90:
   first_name: will
@@ -957,3 +1246,19 @@ student_90:
   username: wp90
   type: Student
   last_login: <%= Time.now %>
+  verified: 0
+  school: school_1
+  sponsor: zacky
+  
+other_school_student:
+  first_name: Hector
+  last_name: Zeroni
+  email: other_school_student@example.com
+  password_digest: <%= Student.digest('password') %>
+  user_number: 91
+  username: hz91
+  type: Student
+  last_login: <%= Time.now %>
+  verified: 0
+  school: school_2
+  sponsor: zacky

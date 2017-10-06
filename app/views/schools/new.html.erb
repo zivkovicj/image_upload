@@ -1,0 +1,52 @@
+<% provide(:title, 'Choose Your School') %>
+<% provide(:button_text, "This is my school") %>
+
+<% provide(:headerText, "Choose Your School" ) %>
+<% provide(:headerPic, "apple.png") %>
+
+<%= render 'shared/headline' %>
+
+<%= render :partial => 'shared/search_field', 
+  :locals => {:whichPath => new_school_path,
+              :attrLabel1 => "Name", :attrLabel2 => "City", :attrLabel3 => "State", :attrLabel4 => nil, :attrLabel5 => nil,
+              :attrData1 => :name, :attrData2 => :city,  :attrData3 => :state, :attrData4 => nil, :attrData5 => nil} %>
+              
+<%= form_for(@school) do |f| %>
+    <%= f.hidden_field :mentor_id, :value => @teacher.id %>
+    <%= will_paginate @all_schools %>
+    
+    <table class="users">
+      <thead>
+        <tr>
+            <td width="20%"></td>
+            <td>Name</td>
+            <td>City</td>
+            <td>State</td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @all_schools.each do |school| %>
+            <tr class="users">
+                <td><input type="radio" name="this_school_id" id="school_<%= school.id %>" value="<%= school.id %>"></td>
+                <td><%= school.name %></td>
+                <td><%= school.city %></td>
+                <td><%= school.state %></td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+    <%= will_paginate @all_schools %>
+    
+    <input type="radio" name="this_school_id" id="school_0" value="0"><h3>Can't find your school? Add a new school here:</h3>
+        <%= f.label :name %>
+        <%= f.text_field :name, class: 'form-control' %>
+        
+        <%= f.label :city %>
+        <%= f.text_field :city, class: 'form-control' %>
+        
+        <%= f.label :state %>
+        <%= f.select :state, options_for_select(us_states) %>
+    
+    <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+<% end %>

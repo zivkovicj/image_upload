@@ -4,6 +4,7 @@ class Teacher < User
     
     has_many    :own_seminars, :class_name => "Seminar", foreign_key: 'user_id'
     has_many    :students, through: :own_seminars
+    has_many    :sponsored_students, :class_name => "Student", :foreign_key => "sponsor_id"
 
     validates  :password, presence: true,
                     length: {minimum: 6},

@@ -21,7 +21,6 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "edit other question" do
-        disable_images
         capybara_login(@teacher_1)
         click_on('All Questions')
         click_on(@other_q_pub.short_prompt)
@@ -33,7 +32,6 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "edit admin question" do
-        disable_images
         capybara_login(@teacher_1)
         click_on('All Questions')
         click_on(@admin_q.short_prompt)
@@ -45,7 +43,6 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "edit multiple choice question" do
-        disable_images
         assert_not_equal @user_q.picture, @user_p
         assert_not @user_q.correct_answers.include?("3")
         assert_equal "private", @user_q.extent
@@ -77,7 +74,6 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "default answer choice" do
-        disable_images
         @user_q.update(:correct_answers => ["2"], :picture => nil)
         
         capybara_login(@teacher_1)
@@ -86,11 +82,10 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         click_on("save_changes_2")
         
         @user_q.reload
-        assert @user_q.correct_answers.include?("3")
+        assert_equal ["2"], @user_q.correct_answers
     end
     
     test "edit fill-in question" do
-        disable_images
         @fill_q = Question.where(:style => "fill-in").first
         @fill_q.update(:user => @teacher_1)
         new_array = @fill_q.correct_answers

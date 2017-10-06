@@ -7,10 +7,10 @@ class PicturesNewTest < ActionDispatch::IntegrationTest
         setup_labels
     end
     
-    test "has image attached" do
-        pic = pictures(:cheese_logo)
-        assert File.exists?(pic.image.file.path)
-    end
+    #test "has image attached" do
+        #pic = pictures(:cheese_logo)
+        #assert File.exists?(pic.image.file.path)
+    #end
     
     test "uploads an image" do
         pic = Picture.create(:image => fixture_file_upload('/files/DJ.jpg','image/jpg'), :user => User.first) 

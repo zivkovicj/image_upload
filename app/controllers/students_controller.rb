@@ -1,5 +1,6 @@
 class StudentsController < ApplicationController
   before_action :correct_student,   only: [:edit, :update]
+  before_action :redirect_for_students, only: [:index]
   before_action :redirect_for_non_admin, only: [:destroy]
   
   include AddStudentStuff
@@ -16,6 +17,7 @@ class StudentsController < ApplicationController
     params["students"].each do |student|
       if student["first_name"] != "" && student["last_name"] != ""
         @student = Student.new(multi_params(student))
+        @student.sponsor = current_user
         if @student.save
           one_saved = true
           @ss = @student.seminar_students.create(:seminar => @seminar)
@@ -40,18 +42,20 @@ class StudentsController < ApplicationController
   end
   
   def index
-    if !params[:search].blank?
-      @students = Student.order(:last_name).paginate(page: params[:page]).search(params[:search], params[:whichParam])
-    end
+    first_layer = params[:search].present? ? Student.search(params[:search], params[:whichParam]) : Student.none
     
-    if current_user.type == "Admin"
-      @students ||= Student.order(:last_name).paginate(page: params[:page])
-    elsif current_user.type == "Student"
-      redirect_to login_url
+    if first_layer == [0]
+      @students = [0]
     else
-      @students ||= []
-      @seminar = Seminar.find(current_user.current_class)
-      @ss = SeminarStudent.new
+      if current_user.type == "Admin"
+        second_layer = first_layer
+      else
+        @seminar = Seminar.find(current_user.current_class)
+        @ss = SeminarStudent.new
+        second_layer = current_user.verified == 1 ? first_layer.where(:school => current_user.school) : first_layer.where(:sponsor => current_user)
+      end
+    
+      @students = second_layer.order(:last_name).paginate(page: params[:page])
     end
   end
 

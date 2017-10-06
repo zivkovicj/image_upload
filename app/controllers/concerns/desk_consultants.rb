@@ -69,7 +69,7 @@ module DeskConsultants
     end
   
     # Establish a new consultant group
-    def establish_new_group(stud, req, isConsult, bracket, blap)
+    def establish_new_group(stud, req, isConsult, bracket)
       # Bracket 0 = normal
       # Bracket 1 = unplaced students
       # Bracket 2 = absent students
@@ -99,7 +99,7 @@ module DeskConsultants
         @rankByConsulting.each do |student|
           if need_placement(student)
             if @scoreHash[objective.id][student.id][:score] >= @cThresh && @scoreHash[objective.id][:need] > 0
-              establish_new_group(student, objective, 4, 0, 1)
+              establish_new_group(student, objective, 4, 0)
               break
             end
           end
@@ -117,7 +117,7 @@ module DeskConsultants
             b = @scoreHash[thisRequest][student.id][:score] >= @cThresh
             c = @scoreHash[thisRequest][:priority] > 0
             if a && b && c 
-              establish_new_group(student, thisRequest, 4, 0, 2)
+              establish_new_group(student, thisRequest, 4, 0)
               next
             end
           end
@@ -126,7 +126,7 @@ module DeskConsultants
           @teach_options = teach_options(student, @seminar, 3)
           @teach_options.each do |objective|
             if @scoreHash[objective.id][:need] > 0
-              establish_new_group(student, objective, 4, 0, 3)
+              establish_new_group(student, objective, 4, 0)
               break
             end
           end
@@ -204,12 +204,12 @@ module DeskConsultants
             # Second, try the student's learn_request
             thisRequest = @studentHash[student.id][:learn_request]
             if @scoreHash[thisRequest] && @scoreHash[thisRequest][student.id][:score] < @cThresh && @scoreHash[thisRequest][student.id][:ready] && @scoreHash[thisRequest][:priority] > 0
-              establish_new_group(student, thisRequest, 0, 0, 4)
+              establish_new_group(student, thisRequest, 0, 0)
             else
               # Last resort is to scan all objectives 
               @rankAssignsByNeed.each do |objective|
                 if @scoreHash[objective.id][student.id][:score] < @cThresh && @scoreHash[objective.id][student.id][:ready]
-                  establish_new_group(student, objective, 0, 0, 5)
+                  establish_new_group(student, objective, 0, 0)
                   break
                 end
               end
@@ -238,7 +238,7 @@ module DeskConsultants
     def areSomeUnplaced()
       @profList.each do |student|
         if need_placement(student)
-          establish_new_group(student,nil,0,1,6)
+          establish_new_group(student,nil,0,1)
         end
       end
     end

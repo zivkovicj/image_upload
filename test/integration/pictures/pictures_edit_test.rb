@@ -20,7 +20,7 @@ class PicturesEditTest < ActionDispatch::IntegrationTest
         fill_in "picture_name", with: "Beer and Pretzels"
         check("check_#{@admin_l.id}")
         uncheck("check_#{@user_l.id}")
-        attach_file('picture[image]', Rails.root + 'app/assets/images/logo.png')
+        attach_file('picture[image]', Rails.root + 'app/assets/images/logo.jpg')
         click_on("Update Picture")
         
         @user_p.reload

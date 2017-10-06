@@ -47,10 +47,14 @@ Rails.application.routes.draw do
     post 'update_benchmarks', on: :member
     put 'ajaxUpdate', on: :member
   end
+  resources :schools do
+    get 'verify', on: :member
+    post 'verify_update', on: :member
+  end
   resources :students do
     get 'edit_teaching_requests', on: :member
   end
-  resources :teachers
+  resources :teachers 
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

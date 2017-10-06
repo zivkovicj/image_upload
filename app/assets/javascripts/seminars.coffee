@@ -64,6 +64,7 @@ ready = ->
                 data:
                     seminar_student:
                         learn_request: req_id
+                        
                     
     if $('.prefReqOption').length > 0
         $('.prefReqOption').on "click", ->
@@ -79,6 +80,7 @@ ready = ->
                 data:
                     seminar_student:
                         pref_request: req_id
+                        
     
     if $('.tyrion').length > 0
         $('.seatButt').prop("disabled",true)

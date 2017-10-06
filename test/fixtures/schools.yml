@@ -1,0 +1,131 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+school_1:
+    name: Burglecut Elementary
+    city: Weinerville
+    state: FL
+    mentor: archer
+    
+school_2:
+    name: Maeser Preparatory
+    city: Lindon
+    state: UT
+    
+school_3:
+    name: Park City High
+    city: Park City
+    state: UT
+
+school_4:
+    name: Skyline
+    city: Salt Lake City
+    state: UT
+    
+school_5:
+    name: Salt Lake Center for Science Education
+    city: Salt Lake City
+    state: UT
+    
+school_6:
+    name: Davis High
+    city: Kaysville
+    state: UT
+    
+school_7:
+    name: Hillcrest
+    city: Midvale
+    state: UT
+
+school_8:
+    name: Viewmont
+    city: Bountiful
+    state: UT
+    
+school_9:
+    name: Timpanogos
+    city: Orem
+    state: UT
+
+school_10:
+    name: Viewmont
+    city: Bountiful
+    state: UT
+
+school_11:
+    name: Pacific Collegiate
+    city: Santa Cruz
+    state: CA
+    
+school_12:
+    name: Oxford
+    city: Cypress
+    state: CA
+
+school_13:
+    name: Whitney
+    city: Cerritos
+    state: CA
+
+school_14:
+    name: San Jose Collegiate
+    city: San Jose
+    state: CA
+
+school_15:
+    name: Pruess
+    city: La Jolla
+    state: CA
+
+school_16:
+    name: Lowell
+    city: San Francisco
+    state: CA
+    
+school_17:
+    name: Hawthorne
+    city: Hawthorne
+    state: CA
+    
+school_18:
+    name: Whitney
+    city: Cerritos
+    state: CA
+    
+school_19:
+    name: Central Magnet
+    city: Murfreesboro
+    state: TN
+    
+school_20:
+    name: Martin Luther King
+    city: Nashville
+    state: TN
+    
+school_21:
+    name: Hume Fog
+    city: Nashville
+    state: TN
+
+school_22:
+    name: Merrol Hyde
+    city: Hendersonville
+    state: TN
+
+school_23:
+    name: Brentwood
+    city: Brentwood
+    state: TN
+
+school_24:
+    name: Ravenwood
+    city: Brentwood
+    state: TN
+    
+school_25:
+    name: Franklin
+    city: Franklin
+    state: TN

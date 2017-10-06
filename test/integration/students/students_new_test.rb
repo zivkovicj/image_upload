@@ -8,13 +8,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         @old_stud_count = Student.count
     end
     
-    def go_to_create_student_view
-        capybara_login(@teacher_1)
-        click_on("scoresheet_#{@seminar.id}")
-        click_on('Create New Students')
-    end
-    
-    test 'create new student' do
+    test 'create new students' do
         oldAulaCount = SeminarStudent.count
         oldScoreCount = ObjectiveStudent.count
         assignmentCount = @seminar.objectives.count

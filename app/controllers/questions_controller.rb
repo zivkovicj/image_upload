@@ -64,7 +64,7 @@ class QuestionsController < ApplicationController
       second_list = initial_list.where("user_id = ? OR extent = ?", current_user.id, "public")
     end
     
-    if !params[:search].blank?
+    if params[:search].present?
       third_list = second_list.search(params[:search], params[:whichParam])
     else
       third_list = second_list

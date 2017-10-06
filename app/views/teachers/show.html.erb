@@ -4,6 +4,14 @@
 
 <p><strong><%= @teacher.type.capitalize %></strong></p>
 
+<% if @unverified_teachers.present? %>
+  <div class="singleOption">
+    <%= verify_waiting_teachers_message %>
+    <%= button_to "Verify your colleagues", verify_school_path(@school), 
+        class: "btn btn-lg btn-primary", :method => :get, :id => "goto_verify" %>
+  </div>
+<% end %>
+
 <p>
   <% if !@teacher.activated? %>
     <p>Account not yet activated. Please check your e-mail for the activation link.</p>

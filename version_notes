@@ -3,7 +3,7 @@
 
 
 2.31 MOVE STUDENTS--STARTED 09/19/17
-
+                    PUSHED 09/24/17
 Goal: When teacher looks at a student, there's an option to move the student to a different class
     Underneath remove button, there's a "move" button
     The class choices are there from the beginning, but hidden. They appear when "move" button is pressed

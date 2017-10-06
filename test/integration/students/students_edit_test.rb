@@ -55,6 +55,9 @@ class StudentsEditTest < ActionDispatch::IntegrationTest
     test "admin edits student" do
         capybara_login(@admin_user)
         click_on("Students Index")
+        fill_in "search_field", with: @student_2.id
+        choose('Id')
+        click_button('Search')
         click_on(@student_2.last_name_first)
         assert_selector('input', :id => "student_user_number")
         
@@ -67,6 +70,9 @@ class StudentsEditTest < ActionDispatch::IntegrationTest
         @student_1.update(:username => "beersprinkles07")
         capybara_login(@admin_user)
         click_on("Students Index")
+        fill_in "search_field", with: @student_2.id
+        choose('Id')
+        click_button('Search')
         click_on(@student_2.last_name_first)
         
         fill_in "student_username", with: "beersprinkles07"

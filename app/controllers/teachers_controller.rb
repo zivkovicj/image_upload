@@ -4,6 +4,7 @@ class TeachersController < ApplicationController
   before_action :redirect_for_non_admin, only: [:index]
   
   
+  
   def new
     @teacher = Teacher.new
   end
@@ -14,7 +15,7 @@ class TeachersController < ApplicationController
       #@teacher.send_activation_email
       log_in @teacher
       flash[:success] = "Welcome to Mr.Z School!"
-      redirect_to @teacher
+      redirect_to new_school_path(:teacher_id => @teacher.id)
     else
       render 'new'
     end
@@ -24,6 +25,8 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find(params[:id])
     @own_seminars = @teacher.own_seminars
     current_user.update(:current_class => nil)
+    @school = @teacher.school
+    @unverified_teachers = @school.check_for_unverified_teachers if @school.mentor == @teacher
   end
   
   def index
@@ -37,8 +40,10 @@ class TeachersController < ApplicationController
   def update
     @teacher = Teacher.find(params[:id])
     if @teacher.update_attributes(teacher_params)
-      flash[:success] = "Profile updated" 
-      redirect_to current_user
+      if @teacher.school.present?
+        flash[:success] = "Profile updated" 
+        redirect_to current_user
+      end
     else
       render 'edit'
     end
@@ -56,7 +61,8 @@ class TeachersController < ApplicationController
   
     def teacher_params
       params.require(:teacher).permit(:first_name, :last_name, :title, :email, :password, 
-                                :password_confirmation, :current_class, :user_number)
+                                :password_confirmation, :current_class, :user_number, :school_id)
     end
+
 
 end

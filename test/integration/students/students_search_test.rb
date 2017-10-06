@@ -10,7 +10,6 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   end
   
   test 'Test Searching' do
-    skip
     capybara_login(@teacher_1)
     click_on('1st Period')
     click_on('Add an Existing Student')
@@ -50,11 +49,21 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     click_button('Search')
     assert_text(@student_2.last_name_first)
     assert_text("Already registered for this class")
+    
+    fill_in "search_field", with: @other_school_student.id
+    choose('Id')
+    click_button('Search')
+    assert_no_text(@other_school_student.last_name_first)
+    
+    assert_not_equal @teacher_1, @student_90.sponsor    # Student sponsored by another teacher
+    fill_in "search_field", with: @student_90.id
+    choose('Id')
+    click_button('Search')
+    assert_text(@student_90.last_name_first)
   end
   
   
   test 'Add Student to Class with Buttons' do
-    skip
     first_assign = @seminar.objectives.first
     @student_80.objective_students.create(:objective => first_assign, :points => 8)   # for testing the benchmark
     
@@ -91,5 +100,14 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     assert_equal oldScoreCount + assignmentCount, ObjectiveStudent.count
   end
   
+  test "unverified teacher" do
+    capybara_login(@unverified_teacher)
+    click_on('unverified teachers class')
+    click_on('Add an Existing Student')
+    
+    fill_in "search_field", with: @student_1.user_number
+    click_button('Search')
+    assert_no_text(@student_1.last_name_first)
+  end
   
 end

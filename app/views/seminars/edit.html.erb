@@ -12,7 +12,7 @@
 <div>
   <%= button_to "Create a New Objective", new_objective_path(:origin => @seminar.id), :method => :get, class: "btn btn-lg btn-primary" %><br/>
   <%= button_to "Create New Students", new_student_path, :method => :get, class: "btn btn-lg btn-primary" %><br/>
-  <%#= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %><br/>
+  <%= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %><br/>
   <%= button_to "Set Benchmark Stars", benchmarks_seminar_path(@seminar), :method => :get, class: "btn btn-lg btn-primary" %><br/>
   
   

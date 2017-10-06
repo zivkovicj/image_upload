@@ -15,7 +15,7 @@ three:
   user: archer
   consultantThreshold: 7
   
-three:
+four:
   name: Zacky's first period
   user: zacky
   consultantThreshold: 7
@@ -26,3 +26,8 @@ seminar_<%= n %>:
   user: archer
   consultantThreshold: 7
 <% end %>
+
+unverified_teacher_class:
+  name: unverified teachers class
+  user: user_1
+  consultantThreshold: 7

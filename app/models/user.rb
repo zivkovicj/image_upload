@@ -11,6 +11,10 @@ class User < ApplicationRecord
     has_many    :quizzes
     has_many    :pictures
     has_and_belongs_to_many  :teams
+    belongs_to  :school
+    belongs_to   :sponsor,  :class_name => "User"
+    
+    attribute :verified, :integer, default: 0
 
     validates :first_name, length: {maximum: 25},
             presence: true
