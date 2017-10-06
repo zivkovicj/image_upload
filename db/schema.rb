@@ -151,7 +151,6 @@ ActiveRecord::Schema.define(version: 20170924201308) do
     t.integer  "mentor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["mentor_id"], name: "index_schools_on_mentor_id"
   end
 
   create_table "seminar_students", force: :cascade do |t|
@@ -222,8 +221,6 @@ ActiveRecord::Schema.define(version: 20170924201308) do
     t.integer  "school_id"
     t.integer  "verified"
     t.integer  "sponsor_id"
-    t.index ["school_id"], name: "index_users_on_school_id"
-    t.index ["sponsor_id"], name: "index_users_on_sponsor_id"
   end
 
 end
