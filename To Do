@@ -82,6 +82,10 @@ Tests for those aspects.
 
 RankByConsulting should be based on how long it's been since a student has served as a consultant in the given class period.
 
+New school info should be in its own bubble
+
+Create new students view shows a comment
+
 Marking students absent is failing again!
 
 Navigating between classes is also failing.
