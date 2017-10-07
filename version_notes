@@ -2,6 +2,46 @@
 
 
 
+
+
+2.33 SCHOOL--STARTED 09/24/17
+          --PUSHED 10/6/2017
+Goal of this update: Student and Teacher accounts need to be assigned to a school.
+    Searching for students can only occur within a school.
+    Except for admin
+Migration
+    School Model
+        Name
+        City
+        State
+        Mentor
+    User
+        School_id
+        Verified (Only applies to teacher)
+        Sponsor (The teacher that created the student or last added the student to a class)
+When a teacher starts a new account, first show a "School" page
+    Choose from list of existing schools
+    Or field and button to start a new one
+        State picker selection box
+    First teacher to create a school becomes that school's mentor
+Approval by mentors
+    When mentor logs in, if their school has unverified teachers, button to appove is offered
+        This button appears at the top of the teacher's view page.
+        Test that the message doesn't appear if all teachers are verified
+    Once approved, all students created by new teacher have their school field updated
+Searching
+    Approved teachers can find students from the teacher's same school
+    But not from other schools
+    Unapproved teachers can find students they've sponsored
+Migrate
+    Update school_id
+    Sponsor
+    Verified
+    
+
+
+
+
 2.31 MOVE STUDENTS--STARTED 09/19/17
                     PUSHED 09/24/17
 Goal: When teacher looks at a student, there's an option to move the student to a different class
