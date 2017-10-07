@@ -70,7 +70,6 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         teacher_editing_stuff(nil, 'Create My Account')
         
         assert_nil @this_teacher.school
-        choose("school_0")
         fill_in "school_name", with: "Slunk Elementary"
         fill_in "school_city", with: "Bucketheadland"
         select('Utah', :from => 'school_state')

@@ -7,7 +7,7 @@ class SchoolsController < ApplicationController
     
     def create
         @teacher = Teacher.find(params[:school][:mentor_id])
-        if params[:this_school_id] == "0"
+        if params[:school][:name].present?
             @school = School.new(school_params)
             if @school.save
                 @teacher.update(:school => @school, :verified => 1)

@@ -75,6 +75,9 @@ Goal of this update: AdjustedConsultPoints should be based on the number of days
 Then it should take the student's request into account by simply adding a bit for those who request positively. Then multiplying by a small factor.
     Subtract then divide for those who request negatively.
 
+Should mark "verified" for the mentor teacher.
+    Will probably cause problems someday otherwise.
+
 Tests for those aspects.
 
 RankByConsulting should be based on how long it's been since a student has served as a consultant in the given class period.
@@ -99,7 +102,11 @@ When a teacher adds a student to his/her class, change that student's sponsor.
 
 Searching doesn't give an empty message when there's a student from another school that should show up.
 
+Admin should be able to destroy students
 
+And schools
+    But what happens to students and teachers when their school gets destroyed.
+    This can probably wait for awhile
 
 
 
