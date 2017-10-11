@@ -25,108 +25,81 @@ Connect on LinkedIn
 
 
 
-2.33 SCHOOL--STARTED 09/24/17
 
-Goal of this update: Student and Teacher accounts need to be assigned to a school.
-    Searching for students can only occur within a school.
-    Except for admin
 
-Migration
-    School Model
-        Name
-        City
-        State
-        Mentor
-    User
-        School_id
-        Verified (Only applies to teacher)
-        Sponsor (The teacher that created the student or last added the student to a class)
 
-V When a teacher starts a new account, first show a "School" page
-    V Choose from list of existing schools
-    Or field and button to start a new one
-        V State picker selection box
-    V First teacher to create a school becomes that school's mentor
+
+2.24_CONSULTANT ORDER -- STARTED 10/07/2017
+
+Goal of this update: consultant_days is based on the number of days since the last time that student was consultant in that class.
+
+V Then adjusted_consultant_days takes the student's request into account by simply adding a day for those who request positively. Then multiplying by a small factor.
+    V Subtract then divide for those who request negatively.
+
+V Marking students absent is failing again!
+
+V When a teacher adds a student to his/her class, update that student's sponsor
+
+V New school info should be in its own bubble
+
+
     
-V Approval by mentors
-    V When mentor logs in, if their school has unverified teachers, button to appove is offered
-        V This button appears at the top of the teacher's view page.
-        V Test that the message doesn't appear if all teachers are verified
-    V Once approved, all students created by new teacher have their school field updated
+    
+    
 
-Searching
-    V Approved teachers can find students from the teacher's same school
-    V But not from other schools
-    V Unapproved teachers can find students they've sponsored
+HOTFIXES
 
-Migrate
-    Update school_id
-    Sponsor
-    Verified
+Make sure errors show up correctly when incomplete school info is entered. 
 
+Make clear to the user whether she is choosing an existing school or creating one
+    Probably by changing the text on the button. 
 
+School should be displayed on many views
 
+Admin should be verified by default?
 
+Dry up the four buttons shown in the bottom of seminar navigation
 
-IMPROVED CONSULTANT ORDER
+Try to eliminate some of the jquery loads. It might help with the firewall situation.
 
-Goal of this update: AdjustedConsultPoints should be based on the number of days since the last time that student was consultant.
+Swtiching classes when you're in a screen that isn't the scoresheet goes to a blank page.
 
-Then it should take the student's request into account by simply adding a bit for those who request positively. Then multiplying by a small factor.
-    Subtract then divide for those who request negatively.
-
-Should mark "verified" for the mentor teacher.
-    Will probably cause problems someday otherwise.
-
-Tests for those aspects.
-
-RankByConsulting should be based on how long it's been since a student has served as a consultant in the given class period.
-
-New school info should be in its own bubble
-
-Create new students view shows a comment
-
-Marking students absent is failing again!
-
-Navigating between classes is also failing.
-
-Benchmark Icon
-
-School Icon
+Icons
+    Benchmark
+    School
+    Move Student, green arrow pointing right
+    Remove Student, red arrow pointing left
 
 Q/A
     If a teacher signs in, but doesn't have a school, send them to school-choosing view
     Test and re-route for incomplete school info
 
-Move and Remove could use a small icon. Just a small red or green arrow. Red points left, green points right.
-    
-Redo the tests that used to depend on :adjustedConsultingPoints
-
-When a teacher adds a student to his/her class, change that student's sponsor.
-
-Searching doesn't give an empty message when there's a student from another school that should show up.
-
 Admin should be able to destroy students
+    And schools
+        But what happens to students and teachers when their school gets destroyed.
+        This can probably wait for awhile
 
-And schools
-    But what happens to students and teachers when their school gets destroyed.
-    This can probably wait for awhile
-
-
-
-
-FIX TESTS FOR DESK CONSULTANTS
+Live site has errors in student searching. It occurred when trying to add Melissa Suess to 7th period
     
-    figure out why all students start out being marked as absent
+    
 
-    Also, rank assignments by need should be based on the most requested, not the highest need. Maybe.
-        That should at least run quicker, because requested is a simple column in the join table. Not a method that looks at every student's readiness. 
+
+
+
+
+IMPROVED RANKASSIGNMENTS BY NEED
+
+Rank assignments by need should be based on the most requested, not the highest need. Maybe.
+    That should at least run quicker, because requested is a simple column in the join table. Not a method that looks at every student's readiness, which also
+        iterates through pre-requisites. 
 
 
 
 
 
 TESTS TO ADD
+
+Fix the rest of the tests for DeskConsultants
 
 Test that "verify other teachers" message only appears for the mentor teacher
 
@@ -183,27 +156,12 @@ Deleting a picture
 All of the "edit tests" need to ensure that no changes occur if the user presses "Save Changes" without actually changing anything
     I ran into a problem with the label for questions not checking the correct label
     
+Searching
+   Right now there's not empty message when there's a student from another school that could show up.
+    Make sure Admin can find all students
 
 
 
-
-
-
-
-HOTFIXES
-
-Make sure errors show up correctly when incomplete school info is entered. 
-
-Make clear to the user whether she is choosing an existing school or creating one
-    Probably by changing the text on the button. 
-
-School should be displayed on many views
-
-Admin should be verified by default?
-
-Dry up the four buttons shown in the bottom of seminar navigation
-
-Try to eliminate some of the jquery loads. It might help with the firewall situation.
 
 
 

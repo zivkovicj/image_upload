@@ -13,7 +13,6 @@
               
 <%= form_for(@school) do |f| %>
     <%= f.hidden_field :mentor_id, :value => @teacher.id %>
-    <%= will_paginate @all_schools %>
     
     <table class="users">
       <thead>
@@ -36,17 +35,19 @@
       </tbody>
     </table>
     
-    <%= will_paginate @all_schools %>
-    
-    <h3>Can't find your school? Add a new school here:</h3>
-        <%= f.label :name %>
-        <%= f.text_field :name, class: 'form-control' %>
-        
-        <%= f.label :city %>
-        <%= f.text_field :city, class: 'form-control' %>
-        
-        <%= f.label :state %>
-        <%= f.select :state, options_for_select(us_states) %>
+    </br>
+    <div class="singleOption">
+      <h3>Can't find your school? Add a new school here:</h3>
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
+      
+      <%= f.label :city %>
+      <%= f.text_field :city, class: 'form-control' %>
+      
+      <%= f.label :state %>
+      <%= f.select :state, options_for_select(us_states) %>
+    </div>
+    </br>
     
     <%= f.submit yield(:button_text), class: "btn btn-primary" %>
 <% end %>

@@ -28,9 +28,19 @@ class Student < User
         "#{last_name[0,20].split.map(&:capitalize).join(' ')}, #{first_name[0,20].split.map(&:capitalize).join(' ')}"
     end
     
-    # Returns adjusted Consultant Points based on pref_request
-    def appliedConsultPoints(seminar)
-        #prePoints = 
+    def consultant_days(seminar)
+        @ss = self.seminar_students.find_by(:seminar => seminar)
+        last_team = seminar.teams.where(:consultant => self).order(:updated_at).last
+        last_consult_date = last_team.present? ? last_team.created_at.to_date : @ss.created_at.to_date
+        pre_points = (Date.today - last_consult_date).to_i
+        if @ss.pref_request == 2
+            pre_points += 1
+            pre_points *= 1.2
+        elsif @ss.pref_request == 0
+            pre_points *= 0.8
+            pre_points -= 1
+        end
+        return pre_points
     end
     
     # Checks whether a student has met all pre-requisites for an objective

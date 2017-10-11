@@ -97,6 +97,53 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         click_on("Create Desk Consultants Groups")
     end
     
+    test "setup_present_students" do
+        @ss_2.update(:present => false)
+        @ss_3.update(:present => true)
+        @students = setup_present_students()
+        assert @students.include?(@student_1)
+        assert_not @students.include?(@student_2)
+        
+        capybara_login(@teacher_1)
+        click_on("desk_consult_#{@seminar.id}")
+        find("##{@ss_3.id}").click
+        click_on("Create Desk Consultants Groups")
+    end
+    
+    test "rank by consulting" do
+        set_date = Date.today - 80.days
+        c1 = Consultancy.create(:seminar => @seminar, :created_at => set_date, :updated_at => set_date)
+        t1 = c1.teams.create(:consultant => @student_1, :created_at => set_date, :updated_at => set_date)
+        t1.users << @student_2
+        t1.users << @student_3
+        t3 = c1.teams.create(:consultant => @student_5, :created_at => set_date, :updated_at => set_date)
+        t3.users << @student_6
+        t3.users << @student_7
+        
+        set_date_2 = Date.today - 10.days
+        c2 = Consultancy.create(:seminar => @seminar, :created_at => set_date_2, :updated_at => set_date_2)
+        t2 = c2.teams.create(:consultant => @student_1, :created_at => set_date_2, :updated_at => set_date_2)
+        t2.users << @student_2
+        t2.users << @student_3
+        
+        set_date_3 = Date.today - 100.days
+        @seminar.seminar_students.update_all(:created_at => set_date_3)
+        @ss_1.update(:pref_request => 2)
+        @ss_5.update(:pref_request => 0)
+        @student_4 = @seminar.students.create(:first_name => "Marko", :last_name => "Zivkovic", :type => "Student", :password_digest => "password")
+        
+        assert_equal 13.2, @student_1.consultant_days(@seminar)
+        assert_equal 0, @student_4.consultant_days(@seminar)
+        assert_equal 63, @student_5.consultant_days(@seminar)
+        
+        @students = setup_present_students()
+        @rank_by_consulting = setup_rank_by_consulting
+
+        assert_equal @student_4, @rank_by_consulting[-1]
+        assert_equal @student_1, @rank_by_consulting[-2]
+        assert_equal @student_5, @rank_by_consulting[-3]
+    end
+    
     test "check_if_ready Test" do
         mainAssign = objectives(:objective_60)
         preAssign1 = objectives(:objective_50)
@@ -119,7 +166,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @students = setup_present_students
         bonusSetup
         
-        setupRankByConsulting
+        @rank_by_consulting = setup_rank_by_consulting
         @rankAssignsByNeed = rankAssignsByNeed(@seminar)
         setupScoreHash
         setupProfList
@@ -140,12 +187,6 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
 
     
     test "desk consultants methods" do
-        # setup_present_students
-            @ss_2.update(:present => false)
-            @students = setup_present_students()
-            assert @students.include?(@student_1)
-            assert_not @students.include?(@student_2)
-            
         bonusSetup()
         
         # appliedConsultPoints
@@ -155,12 +196,6 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
             #assert_equal 150, @student_1.appliedConsultPoints(@seminar)
             #@ss_1.update(:pref_request => 2)
             #assert_equal 125, @student_1.appliedConsultPoints(@seminar)
-        
-        # rankByConsulting
-            setupRankByConsulting()
-            #assert_equal @rankByConsulting[0], @student_1
-            #assert_equal @rankByConsulting[1], @student_4
-            #assert_equal @rankByConsulting[2], @student_3
         
         # "Students In Need"
             # Only 5 students are ready for @objective_2, even though
@@ -263,7 +298,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @students = setup_present_students()
         setupStudentHash()
         set_objectives_and_scores(false)
-        setupRankByConsulting()
+        @rank_by_consulting = setup_rank_by_consulting
         @rankAssignsByNeed = rankAssignsByNeed(@seminar)
         @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
         

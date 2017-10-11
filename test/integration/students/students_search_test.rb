@@ -63,7 +63,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   end
   
   
-  test 'Add Student to Class with Buttons' do
+  test 'add student to class' do
     first_assign = @seminar.objectives.first
     @student_80.objective_students.create(:objective => first_assign, :points => 8)   # for testing the benchmark
     
@@ -93,6 +93,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     assert_equal true, @new_aula.present
     assert_equal 8, @new_aula.benchmark
     assert_equal oldAulaCount + 1, SeminarStudent.count
+    assert_equal @teacher_1, @new_student.sponsor
     
     @seminar.reload
     assert @seminar.students.include?(@student_80)

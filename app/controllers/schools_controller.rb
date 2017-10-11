@@ -46,7 +46,8 @@ class SchoolsController < ApplicationController
         
         def new_school_stuff
             @school = School.new
-            first_step = School.order(:name).paginate(page: params[:page])
-            @all_schools = (params[:search].blank? ? first_step : first_step.search(params[:search], params[:whichParam]))
+            first_step = School.order(created_at: :desc)
+            second_step = (params[:search].blank? ? first_step : first_step.search(params[:search], params[:whichParam]))
+            @all_schools = second_step.limit(10)
         end
 end

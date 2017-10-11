@@ -12,6 +12,7 @@ class SeminarStudentsController < ApplicationController
     @ss = SeminarStudent.create(ss_params)
     @seminar = Seminar.find(@ss.seminar_id)
     @student = Student.find(@ss.user_id)
+    @student.update(:sponsor => current_user) if current_user.type == "Teacher"
     
     addToSeatingChart(@seminar, @student)
     scoresForNewStudent(@seminar, @student)
@@ -22,7 +23,7 @@ class SeminarStudentsController < ApplicationController
     redirect_to scoresheet_seminar_url(@seminar)
   end
   
-  def ajaxUpdate
+  def update
     @ss = SeminarStudent.find(params[:id])
     @ss.update_attributes(ss_params)
     respond_with @ss

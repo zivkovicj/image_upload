@@ -25,11 +25,11 @@ class ConsultanciesController < ApplicationController
         @students = setup_present_students()
         @rankAssignsByNeed = rankAssignsByNeed(@seminar)
         @objectiveIds = @rankAssignsByNeed.map(&:id)
-        setupStudentHash()
+        setupStudentHash
         #setobjectivesAndScores(false)
-        setupRankByConsulting()
-        setupScoreHash()
-        setupProfList()
+        @rank_by_consulting = setup_rank_by_consulting
+        setupScoreHash
+        setupProfList
         
         # Each function in these steps is only called once. But I wrote them as
         # separate functions in order to better test the individual pieces.

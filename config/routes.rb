@@ -45,7 +45,6 @@ Rails.application.routes.draw do
   resources :seminar_students do
     get 'removeFromClass', on: :member
     post 'update_benchmarks', on: :member
-    put 'ajaxUpdate', on: :member
   end
   resources :schools do
     get 'verify', on: :member

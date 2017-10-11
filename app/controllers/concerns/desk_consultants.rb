@@ -9,10 +9,7 @@ module DeskConsultants
     def setup_present_students()
       stud_list = []
       @seminar.seminar_students.each do |ss|
-        if ss.present
-          student = @seminar.students.find(ss.user_id)
-          stud_list.push(student)
-        end
+        stud_list.push(ss.user) if ss.present
       end
       return stud_list
     end
@@ -24,10 +21,11 @@ module DeskConsultants
     end
     
     # Rank students by their adjusted consultant points.
-    def setupRankByConsulting()
-        @rankByConsulting = @students.sort {|a,b| 
-            a.appliedConsultPoints(@seminar) <=> 
-            b.appliedConsultPoints(@seminar)}
+    def setup_rank_by_consulting()
+        rank_by_consulting = @students.sort {|b,a| 
+            a.consultant_days(@seminar) <=> 
+            b.consultant_days(@seminar)}
+        return rank_by_consulting
     end
     
     
@@ -42,7 +40,7 @@ module DeskConsultants
         @studentHash[studId][:teach_request] = this_ss.teach_request
         @studentHash[studId][:learn_request] = this_ss.learn_request
         @studentHash[studId][:pref_request] = this_ss.pref_request
-        @studentHash[studId][:appliedConsultPoints] = student.appliedConsultPoints(@seminar)
+        @studentHash[studId][:consultant_days] = student.consultant_days(@seminar)
       end
     end          
     
@@ -96,7 +94,7 @@ module DeskConsultants
       # First look at the priority 3 objectives
       @seminar.objective_seminars.where(:priority => 3).each do |os|
         objective = os.objective
-        @rankByConsulting.each do |student|
+        @rank_by_consulting.each do |student|
           if need_placement(student)
             if @scoreHash[objective.id][student.id][:score] >= @cThresh && @scoreHash[objective.id][:need] > 0
               establish_new_group(student, objective, 4, 0)
@@ -108,7 +106,7 @@ module DeskConsultants
       end
       
       # Then look at students in order of increasing consultant points 
-      @rankByConsulting.each do |student|
+      @rank_by_consulting.each do |student|
         if need_placement(student)
           # See if student's consultant request will work.
           thisRequest = @studentHash[student.id][:teach_request]

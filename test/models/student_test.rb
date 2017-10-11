@@ -71,5 +71,5 @@ class StudentTest < ActiveSupport::TestCase
     assert_not @student.authenticated?(:remember, '')
   end
   
-  
+
 end
