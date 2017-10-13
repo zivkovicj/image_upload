@@ -1,5 +1,7 @@
 
-<% if current_user.type == "Admin" || object.user == current_user %>
+<%# The !object.try part protects from nil error for objects that don't have a user %>
+
+<% if current_user.type == "Admin" || !object.try(:user) || object.user == current_user %>
     <td class="remove_btn" id="delete_<%= object.id %>">
     &nbsp; Delete
     <p class="btn btn-lg btn-primary cancel_button", id="cancel_<%= object.id %>"/>Cancel</p>

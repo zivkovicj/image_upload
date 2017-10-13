@@ -25,7 +25,7 @@
               </tr>
             <% end %>
             <tr class="users">
-              <%= render 'shared/delete_and_confirm', object: question %>
+              <%= render 'shared/delete_and_confirm', object: question%>
               <td><%= question.extent.capitalize %></td>
               <td>Label: <%= question.label.name if question.label %></td>
             </tr>

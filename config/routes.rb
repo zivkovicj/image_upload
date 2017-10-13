@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   resources :admins
   resources :account_activations, only: [:edit]
-  resources :consultancies, only: [:new, :create, :show, :index]
+  resources :consultancies, only: [:new, :create, :show, :index, :destroy]
   resources :labels
   resources :label_objectives do
     post 'update_quantities', on: :collection

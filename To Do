@@ -27,25 +27,26 @@ Connect on LinkedIn
 
 
 
-
-
-2.24_CONSULTANT ORDER -- STARTED 10/07/2017
-
-Goal of this update: consultant_days is based on the number of days since the last time that student was consultant in that class.
-
-V Then adjusted_consultant_days takes the student's request into account by simply adding a day for those who request positively. Then multiplying by a small factor.
-    V Subtract then divide for those who request negatively.
-
-V Marking students absent is failing again!
-
-V When a teacher adds a student to his/her class, update that student's sponsor
-
-V New school info should be in its own bubble
-
-
     
-    
-    
+2.35_CONSULTANT_MARKING -- STARTED 10/10/2017
+
+V Students are being marked as consultant, even when not qualified.
+
+Consultant View
+    V Consultant link from show page leads to the most recent consultancy
+    V On that page, there is a button to create a new one
+    V Or to see the index of all old ones
+    V Index includes option to delete
+    V And so does the show page
+    V Consultancy in nav ribbon
+
+    Check this stuff manually
+
+
+Ask about fixing the css for links
+
+Set up billing alerts with AWS.
+
 
 HOTFIXES
 
@@ -164,6 +165,38 @@ Searching
 
 
 
+CLEAN UP NAV RIBBON
+    Objectives and Priorities in Navribbon are not needed.
+
+
+CLEAN UP LINKS
+    Turn links into nice divs with icons and text
+
+
+
+
+SHARE CLASSES WITH OTHER TEACHERS
+
+
+
+
+FEEDBACK MECHANISM
+
+
+        
+CONSULTANT STARS
+ 
+ 
+    
+GROWTH POINTS
+
+Need to add "last_growth" type column to objective_sudent
+    When a student improves score, update last_growth to today's date
+    If there is growth, but last_growth was the same day, then don't add growth points. (They need to take it again on a different day to earn those points.)
+
+
+
+
 
 
 
@@ -193,6 +226,9 @@ Or through objective to check which quizzes should be unlocked for which
     
 Or unlock a quiz for an entire class.
 
+Message that deleting a consultancy will lock quizzes to students.
+
+
 
 
 
@@ -204,27 +240,6 @@ Goal: If a student takes a pretest in pretest mode those stars should be added t
 
    
 
-
-SHARE CLASSES WITH OTHER TEACHERS
-
-
-
-
-FEEDBACK MECHANISM
-
-
-
-
-        
-CONSULTANT STARS
- 
- 
-    
-GROWTH POINTS
-
-Need to add "last_growth" type column to objective_sudent
-    When a student improves score, update last_growth to today's date
-    If there is growth, but last_growth was the same day, then don't add growth points. (They need to take it again on a different day to earn those points.)
 
 
 

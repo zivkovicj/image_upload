@@ -61,6 +61,15 @@ class ActiveSupport::TestCase
     t1.users << users(:student_4)
     t1.users << users(:student_5)
     
+    c2 = seminars(:one).consultancies.create
+    t2 = c2.teams.create(:objective => objectives(:objective_20), :consultant => users(:student_3))
+    t2.users << users(:student_2)
+    t2.users << users(:student_3)
+    t2.users << users(:student_4)
+    t2.users << users(:student_5)
+    
+    @consultancy_from_setup = Consultancy.all[-1]
+    @other_consultancy = Consultancy.all[-2]
   end
   
   def setup_objectives

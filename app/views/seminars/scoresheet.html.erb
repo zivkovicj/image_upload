@@ -31,8 +31,8 @@
       <% @students.each do |student| %>
         <tr>
           <td><h4><%= link_to student.last_name_first, edit_teaching_requests_student_url(student) %> </h4></td>
-          <% total_stars = student.total_stars(@seminar) %>
-          <% benchmark = student.seminar_students.find_by(:seminar => @seminar).benchmark %>
+          <% total_stars = student.total_stars(@seminar) || 0 %>
+          <% benchmark = student.seminar_students.find_by(:seminar => @seminar).benchmark || 0 %>
           <% current_stars = total_stars - benchmark %>
           <td class="themScores to_unhide consultant"><%= current_stars %></td>
           <td class="themScores to_unhide consultant"><%= benchmark %></td>

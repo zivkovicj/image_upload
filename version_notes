@@ -1,6 +1,13 @@
 
 
-
+2.24_CONSULTANT ORDER -- STARTED 10/07/2017
+                      -- PUSHED 10/10/2017
+Goal of this update: consultant_days is based on the number of days since the last time that student was consultant in that class.
+Then adjusted_consultant_days takes the student's request into account by simply adding a day for those who request positively. Then multiplying by a small factor.
+    Subtract then divide for those who request negatively.
+Marking students absent is failing again!
+When a teacher adds a student to his/her class, update that student's sponsor
+New school info should be in its own bubble
 
 
 

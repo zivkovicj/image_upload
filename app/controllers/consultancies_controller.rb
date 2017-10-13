@@ -46,14 +46,30 @@ class ConsultanciesController < ApplicationController
     end
     
     def show
-        @consultancy = Consultancy.find(params[:id])
-        @seminar = Seminar.find(params[:seminar])
+        if params[:seminar].present?
+            @seminar = Seminar.find(params[:seminar])
+            @consultancy = @seminar.consultancies.order(:created_at).last
+            redirect_to new_consultancy_path(:seminar => @seminar.id) if @consultancy.blank?
+        else
+            @consultancy = Consultancy.find(params[:id])
+            @seminar = @consultancy.seminar
+        end
         @teacher = @seminar.user
     end
     
     def index
         @seminar = Seminar.find(params[:seminar])
         @consultancies = Consultancy.where(:seminar => @seminar)
+    end
+    
+    def destroy
+        @consultancy = Consultancy.find(params[:id])
+        @seminar = @consultancy.seminar
+    
+        if @consultancy.destroy
+            flash[:success] = "Arrangement Deleted"
+            redirect_to consultancies_path(:seminar => @seminar.id)
+        end
     end
     
     private

@@ -1,6 +1,6 @@
 <% provide(:title, "#{@seminar.name} Desk Consultants") %>
 
-<% provide(:headerText, show_consultancy_headline) %>
+<% provide(:headerText, show_consultancy_headline(@consultancy)) %>
 <% provide(:headerPic, "desk_consult.png") %>
 
 <%= render 'shared/navribbon' %><br/>
@@ -8,13 +8,39 @@
 <%= render 'shared/teacher_name_and_edit', user: @teacher %><br/>
 <%= render 'shared/class_and_edit' %>
 
-<div class="singleOption lowSingOpt">
 <%= render 'shared/headline' %>
-&emsp;&emsp;&emsp; <h4 class="studentName block">Key:</h4>
-<p class="studentName consultant block">Consultant</p>
-<p class="studentName topic block">Topic</p>
-</div>
 
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="singleOption lowSingOpt">
+      
+        <h2><%= @seminar.name %></h2>
+        </br>
+        &emsp;&emsp;&emsp; <h4 class="studentName block">Key:</h4>
+        <p class="studentName consultant block">Consultant</p>
+        <p class="studentName topic block">Topic</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <%= link_to(new_consultancy_path(:seminar => @seminar.id)) do %>
+        <div class="singleOption">
+          <%= new_consultancy_button_text %>
+          <%= image_tag("desk_consult.png") %>
+        </div>
+      <% end %>
+      
+      <%= link_to(consultancies_path(:seminar => @seminar.id)) do %>
+        <div class="singleOption">
+          <%= "List all Arrangements" %>
+          <%= image_tag("sierpinski.png") %>
+        </div>
+      <% end %>
+      <table><tr>
+      <%= render 'shared/delete_and_confirm', object: @consultancy %>
+      </tr></table>
+    </div>
+  </div>
 <br/>
 
 <% @group_num = 0 %>
@@ -22,7 +48,7 @@
 
 
 <% def studentCell(num, groupNum, team) %>
-  <% thisClass = (team.users[num] == team.consultant ? "table with-border consultant" : "table with-border") %>
+  <% thisClass = (team.consultant.present? && team.users[num] == team.consultant ? "table with-border consultant" : "table with-border") %>
   <td class = "<%= thisClass %>">
     <p class = "studentName center">
       <% this_student = team.users[num] %>

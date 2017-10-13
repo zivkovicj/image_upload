@@ -4,6 +4,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
     include DeskConsultants
     include RankObjectivesByNeed
+    include ConsultanciesHelper
     
     def setup
         setup_users()
@@ -91,10 +92,38 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         return msc
     end
     
-    test "simple check for screen" do
+    test "show" do
         capybara_login(@teacher_1)
         click_on("desk_consult_#{@seminar.id}")
-        click_on("Create Desk Consultants Groups")
+        @consultancy = @seminar.consultancies.order(:created_at).last
+        assert_text(show_consultancy_headline(@consultancy))
+    end
+    
+    test "show first consultancy" do
+        @seminar.consultancies.destroy_all
+        capybara_login(@teacher_1)
+        click_on("desk_consult_#{@seminar.id}")
+        assert_text("Mark Attendance Before Creating Desk-Consultants Groups")
+    end
+    
+    test "simple create" do
+        capybara_login(@teacher_1)
+        click_on("desk_consult_#{@seminar.id}")
+        click_on("#{new_consultancy_button_text}")
+        assert_text("Mark Attendance Before Creating Desk-Consultants Groups")
+    end
+    
+    test "delete from show page" do
+        old_consultancy_count = Consultancy.count
+        
+        capybara_login(@teacher_1)
+        click_on("desk_consult_#{@seminar.id}")
+        find("#delete_#{@consultancy.id}").click
+        click_on("confirm_#{@consultancy.id}")
+        
+        assert_text("All Arrangements")
+        
+        assert_equal old_consultancy_count - 1, Consultancy.count
     end
     
     test "setup_present_students" do
@@ -103,11 +132,6 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @students = setup_present_students()
         assert @students.include?(@student_1)
         assert_not @students.include?(@student_2)
-        
-        capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
-        find("##{@ss_3.id}").click
-        click_on("Create Desk Consultants Groups")
     end
     
     test "rank by consulting" do
@@ -327,6 +351,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         capybara_login(@teacher_1)
         click_on("desk_consult_#{@seminar.id}")
+        click_on("#{new_consultancy_button_text}")
         click_on("Create Desk Consultants Groups")
     end
     
@@ -338,6 +363,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         capybara_login(@teacher_1)
         click_on("desk_consult_#{@seminar.id}")
+        click_on("#{new_consultancy_button_text}")
         click_on("Create Desk Consultants Groups")
         assert_equal consult_count + 1, Consultancy.count
     end
@@ -357,6 +383,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         capybara_login(@teacher_1)
         click_on("desk_consult_#{@seminar.id}")
+        click_on("#{new_consultancy_button_text}")
         click_on("Create Desk Consultants Groups")
         
         @seminar.reload
