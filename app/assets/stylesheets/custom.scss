@@ -6,6 +6,7 @@
 $gray-medium-light: #eaeaea;
 $consultant-color: #462066;
 $apprentice-color: #8ed2c9;
+$button-color: #4dc3ff;
 
 /* universal */
 
@@ -301,6 +302,21 @@ table, th, td {
 }
 
 
+.big_link {
+  border-radius: 36px;
+  background-color: $button-color;
+  border: 2px solid black;
+  padding: 3px 20px 5px 20px;
+  margin-bottom: 3px;
+}
+
+.big_link:active {
+  background: gray;
+}
+
+.link_div {
+  color: black;
+}
 
 a {
     text-decoration: none;
@@ -311,7 +327,8 @@ a {
 }
 
 .btn-small {
-  width: 55px;
+  width: 80px;
+  padding: 5px 10px 5px 10px;
   display: inline;
 }
 
@@ -320,6 +337,13 @@ a {
   display: inline;
 }
 
+.delete_group {
+  padding: 10px;
+}
+
+.confirm_button {
+  margin: 10px;
+}
 
 
 

@@ -4,6 +4,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
     
     def setup
         @old_teacher_count = Teacher.count
+        @old_school_count = School.count
         setup_users
     end
     
@@ -64,8 +65,6 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
     end
     
     test "new teacher new school" do
-        old_school_count = School.count
-        
         goto_signup_page
         teacher_editing_stuff(nil, 'Create My Account')
         
@@ -80,7 +79,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         assert_equal "Bucketheadland", @new_school.city
         assert_equal "UT", @new_school.state
         assert_equal @new_school, @this_teacher.school
-        assert_equal old_school_count + 1, School.count
+        assert_equal @old_school_count + 1, School.count
         assert_equal @this_teacher, @new_school.mentor
         assert_equal 1, @this_teacher.verified
     end
@@ -94,5 +93,42 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         assert_equal @old_teacher_count, Teacher.count
     end
     
+    test "invalid school info" do
+        goto_signup_page
+        teacher_editing_stuff(nil, 'Create My Account')
+        
+        assert_text ("Choose Your School")
+        assert_no_text("Please complete all information for your school")
+        
+        fill_in "school_name", with: "Slunk Elementary"
+        click_on("This is my school")
+        
+        @this_teacher.reload
+        assert_nil School.find_by(:name => "Slunk Elementary")
+        assert_equal @old_school_count, School.count
+        assert_equal 0, @this_teacher.verified
+        
+        assert_text ("Choose Your School")
+        assert_text("Please complete all information for your school")
+    end
+    
+    test "no new or old school" do
+        goto_signup_page
+        teacher_editing_stuff(nil, 'Create My Account')
+        
+        assert_text ("Choose Your School")
+        assert_no_text("Please choose a school or create a new school.")
+        
+        click_on("This is my school")
+        
+        @this_teacher.reload
+        assert_nil School.find_by(:name => "Slunk Elementary")
+        assert_equal @old_school_count, School.count
+        assert_equal 0, @this_teacher.verified
+        
+        assert_text ("Choose Your School")
+        assert_text("Please choose a school or create a new school.")
+        assert_no_text("Please complete all information for your school")
+    end
     
 end

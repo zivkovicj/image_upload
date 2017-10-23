@@ -12,7 +12,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-7">
       <div class="singleOption lowSingOpt">
       
         <h2><%= @seminar.name %></h2>
@@ -22,20 +22,11 @@
         <p class="studentName topic block">Topic</p>
       </div>
     </div>
-    <div class="col-md-4">
-      <%= link_to(new_consultancy_path(:seminar => @seminar.id)) do %>
-        <div class="singleOption">
-          <%= new_consultancy_button_text %>
-          <%= image_tag("desk_consult.png") %>
-        </div>
-      <% end %>
-      
-      <%= link_to(consultancies_path(:seminar => @seminar.id)) do %>
-        <div class="singleOption">
-          <%= "List all Arrangements" %>
-          <%= image_tag("sierpinski.png") %>
-        </div>
-      <% end %>
+    <div class="col-md-5">
+      <%= render 'shared/big_link', link_link: new_consultancy_path(:seminar => @seminar.id), 
+        link_text: new_consultancy_button_text, link_image: "desk_consult.png"  %>
+      <%= render 'shared/big_link', link_link: consultancies_path(:seminar => @seminar.id), 
+        link_text: "List All Arrangements", link_image: "sierpinski.png"  %>
       <table><tr>
       <%= render 'shared/delete_and_confirm', object: @consultancy %>
       </tr></table>

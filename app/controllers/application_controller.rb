@@ -39,4 +39,5 @@ class ApplicationController < ActionController::Base
   def redirect_for_students
     redirect_to(login_url) if current_user.type == "Student"
   end
+  
 end

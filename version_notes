@@ -1,5 +1,21 @@
 
 
+
+2.35_CONSULTANT_MARKING -- STARTED 10/10/2017
+                        -- PUSHED 10/13/2017
+Students are being marked as consultant, even when not qualified.
+Consultant View
+    Consultant link from show page leads to the most recent consultancy
+    On that page, there is a button to create a new one
+    Or to see the index of all old ones
+    Index includes option to delete
+    And so does the show page
+    Consultancy in navribbon
+
+
+
+
+
 2.24_CONSULTANT ORDER -- STARTED 10/07/2017
                       -- PUSHED 10/10/2017
 Goal of this update: consultant_days is based on the number of days since the last time that student was consultant in that class.

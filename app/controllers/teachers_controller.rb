@@ -3,8 +3,6 @@ class TeachersController < ApplicationController
   before_action :correct_user, only: [:show, :edit, :update, :destroy]
   before_action :redirect_for_non_admin, only: [:index]
   
-  
-  
   def new
     @teacher = Teacher.new
   end

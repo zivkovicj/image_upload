@@ -12,9 +12,10 @@ class AdminsController < ApplicationController
     def update
         @admin = Admin.find(params[:id])
         if @admin.update_attributes(admin_params)
-          flash[:success] = "Profile updated" 
+          flash[:success] = "Profile Updated" 
           redirect_to current_user
         else
+          flash[:danger] = "Invalid Info" 
           render 'edit'
         end
     end

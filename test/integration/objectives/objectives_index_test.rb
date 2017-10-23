@@ -12,11 +12,11 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     click_on("All Objectives")
 
     assert_selector('a', :id => "edit_#{@objective_20.id}", :text => @objective_20.fullName)
-    assert_selector('td', :id => "delete_#{@objective_20.id}", :text => "Delete")
+    assert_selector('h5', :id => "delete_#{@objective_20.id}", :text => "Delete")
     assert_selector('a', :id => "edit_#{@own_assign.id}", :text => @own_assign.fullName)
-    assert_selector('td', :id => "delete_#{@own_assign.id}", :text => "Delete")
+    assert_selector('h5', :id => "delete_#{@own_assign.id}", :text => "Delete")
     assert_selector('a', :id => "edit_#{@other_teacher_objective.id}", :text => @other_teacher_objective.fullName)
-    assert_selector('td', :id => "delete_#{@other_teacher_objective.id}", :text => "Delete")
+    assert_selector('h5', :id => "delete_#{@other_teacher_objective.id}", :text => "Delete")
   end
 
   test "index objectives as non admin" do
@@ -24,11 +24,11 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     click_on("All Objectives")
     
     assert_selector('a', :id => "edit_#{@objective_20.id}", :text => @objective_20.fullName)
-    assert_selector('td', :id => "delete_#{@objective_20.id}", :text => "Delete", :count => 0)
+    assert_selector('h5', :id => "delete_#{@objective_20.id}", :text => "Delete", :count => 0)
     assert_selector('a', :id => "edit_#{@own_assign.id}", :text => @own_assign.fullName)
-    assert_selector('td', :id => "delete_#{@own_assign.id}", :text => "Delete")
+    assert_selector('h5', :id => "delete_#{@own_assign.id}", :text => "Delete")
     assert_selector('a', :id => "edit_#{@other_teacher_objective.id}", :text => @other_teacher_objective.fullName, :count => 0)
-    assert_selector('td', :id => "delete_#{@other_teacher_objective.id}", :text => "Delete",:count => 0)
+    assert_selector('h5', :id => "delete_#{@other_teacher_objective.id}", :text => "Delete",:count => 0)
   end
   
   test "back button" do

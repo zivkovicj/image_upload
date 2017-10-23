@@ -14,12 +14,17 @@ class SchoolsController < ApplicationController
                 flash[:success] = "Welcome to Mr.Z School!"
                 redirect_to current_user
             else
+                flash[:danger] = "Please complete all information for your school"
                 new_school_stuff
                 render 'new'
             end
-        else
+        elsif params[:this_school_id].present?
             @teacher.update(:school_id => params[:this_school_id])
             redirect_to current_user
+        else
+            flash[:danger] = "Please choose a school or create a new school."
+            new_school_stuff
+            render 'new'
         end
     end
     

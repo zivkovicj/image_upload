@@ -30,7 +30,7 @@
   <tbody>
     <% @teachers.each do |teacher| %>
       <tr class="users">
-        <%= render 'shared/delete_and_confirm', object: teacher %>
+        <td><%= render 'shared/delete_and_confirm', object: teacher %></td>
         <td><%= link_to teacher.id, teacher %></td>
         <td><%= link_to teacher.name_with_title, edit_teacher_path(teacher) %></td>
         <td><%= link_to teacher.first_name, teacher %></td>

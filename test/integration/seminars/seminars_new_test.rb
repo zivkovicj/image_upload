@@ -3,7 +3,8 @@ require 'test_helper'
 class SeminarsNewTest < ActionDispatch::IntegrationTest
    
     def setup
-        setup_users()
+        setup_users
+        @old_seminar_count = Seminar.count
     end
    
     test "create new seminar" do
@@ -19,6 +20,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         end
         click_on("Create This Class")
        
+        assert_equal @old_seminar_count + 1, Seminar.count
         @seminar = Seminar.last
         assert @seminar.name == "4th Period"
         assert @seminar.consultantThreshold == 8
@@ -52,15 +54,13 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
     end 
    
     test "default threshold" do
-       old_seminar_count = Seminar.count
-       
        capybara_login(@teacher_1)
        click_on("Create a New Class")
        
        fill_in "Name", with: "5th Period"
        click_on("Create This Class")
        
-       assert_equal old_seminar_count + 1, Seminar.count
+       assert_equal @old_seminar_count + 1, Seminar.count
        @seminar = Seminar.last
        assert_equal 7, @seminar.consultantThreshold
     end
@@ -77,4 +77,14 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
        assert_no_text("Edit #{@seminar.name} Pre-Tests")
     end
     
+    test "empty seminar name" do
+        capybara_login(@teacher_1)
+        click_on("Create a New Class")
+        click_on("Create This Class")
+        
+        assert_equal @old_seminar_count, Seminar.count
+        assert_selector('h1', :text => "New Class")
+        assert_selector('div', :id => "error_explanation")
+        assert_selector('li', :text => "Name can't be blank")
+    end
 end

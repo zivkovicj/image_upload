@@ -32,7 +32,7 @@
           <tbody>
             <% @students.each do |student| %>
               <tr class="users">
-                <%= render 'shared/delete_and_confirm', object: student %>
+                <td><%= render 'shared/delete_and_confirm', object: student %></td>
                 <td><%= link_to student.id, edit_student_path(student) %></td>
                 <td><%= link_to student.last_name_first, edit_student_path(student), :id => "edit_#{student.id}"  %></td>
                 <td>email</td>

@@ -6,21 +6,25 @@ class PicturesEditTest < ActionDispatch::IntegrationTest
         setup_users
         setup_pictures
         setup_labels
-        
+        @old_picture_count = Picture.count
+    end
+    
+    def goto_user_pic_edit
+        capybara_login(@teacher_1)
+        click_on('All Pictures')
+        click_on("edit_#{@user_p.id}")
     end
     
     test "edit picture" do
         assert_not @user_p.labels.include?(@admin_l)
         assert @user_p.labels.include?(@user_l)
+        #old_image = @user_p.image
         
-        capybara_login(@teacher_1)
-        click_on('All Pictures')
-        click_on("edit_#{@user_p.id}")
-        
+        goto_user_pic_edit
         fill_in "picture_name", with: "Beer and Pretzels"
         check("check_#{@admin_l.id}")
         uncheck("check_#{@user_l.id}")
-        attach_file('picture[image]', Rails.root + 'app/assets/images/logo.jpg')
+        attach_file('picture[image]', Rails.root + 'app/assets/images/apple.png')
         click_on("Update Picture")
         
         @user_p.reload
@@ -29,8 +33,34 @@ class PicturesEditTest < ActionDispatch::IntegrationTest
         assert_not @user_p.labels.include?(@user_l)
         assert @admin_l.pictures.include?(@user_p)
         assert_not @user_l.pictures.include?(@user_p)
-        # assert_not_equal old_pic, @user_p.image
-        # Learn how to test this some day
+        #assert_not_equal old_image, @user_p.image
+        
+        assert_selector('p', :text => "Teacher Since:")
+        
+    end
+    
+    test "default picture name edit" do
+        goto_user_pic_edit
+        fill_in "picture_name", with: ""
+        attach_file('picture[image]', Rails.root + 'app/assets/images/apple.png')
+        click_on ("Update Picture")
+        
+        @user_p.reload
+        assert_equal "Picture #{@old_picture_count}", @user_p.name
+        assert_selector('p', :text => "Teacher Since:")
+    end
+    
+    test "no picture edit" do
+        goto_user_pic_edit
+        fill_in "picture_name", with: "Snorble"
+        click_on ("Update Picture")
+        
+        # In the future, find out how to test if the actual image was changed.
+        # Right now, the image stays the same if the user doesn't upload a new file.
+        # That's the desired behavior, but I can't test it.
+        assert_selector('p', :text => "Teacher Since:")
+        @user_p.reload
+        assert_equal "Snorble", @user_p.name
     end
     
 end

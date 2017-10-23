@@ -31,4 +31,30 @@ class AdminsEditTest < ActionDispatch::IntegrationTest
         assert_text("Admin Control Page")
     end
     
+    test "invalid info" do
+        assert @admin_user.authenticate("password")
+        old_title = @admin_user.title
+        old_first_name = @admin_user.first_name
+        old_last_name = @admin_user.last_name
+        old_email = @admin_user.email
+
+        capybara_login(@admin_user)
+        click_on("teacher_edit")
+        
+        select('Mrs.', :from => 'admin_title')
+        fill_in "admin_first_name", with: "Spangle"
+        fill_in "admin_last_name", with: " "
+        click_on("Save Changes")
+      
+        @admin_user.reload
+        assert_equal old_title, @admin_user.title
+        assert_equal old_first_name, @admin_user.first_name
+        assert_equal old_last_name, @admin_user.last_name
+        assert_equal old_email, @admin_user.email
+        assert @admin_user.authenticate("password")
+        
+        assert_selector('h1', :text => "Update Your Admin Profile")
+        assert_selector('div', :id => "error_explanation")
+        assert_selector('li', :text => "Last name can't be blank")
+    end
 end

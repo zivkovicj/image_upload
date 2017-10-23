@@ -127,29 +127,8 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
         assert @new_question_2.correct_answers.length == 2
     end
     
-    test "invalid question create" do
-        capybara_login(@teacher_1)
-        go_to_questions_details
-        
-        #Enter invalid info
-        click_on("Create These Questions")
-        
-        #Results of invalid info
-        assert_equal @old_question_count, Question.count
-        assert_text("Details for New Questions")
-        
-        # Enter valid info
-        fill_prompt(0)
-        click_on("Create These Questions")
-        
-        #Results of valid info
-        assert_equal @old_question_count + 1, Question.count
-        
-    end
-    
     test "dont create with empty prompt" do
         capybara_login(@teacher_1)
-        
         go_to_questions_details
         
         fill_prompt(0)
@@ -157,6 +136,17 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
         click_on("Create These Questions")
         
         assert_equal @old_question_count + 2, Question.count
+    end
+    
+    test "all prompts empty" do
+        capybara_login(@teacher_1)
+        go_to_questions_details
+        
+        click_on("Create These Questions")
+        
+        assert_equal @old_question_count, Question.count
+        
+        assert_selector('p', :text => "Teacher Since:")
     end
     
     test "default correct and label" do

@@ -12,6 +12,8 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         setup_objectives()
         setup_labels()
         setup_questions()
+        
+        @old_objective_count = Objective.count
     end
     
     def submit_objective
@@ -28,7 +30,6 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     
     test "user creates objective" do
         # Before Adding Objective
-        oldAssignCount = Objective.count
         oldPreconditionCount = Precondition.count
         preReqAssign = @seminar.objectives.second
         capybara_login(@teacher_1)
@@ -40,33 +41,32 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         fill_in "name", with: name
         check("check_#{preReqAssign.id}")
         check('1st Period')
-        click_button('Create a New Objective')
+        submit_objective
         
         assert_text "Quantities and Point Values"
         assert_text name
         
-        @newAssign = Objective.last
-        assert_equal oldAssignCount + 1, Objective.count
-        assert_equal name, @newAssign.name
-        assert_equal @teacher_1, @newAssign.user
-        assert_equal "public", @newAssign.extent
-        assert_equal 2, @newAssign.objective_seminars.first.priority
-        assert @newAssign.seminars.include?(@seminar)
-        assert @seminar.objectives.include?(@newAssign)
+        @new_objective = Objective.last
+        assert_equal @old_objective_count + 1, Objective.count
+        assert_equal name, @new_objective.name
+        assert_equal @teacher_1, @new_objective.user
+        assert_equal "public", @new_objective.extent
+        assert_equal 2, @new_objective.objective_seminars.first.priority
+        assert @new_objective.seminars.include?(@seminar)
+        assert @seminar.objectives.include?(@new_objective)
         
         @newPrecondition = Precondition.last
         assert_equal oldPreconditionCount + 1, Precondition.count
-        assert_equal @newAssign.id, @newPrecondition.mainassign_id
+        assert_equal @new_objective.id, @newPrecondition.mainassign_id
         assert_equal preReqAssign.id, @newPrecondition.preassign_id
         
-        assert @seminar.objectives.include?(@newAssign)
+        assert @seminar.objectives.include?(@new_objective)
         @seminar.students.each do |student|
-            assert_not_nil student.objective_students.find_by(:objective_id => @newAssign.id)
+            assert_not_nil student.objective_students.find_by(:objective_id => @new_objective.id)
         end
     end
     
     test "admin creates objective" do
-        oldAssignCount = Objective.count
         oldPreconditionCount = Precondition.count
         preReqAssign = @seminar.objectives.second
         capybara_login(@admin_user)
@@ -76,19 +76,19 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         fill_in "name", with: name
         check("check_#{preReqAssign.id}")
         assert_no_selector('div', :id => "seminars_to_include")
-        click_button('Create a New Objective')
+        submit_objective
         
-        @newAssign = Objective.last
-        assert_equal oldAssignCount + 1, Objective.count
-        assert_equal name, @newAssign.name
-        assert_equal @admin_user, @newAssign.user
-        assert_equal "public", @newAssign.extent
-        assert_equal 0, @newAssign.objective_seminars.count
-        assert_equal 0, @newAssign.labels.count
+        @new_objective = Objective.last
+        assert_equal @old_objective_count + 1, Objective.count
+        assert_equal name, @new_objective.name
+        assert_equal @admin_user, @new_objective.user
+        assert_equal "public", @new_objective.extent
+        assert_equal 0, @new_objective.objective_seminars.count
+        assert_equal 0, @new_objective.labels.count
         
         @newPrecondition = Precondition.last
         assert_equal oldPreconditionCount + 1, Precondition.count
-        assert_equal @newAssign.id, @newPrecondition.mainassign_id
+        assert_equal @new_objective.id, @newPrecondition.mainassign_id
         assert_equal preReqAssign.id, @newPrecondition.preassign_id
     end
         
@@ -249,9 +249,19 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_equal old_label_objective_count - 1, LabelObjective.count
     end
     
-    test "objective name error" do
-        oldName = @own_assign.name
+    test "empty name create" do
+        capybara_login(@teacher_1)
+        click_on('1st Period')
+        submit_objective
+        fill_in "name", with: ""
+        submit_objective
         
+        @new_objective = Objective.last
+        assert_equal "Objective #{@old_objective_count}", @new_objective.name
+        assert_equal @old_objective_count + 1, Objective.count
+    end
+    
+    test "empty name update" do
         capybara_login(@teacher_1)
         click_on('All Objectives')
         click_on(@own_assign.fullName)
@@ -260,7 +270,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         click_on("Save Changes")
         
         @own_assign.reload
-        assert_equal oldName, @own_assign.name
+        assert_equal "Objective #{@old_objective_count}", @own_assign.name
     end
     
     test "add subpreassigns and supermainassigns" do

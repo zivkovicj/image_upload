@@ -28,7 +28,7 @@
     <tbody>
       <% @seminars.each do |seminar| %>
         <tr class="users">
-          <%= render 'shared/delete_and_confirm', object: seminar %>
+          <td><%= render 'shared/delete_and_confirm', object: seminar %></td>
           <td><%= link_to seminar.id, seminar %></td>
           <td><%= link_to seminar.name, seminar %></td>
           <% teacherId = seminar.user.id %>

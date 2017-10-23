@@ -15,10 +15,8 @@ class ObjectivesController < ApplicationController
   end
   
   def create
+    name_protect
     @objective = Objective.new(objective_params)
-    if @objective.name.blank?
-      @objective.name = "Objective #{Objective.count}"  
-    end
     
     if @objective.save
       flash[:success] = "Objective Created"
@@ -56,29 +54,22 @@ class ObjectivesController < ApplicationController
   end
 
   def update
+    name_protect
     @objective = Objective.find(params[:id])
-    newName = params[:objective][:name] 
-    if newName.blank?
-      params[:objective][:name] = @objective.name 
-    end
-    if current_user.id == @objective.user_id || current_user.type =="Admin"
-      if @objective.update_attributes(objective_params)
-        flash[:success] = "Objective Updated"
-        redirect_to quantities_objective_path(@objective)
-      else
-        @labels = labels_to_offer
-        @pre_req_list = build_pre_req_list(@objective)
-        render 'edit'
-      end
+    if current_user == @objective.user || current_user.type == "Admin" 
+      this_redirect_path = quantities_objective_path(@objective)
+      params_to_use = objective_params
     else
-      if @objective.update_attributes(limited_objective_params)
-        flash[:success] = "Objective Updated"
-        redirect_to current_user
-      else
-        @labels = labels_to_offer
-        @pre_req_list = build_pre_req_list(@objective)
-        render 'edit'
-      end
+      this_redirect_path = current_user
+      params_to_use = limited_objective_params
+    end
+    if @objective.update_attributes(params_to_use)
+      flash[:success] = "Objective Updated"
+      redirect_to this_redirect_path
+    else
+      @labels = labels_to_offer
+      @pre_req_list = build_pre_req_list(@objective)
+      render 'edit'
     end
   end
   
@@ -110,22 +101,26 @@ class ObjectivesController < ApplicationController
   end
   
   private
-        def objective_params
-            params.require(:objective).permit(:name, :extent, :user_id, preassign_ids: [], seminar_ids: [], label_ids: [])
-        end
-        
-        def limited_objective_params
-            params.require(:objective).permit(seminar_ids: [])
-        end
-        
-        def new_objective_stuff
-          @objective.name = "Objective #{Objective.count}"
-          @objective.user = current_user
-          @objective.extent = "public"
-          @labels = labels_to_offer
-          setPermissions(@objective)
-          @pre_req_list = build_pre_req_list(@objective)
-        end
+    def objective_params
+        params.require(:objective).permit(:name, :extent, :user_id, preassign_ids: [], seminar_ids: [], label_ids: [])
+    end
+    
+    def limited_objective_params
+        params.require(:objective).permit(seminar_ids: [])
+    end
+    
+    def new_objective_stuff
+      @objective.name = "Objective #{Objective.count}"
+      @objective.user = current_user
+      @objective.extent = "public"
+      @labels = labels_to_offer
+      setPermissions(@objective)
+      @pre_req_list = build_pre_req_list(@objective)
+    end
+    
+    def name_protect
+      params[:objective][:name] = "Objective #{Objective.count}" if params[:objective][:name].blank?
+    end
           
           
 end

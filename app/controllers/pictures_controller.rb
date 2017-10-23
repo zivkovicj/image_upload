@@ -12,6 +12,7 @@ class PicturesController < ApplicationController
   end
 
   def create
+    name_protect
     @picture = Picture.new(picture_params)
     @picture.user = current_user
     
@@ -19,6 +20,7 @@ class PicturesController < ApplicationController
       flash[:success] = "New Picture Successfully Created"
       redirect_to current_user
     else
+      @labels = labels_to_offer
       render 'new'
     end
   end
@@ -36,6 +38,7 @@ class PicturesController < ApplicationController
   end
 
   def update
+    name_protect
     @picture = Picture.find(params[:id])
     if @picture.update(picture_params)
       flash[:success] = "Picture Updated"
@@ -60,6 +63,7 @@ class PicturesController < ApplicationController
   end
 
   private
+  
     # Use callbacks to share common setup or constraints between actions.
     def set_picture
       @picture = Picture.find(params[:id])
@@ -68,5 +72,9 @@ class PicturesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def picture_params
       params.require(:picture).permit(:name, :image, label_ids: [])
+    end
+    
+    def name_protect
+      params[:picture][:name] = "Picture #{Picture.count}" if params[:picture][:name].blank?
     end
 end

@@ -16,13 +16,13 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
         click_on("All Questions")
 
         assert_selector('a', :id => "edit_#{@admin_q.id}", :text => @admin_q.short_prompt)
-        assert_selector('td', :id => "delete_#{@admin_q.id}", :text => "Delete")
+        assert_selector('h5', :id => "delete_#{@admin_q.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@this_teachers_q.id}", :text => @this_teachers_q.short_prompt)
-        assert_selector('td', :id => "delete_#{@this_teachers_q.id}", :text => "Delete")
+        assert_selector('h5', :id => "delete_#{@this_teachers_q.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@other_teacher_public_q.id}", :text => @other_teacher_public_q.short_prompt)
-        assert_selector('td', :id => "delete_#{@other_teacher_public_q.id}", :text => "Delete")
+        assert_selector('h5', :id => "delete_#{@other_teacher_public_q.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@other_teacher_private_q.id}", :text => @other_teacher_private_q.short_prompt)
-        assert_selector('td', :id => "delete_#{@other_teacher_private_q.id}", :text => "Delete")
+        assert_selector('h5', :id => "delete_#{@other_teacher_private_q.id}", :text => "Delete")
     end
     
     test "index questions as non admin" do
@@ -30,13 +30,13 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
         click_on("All Questions")
     
         assert_selector('a', :id => "edit_#{@admin_q.id}", :text => @admin_q.short_prompt)
-        assert_selector('td', :id => "delete_#{@admin_q.id}", :text => "Delete", :count => 0)
+        assert_selector('h5', :id => "delete_#{@admin_q.id}", :text => "Delete", :count => 0)
         assert_selector('a', :id => "edit_#{@this_teachers_q.id}", :text => @this_teachers_q.short_prompt)
-        assert_selector('td', :id => "delete_#{@this_teachers_q.id}", :text => "Delete")
+        assert_selector('h5', :id => "delete_#{@this_teachers_q.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@other_teacher_public_q.id}", :text => @other_teacher_public_q.short_prompt)
-        assert_selector('td', :id => "delete_#{@other_teacher_public_q.id}", :text => "Delete",:count => 0)
+        assert_selector('h5', :id => "delete_#{@other_teacher_public_q.id}", :text => "Delete",:count => 0)
         assert_selector('a', :id => "edit_#{@other_teacher_private_q.id}", :text => @other_teacher_private_q.short_prompt, :count => 0)
-        assert_selector('td', :id => "delete_#{@other_teacher_private_q.id}", :text => "Delete", :count => 0)
+        assert_selector('h5', :id => "delete_#{@other_teacher_private_q.id}", :text => "Delete", :count => 0)
     end
     
     test "back button" do

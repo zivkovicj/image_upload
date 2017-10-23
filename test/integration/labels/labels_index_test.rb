@@ -13,13 +13,13 @@ class LabelsIndexTest < ActionDispatch::IntegrationTest
         click_on("All Labels")
 
         assert_selector('a', :id => "edit_#{@admin_l.id}", :text => @admin_l.name)
-        assert_selector('td', :id => "delete_#{@admin_l.id}", :text => "Delete")
+        assert_selector('h5', :id => "delete_#{@admin_l.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@user_l.id}", :text => @user_l.name)
-        assert_selector('td', :id => "delete_#{@user_l.id}", :text => "Delete")
+        assert_selector('h5', :id => "delete_#{@user_l.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@other_l_pub.id}", :text => @other_l_pub.name)
-        assert_selector('td', :id => "delete_#{@other_l_pub.id}", :text => "Delete")
+        assert_selector('h5', :id => "delete_#{@other_l_pub.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@other_l_priv.id}", :text => @other_l_priv.name)
-        assert_selector('td', :id => "delete_#{@other_l_priv.id}", :text => "Delete")
+        assert_selector('h5', :id => "delete_#{@other_l_priv.id}", :text => "Delete")
     end
     
     test "index labels as non admin" do
@@ -27,13 +27,13 @@ class LabelsIndexTest < ActionDispatch::IntegrationTest
         click_on("All Labels")
     
         assert_selector('a', :id => "edit_#{@admin_l.id}", :text => @admin_l.name)
-        assert_selector('td', :id => "delete_#{@admin_l.id}", :text => "Delete", :count => 0)
+        assert_selector('h5', :id => "delete_#{@admin_l.id}", :text => "Delete", :count => 0)
         assert_selector('a', :id => "edit_#{@user_l.id}", :text => @user_l.name)
-        assert_selector('td', :id => "delete_#{@user_l.id}", :text => "Delete")
+        assert_selector('h5', :id => "delete_#{@user_l.id}", :text => "Delete")
         assert_selector('a', :id => "edit_#{@other_l_pub.id}", :text => @other_l_pub.name)
-        assert_selector('td', :id => "delete_#{@other_l_pub.id}", :text => "Delete",:count => 0)
+        assert_selector('h5', :id => "delete_#{@other_l_pub.id}", :text => "Delete",:count => 0)
         assert_selector('a', :id => "edit_#{@other_l_priv.id}", :text => @other_l_priv.name, :count => 0)
-        assert_selector('td', :id => "delete_#{@other_l_priv.id}", :text => "Delete", :count => 0)
+        assert_selector('h5', :id => "delete_#{@other_l_priv.id}", :text => "Delete", :count => 0)
     end
     
     test "back button" do

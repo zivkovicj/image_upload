@@ -15,9 +15,9 @@ class PicturesIndexTest < ActionDispatch::IntegrationTest
         assert_no_selector('a', :id => "edit_#{@admin_p.id}")
         assert_no_selector('a', :id => "edit_#{@other_p.id}")
         
-        assert_selector('td', :id => "delete_#{@user_p.id}")
-        assert_no_selector('td', :id => "delete_#{@admin_p.id}")
-        assert_no_selector('td', :id => "delete_#{@other_p.id}")
+        assert_selector('h5', :id => "delete_#{@user_p.id}")
+        assert_no_selector('h5', :id => "delete_#{@admin_p.id}")
+        assert_no_selector('h5', :id => "delete_#{@other_p.id}")
     end
     
     test "index for admin" do
@@ -28,9 +28,9 @@ class PicturesIndexTest < ActionDispatch::IntegrationTest
         assert_selector('a', :id => "edit_#{@admin_p.id}")
         assert_selector('a', :id => "edit_#{@other_p.id}")
     
-        assert_selector('td', :id => "delete_#{@user_p.id}")
-        assert_selector('td', :id => "delete_#{@admin_p.id}")
-        assert_selector('td', :id => "delete_#{@other_p.id}")
+        assert_selector('h5', :id => "delete_#{@user_p.id}")
+        assert_selector('h5', :id => "delete_#{@admin_p.id}")
+        assert_selector('h5', :id => "delete_#{@other_p.id}")
     end
     
     test "delete picture" do

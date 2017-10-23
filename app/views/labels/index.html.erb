@@ -18,23 +18,18 @@
   
     <div>
       <%= will_paginate %>
-        <% @labels.each do |label| %>
-          <table>
-            <% if current_user.type == "Admin" %>
-              <tr>
-                <td><%= label.updated_at.strftime("%Y-%m-%d") %></td>
-              </tr>
-            <% end %>
+        <table>
+          <% @labels.each do |label| %>
             <tr class="users">
-              <%= render 'shared/delete_and_confirm', object: label %>
+              <% if current_user.type == "Admin" %>
+                  <td><%= label.updated_at.strftime("%Y-%m-%d") %></td>
+              <% end %>
+              <td><%= render 'shared/delete_and_confirm', object: label %></td>
               <td><%= label.extent.capitalize %></td>
+              <td><%= link_to label.name, edit_label_path(label), :id => "edit_#{label.id}" %></td>
             </tr>
-            <tr>
-              <td colspan="2"><%= link_to label.name, edit_label_path(label), :id => "edit_#{label.id}" %></td>
-            </tr>
-          </table>
-          </br>
-        <% end %>
+          <% end %>
+        </table>
       <%= will_paginate %>
     </div>
   <% else %>

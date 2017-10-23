@@ -32,16 +32,8 @@ class QuestionsController < ApplicationController
       end
     end
     
-    if one_saved
-      flash[:success] = "Questions Created"
-      redirect_to current_user
-    else
-      @extent = params["questions"]["0"][:extent]
-      @label = Label.find(params["questions"]["0"][:label_id])
-      @style = params["questions"]["0"][:style]
-      create_question_group
-      render 'details'
-    end
+    flash[:success] = "Questions Created" if one_saved
+    redirect_to current_user
   end
 
   def index
@@ -94,6 +86,7 @@ class QuestionsController < ApplicationController
       flash[:success] = "Question Updated"
       redirect_to questions_path
     else
+      @labels = labels_to_offer()
       render 'edit'
     end
   end

@@ -20,7 +20,13 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
        assert_no_text("You may not make any edits because it was created by another teacher.")
     end
     
-    test "edit other question" do
+    def goto_mc_question
+        capybara_login(@teacher_1)
+        click_on('All Questions')
+        click_on(@user_q.short_prompt)
+    end
+    
+    test "edit other teacher question" do
         capybara_login(@teacher_1)
         click_on('All Questions')
         click_on(@other_q_pub.short_prompt)
@@ -48,10 +54,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         assert_equal "private", @user_q.extent
         assert_equal @user_l, @user_q.label
         
-        capybara_login(@teacher_1)
-        click_on('All Questions')
-        click_on(@user_q.short_prompt)
-        
+        goto_mc_question
         not_on_show_page
         assert_no_selector('input', :id => "style_multiple-choice") # Counterpart is in the questions_new_test
         
@@ -71,6 +74,8 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         assert_equal "public", @user_q.extent
         assert_equal @admin_l, @user_q.label
         assert_equal @user_q.picture, @user_p
+        
+        assert_selector('h1', :text => "All Questions")
     end
     
     test "default answer choice" do
@@ -109,5 +114,17 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         assert @fill_q.correct_answers.include?(@new_choice[0][1])
         assert @fill_q.correct_answers.include?("Of Course")
         assert @fill_q.correct_answers.include?("Test if one choice left alone")
+        
+        assert_selector('h1', :text => "All Questions")
+    end
+    
+    test "invalid question edit" do
+        goto_mc_question
+        fill_in "prompt_0", with: ""
+        click_on("save_changes_2")
+        
+        assert_selector('h1', :text => "Edit Question")
+        assert_selector('div', :id => "error_explanation")
+        assert_selector('li', :text => "Prompt can't be blank")
     end
 end
