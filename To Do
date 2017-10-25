@@ -6,7 +6,7 @@ Check-up on iKeepSafe certification
 
 Fix linkage from the user-friendly domain  
 
-Look at Allen's Snowbird app to see if I can help him to improve his code
+Look at Allen Maxwell's Snowbird app to see if I can help him to improve his code
     See if pagination loads all rows before index view, or if it only loads one page.
     If so, his app can be made far smoother with queries.
 
@@ -51,12 +51,17 @@ V The delete button should be in it's own div. Don't include a td within the par
 
 NEXT UPDATE: 
 
+Figure out why scores are not showing for students added to Aaron and Joan's class.
+It stopped showing scores for every student except David Valdez. He's the student that I didn't add to Joan and Aaron's class.
+    So, when it creates scores for added students, it sets them all to zero, even if the student already has a score in that objective.
+
 TESTING FOR DESK CONSULTANTS METHODS
 Complete one test for each method needed in the DeskConsultants algorithm.
 Fix that error in Desk_Consultants Tests
 
 COLLECTION OF SMALL FIXES
-Seminars_edit_test
+Remove all visuals pertaining to Benchmark Stars
+Newly-created students need to get a school id if the teacher is verified.
 README for loading only specific jquery-ui components.
     https://github.com/jquery-ui-rails/jquery-ui-rails
 School should be displayed on many views
@@ -75,9 +80,10 @@ Live site has errors in student searching. It occurred when trying to add Meliss
 Consultants button in NavBar needs to link to consultancy show page  
 Set up billing alerts with AWS.
 I moved the javascripts to the end of the body tag on the chance that it might help with loading. Test on the live site with school computers using both ways.
-Remove all visuals pertaining to Benchmark Stars
+
 
 OTHER TESTS TO ADD
+Seminars_edit_test
 Test that "verify other teachers" message only appears for the mentor teacher
 Only mentors can reach the verify screen through the url
 Ensure that database inputs are sanitized
@@ -116,6 +122,10 @@ Add enough question fixtures to test pagination in index
     objectives
     Students
     Users
+
+EASIER SEARCHING
+Searching needs to collect results that are similar to what the user typed.
+And it isn't downcasing results like it use to. User must match capitalization to find results.
 
 EXTENT FOR PICS
 Currently, pics don't have option for public/private extent.
@@ -250,8 +260,12 @@ Make a plan for how to roll out updates after more users are using the apps.
 
 ******
 BEGIN SERIOUSLY ANNOUNCING THE APP
+Quora article: Which websites should a Front-end developer look up to for inspiration?
 Finish viedoes to explain/market the app
 Try to recruit several teachers to begin using and providing feedback
+    E-mail teachers who had an account in the old app.
+    Talk with MaryAnn Moore
+
 ******
 
 REPORTS
@@ -300,6 +314,8 @@ PRE-TEST MODE
 Explanation: Some objectives are unlocked from the beginning as pre-tests. But then students might later take those same objectives after consultant groups.
 There should be an indicator whether a certain quiz was taken as a pre-test or not.
     Or maybe I should just update the "locked" status of that objective. Once a student unlocks a quiz for any other reason, it will no longer be available in the pre-test section
+If a student fails a quiz while in Pre-Test mode, lock all post-requisites of that objective where they are potential pre-tests
+    So the student will no longer have them open as a pre-test until earning them by passing off the pre-requisities.
 
 DISABLE "NEXT QUESTION" BUTTON UNTIL STUDENT CHOOSES A RESPONSE
 Goal: Disable the "Next" button until the student gives some kind of answer
@@ -337,6 +353,7 @@ ARROW KEY NAVIGATION
 The scoresheet needs to allow for arrow key navigation
 
 AJAX STUDENT ADDING, SIMILAR TO CLASSDOJO
+Make sure that the new system makes it easy to add multiple existing students to a class at once
 
 AJAX SCHOOL ADDING
 
@@ -395,8 +412,7 @@ Don't give message, "Students added to class" if zero students were added. Also,
 Before the userchanges an objective to priority level 3.
 If there's trouble logging in, add a message reminding users that teachers use an e-mail address, but students use a username.
 
-EASIER SEARCHING
-Searching needs to collect results that are similar to what the user typed.
+
          
 ELL STUDENTS
 Allow students to be marked as ELL. When that happens, they are default exempt from text-heavy objectives and questions

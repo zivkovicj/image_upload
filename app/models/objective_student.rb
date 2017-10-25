@@ -3,6 +3,7 @@ class ObjectiveStudent < ApplicationRecord
     belongs_to :objective
     
     validates :points, numericality: { only_integer: true, :greater_than_or_equal_to => 0 }
+    validates_uniqueness_of :user, :scope => :objective
     
     attribute :points, :integer, default: 0
 end

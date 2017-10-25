@@ -8,7 +8,7 @@ module AddStudentStuff
     
     def scoresForNewStudent(seminar, student)
         seminar.objectives.each do |objective|
-            objective.objective_students.create!(:user => student, :points => 0)
+            objective.objective_students.create!(:user => student, :points => 0) if objective.objective_students.find_by(:user => student) == nil
         end
     end
     

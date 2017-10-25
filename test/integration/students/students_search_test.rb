@@ -65,7 +65,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   
   test 'add student to class' do
     first_assign = @seminar.objectives.first
-    @student_80.objective_students.create(:objective => first_assign, :points => 8)   # for testing the benchmark
+    @os = @student_80.objective_students.create(:objective => first_assign, :points => 8)   # for testing the benchmark
     
     capybara_login(@teacher_1)
     click_on('1st Period')
@@ -75,7 +75,8 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     oldAulaCount = SeminarStudent.count
     #seatChartCount = @seminar.seating.count
     oldScoreCount = ObjectiveStudent.count
-    assignmentCount = @seminar.objectives.count
+    assignmentCount = @seminar.objectives.select{|x| !@student_80.objectives.include?(x) }.count
+    assert assignmentCount > 0
     assert_not @seminar.students.include?(@student_80)
     
     # Search for and add the student
@@ -99,6 +100,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     assert @seminar.students.include?(@student_80)
     #assert_equal seatChartCount + 1, @seminar.seating.count
     assert_equal oldScoreCount + assignmentCount, ObjectiveStudent.count
+    assert_equal 1, @student_80.objective_students.where(:objective => first_assign).count
   end
   
   test "unverified teacher" do

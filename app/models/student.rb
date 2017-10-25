@@ -3,6 +3,7 @@ class Student < User
     has_many   :seminar_students, dependent: :destroy, foreign_key: :user_id
     has_many   :seminars, through: :seminar_students
     has_many   :objective_students, dependent: :destroy, foreign_key: :user_id
+    has_many   :objectives, through: :objective_students
     has_many   :consulted_teams, :class_name => "Team", foreign_key: "consultant_id"
     belongs_to   :sponsor,  :class_name => "Teacher"
     
