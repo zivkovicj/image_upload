@@ -1,5 +1,19 @@
 
+2.37 BUG WITH ADDING STUDENTS
+There was a bug that caused the scoresheet to show "0" for students who were added to a class.
+I found this was caused by the model adding a new objective_student for the assignment, even though the student already had one. The scoresheet was showing the new one.
+Now the program only creates a new obj_stud if one doesn't yet exist.
 
+2.36_HOTFIXES--STARTED 10/13/2017
+Fix CSS for big_links
+Make sure errors show up correctly when incomplete school info is entered. 
+What if teacher doesn't enter a school id OR create a new school?
+It seems many controllers are missing tests for flash info for errors
+    I'm looking at controllers one at a time. I've reached "picture"
+Picture tests   
+    Test for submitting a picture with no file
+    Picture Edit Test
+The delete button should be in it's own div. Don't include a td within the partial.
 
 2.35_CONSULTANT_MARKING -- STARTED 10/10/2017
                         -- PUSHED 10/13/2017
@@ -12,10 +26,6 @@ Consultant View
     And so does the show page
     Consultancy in navribbon
 
-
-
-
-
 2.24_CONSULTANT ORDER -- STARTED 10/07/2017
                       -- PUSHED 10/10/2017
 Goal of this update: consultant_days is based on the number of days since the last time that student was consultant in that class.
@@ -24,8 +34,6 @@ Then adjusted_consultant_days takes the student's request into account by simply
 Marking students absent is failing again!
 When a teacher adds a student to his/her class, update that student's sponsor
 New school info should be in its own bubble
-
-
 
 2.33 SCHOOL--STARTED 09/24/17
           --PUSHED 10/6/2017

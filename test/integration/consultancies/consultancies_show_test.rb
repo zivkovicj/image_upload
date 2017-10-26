@@ -106,7 +106,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_text("Mark Attendance Before Creating Desk-Consultants Groups")
     end
     
-    test "simple create" do
+    test "simple create test" do
         capybara_login(@teacher_1)
         click_on("desk_consult_#{@seminar.id}")
         click_on("#{new_consultancy_button_text}")

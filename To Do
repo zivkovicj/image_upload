@@ -2,9 +2,7 @@
 
 BUSINESS TO-DO'S
 
-Check-up on iKeepSafe certification
-
-Fix linkage from the user-friendly domain  
+ 
 
 Look at Allen Maxwell's Snowbird app to see if I can help him to improve his code
     See if pagination loads all rows before index view, or if it only loads one page.
@@ -37,27 +35,19 @@ Private Repo on Github
     
 CURRENT UPDATE:
 
-2.36_HOTFIXES--STARTED 10/13/2017
-V Fix CSS for big_links
-V Make sure errors show up correctly when incomplete school info is entered. 
-V What if teacher doesn't enter a school id OR create a new school?
-It seems many controllers are missing tests for flash info for errors
-    I'm looking at controllers one at a time. I've reached "picture"
-Picture tests   
-    V Test for submitting a picture with no file
-    V Picture Edit Test
-V The delete button should be in it's own div. Don't include a td within the partial.
+2.38  IMPROVED RANKASSIGNMENTS BY NEED
+Rank assignments by need should be based on the most requested, not the highest need. Maybe.
+    That should at least run quicker, because requested is a simple column in the join table. Not a method that looks at every student's readiness, which also
+        iterates through pre-requisites. 
+
+
 
 
 NEXT UPDATE: 
 
-Figure out why scores are not showing for students added to Aaron and Joan's class.
-It stopped showing scores for every student except David Valdez. He's the student that I didn't add to Joan and Aaron's class.
-    So, when it creates scores for added students, it sets them all to zero, even if the student already has a score in that objective.
-
 TESTING FOR DESK CONSULTANTS METHODS
 Complete one test for each method needed in the DeskConsultants algorithm.
-Fix that error in Desk_Consultants Tests
+
 
 COLLECTION OF SMALL FIXES
 Remove all visuals pertaining to Benchmark Stars
@@ -137,10 +127,7 @@ How do I test that pics are uploaded and changed?
 
 MECHANISM TO ALLOW USERS TO GIVE FEEDBACK
 
-IMPROVED RANKASSIGNMENTS BY NEED
-Rank assignments by need should be based on the most requested, not the highest need. Maybe.
-    That should at least run quicker, because requested is a simple column in the join table. Not a method that looks at every student's readiness, which also
-        iterates through pre-requisites. 
+
         
 CLEAN UP JAVASCRIPTS AND STYLESHEETS
 http://thesassway.com/beginner/how-to-structure-a-sass-project

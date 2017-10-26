@@ -15,8 +15,8 @@ class ConsultanciesController < ApplicationController
         @seminar = Seminar.includes(:seminar_students).find(params[:consultancy][:seminar])
         @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
         
-        check_if_date_already()
-        check_if_ten()
+        check_if_date_already
+        check_if_ten
         
         @teacher = @seminar.user
         @cThresh = @seminar.consultantThreshold
