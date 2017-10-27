@@ -168,6 +168,24 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_equal @student_5, @rank_by_consulting[-3]
     end
     
+    test "rank objectives by need" do
+        @objective_4.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
+        @rank_objectives_by_need = rank_objectives_by_need(@seminar)
+        assert_equal @objective_4, @rank_objectives_by_need[0]
+        
+        @seminar.seminar_students.find_by(:user => @student_4).update(:learn_request => @objective_3.id)
+        @objective_3.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
+        @objective_5.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 0)
+        @seminar.seminar_students.find_by(:user => @student_5).update(:learn_request => @objective_2.id)
+        @seminar.reload
+        
+        @rank_objectives_by_need = rank_objectives_by_need(@seminar)
+        assert_equal @objective_3, @rank_objectives_by_need[0]
+        assert_equal @objective_4, @rank_objectives_by_need[1]
+        assert_equal @objective_2, @rank_objectives_by_need[2]
+        assert_not @rank_objectives_by_need.include?(@objective_5)
+    end
+    
     test "check_if_ready Test" do
         mainAssign = objectives(:objective_60)
         preAssign1 = objectives(:objective_50)
@@ -191,7 +209,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         bonusSetup
         
         @rank_by_consulting = setup_rank_by_consulting
-        @rankAssignsByNeed = rankAssignsByNeed(@seminar)
+        @rank_objectives_by_need = rank_objectives_by_need(@seminar)
         setupScoreHash
         setupProfList
         setupStudentHash
@@ -208,10 +226,9 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
     end
 
-
-    
     test "desk consultants methods" do
         bonusSetup()
+        @rank_by_consulting = setup_rank_by_consulting
         
         # appliedConsultPoints
             #@ss_1.update(:pref_request => 0)
@@ -228,20 +245,6 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
             #assert_equal 5, @objective_2.students_in_need(@seminar)
             #@student_2.objective_students.find_by(:objective_id => @objective_2.id).update(:points => 25)
             #assert_equal 6, @objective_2.students_in_need(@seminar)
-        
-        # rankAssignsByNeed()
-            @rankAssignsByNeed = rankAssignsByNeed(@seminar)
-            assert_equal @objective_4, @rankAssignsByNeed[0]
-            
-            @objective_3.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
-            @objective_5.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 0)
-            @seminar.reload
-            
-            @rankAssignsByNeed = rankAssignsByNeed(@seminar)
-            assert_equal @objective_3, @rankAssignsByNeed[0]
-            assert_equal @objective_4, @rankAssignsByNeed[1]
-            assert_equal @objective_2, @rankAssignsByNeed[2]
-            assert_not @rankAssignsByNeed.include?(@objective_5)
         
         # needHash
             ##assert_equal 6, @needHash[@objective_2.id]
@@ -323,7 +326,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         setupStudentHash()
         set_objectives_and_scores(false)
         @rank_by_consulting = setup_rank_by_consulting
-        @rankAssignsByNeed = rankAssignsByNeed(@seminar)
+        @rank_objectives_by_need = rank_objectives_by_need(@seminar)
         @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
         
         setupScoreHash()

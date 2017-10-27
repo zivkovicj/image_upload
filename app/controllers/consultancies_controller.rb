@@ -23,8 +23,8 @@ class ConsultanciesController < ApplicationController
         @consultancy = Consultancy.create(:seminar => @seminar)
         
         @students = setup_present_students()
-        @rankAssignsByNeed = rankAssignsByNeed(@seminar)
-        @objectiveIds = @rankAssignsByNeed.map(&:id)
+        @rank_objectives_by_need = rank_objectives_by_need(@seminar)
+        @objectiveIds = @rank_objectives_by_need.map(&:id)
         setupStudentHash
         #setobjectivesAndScores(false)
         @rank_by_consulting = setup_rank_by_consulting

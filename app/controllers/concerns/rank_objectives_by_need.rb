@@ -3,20 +3,19 @@ module RankObjectivesByNeed
 
 
     # Rank objectives by their priority and need
-    def rankAssignsByNeed(seminar)
-        assignArray = []
+    def rank_objectives_by_need(seminar)
+        assign_array = []
         [3,2,1].each do |n|
-            preArray = []
+            pre_array = []
             seminar.objective_seminars.each do |os|
-                preArray.push(os.objective) if os.priority == n
+                pre_array.push(os.objective) if os.priority == n
             end
-            littleArray = preArray.sort_by{|x| [x.students_in_need(seminar)]}
-            littleArray.reverse!
-            littleArray.each do |objective|
-                assignArray.push(objective) 
+            little_array = pre_array.sort_by{|x| [x.students_who_requested(seminar)]}.reverse!
+            little_array.each do |objective|
+                assign_array.push(objective) 
             end
         end
-        return assignArray
+        return assign_array
     end
     
     

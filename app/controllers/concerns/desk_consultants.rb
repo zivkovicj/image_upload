@@ -205,7 +205,7 @@ module DeskConsultants
               establish_new_group(student, thisRequest, false, 0)
             else
               # Last resort is to scan all objectives 
-              @rankAssignsByNeed.each do |objective|
+              @rank_objectives_by_need.each do |objective|
                 if @scoreHash[objective.id][student.id][:score] < @cThresh && @scoreHash[objective.id][student.id][:ready]
                   establish_new_group(student, objective, false, 0)
                   break

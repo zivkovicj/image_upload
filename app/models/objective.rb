@@ -12,7 +12,6 @@ class Objective < ApplicationRecord
                                 dependent: :destroy
     has_many    :preassigns, through: :preconditions, as: :mainassign, source: :preassign
     has_many    :mainassigns, through: :mainconditions, as: :preassign, source: :mainassign
-    
     has_many    :label_objectives, dependent: :destroy
     has_many    :labels, through: :label_objectives
     has_many    :questions, through: :labels
@@ -39,7 +38,9 @@ class Objective < ApplicationRecord
         name[0,30] 
     end
     
-        
+    def students_who_requested(seminar)
+        seminar.seminar_students.where(:learn_request => self.id).count
+    end
         
 
 end

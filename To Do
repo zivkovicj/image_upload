@@ -29,21 +29,20 @@ Upload videos and link to them on social media
 Private Repo on Github
 
 
-
-
-
-    
 CURRENT UPDATE:
 
 2.38  IMPROVED RANKASSIGNMENTS BY NEED
-Rank assignments by need should be based on the most requested, not the highest need. Maybe.
-    That should at least run quicker, because requested is a simple column in the join table. Not a method that looks at every student's readiness, which also
-        iterates through pre-requisites. 
-
-
-
+V Rank assignments by need should be based on the most requested, not the highest need.
+    There are some downsides to this approach, but it should at least run quicker when creating a new consultancy and also when simply viewing a student's page.
+    Because requested is a simple column in the join table. Not a method that looks at every student's readiness, which also iterates through pre-requisites. 
+students_in_need may not be neccesary anymore
+See whether it is actually used in student view
 
 NEXT UPDATE: 
+
+2.39 TEACH OPTIONS INCORPORATE PRIORITY
+The teach_options method currently ignores the priority of the objective. 
+And I think it might be a little cumbersome too. There's probably a more efficient way to operate those methods.
 
 TESTING FOR DESK CONSULTANTS METHODS
 Complete one test for each method needed in the DeskConsultants algorithm.

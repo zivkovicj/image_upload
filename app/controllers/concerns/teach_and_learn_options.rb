@@ -12,6 +12,7 @@ module TeachAndLearnOptions
                     this_points = this_score.points
                     teach_opt_array.push(obj) if (this_points >= n[0] && this_points <= n[1])
                 end
+                break if teach_opt_array.length > list_limit
             end
             break if teach_opt_array.length > list_limit
         end
@@ -30,6 +31,7 @@ module TeachAndLearnOptions
                 end
                 break if learn_opt_array.length >= list_limit
             end
+            break if learn_opt_array.length >= list_limit
         end
         return learn_opt_array
     end
