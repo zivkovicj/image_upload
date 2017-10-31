@@ -47,4 +47,8 @@ class Seminar < ApplicationRecord
       newScore.update(:points => oldScore.points)
     end
   end
+  
+  def rank_objectives_by_need
+    objectives.select{|z| z.priority_from_seminar(self) > 0}.sort_by{|x| [-x.priority_from_seminar(self), -x.students_who_requested(self)] }
+  end
 end

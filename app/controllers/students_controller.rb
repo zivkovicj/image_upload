@@ -4,8 +4,6 @@ class StudentsController < ApplicationController
   before_action :redirect_for_non_admin, only: [:destroy]
   
   include AddStudentStuff
-  include TeachAndLearnOptions
-  
   
   def new
     new_student_stuff
@@ -91,8 +89,8 @@ class StudentsController < ApplicationController
     @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
     @ss = SeminarStudent.find_by(:user => @student, :seminar => @seminar)
     
-    @teach_options = teach_options(@student, @seminar, 5)
-    @learn_options = learn_options(@student, @seminar, 5)
+    @teach_options = @student.teach_options(@seminar, @seminar.rank_objectives_by_need)
+    @learn_options = @student.learn_options(@seminar, @seminar.rank_objectives_by_need)
   end
 
   def destroy

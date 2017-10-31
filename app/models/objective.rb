@@ -23,6 +23,18 @@ class Objective < ApplicationRecord
     
     include ModelMethods
     
+    def fullName
+        name[0,30] 
+    end
+    
+    def priority_from_seminar(seminar)
+        self.objective_seminars.find_by(:seminar => seminar).priority
+    end
+    
+    def students_who_requested(seminar)
+        seminar.seminar_students.where(:learn_request => self.id).count
+    end
+    
     def students_in_need(seminar)
         studsInNeed = 0
         seminar.students.each do |student|
@@ -34,13 +46,9 @@ class Objective < ApplicationRecord
         return studsInNeed
     end
     
-    def fullName
-        name[0,30] 
-    end
+
     
-    def students_who_requested(seminar)
-        seminar.seminar_students.where(:learn_request => self.id).count
-    end
+    
         
 
 end

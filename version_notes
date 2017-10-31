@@ -1,4 +1,11 @@
 
+2.38  IMPROVED RANKASSIGNMENTS BY NEED--PUSHED 10/26/2017
+V Rank assignments by need should be based on the most requested, not the highest need.
+    There are some downsides to this approach, but it should at least run quicker when creating a new consultancy and also when simply viewing a student's page.
+    Because requested is a simple column in the join table. Not a method that looks at every student's readiness, which also iterates through pre-requisites. 
+students_in_need may not be neccesary anymore
+See whether it is actually used in student view
+
 2.37 BUG WITH ADDING STUDENTS
 There was a bug that caused the scoresheet to show "0" for students who were added to a class.
 I found this was caused by the model adding a new objective_student for the assignment, even though the student already had one. The scoresheet was showing the new one.

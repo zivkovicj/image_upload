@@ -31,21 +31,22 @@ Private Repo on Github
 
 CURRENT UPDATE:
 
-2.38  IMPROVED RANKASSIGNMENTS BY NEED
-V Rank assignments by need should be based on the most requested, not the highest need.
-    There are some downsides to this approach, but it should at least run quicker when creating a new consultancy and also when simply viewing a student's page.
-    Because requested is a simple column in the join table. Not a method that looks at every student's readiness, which also iterates through pre-requisites. 
-students_in_need may not be neccesary anymore
-See whether it is actually used in student view
+2.39 CLEAN TEACH OPTIONS
+V Teach_options can be cleaned and incorporate priority. 
+V When D-C checks teach_options, it should just check rank_objectives_by_need instead.
+V Change all calls to rank_objectives_by_need. That's now a model method
+V And teach_options is now a student method
+V Can erase teach_options concern
+
 
 NEXT UPDATE: 
 
-2.39 TEACH OPTIONS INCORPORATE PRIORITY
-The teach_options method currently ignores the priority of the objective. 
-And I think it might be a little cumbersome too. There's probably a more efficient way to operate those methods.
+
 
 TESTING FOR DESK CONSULTANTS METHODS
 Complete one test for each method needed in the DeskConsultants algorithm.
+
+Unplaced students should be one group that contains all unplaced students. Right now, it creates a new group for each unplaced student.
 
 
 COLLECTION OF SMALL FIXES

@@ -1,7 +1,6 @@
 class ConsultanciesController < ApplicationController
     
     include DeskConsultants
-    include RankObjectivesByNeed
 
     def new
         @seminar = Seminar.find(params[:seminar])
@@ -23,7 +22,7 @@ class ConsultanciesController < ApplicationController
         @consultancy = Consultancy.create(:seminar => @seminar)
         
         @students = setup_present_students()
-        @rank_objectives_by_need = rank_objectives_by_need(@seminar)
+        @rank_objectives_by_need = @seminar.rank_objectives_by_need
         @objectiveIds = @rank_objectives_by_need.map(&:id)
         setupStudentHash
         #setobjectivesAndScores(false)

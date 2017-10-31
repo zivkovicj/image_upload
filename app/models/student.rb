@@ -44,6 +44,19 @@ class Student < User
         return pre_points
     end
     
+    def score_on(objective)
+        this_os = self.objective_students.find_by(:objective => objective)
+        return this_os ? this_os.points : 0
+    end
+    
+    def teach_options(seminar, assign_list)
+        assign_list.select{|x| self.score_on(x) >= seminar.consultantThreshold && self.score_on(x) < 100}.take(10) 
+    end
+    
+    def learn_options(seminar, assign_list)
+        assign_list.select{|x| self.score_on(x) < seminar.consultantThreshold && self.check_if_ready(x)}.take(10) 
+    end
+    
     # Checks whether a student has met all pre-requisites for an objective
     def check_if_ready(objective)
         objective.preassigns.each do |preassign|

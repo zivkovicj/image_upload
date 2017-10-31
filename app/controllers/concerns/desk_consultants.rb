@@ -2,7 +2,6 @@
 module DeskConsultants
     extend ActiveSupport::Concern
     
-    include TeachAndLearnOptions
     include SetObjectivesAndScores
     
     # Populate preList with all students who are present today
@@ -88,18 +87,16 @@ module DeskConsultants
       @consultantsNeeded = (classSize/4.to_f).ceil
     
       def checkForFinalBreak()
-        @consultancy.teams.count >= @consultantsNeeded ? true : false
+        @consultancy.teams.count >= @consultantsNeeded
       end
       
       # First look at the priority 3 objectives
       @seminar.objective_seminars.where(:priority => 3).each do |os|
         objective = os.objective
         @rank_by_consulting.each do |student|
-          if need_placement(student)
-            if @scoreHash[objective.id][student.id][:score] >= @cThresh && @scoreHash[objective.id][:need] > 0
-              establish_new_group(student, objective, true, 0)
-              break
-            end
+          if need_placement(student) && @scoreHash[objective.id][student.id][:score] >= @cThresh && @scoreHash[objective.id][:need] > 0
+            establish_new_group(student, objective, true, 0)
+            break
           end
         end
         return if checkForFinalBreak()
@@ -120,9 +117,7 @@ module DeskConsultants
             end
           end
           # If the request didn't work out, look at the student's teach_options
-          @student_scores = student.objective_students.where(objective_id: @objectiveIds)
-          @teach_options = teach_options(student, @seminar, 3)
-          @teach_options.each do |objective|
+          student.teach_options(@seminar, @rank_objectives_by_need).each do |objective|
             if @scoreHash[objective.id][:need] > 0
               establish_new_group(student, objective, true, 0)
               break
@@ -133,8 +128,6 @@ module DeskConsultants
       end
     end
 
-
-    
     ## SORT APPRENTICES INTO CONSULTANT GROUPS ##
 
     # First, try to place apprentices into groups offering their learn Requests
@@ -204,13 +197,9 @@ module DeskConsultants
             if @scoreHash[thisRequest] && @scoreHash[thisRequest][student.id][:score] < @cThresh && @scoreHash[thisRequest][student.id][:ready] && @scoreHash[thisRequest][:priority] > 0
               establish_new_group(student, thisRequest, false, 0)
             else
-              # Last resort is to scan all objectives 
-              @rank_objectives_by_need.each do |objective|
-                if @scoreHash[objective.id][student.id][:score] < @cThresh && @scoreHash[objective.id][student.id][:ready]
-                  establish_new_group(student, objective, false, 0)
-                  break
-                end
-              end
+              # Last resort is to start a new group with the student's first learn option
+              obj = student.learn_options(@seminar, @rank_objectives_by_need)[0]
+              establish_new_group(student, obj, false, 0)
             end
           end
         end

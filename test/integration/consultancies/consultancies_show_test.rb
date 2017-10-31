@@ -3,7 +3,6 @@ require 'test_helper'
 class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
     include DeskConsultants
-    include RankObjectivesByNeed
     include ConsultanciesHelper
     
     def setup
@@ -170,7 +169,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
     test "rank objectives by need" do
         @objective_4.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
-        @rank_objectives_by_need = rank_objectives_by_need(@seminar)
+        @rank_objectives_by_need = @seminar.rank_objectives_by_need
         assert_equal @objective_4, @rank_objectives_by_need[0]
         
         @seminar.seminar_students.find_by(:user => @student_4).update(:learn_request => @objective_3.id)
@@ -179,7 +178,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @seminar.seminar_students.find_by(:user => @student_5).update(:learn_request => @objective_2.id)
         @seminar.reload
         
-        @rank_objectives_by_need = rank_objectives_by_need(@seminar)
+        @rank_objectives_by_need = @seminar.rank_objectives_by_need
         assert_equal @objective_3, @rank_objectives_by_need[0]
         assert_equal @objective_4, @rank_objectives_by_need[1]
         assert_equal @objective_2, @rank_objectives_by_need[2]
@@ -209,7 +208,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         bonusSetup
         
         @rank_by_consulting = setup_rank_by_consulting
-        @rank_objectives_by_need = rank_objectives_by_need(@seminar)
+        @rank_objectives_by_need = @seminar.rank_objectives_by_need
         setupScoreHash
         setupProfList
         setupStudentHash
@@ -264,6 +263,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         # consultantsList
             setupStudentHash()
             @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
+            @rank_objectives_by_need = @seminar.rank_objectives_by_need
             chooseConsultants()
             
             # @student_1 was the first student in @rankByConsulting, but she only 
@@ -326,7 +326,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         setupStudentHash()
         set_objectives_and_scores(false)
         @rank_by_consulting = setup_rank_by_consulting
-        @rank_objectives_by_need = rank_objectives_by_need(@seminar)
+        @rank_objectives_by_need = @seminar.rank_objectives_by_need
         @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
         
         setupScoreHash()

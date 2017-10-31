@@ -6,7 +6,6 @@ class SeminarsController < ApplicationController
     before_action :redirect_for_non_admin,    only: [:index] 
     
     include SetObjectivesAndScores
-    include TeachAndLearnOptions
     
     def new
         @seminar = Seminar.new
@@ -134,8 +133,8 @@ class SeminarsController < ApplicationController
         @current_stars = @total_stars - @ss.benchmark
         @teacher = @seminar.user
         
-        @teach_options = teach_options(@student, @seminar, 5)
-        @learn_options = learn_options(@student, @seminar, 5)
+        @teach_options = @student.teach_options(@seminar, @seminar.rank_objectives_by_need)
+        @learn_options = @student.learn_options(@seminar, @seminar.rank_objectives_by_need)
         
         @unfinished_quizzes = @student.all_unfinished_quizzes(@seminar)
         @desk_consulted_objectives = @student.desk_consulted_objectives(@seminar)
