@@ -1,5 +1,22 @@
 
 
+2.40_DESK_CONSULTANTS_TESTING
+Complete one test for each method needed in the DeskConsultants algorithm.
+Unplaced students should be one group that contains all unplaced students instead of creating a new group for each unplaced student.
+I think there might be a major problem with type mismatch of requests. It's not causing an error in the live site, but it is definitely preventing requests.
+    Problem fixed. Now all references to requests are integers, not associations. 
+Replace the student_hash and most of the score_hash with rails-y methods.
+But probably keep the "need" aspect. Replacing that with a method would require calling the students_in_need method many times. And every call on that iterates through all the scores and the 
+    check_if_needed.
+The instance variables for specific objectives should be adjusted to match the rest of test_helper.rb
+Need to test results when there are two "priority 3" objectives.
+    There could be a problem caused by looping on the second objective.
+I think I skipped a test to make sure that all consultants are qualified
+And apprentices_placed_by_request should be in a team that fits their needs
+Need to order the list of consultancies when teacher checks it
+The delete buttons are out of place there
+Make sure that ajax requests are responding
+
 2.39 CLEAN TEACH OPTIONS
 Teach_options can be cleaned and incorporate priority. 
 When D-C checks teach_options, it should just check rank_objectives_by_need instead.
