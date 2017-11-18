@@ -10,8 +10,9 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     end
     
     test "teach options" do
+        @student_1.objective_students.update_all(:points => 8)
         num_of_objectives = @seminar.objectives.count
-        assert_equal num_of_objectives, @student_1.teach_options(@seminar, @seminar.rank_objectives_by_need).count
+        assert_equal num_of_objectives - 1, @student_1.teach_options(@seminar, @seminar.rank_objectives_by_need).count  # (-1) becaues one of the objectives has zero priority
         assert_not_equal @objective_10, @student_1.teach_options(@seminar, @seminar.rank_objectives_by_need)[0]
         
         @seminar.objective_seminars.find_by(:objective => @objective_10).update(:priority => 3)
@@ -19,7 +20,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
         assert @student_1.teach_options(@seminar, @seminar.rank_objectives_by_need).include?(@objective_20)
         
         @student_1.objective_students.find_by(:objective => @objective_20).update(:points => 2)
-        assert_equal num_of_objectives - 1, @student_1.teach_options(@seminar, @seminar.rank_objectives_by_need).count
+        assert_equal num_of_objectives - 2, @student_1.teach_options(@seminar, @seminar.rank_objectives_by_need).count
         assert_not @student_1.teach_options(@seminar, @seminar.rank_objectives_by_need).include?(@objective_20)
 
         
@@ -37,7 +38,6 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
         @student_1.objective_students.find_by(:objective => @objective_10).update(:points => 2)
         assert_equal 1, @objective_10.mainassigns.count
         @student_1.objective_students.find_by(:objective => mainassign).update(:points => 2)
-        assert_equal 1, @student_1.learn_options(@seminar, @seminar.rank_objectives_by_need).count
         assert @student_1.learn_options(@seminar, @seminar.rank_objectives_by_need).include?(@objective_10)
         assert_not @student_1.learn_options(@seminar, @seminar.rank_objectives_by_need).include?(mainassign)
         

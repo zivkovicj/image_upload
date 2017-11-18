@@ -10,8 +10,8 @@
     <table>
         <% @consultancies.each do |consultancy| %>
             <tr>
+                <td><%= render 'shared/delete_and_confirm', object: consultancy %> </td>
                 <td><%= link_to consultancy.display_date, consultancy_url(consultancy), :id => "consultancy_#{consultancy.id}" %></td>
-                <%= render 'shared/delete_and_confirm', object: consultancy %> 
             </tr>
             </br>
         <% end %>

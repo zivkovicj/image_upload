@@ -49,6 +49,6 @@ class Seminar < ApplicationRecord
   end
   
   def rank_objectives_by_need
-    objectives.select{|z| z.priority_from_seminar(self) > 0}.sort_by{|x| [-x.priority_from_seminar(self), -x.students_who_requested(self)] }
+    objectives.select{|z| z.priority_in(self) > 0}.sort_by{|x| [-x.priority_in(self), -x.students_who_requested(self)] }
   end
 end

@@ -5,18 +5,14 @@ module DeskConsultants
     include SetObjectivesAndScores
     
     # Populate preList with all students who are present today
-    def setup_present_students()
-      stud_list = []
-      @seminar.seminar_students.each do |ss|
-        stud_list.push(ss.user) if ss.present
-      end
-      return stud_list
+    def setup_present_students
+      @seminar.students.select{|x| x.present_in(@seminar)}
     end
     
-    def setupProfList()
+    def setup_prof_list()
         # The main array that is actually used is profList, which sorts students
         # by their total scores
-        @profList = @students.sort {|a,b| a.total_stars(@seminar) <=> b.total_stars(@seminar)}
+        @prof_list = @students.sort {|a,b| a.total_stars(@seminar) <=> b.total_stars(@seminar)}
     end
     
     # Rank students by their adjusted consultant points.
@@ -27,54 +23,25 @@ module DeskConsultants
         return rank_by_consulting
     end
     
-    
-    # studentHash
-    def setupStudentHash()
-      @studentHash = Hash.new
-      @students.each do |student|
-        studId = student.id
-        @studentHash[studId] = Hash.new
-        @studentHash[studId][:firstPlusInit] = student.firstPlusInit
-        this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id)
-        @studentHash[studId][:teach_request] = this_ss.teach_request
-        @studentHash[studId][:learn_request] = this_ss.learn_request
-        @studentHash[studId][:pref_request] = this_ss.pref_request
-        @studentHash[studId][:consultant_days] = student.consultant_days(@seminar)
-      end
-    end          
-    
-    # scoreHash
-    def setupScoreHash()
-      @scoreHash = Hash.new
+    # need_hash
+    def setup_need_hash()
+      become_need_hash = Hash.new
       @seminar.objectives.each do |objective|
-        os = objective.objective_seminars.find_by(:seminar => @seminar)
-        @scoreHash[objective.id] = Hash.new
-        @scoreHash[objective.id][:priority] = os.priority
-        @scoreHash[objective.id][:need] = objective.students_in_need(@seminar)
-        @students.each do |student|
-          @scoreHash[objective.id][student.id] = Hash.new
-          thisScore = student.objective_students.find_by(:objective_id => objective.id)
-          if thisScore
-            @scoreHash[objective.id][student.id][:score] = thisScore.points
-          else
-            @scoreHash[objective.id][student.id][:score] = 0
-          end
-          
-          @scoreHash[objective.id][student.id][:ready] = student.check_if_ready(objective)
-        end
+        become_need_hash[objective.id] = objective.students_in_need(@seminar) / 3
       end
+      return become_need_hash
     end
   
     # Establish a new consultant group
-    def establish_new_group(stud, req, isConsult, bracket)
+    def establish_new_group(stud, obj, isConsult)
       # Bracket 0 = normal
       # Bracket 1 = unplaced students
       # Bracket 2 = absent students
-      new_team = @consultancy.teams.build(:objective => req, :bracket => bracket)
+      new_team = @consultancy.teams.build(:objective => obj, :bracket => 0)
       new_team.consultant = stud if isConsult
       new_team.save
       new_team.users << stud
-      @scoreHash[req.id][:need] -= 3 if req
+      @need_hash[obj.id] -= 1 if obj
     end
     
     def need_placement(student)
@@ -82,125 +49,98 @@ module DeskConsultants
     end
     
     # Choose the consultants
-    def chooseConsultants ()
+    def choose_consultants
       classSize = @students.count
       @consultantsNeeded = (classSize/4.to_f).ceil
+      
+      def consult_list_still_needed
+        @rank_by_consulting.select{|x| need_placement(x)}
+      end
     
-      def checkForFinalBreak()
+      def checkForFinalBreak
         @consultancy.teams.count >= @consultantsNeeded
       end
       
       # First look at the priority 3 objectives
-      @seminar.objective_seminars.where(:priority => 3).each do |os|
-        objective = os.objective
-        @rank_by_consulting.each do |student|
-          if need_placement(student) && @scoreHash[objective.id][student.id][:score] >= @cThresh && @scoreHash[objective.id][:need] > 0
-            establish_new_group(student, objective, true, 0)
-            break
-          end
+      @seminar.objectives.select{|y| y.priority_in(@seminar) == 3}.each do |obj|
+        still_needed = [(@consultantsNeeded - @consultancy.teams.count), @need_hash[obj.id]].min
+        consult_list_still_needed.select{|x| x.score_on(obj) >= @cThresh }.take(still_needed).each do |student|
+          establish_new_group(student, obj, true)
         end
-        return if checkForFinalBreak()
       end
       
-      # Then look at students in order of increasing consultant points 
-      @rank_by_consulting.each do |student|
-        if need_placement(student)
-          # See if student's consultant request will work.
-          thisRequest = @studentHash[student.id][:teach_request]
-          if @scoreHash[thisRequest]
-            a = @scoreHash[thisRequest][:need] > 0
-            b = @scoreHash[thisRequest][student.id][:score] >= @cThresh
-            c = @scoreHash[thisRequest][:priority] > 0
-            if a && b && c 
-              establish_new_group(student, thisRequest, true, 0)
-              next
-            end
-          end
-          # If the request didn't work out, look at the student's teach_options
-          student.teach_options(@seminar, @rank_objectives_by_need).each do |objective|
-            if @scoreHash[objective.id][:need] > 0
-              establish_new_group(student, objective, true, 0)
-              break
-            end
-          end
-          return if checkForFinalBreak()
+      # Then look at students in order of increasing consultant points
+      consult_list_still_needed.each do |student|
+        return if checkForFinalBreak  # Needed in case some potential need to be skipped because they're not qualified
+        # See if student's consultant request will work.
+        this_request = student.teach_request_in(@seminar)
+        obj = Objective.find(this_request) if this_request
+        if obj && @need_hash[this_request] > 0 && student.score_on(obj) >= @cThresh && obj.priority_in(@seminar) > 0
+          establish_new_group(student, obj, true)
+          next  # So that the requested topic isn't replaced with the teach_option topic
         end
+        # If the request didn't work out, look at the student's teach_options
+        obj = student.teach_options(@seminar, @rank_objectives_by_need).detect{|x| @need_hash[x.id] > 0}
+        establish_new_group(student, obj, true) if obj
       end
     end
 
     ## SORT APPRENTICES INTO CONSULTANT GROUPS ##
-
+    
+    def prof_list_still_needed
+      @prof_list.select{|x| need_placement(x)}
+    end
+    
     # First, try to place apprentices into groups offering their learn Requests
-    def placeApprenticesByRequests()
-      @profList.each do |student|
-        if need_placement(student)
-          thisRequest = @studentHash[student.id][:learn_request]
-          if @scoreHash[thisRequest]
-            thisScore = @scoreHash[thisRequest][student.id][:score]
-            if @scoreHash[thisRequest][:priority] > 0 && thisScore < 100 && @scoreHash[thisRequest][student.id][:ready]
-              @consultancy.teams.each do |team|
-                if (team.objective == thisRequest) && (team.has_room)
-                  team.users << stud
-                  break
-                end
-              end
-            end
-          end
+    def place_apprentices_by_requests
+      prof_list_still_needed.each do |student|
+        this_request = student.learn_request_in(@seminar)
+        obj = Objective.find(this_request) if this_request
+        if obj && student.score_on(obj) < 10 && student.check_if_ready(obj)
+          team = @consultancy.teams.detect{|x| x.objective.id == this_request && x.has_room}
+          team.users << student if team
         end
       end
     end
     
     # Most students probably won't be placed by their requests. 
-    def placeApprenticesByMastery()
-      @profList.each do |student|
-        find_placement(student) if need_placement(student)
+    def place_apprentices_by_mastery()
+      prof_list_still_needed.each do |stud|
+        find_placement(stud)
       end
     end
     
-    
-    # Method for looking for a placement for the student
     def find_placement(student)
-      placed = nil
-      @consultancy.teams.each do |team|
-        if (team.has_room)
-          this_assign_id = team.objective.id
-          studentScore = @scoreHash[this_assign_id][student.id][:score] # Student's score for current objective
-          # Note that the score can be >= the lowThresh to allow for zero. But
-          # it must be < highThresh so that students with 100 don't get placed there
-          if (studentScore < @cThresh) && @scoreHash[this_assign_id][student.id][:ready]
-            team.users << student
-            placed = this_assign_id
-            break
-          end
-        end
-      end
-      return placed
+      team = @consultancy.teams.detect{|x| x.has_room && student.score_on(x.objective) < @cThresh &&  student.check_if_ready(x.objective)}
+      team.users << student if team
+      return team
     end
     
-    def checkForLoneStudents()
+    def check_for_lone_students()
       @consultancy.teams.each do |team|
         @consultancy.teams.delete(team) if team.users.count == 1
       end
     end
     
-    def newPlaceForLoneStudents
-      @profList.reverse.each do |student|
-        if need_placement(student)
-          # First, check whether lone student can be placed into an established group
-          if find_placement(student) == nil
-            # If not, try establish a new group for that student. This function is
-            # smelly, but I'm doing it in this order so that other lone students
-            # might also join this group.
-            
-            # Second, try the student's learn_request
-            thisRequest = @studentHash[student.id][:learn_request]
-            if @scoreHash[thisRequest] && @scoreHash[thisRequest][student.id][:score] < @cThresh && @scoreHash[thisRequest][student.id][:ready] && @scoreHash[thisRequest][:priority] > 0
-              establish_new_group(student, thisRequest, false, 0)
-            else
-              # Last resort is to start a new group with the student's first learn option
-              obj = student.learn_options(@seminar, @rank_objectives_by_need)[0]
-              establish_new_group(student, obj, false, 0)
-            end
+    def new_place_for_lone_students
+      prof_list_still_needed.reverse.each do |student|
+        # First, check whether lone student can be placed into an established group
+        if find_placement(student) == nil
+          # If not, try establish a new group for that student. This function is smelly, but I'm doing it in this order so that other lone students
+          # might also join this group.
+          
+          # Second, try the student's learn_request
+          # This should happen if all goes normal.
+          request_id = student.learn_request_in(@seminar)
+          this_request = Objective.find(request_id) if request_id 
+          if this_request && student.score_on(this_request) < @cThresh && student.check_if_ready(this_request) && this_request.priority_in(@seminar) > 0
+            establish_new_group(student, this_request, false)
+          else
+            # Last resort is to start a new group with the student's first learn option
+            # This is mostly for the case where the student doesn't have a learn_request
+            # This can also happen if something happened to the student's learn_request after it was made. For example, the teacher changed the priority to zero.
+            obj = student.learn_options(@seminar, @rank_objectives_by_need)[0]
+            establish_new_group(student, obj, false) if obj
           end
         end
       end
@@ -222,10 +162,11 @@ module DeskConsultants
       end
     end
     
-    def areSomeUnplaced()
-      @profList.each do |student|
-        if need_placement(student)
-          establish_new_group(student,nil,false,1)
+    def are_some_unplaced
+      if prof_list_still_needed.present?
+        unplaced_team = @consultancy.teams.create(:bracket => 1)
+        prof_list_still_needed.each do |student|
+          unplaced_team.users << student
         end
       end
     end

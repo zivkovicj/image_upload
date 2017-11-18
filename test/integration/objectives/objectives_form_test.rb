@@ -31,7 +31,6 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     test "user creates objective" do
         # Before Adding Objective
         oldPreconditionCount = Precondition.count
-        preReqAssign = @seminar.objectives.second
         capybara_login(@teacher_1)
         click_on('1st Period')
         submit_objective
@@ -39,7 +38,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_selector('div', :id => "seminars_to_include")
         name = "009 Compare Unit Rates"
         fill_in "name", with: name
-        check("check_#{preReqAssign.id}")
+        check("check_#{@objective_20.id}")
         check('1st Period')
         submit_objective
         
@@ -56,9 +55,9 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert @seminar.objectives.include?(@new_objective)
         
         @newPrecondition = Precondition.last
-        assert_equal oldPreconditionCount + 1, Precondition.count
+        assert_equal oldPreconditionCount + 2, Precondition.count  # Because the pre-req had a pre-req
         assert_equal @new_objective.id, @newPrecondition.mainassign_id
-        assert_equal preReqAssign.id, @newPrecondition.preassign_id
+        assert_equal @objective_20.id, @newPrecondition.preassign_id
         
         assert @seminar.objectives.include?(@new_objective)
         @seminar.students.each do |student|
@@ -68,13 +67,12 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     
     test "admin creates objective" do
         oldPreconditionCount = Precondition.count
-        preReqAssign = @seminar.objectives.second
         capybara_login(@admin_user)
         submit_objective
 
         name = "010 Destroy Unit Rates"
         fill_in "name", with: name
-        check("check_#{preReqAssign.id}")
+        check("check_#{@objective_20.id}")
         assert_no_selector('div', :id => "seminars_to_include")
         submit_objective
         
@@ -87,9 +85,9 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_equal 0, @new_objective.labels.count
         
         @newPrecondition = Precondition.last
-        assert_equal oldPreconditionCount + 1, Precondition.count
+        assert_equal oldPreconditionCount + 2, Precondition.count  # Because the pre-req has a pre-req.
         assert_equal @new_objective.id, @newPrecondition.mainassign_id
-        assert_equal preReqAssign.id, @newPrecondition.preassign_id
+        assert_equal @objective_20.id, @newPrecondition.preassign_id
     end
         
     test "add objective to seminar" do

@@ -33,6 +33,11 @@ objective_60:
   name: volume of cylinders
   extent: "private"
   user: archer
+  
+objective_zero_priority:
+  name: volume of cones
+  extent: "private"
+  user: archer
 
   
 # Second Seminar

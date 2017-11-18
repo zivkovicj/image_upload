@@ -28,6 +28,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "setup quiz" do
+        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 2)
         old_quiz_count = Quiz.count
         old_riposte_count = Riposte.count
         

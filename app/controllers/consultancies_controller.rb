@@ -12,7 +12,6 @@ class ConsultanciesController < ApplicationController
     
     def create
         @seminar = Seminar.includes(:seminar_students).find(params[:consultancy][:seminar])
-        @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
         
         check_if_date_already
         check_if_ten
@@ -21,24 +20,21 @@ class ConsultanciesController < ApplicationController
         @cThresh = @seminar.consultantThreshold
         @consultancy = Consultancy.create(:seminar => @seminar)
         
-        @students = setup_present_students()
+        @students = setup_present_students
         @rank_objectives_by_need = @seminar.rank_objectives_by_need
-        @objectiveIds = @rank_objectives_by_need.map(&:id)
-        setupStudentHash
-        #setobjectivesAndScores(false)
         @rank_by_consulting = setup_rank_by_consulting
-        setupScoreHash
-        setupProfList
+        @need_hash = setup_need_hash
+        @prof_list = setup_prof_list
         
         # Each function in these steps is only called once. But I wrote them as
         # separate functions in order to better test the individual pieces.
-        chooseConsultants()
-        placeApprenticesByRequests()
-        placeApprenticesByMastery()
-        checkForLoneStudents()
-        newPlaceForLoneStudents()
-        # assignSGSections()
-        areSomeUnplaced()
+        choose_consultants
+        place_apprentices_by_requests
+        place_apprentices_by_mastery
+        check_for_lone_students
+        new_place_for_lone_students
+        # assignSGSections
+        are_some_unplaced
         
         current_user.update!(:current_class => @seminar.id)
         render 'show'
@@ -58,7 +54,7 @@ class ConsultanciesController < ApplicationController
     
     def index
         @seminar = Seminar.find(params[:seminar])
-        @consultancies = Consultancy.where(:seminar => @seminar)
+        @consultancies = Consultancy.where(:seminar => @seminar).order(:updated_at)
     end
     
     def destroy

@@ -28,6 +28,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         @objective_40.objective_students.find_by(:user => @student_1).update(:points => 6)
         @objective_50.objective_students.find_by(:user => @student_1).update(:points => 8)
         @objective_80.objective_students.find_by(:user => @student_1).update(:points => 8)
+        @main_objective.objective_students.find_by(:user => @student_1).update(:points => 2)
         @already_preassign_to_main.objective_students.find_by(:user => @student_1).update(:points => 6)
         assert_not @seminar.all_pretest_objectives(@student_1).include?(@objective_40)
         assert_not @seminar.all_pretest_objectives(@student_1).include?(@objective_50)
@@ -36,9 +37,11 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         assert @seminar.all_pretest_objectives(@student_1).include?(@objective_80)
         
         #Student 2
+        @objective_10.objective_students.find_by(:user => @student_2).update(:points => 2)
         @objective_40.objective_students.find_by(:user => @student_2).update(:points => 6)
         @objective_50.objective_students.find_by(:user => @student_2).update(:points => 8)
         @objective_80.objective_students.find_by(:user => @student_2).update(:points => 10)
+        @main_objective.objective_students.find_by(:user => @student_2).update(:points => 2)
         @already_preassign_to_main.objective_students.find_by(:user => @student_2).update(:points => 8)
         assert_not @seminar.all_pretest_objectives(@student_2).include?(@objective_40)
         assert_not @seminar.all_pretest_objectives(@student_2).include?(@objective_50)
@@ -62,12 +65,10 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "available from desk consultants" do
+        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 8)
         assert_not @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
         
         setup_consultancies
-        assert @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
-        
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 8)
         assert @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
         
         @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 10)
@@ -104,6 +105,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     test "unfinished quizzes" do
         @seminar.objective_seminars.update_all(:pretest => 0)
         @seminar.objective_seminars.find_by(:objective => @objective_10).update(:pretest => 1)
+        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 0)
        
         go_to_first_period
         assert_no_text("Unfinished Quizzes")

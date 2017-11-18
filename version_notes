@@ -1,6 +1,14 @@
 
+
+2.39 CLEAN TEACH OPTIONS
+Teach_options can be cleaned and incorporate priority. 
+When D-C checks teach_options, it should just check rank_objectives_by_need instead.
+Change all calls to rank_objectives_by_need. That's now a model method
+And teach_options is now a student method
+Can erase teach_options concern
+
 2.38  IMPROVED RANKASSIGNMENTS BY NEED--PUSHED 10/26/2017
-V Rank assignments by need should be based on the most requested, not the highest need.
+Rank assignments by need should be based on the most requested, not the highest need.
     There are some downsides to this approach, but it should at least run quicker when creating a new consultancy and also when simply viewing a student's page.
     Because requested is a simple column in the join table. Not a method that looks at every student's readiness, which also iterates through pre-requisites. 
 students_in_need may not be neccesary anymore

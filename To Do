@@ -31,26 +31,29 @@ Private Repo on Github
 
 CURRENT UPDATE:
 
-2.39 CLEAN TEACH OPTIONS
-V Teach_options can be cleaned and incorporate priority. 
-V When D-C checks teach_options, it should just check rank_objectives_by_need instead.
-V Change all calls to rank_objectives_by_need. That's now a model method
-V And teach_options is now a student method
-V Can erase teach_options concern
+2.40_DESK_CONSULTANTS_TESTING
+V Complete one test for each method needed in the DeskConsultants algorithm.
+V Unplaced students should be one group that contains all unplaced students instead of creating a new group for each unplaced student.
+V I think there might be a major problem with type mismatch of requests. It's not causing an error in the live site, but it is definitely preventing requests.
+    Problem fixed. Now all references to requests are integers, not associations. 
+V Replace the student_hash and most of the score_hash with rails-y methods.
+V But probably keep the "need" aspect. Replacing that with a method would require calling the students_in_need method many times. And every call on that iterates through all the scores and the 
+    check_if_needed.
+V The instance variables for specific objectives should be adjusted to match the rest of test_helper.rb
+V Need to test results when there are two "priority 3" objectives.
+    V There could be a problem caused by looping on the second objective.
+V I think I skipped a test to make sure that all consultants are qualified
+V And apprentices_placed_by_request should be in a team that fits their needs
+V Need to order the list of consultancies when teacher checks it
+V The delete buttons are out of place there
+V The requests aren't updating through ajax again.
+V Attendance isn't even responding
+
 
 
 NEXT UPDATE: 
 
-
-
-TESTING FOR DESK CONSULTANTS METHODS
-Complete one test for each method needed in the DeskConsultants algorithm.
-
-Unplaced students should be one group that contains all unplaced students. Right now, it creates a new group for each unplaced student.
-
-
 COLLECTION OF SMALL FIXES
-Remove all visuals pertaining to Benchmark Stars
 Newly-created students need to get a school id if the teacher is verified.
 README for loading only specific jquery-ui components.
     https://github.com/jquery-ui-rails/jquery-ui-rails
@@ -70,6 +73,32 @@ Live site has errors in student searching. It occurred when trying to add Meliss
 Consultants button in NavBar needs to link to consultancy show page  
 Set up billing alerts with AWS.
 I moved the javascripts to the end of the body tag on the chance that it might help with loading. Test on the live site with school computers using both ways.
+Remove all visuals pertaining to Benchmark Stars
+
+IN-APP GOAL TRACKING   
+Students can set a goal for each term, and checkpoints toward meeting those goals
+Goal model
+    Action_1 ...
+    Action_8
+    Style (Percent or Number)
+Goal_Student
+    Student
+    Goal
+    Term
+Checkpoint
+    Belongs to one goal_student
+    Action (Associates with one of the goal's 8 possible actions)
+    Made
+    Notes
+    Due Date
+Teacher can set due dates.
+Student logs in. Can choose goal or request
+In goal menu, student sees list of four goals
+Can edit one of the four
+Teacher can approve goal choice, or change it
+Student can select actions
+Teacher can edit actions, but student cannot
+Teacher can see a list of current checkpoints
 
 
 OTHER TESTS TO ADD
@@ -88,7 +117,6 @@ Test that removing a student from a class doesn't delete his/her scores
 I tried for a few hours to test clicking on the learn_request to see if it changes that student's request. It seems like I need the capybara-webkit gem 
     to do that. But installing that gem seemed impossible at the time. I think the problem was the workspace enviroment that resulted from the Rails Tutorial.
     Might be worth looking into that again.
-What tests are needed for teach_request and learn_request
 Remove an objective from a class
 Remove a class from an objective
 Remove a question from a label
@@ -112,6 +140,14 @@ Add enough question fixtures to test pagination in index
     objectives
     Students
     Users
+Test that consultant_days doesn't include other seminars
+Test that a limited number of groups are created if many students are qualified to connsult.
+    With priority 3's
+    And total consultants
+
+POSSIBLE UPDATE TO D-C ALGORITHM
+If no students are proficient in a priority 3 assignments, consider setting the Threshold to consult that topic to be the highest score in class.
+    But not if it's zero.
 
 EASIER SEARCHING
 Searching needs to collect results that are similar to what the user typed.
@@ -238,6 +274,7 @@ Errors for updating scores to invalid values
 STUDENT REQUEST UPDATING
 Update a student's learn_requests when that student passes an objective. 
     If that student had learn_requested to learn the objective she just passed, her learn_request should become neutral.
+Remove the part of the D-C algorithm that checks whether student has scored below 100 in his request.
 
 TEACHER EDITING OF STUDENT PASSWORDS
 Allow teachers to reset student passwords, but not to edit them.
@@ -350,9 +387,6 @@ Perhaps student comments within classes.
 REFRESHING CERTAIN SCREENS
 The "question details" screen causes an error when user refreshes. Perhaps it's because it's a custom view. Maybe I should simply load that functionality into a standard view.
 Reloading label form directs to index
-
-IN-APP GOAL TRACKING   
-Students can set a goal for each term, and checkpoints toward meeting those goals
     
 ONLY ALLOW QUIZ-TAKING ON CERTAIN DAYS AND TIMES        
 Main Goal: Teacher can lock and unlock quizzes

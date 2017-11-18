@@ -17,7 +17,7 @@ class Student < User
     end
     
     # Returns first name with limit plus last initial
-    def firstPlusInit
+    def first_plus_init
         "#{first_name[0,15].split.map(&:capitalize).join(' ')} #{last_name[0,1].split.map(&:capitalize).join(' ')}" 
     end
     
@@ -49,12 +49,24 @@ class Student < User
         return this_os ? this_os.points : 0
     end
     
+    def learn_request_in(seminar)
+        self.seminar_students.find_by(:seminar => seminar).learn_request
+    end
+    
+    def teach_request_in(seminar)
+        self.seminar_students.find_by(:seminar => seminar).teach_request
+    end
+    
     def teach_options(seminar, assign_list)
         assign_list.select{|x| self.score_on(x) >= seminar.consultantThreshold && self.score_on(x) < 100}.take(10) 
     end
     
     def learn_options(seminar, assign_list)
         assign_list.select{|x| self.score_on(x) < seminar.consultantThreshold && self.check_if_ready(x)}.take(10) 
+    end
+    
+    def present_in(seminar)
+        self.seminar_students.find_by(:seminar => seminar).present
     end
     
     # Checks whether a student has met all pre-requisites for an objective

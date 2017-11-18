@@ -27,7 +27,7 @@ class Objective < ApplicationRecord
         name[0,30] 
     end
     
-    def priority_from_seminar(seminar)
+    def priority_in(seminar)
         self.objective_seminars.find_by(:seminar => seminar).priority
     end
     

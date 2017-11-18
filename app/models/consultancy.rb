@@ -4,6 +4,6 @@ class Consultancy < ApplicationRecord
     has_many :users, through: :teams
     
     def display_date
-       created_at.strftime("%B %d, %Y") 
+       updated_at.strftime("%B %d, %Y") 
     end
 end

@@ -112,12 +112,12 @@ class ActiveSupport::TestCase
     @other_p = pictures(:three)
   end
   
-  def setup_scores()
+  def setup_scores
     Seminar.all.each do |seminar|
       seminar.objectives.each do |objective|
         seminar.students.each do |student|
           if student.objective_students.find_by(:objective => objective) == nil
-            student.objective_students.create(:objective => objective, :points => 7)
+            student.objective_students.create(:objective => objective, :points => rand(11))
           end
         end
       end

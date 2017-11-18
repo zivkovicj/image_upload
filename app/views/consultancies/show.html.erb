@@ -44,7 +44,7 @@
     <p class = "studentName center">
       <% this_student = team.users[num] %>
       <% if this_student %>
-        <%= this_student.firstPlusInit %>
+        <%= this_student.first_plus_init %>
         <% this_score = this_student.objective_students.find_by(:objective => team.objective) %>
         <% if this_score && this_score.points == 100 %>
           <br/><small>(100%)</small>
@@ -65,13 +65,13 @@
   </td>
 <% end %>
 
-<% @unplaced_team = @consultancy.teams.where(:bracket => 1).first %>
+<% @unplaced_team = @consultancy.teams.find_by(:bracket => 1) %>
 <% if @unplaced_team %>
   <div class="singleOption lowSingOpt">
     <h3>These students were not placed in a group:</h3>
     <h4>(The most common reason is because these students have passed all available objectives)</h4>
     <% @unplaced_team.users.each do |student| %>
-      <p class="studentName"><%= student.firstPlusInit %></p>
+      <p class="studentName"><%= student.first_plus_init %></p>
     <% end %>
   </div>
 <% end %>
