@@ -1,0 +1,14 @@
+<h2>Goal for Term <%= @gs.term %></h2>
+
+
+<%= form_tag update_checkpoints_goal_student_path do %>
+    <% @gs.checkpoints.each do |checkpoint| %>
+        <h5>Checkpoint <%= checkpoint.number %></h5>
+        <% which_array = checkpoint.number == 2 ? @second_action_array : @action_array %>
+        <%= select("syl[#{checkpoint.id}]", "action", which_array, :class => "select_box left_box") %>
+    <% end %>
+    </br>
+
+    <%= submit_tag "Save These Checkpoints" %>
+
+<% end %>

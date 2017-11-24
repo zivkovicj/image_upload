@@ -124,12 +124,27 @@ class ActiveSupport::TestCase
     end
   end
   
+  def setup_goals
+    Seminar.all.each do |seminar|
+      seminar.students.each do |stud|
+        4.times do |n|
+          stud.goal_students.create(:seminar_id => seminar.id, :term => n+1)
+        end
+      end
+    end
+  end
+  
   def is_logged_in?
     !session[:user_id].nil?
   end
   
   def log_in_as(user)
     session[:user_id] = user.id
+  end
+  
+  def log_out
+    click_on("Account")
+    click_on("Log out")
   end
   
   def assert_on_teacher_page

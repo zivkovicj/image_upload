@@ -310,5 +310,63 @@ t2.users << Student.all[5]
 t2.users << Student.all[6]
 t2.users << Student.all[7]
 
+school_array = 
+    [["Beaver High School", "Beaver", "UT"],
+    ["Milford High School", "Milford", "UT"],
+    ["Bear River High School", "Garland", "UT"],
+    ["Box Elder High School", "Brigham", "UT"],
+    ["Beaver High School", "Beaver", "UT"],
+    ["Cache High School", "North Logan", "UT"],
+    ["Mountain Crest High School", "Hyrum", "UT"],
+    ["Sky View High School", "Smithfield", "UT"],
+    ["Logan High School", "Logan", "UT"],
+    ["East Carbon High School", "East Carbon", "UT"],
+    ["Manila High School", "Manila", "UT"],
+    ["Altamont High School", "Altamont", "UT"],
+    ["Green River High School", "Green River", "UT"],
+    ["East High School", "Salt Lake City", "UT"],
+    ["West High School", "Salt Lake City", "UT"],
+    ["Highland High School", "Salt Lake City", "UT"],
+    ["Monticello High School", "Monticello", "UT"],
+    ["Cedar Ridge High School", "Richfield", "UT"],
+    ["North Summit High School", "Coalville", "UT"],
+    ["Blue Peak High School", "Toole", "UT"],
+    ["Wasatch High School", "Heber", "UT"],
+    ["Carson High School", "Carson City", "NV"],
+    ["Clark High School", "Las Vegas", "NV"]]
     
-    
+school_array.each do |school|
+    School.create(:name => school[0], :city => school[1], :state => school[2])
+end
+
+goal_array = [
+    ["Turn in assignments",
+        ["Write all assignments in my planner.", "Check my grades online to see which assignments I'm missing.","Choose a classmate who is very good at completing assignments. Ask to be partners with that classmate."],
+        ["Turn in (?) % of my assignments so far."]],
+    ["Come to class on time",
+        ["Write a description of the reasons why I am sometimes tardy, and a short plan for how I will change my habits.", "Identify a friend who causes me to be tardy often."],
+        ["Come to class on time for (?) % of the school days so far."]]]
+
+goal_array.each do |this_goal|
+    Goal.create(:name => this_goal[0], :action_0 => this_goal[1][0], :action_1 => this_goal[1][1], :action_2 => this_goal[1][2], :action_3 => this_goal[1][3], :action_4 => this_goal[1][4], :action_5 => this_goal[1][5], 
+        :action_6 => this_goal[1][6], :action_7 => this_goal[1][7], :second_action_0 => this_goal[2][0], :second_action_1 => this_goal[2][1], :second_action_2 => this_goal[2][2])
+end
+
+Teacher.all[0..5].each do |teach|
+    teach.update(:school => School.first)
+end
+Teacher.all[6..8].each do |teach|
+    teach.update(:school => School.second)
+end
+
+Student.all.each do |stud|
+    stud.update(:sponsor => stud.seminars.first.user)
+    stud.update(:school => stud.sponsor.school)
+    stud.seminars.each do |seminar|
+        4.times do |n|
+            stud.goal_students.create(:seminar => seminar, :term => n+1)
+        end
+    end
+end
+
+

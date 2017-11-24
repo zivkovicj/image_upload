@@ -80,6 +80,25 @@ ready = ->
                 data:
                     seminar_student:
                         pref_request: req_id
+    
+    if $('.goal_approval').length > 0
+        $('.goal_approval').on "click", ->
+            $(this).remove()
+            gs_id = $(this).attr('gs_id')
+            url = '/goal_students/'+gs_id
+            this_goal_id = $("#gs_"+gs_id+" :selected").val()
+            alert(this_goal_id)
+            $.ajax
+                type: "PUT",
+                url: url,
+                dataType: "json"
+                data:
+                    goal_student:
+                        approved: true
+                        goal_id: this_goal_id
+
+        $('.goal_change').on "click", ->
+            gs_id = $(this).attr('gs_id')
                         
     
     if $('.tyrion').length > 0

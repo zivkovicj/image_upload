@@ -10,13 +10,57 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170924201308) do
+ActiveRecord::Schema.define(version: 20171118161414) do
+
+  create_table "checkpoints", force: :cascade do |t|
+    t.integer  "goal_student_id"
+    t.integer  "number"
+    t.string   "action"
+    t.string   "achievement"
+    t.text     "comments"
+    t.date     "due_date"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "consultancies", force: :cascade do |t|
     t.integer  "seminar_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["seminar_id"], name: "index_consultancies_on_seminar_id"
+  end
+
+  create_table "goal_students", force: :cascade do |t|
+    t.integer  "term"
+    t.integer  "goal_id"
+    t.integer  "user_id"
+    t.integer  "seminar_id"
+    t.integer  "target"
+    t.boolean  "approved"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["goal_id", "user_id"], name: "index_goal_students_on_goal_id_and_user_id"
+    t.index ["goal_id"], name: "index_goal_students_on_goal_id"
+    t.index ["seminar_id"], name: "index_goal_students_on_seminar_id"
+    t.index ["user_id"], name: "index_goal_students_on_user_id"
+  end
+
+  create_table "goals", force: :cascade do |t|
+    t.string   "action_0"
+    t.string   "action_1"
+    t.string   "action_2"
+    t.string   "action_3"
+    t.string   "action_4"
+    t.string   "action_5"
+    t.string   "action_6"
+    t.string   "action_7"
+    t.string   "second_action_0"
+    t.string   "second_action_1"
+    t.string   "second_action_2"
+    t.integer  "style"
+    t.string   "name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "label_objectives", force: :cascade do |t|

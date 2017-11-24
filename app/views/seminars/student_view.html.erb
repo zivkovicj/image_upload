@@ -17,8 +17,6 @@
     <% end %>
 <% end %>
 
-
-
 <div class="row">
     <div class="col-sm-7 singleOption">
         <h1>&emsp;&emsp;<%= @student.fullName %>&emsp;&emsp; </br><small><%= @seminar.name %>&emsp; <%= @teacher.name_with_title %></small></h1>
@@ -32,6 +30,18 @@
         <h2>Current Stars for this Grading Term</h2>
         <h1><%= @current_stars %></h1>
         <h3>Total stars: <%= @total_stars %></h3>
+    </div>
+</div>
+</br>
+
+<div class="row">
+    <div class="singleOption">
+        <h2>Goals</h2>
+        <% @goal_students.each_with_index do |gs, index| %>
+            <h4>Term <%= gs.term %></h4>
+            <%= button_to( "Edit This Goal", edit_goal_student_path(gs), :method => :get,
+                :class => "btn btn-lg btn-primary", :id => "edit_goal_student_#{index}") %>
+        <% end %>
     </div>
 </div>
 </br>

@@ -7,6 +7,8 @@ class Seminar < ApplicationRecord
   has_many    :objectives, through: :objective_seminars
   has_many    :consultancies, dependent: :destroy
   has_many    :teams, through: :consultancies
+  has_many    :goal_students
+  
   
   validates :user_id, presence: true
   validates :name, presence: true, length: { maximum: 40 }
@@ -50,5 +52,15 @@ class Seminar < ApplicationRecord
   
   def rank_objectives_by_need
     objectives.select{|z| z.priority_in(self) > 0}.sort_by{|x| [-x.priority_in(self), -x.students_who_requested(self)] }
+  end
+  
+  def set_random_goals
+    self.students.each do |stud|
+      stud.goal_students.each do |gs|
+        if rand(2) == 1
+          gs.update(:goal => Goal.all[rand(Goal.count)])
+        end
+      end
+    end
   end
 end

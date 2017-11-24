@@ -118,8 +118,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
             click_on("Next Question")
         end
        
-        click_on("Account")
-        click_on("Log out")
+        log_out
        
         go_to_first_period
         assert_text("Unfinished Quizzes")

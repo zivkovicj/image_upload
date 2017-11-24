@@ -73,6 +73,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     
     #Setup before adding student
     old_ss_count = SeminarStudent.count
+    old_goal_student_count = @seminar.goal_students.count
     #seatChartCount = @seminar.seating.count
     old_score_count = ObjectiveStudent.count
     assignment_count = @seminar.objectives.select{|x| !@student_80.objectives.include?(x) }.count
@@ -101,6 +102,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     #assert_equal seatChartCount + 1, @seminar.seating.count
     assert_equal old_score_count + assignment_count, ObjectiveStudent.count
     assert_equal 1, @student_80.objective_students.where(:objective => first_assign).count
+    assert_equal old_goal_student_count + 4, @seminar.goal_students.count
   end
   
   test "unverified teacher" do

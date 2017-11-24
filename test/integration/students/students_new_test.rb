@@ -9,8 +9,9 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
     end
     
     test 'create new students' do
-        oldAulaCount = SeminarStudent.count
-        oldScoreCount = ObjectiveStudent.count
+        old_ss_count = SeminarStudent.count
+        old_score_count = ObjectiveStudent.count
+        old_goal_student_count = @seminar.goal_students.count
         assignmentCount = @seminar.objectives.count
         
         go_to_create_student_view
@@ -40,8 +41,12 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         click_on("Create these student accounts")
         
         assert_equal @old_stud_count+5, Student.count
-        assert_equal oldScoreCount + (assignmentCount*5), ObjectiveStudent.count
-        assert_equal oldAulaCount + 5, SeminarStudent.count
+        assert_equal old_score_count + (assignmentCount*5), ObjectiveStudent.count
+        assert_equal old_ss_count + 5, SeminarStudent.count
+        assert_equal old_goal_student_count + 20, @seminar.goal_students.count
+        @gs = @seminar.goal_students.order(:created_at).last
+        assert_equal 3, @gs.checkpoints.count
+        assert_equal 4, @seminar.goal_students.last.term
         
         first_new_student = Student.find_by(:last_name => "Labonte")
         thisId = first_new_student.id
