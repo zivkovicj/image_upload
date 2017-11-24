@@ -75,7 +75,7 @@ module DeskConsultants
         # See if student's consultant request will work.
         this_request = student.teach_request_in(@seminar)
         obj = Objective.find(this_request) if this_request
-        if obj && @need_hash[this_request] > 0 && student.score_on(obj) >= @cThresh && obj.priority_in(@seminar) > 0
+        if @need_hash[this_request] && @need_hash[this_request] > 0 && student.score_on(obj) >= @cThresh && obj.priority_in(@seminar) > 0
           establish_new_group(student, obj, true)
           next  # So that the requested topic isn't replaced with the teach_option topic
         end
