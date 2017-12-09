@@ -4,30 +4,40 @@ one:
   name: 1st Period
   user: archer
   consultantThreshold: 7
+  term: 1
 
 two:
   name: 2nd Period
   user: archer
   consultantThreshold: 7
+  term: 1
 
 three:
   name: 3rd Period
   user: archer
   consultantThreshold: 7
+  term: 1
+  which_checkpoint: 0
   
 four:
   name: Zacky's first period
   user: zacky
   consultantThreshold: 7
+  term: 1
+  which_checkpoint: 0
   
 <% 30.times do |n| %>
 seminar_<%= n %>:
   name:  <%= "Seminar #{n}" %>
   user: archer
   consultantThreshold: 7
+  term: 1
+  which_checkpoint: 0
 <% end %>
 
 unverified_teacher_class:
   name: unverified teachers class
   user: user_1
   consultantThreshold: 7
+  term: 1
+  which_checkpoint: 0

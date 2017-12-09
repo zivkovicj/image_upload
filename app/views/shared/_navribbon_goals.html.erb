@@ -1,0 +1,32 @@
+
+<div class="ribbon">
+    <table class="table-borderless">
+        
+        <tr>
+            <td><h2>Switch to Term</h2></td>
+            <td class="spacer"></td>
+            <% 4.times do |n| %>
+                <% this_link = action_name=="goals_approve" ? approve_goal_student_path(:seminar => @seminar, :term => n, :override => true) : goal_students_path(@seminar, :term => n, :override => true) %>
+                <td class="<%= 'highlighted' if n==@this_term %>">
+                    <h2>
+                        <%= link_to n+1, this_link %>
+                    </h2>
+                </td>
+            <% end %>
+        </tr>
+        
+        
+        <tr>
+            <td><h2>Switch to Checkpoint</h2></td>
+            <td class="spacer"></td>
+            <% 4.times do |n| %>
+                <% this_link = action_name=="goals_approve" ? approve_goal_student_path(:seminar => @seminar, :which_checkpoint => n, :override => true) : goal_students_path(@seminar, :which_checkpoint => n, :override => true) %>
+                <td class="<%= 'highlighted' if n==@this_checkpoint %>">
+                    <h2>
+                        <%= link_to n + 1, this_link %>
+                    </h2>
+                </td>
+            <% end %>
+        </tr>
+    </table>
+</div>

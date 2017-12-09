@@ -1,0 +1,9 @@
+
+
+<%= form_for(@goal_student) do |f| %>
+    <%= f.label :goal %>
+    <%= f.collection_select :goal_id, Goal.all, :id, :name, prompt: true %>
+    <%= f.label :target %>
+    <%= f.select(:target, percent_array.collect{|p| [ p[0], p[1] ] }) %>
+    <%= f.submit "Save This Goal", class: "btn btn-primary" %>
+<% end %>

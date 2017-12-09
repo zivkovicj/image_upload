@@ -80,6 +80,61 @@ ready = ->
                 data:
                     seminar_student:
                         pref_request: req_id
+    
+    if $('.achievement_change').length > 0
+        $('.achievement_change').on "change", ->
+            checkpoint_id = $(this).attr('checkpoint_id')
+            url = '/checkpoints/'+checkpoint_id
+            $('#achievement_text_'+checkpoint_id).text($("option:selected", this).text())
+            $.ajax
+                type: "PUT",
+                url: url,
+                dataType: "json"
+                data:
+                    checkpoint:
+                        achievement: $(this).val()
+            
+    
+    if $('.goal_change').length > 0
+        $('.goal_approval').on "click", ->
+            $(this).remove()
+            gs_id = $(this).attr('gs_id')
+            url = '/goal_students/'+gs_id
+            $.ajax
+                type: "PUT",
+                url: url,
+                dataType: "json"
+                data:
+                    goal_student:
+                        approved: true
+
+        $('.goal_change').on "change", ->
+            gs_id = $(this).attr('gs_id')
+            url = '/goal_students/'+gs_id
+            $('#approval_button_'+gs_id).fadeOut()
+            $('#goal_text_'+gs_id).text($("option:selected", this).text())
+            $.ajax
+                type: "PUT",
+                url: url,
+                dataType: "json"
+                data:
+                    goal_student:
+                        approved: true
+                        goal_id: $(this).val()
+        
+        $('.target_change').on "change", ->
+            gs_id = $(this).attr('gs_id')
+            url = '/goal_students/'+gs_id
+            $('#approval_button_'+gs_id).fadeOut()
+            $('#target_text_'+gs_id).text($(this).val()+" %")
+            $.ajax
+                type: "PUT",
+                url: url,
+                dataType: "json"
+                data:
+                    goal_student:
+                        approved: true
+                        target: $(this).val()
                         
     
     if $('.tyrion').length > 0

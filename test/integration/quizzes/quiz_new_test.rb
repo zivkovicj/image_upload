@@ -9,6 +9,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         setup_objectives
         setup_questions
         setup_scores
+        setup_goals
     end
     
     def answer_question_correctly
@@ -32,7 +33,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         old_quiz_count = Quiz.count
         old_riposte_count = Riposte.count
         
-        setup_consultancies()
+        setup_consultancies
         
         go_to_first_period
         begin_quiz

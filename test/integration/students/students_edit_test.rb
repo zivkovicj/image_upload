@@ -6,6 +6,7 @@ class StudentsEditTest < ActionDispatch::IntegrationTest
        setup_users
        setup_scores
        setup_seminars
+       setup_goals
     end
     
     def student_edit_stuff

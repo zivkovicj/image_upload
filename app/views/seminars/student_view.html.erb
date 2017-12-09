@@ -17,8 +17,6 @@
     <% end %>
 <% end %>
 
-
-
 <div class="row">
     <div class="col-sm-7 singleOption">
         <h1>&emsp;&emsp;<%= @student.fullName %>&emsp;&emsp; </br><small><%= @seminar.name %>&emsp; <%= @teacher.name_with_title %></small></h1>
@@ -32,6 +30,81 @@
         <h2>Current Stars for this Grading Term</h2>
         <h1><%= @current_stars %></h1>
         <h3>Total stars: <%= @total_stars %></h3>
+    </div>
+</div>
+</br>
+
+<div class="row">
+    <div class="singleOption">
+        <h3>Your Goal for <%= (@this_term + 1).ordinalize %> Term </h3>
+        <% if @this_gs.goal %>
+            <h2><%= @this_gs.statement_with_target %></h2>
+            </br>
+            <table class="table-borderless">
+                <th colspan="2"></th><th>Checkpoints</th>
+                <% @this_gs.checkpoints.each_with_index do |checkpoint, index| %>
+                    <% this_achievement = checkpoint.achievement %>
+                    <tr>
+                        <td><h4><%= index + 1 %>) &nbsp;</h4></td>
+                        <% if this_achievement %>
+                            <% this_color = @this_gs.target && this_achievement >= @this_gs.target ? "#AAFFAA" : "#BB6666" %>
+                            <td bgcolor="<%= this_color %>">
+                                <h3 class="center"><%= this_achievement %></h3>
+                            </td>
+                        <% elsif index < @this_checkpoint %>
+                            <td class="center">
+                                <small><strong>Not</br> marked</strong></small>
+                            </td>
+                        <% elsif index == @this_checkpoint %>
+                            <td class="center">
+                                <small><strong>In</br> progress</strong></small>
+                            </td>
+                        <% else %>
+                            <td></td>
+                        <% end %>
+                        <td class="<%= 'highlighted' if index == @this_checkpoint %>" colspan="2" >
+                            <h4>&nbsp; <%= checkpoint.statement %></h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td width="15%" class="center">
+                            <% if index == @this_checkpoint %>
+                                <small>(Click your comment</br> to change it)</small>
+                            <% end %>
+                        </td>
+                        <td>
+                            <% if index == @this_checkpoint %>
+                                <% if checkpoint.student_comment %>
+                                    <strong>Me</strong>&emsp;<%= best_in_place(checkpoint, :student_comment, :inner_class => "commentInput") %>
+                                <% else %>
+                                    <strong><%= best_in_place(checkpoint, :student_comment, :inner_class => "commentInput", :place_holder => "No comment yet") %></strong>
+                                <% end %>
+                            <% elsif checkpoint.student_comment %>
+                                <strong>Me</strong>&emsp; <%= checkpoint.student_comment %>
+                            <% end %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <% if checkpoint.teacher_comment %>
+                                <strong><%= @seminar.user.name_with_title %></strong>&emsp;<%= checkpoint.teacher_comment %>
+                            <% end %>
+                        </td>
+                    </tr>
+                <% end %>
+            </table>
+        <% else %>
+            </br><h4>You don't have a goal set for this term.</h4>
+        <% end %> 
+            
+        <% if !@this_gs.approved %> 
+            </br><%= button_to( "Edit This Goal", edit_goal_student_path(@this_gs), :method => :get, :class => "btn btn-lg btn-primary") %>
+        <% end %>
     </div>
 </div>
 </br>

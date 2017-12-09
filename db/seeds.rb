@@ -70,15 +70,9 @@ title_array = ["Mrs.", "Mr.", "Miss", "Ms.", "Dr."]
 end
 
 # Seminars
-Seminar.create!(name: "1st Period",
-                user_id: 5,
-                consultantThreshold: 7)
-Seminar.create!(name: "2nd Period",
-                user_id: 5,
-                consultantThreshold: 7)
-Seminar.create!(name: "Another Teacher, First  Period",
-                user_id: 6,
-                consultantThreshold: 7)
+Seminar.create!(name: "Main Teacher, 1st Period", user_id: 5, consultantThreshold: 7, term: 0, which_checkpoint: 0)
+Seminar.create!(name: "Main Teahcer, 2nd Period", user_id: 5, consultantThreshold: 7, term: 0, which_checkpoint: 0)
+Seminar.create!(name: "Another Teacher, First Period", user_id: 6, consultantThreshold: 7, term: 0, which_checkpoint: 0)
                 
 # objectives
 
@@ -310,5 +304,69 @@ t2.users << Student.all[5]
 t2.users << Student.all[6]
 t2.users << Student.all[7]
 
+school_array = 
+    [["Beaver High School", "Beaver", "UT"],
+    ["Milford High School", "Milford", "UT"],
+    ["Bear River High School", "Garland", "UT"],
+    ["Box Elder High School", "Brigham", "UT"],
+    ["Beaver High School", "Beaver", "UT"],
+    ["Cache High School", "North Logan", "UT"],
+    ["Mountain Crest High School", "Hyrum", "UT"],
+    ["Sky View High School", "Smithfield", "UT"],
+    ["Logan High School", "Logan", "UT"],
+    ["East Carbon High School", "East Carbon", "UT"],
+    ["Manila High School", "Manila", "UT"],
+    ["Altamont High School", "Altamont", "UT"],
+    ["Green River High School", "Green River", "UT"],
+    ["East High School", "Salt Lake City", "UT"],
+    ["West High School", "Salt Lake City", "UT"],
+    ["Highland High School", "Salt Lake City", "UT"],
+    ["Monticello High School", "Monticello", "UT"],
+    ["Cedar Ridge High School", "Richfield", "UT"],
+    ["North Summit High School", "Coalville", "UT"],
+    ["Blue Peak High School", "Toole", "UT"],
+    ["Wasatch High School", "Heber", "UT"],
+    ["Carson High School", "Carson City", "NV"],
+    ["Clark High School", "Las Vegas", "NV"]]
     
-    
+school_array.each do |school|
+    School.create(:name => school[0], :city => school[1], :state => school[2])
+end
+
+goal_array = [
+    ["Turn in assignments",
+      ["I will turn in (?) % of my assignments this term."],
+     [["Write all assignments in my planner.", "Check my grades online to see which assignments I'm missing.","Choose a classmate who is very good at completing assignments. Ask to be partners with that classmate."],
+      ["Turn in (?) % of my assignments so far."],
+      ["Write all assignments in my planner.", "Check my grades online to see which assignments I'm missing.","Choose a classmate who is very good at completing assignments. Ask to be partners with that classmate."],
+      ["I will turn in (?) % of my assignments since Checkpoint 2."]]],
+      
+    ["Arrive to class on time",
+       ["I will arrive to class on time for (?) % of the school days this term."],
+      [["Write a description of the reasons why I am sometimes tardy, and a short plan for how I will change my habits.", "Identify a friend who causes me to be tardy often."],
+       ["Arrive to class on time for for (?) % of the school days so far."],
+       ["Write a description of the reasons why I am sometimes tardy, and a short plan for how I will change my habits.", "Identify a friend who causes me to be tardy often."],
+       ["I will arrive to class on time for (?) % of the days since Checkpoint 2."]]]]
+
+goal_array.each do |this_goal|
+    Goal.create(:name => this_goal[0], :actions => this_goal[1])
+end
+
+Teacher.all[0..5].each do |teach|
+    teach.update(:school => School.first)
+end
+Teacher.all[6..8].each do |teach|
+    teach.update(:school => School.second)
+end
+
+Student.all.each do |stud|
+    stud.update(:sponsor => stud.seminars.first.user)
+    stud.update(:school => stud.sponsor.school)
+    stud.seminars.each do |seminar|
+        4.times do |n|
+            stud.goal_students.create(:seminar => seminar)
+        end
+    end
+end
+
+

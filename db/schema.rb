@@ -10,13 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170924201308) do
+ActiveRecord::Schema.define(version: 20171125173030) do
+
+  create_table "checkpoints", force: :cascade do |t|
+    t.integer  "goal_student_id"
+    t.string   "action"
+    t.integer  "achievement"
+    t.text     "teacher_comment"
+    t.text     "student_comment"
+    t.date     "due_date"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "consultancies", force: :cascade do |t|
     t.integer  "seminar_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["seminar_id"], name: "index_consultancies_on_seminar_id"
+  end
+
+  create_table "goal_students", force: :cascade do |t|
+    t.integer  "goal_id"
+    t.integer  "user_id"
+    t.integer  "seminar_id"
+    t.integer  "target"
+    t.boolean  "approved"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["goal_id", "user_id"], name: "index_goal_students_on_goal_id_and_user_id"
+    t.index ["goal_id"], name: "index_goal_students_on_goal_id"
+    t.index ["seminar_id"], name: "index_goal_students_on_seminar_id"
+    t.index ["user_id"], name: "index_goal_students_on_user_id"
+  end
+
+  create_table "goals", force: :cascade do |t|
+    t.text     "actions"
+    t.integer  "style"
+    t.string   "name"
+    t.string   "statement_stem"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "label_objectives", force: :cascade do |t|
@@ -175,6 +209,8 @@ ActiveRecord::Schema.define(version: 20170924201308) do
     t.integer  "consultantThreshold"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.integer  "term"
+    t.integer  "which_checkpoint"
     t.index ["user_id"], name: "index_seminars_on_user_id"
   end
 

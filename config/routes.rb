@@ -13,7 +13,13 @@ Rails.application.routes.draw do
 
   resources :admins
   resources :account_activations, only: [:edit]
+  resources :checkpoints
   resources :consultancies, only: [:new, :create, :show, :index, :destroy]
+  resources :goal_students do
+    get  'checkpoints', on: :member
+    post 'update_checkpoints', on: :member
+    get 'approve', on: :member
+  end
   resources :labels
   resources :label_objectives do
     post 'update_quantities', on: :collection

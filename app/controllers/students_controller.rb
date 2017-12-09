@@ -20,7 +20,8 @@ class StudentsController < ApplicationController
           one_saved = true
           @ss = @student.seminar_students.create(:seminar => @seminar)
           #addToSeatingChart(@seminar, @student)
-          scoresForNewStudent(@seminar, @student)
+          scores_for_new_student(@seminar, @student)
+          goals_for_new_student(@seminar, @student)
         end
       end
     end

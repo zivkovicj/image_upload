@@ -15,7 +15,8 @@ class SeminarStudentsController < ApplicationController
     @student.update(:sponsor => current_user) if current_user.type == "Teacher"
     
     addToSeatingChart(@seminar, @student)
-    scoresForNewStudent(@seminar, @student)
+    scores_for_new_student(@seminar, @student)
+    goals_for_new_student(@seminar, @student)
     
     old_ss_id = params[:seminar_student][:is_move]
     SeminarStudent.find(old_ss_id).destroy if old_ss_id
