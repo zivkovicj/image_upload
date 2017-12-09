@@ -2,10 +2,10 @@ class CreateCheckpoints < ActiveRecord::Migration[5.0]
   def change
     create_table  :checkpoints do |t|
       t.integer   :goal_student_id
-      t.integer   :number
       t.string    :action
-      t.string    :achievement
-      t.text      :comments
+      t.integer    :achievement
+      t.text      :teacher_comment
+      t.text      :student_comment
       t.date      :due_date
       
       t.timestamps

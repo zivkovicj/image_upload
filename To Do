@@ -60,7 +60,6 @@ V GoalStudent belongs_to user
     V belongs_to seminar
     V belongs_to goal
 V Checkpoint belongs_to goal_student
-    
 V Adding a student to a class creates four empty goal_students
 V Empty goals should also be created when a student is added to a class
 V In goal menu, student sees list of four goals
@@ -72,42 +71,114 @@ V Teacher can approve goal choice
     V Set it to default false when a new goal_student is created
     V Teacher can click "approve" to change goal_student to approved
 V Teacher can change goal choice
-Maybe I need three sets of actions after all.
-    Or consider just using actions as rails associations. Write a pros and cons list. Join table between action and goal could include which 
-If teacher sets goal for a student who never did, the checkpoints need to be set automatically.
-    Maybe this should happen anyway. Even when a student sets his own goal, the three checkpoints become default values.
-If all goals are approved, teacher sees a list of checkpoints, where comments can be made and achievement marked
-    If some goals are not approved, route teacher to the list of goals.
-    Message at top reads, "5 students have goals that you haven't yet approved"
-After goal_student is approved, student can no longer change it
-    But teacher can
-Student chooses target for goal. Then the text of the goal and checkpoints is updated to a goal statement that includes the target percentage.
-    I think this will require the "goal" column of goal student to be text, not an association.
-JQuery for teacher changing student's goals
-    Teacher's goal choice select box needs to begin with the same value selected as the student. Otherwise, the ajax update on clicking "Approve" will change the student's goal to the first available option. 
-    Make teacher's choice select box invisible until the teacher clicks "Change"
-    Also offer a "Cancel" button.
-    Then "Approve" should change its text to "Choose This Goal"
-If teacher changes goal, student can change checkpoints
-Teacher can change the term for which she's seeing the goals
-Student can select actions
-Once submitted, teacher can edit actions, but student cannot
-Teacher can see a list of current checkpoints for whole class
-Goals are deleted when student is removed from class
-Moving a student also moves the appropriate goal_students
-    And it doesn't create new goal_students
-    The moved goal_students have the same details as the old one.
-Student Goal Icon
-When teacehr changes goal, it should chenge the text that is shown.
+V When teacher a goal is set (by teacher or student), the checkpoint actions are automatically set to default actions
+V Student chooses target for goal. Then the text of the goal and checkpoints is updated to a goal statement that includes the target percentage.
+V If all goals are approved, teacher sees a list of checkpoints, where comments can be made and achievement marked
+    V If some goals are not approved, route teacher to the list of goals.
+V In goals_approve, teacher can change the student's goal target.
+V JQuery for teacher changing student's goals
+    V Ajax needs to work upon changing the select box, not pressing the "Approve" button
+    V Approve button disappears when a choice is made.
+    V Default for teacher's choices needs to be the currently selected choice, if it exists.
+V Need to create 4 checkpoints, not 3. This gives the chance to mark achievement and comments for the final goal.
+V Teacher can see a list of current checkpoints for whole class.
+V I think that instead of saving the action and final statement, there should just be a method in the goal_student model that creates the statement using the action and the target.
+    V Then it won't matter if the statement updates.
+    V So statement_stem can be eliminated from the goal_student model.
+    V But the data that used to be in statement_stem is now moved to the last row of the action_array.
+V Message at top of view_goals reads, "5 students have goals that you haven't yet approved"
+v Teacher needs a button to go from the "Approve" screen to the "View" screen
+    V And vice-versa
+V In student_view, student sees only the current goal and checkpoints by default.
+    V Display all checkpoints.
+    V Display simple made/not made indicator.
+    V Highlight the current checkpoint.
+V Show student comments and teacher comments in goal display.
+V Student can edit his comment.
+    V But only the current comment.
+V Teacher can see comments and edit her comment.
+V After goal_student is approved, student can no longer change it
+    V Teacher can still change goal
+V NavRibbon for changing term needs to be in the approval screen also
+V Checkpoint should allow teacher_comments and student_comments
+V I'd like to move the goal stuff into goal_students controller instead of seminar controller
+V Each goal needs to have a statement_stem after all. Using the fourth action as the goal statement is awkward.
 
-Teacher can set due dates.
+
+ERROR["test_add_student_to_class", StudentsSearchTest, 41.013017462566495]
+ test_add_student_to_class#StudentsSearchTest (41.01s)
+NoMethodError:         NoMethodError: undefined method `objective_students' for nil:NilClass
+            test/integration/students/students_search_test.rb:68:in `block in <class:StudentsSearchTest>'
+
+ FAIL["test_create_new_students", StudentsNewTest, 245.26297028921545]
+ test_create_new_students#StudentsNewTest (245.26s)
+        Expected: 3
+          Actual: 4
+        test/integration/students/students_new_test.rb:48:in `block in <class:StudentsNewTest>'
+
+ERROR["test_take_multiple-choice_quiz", NewQuizTest, 420.20338665880263]
+ test_take_multiple-choice_quiz#NewQuizTest (420.20s)
+ActionView::Template::Error:         ActionView::Template::Error: undefined method `goal' for nil:NilClass
+            app/views/seminars/student_view.html.erb:40:in `_app_views_seminars_student_view_html_erb___1966607106936808386_69957480'
+            test/test_helper.rb:180:in `go_to_first_period'
+            test/integration/quizzes/quiz_new_test.rb:50:in `block in <class:NewQuizTest>'
+
+ERROR["test_100_total_score", NewQuizTest, 424.7008670847863]
+ test_100_total_score#NewQuizTest (424.70s)
+ActionView::Template::Error:         ActionView::Template::Error: undefined method `goal' for nil:NilClass
+            app/views/seminars/student_view.html.erb:40:in `_app_views_seminars_student_view_html_erb___1966607106936808386_157597000'
+            test/test_helper.rb:180:in `go_to_first_period'
+            test/integration/quizzes/quiz_new_test.rb:106:in `block in <class:NewQuizTest>'
+
+ERROR["test_setup_quiz", NewQuizTest, 429.3753103259951]
+ test_setup_quiz#NewQuizTest (429.38s)
+ActionView::Template::Error:         ActionView::Template::Error: undefined method `goal' for nil:NilClass
+            app/views/seminars/student_view.html.erb:40:in `_app_views_seminars_student_view_html_erb___1966607106936808386_151387520'
+            test/test_helper.rb:180:in `go_to_first_period'
+            test/integration/quizzes/quiz_new_test.rb:37:in `block in <class:NewQuizTest>'
+
+ERROR["test_add_to_total_stars", NewQuizTest, 433.4453409407288]
+ test_add_to_total_stars#NewQuizTest (433.45s)
+ActionView::Template::Error:         ActionView::Template::Error: undefined method `goal' for nil:NilClass
+            app/views/seminars/student_view.html.erb:40:in `_app_views_seminars_student_view_html_erb___1966607106936808386_122912540'
+            test/test_helper.rb:180:in `go_to_first_period'
+            test/integration/quizzes/quiz_new_test.rb:125:in `block in <class:NewQuizTest>'
+
+ERROR["test_take_fill_in_quiz", NewQuizTest, 437.4244480840862]
+ test_take_fill_in_quiz#NewQuizTest (437.42s)
+ActionView::Template::Error:         ActionView::Template::Error: undefined method `goal' for nil:NilClass
+            app/views/seminars/student_view.html.erb:40:in `_app_views_seminars_student_view_html_erb___1966607106936808386_79200700'
+            test/test_helper.rb:180:in `go_to_first_period'
+            test/integration/quizzes/quiz_new_test.rb:74:in `block in <class:NewQuizTest>'
+
+
+After migrating to production site, make sure to add needed goal_students and checkpoints.
+    And goals.
+    Current term to seminars
+    Which_checkpoint to seminars
+    
+PRINTED PAGE FOR GOALS
+
+https://thoughtbot.com/upcase/videos/generating-pdfs-with-rails
 Can I prepare a printed page of the current goal with its checkpoints?
-On the student profile page, I should offer to hide most and selectively show some of the info so that students don't have to see all of it at once.
+Student can open a screen to show all of her goals
 
 
+NEXT UPDATE:
 
+LEARN HOW TO TEST AJAX
 
-NEXT UPDATE: 
+The approval and goal choosing might work better as best_in_place functions.
+    Then I can cut a bunch of jquery.
+Goal actions
+    Targets
+    Achievement
+    Teacher comments and student comment on checkpoints
+Attendance
+Score
+Teach Request
+Learn Request
+Pref Request
 
 COLLECTION OF SMALL FIXES
 Newly-created students need to get a school id if the teacher is verified.
@@ -131,7 +202,9 @@ Set up billing alerts with AWS.
 I moved the javascripts to the end of the body tag on the chance that it might help with loading. Test on the live site with school computers using both ways.
 Remove all visuals pertaining to Benchmark Stars
 Teacher can suggest goal.
-
+Deleting a consultancy from its own show page isn't working right now.
+Put goals in NavRibbon
+Fix NavRibbon for Desk Consultants
 
 
 OTHER TESTS TO ADD
@@ -177,6 +250,24 @@ Test that consultant_days doesn't include other seminars
 Test that a limited number of groups are created if many students are qualified to connsult.
     With priority 3's
     And total consultants
+Navigating with the NavRibbons
+
+DUE DATES FOR GOALS AND OTHER FEATURES THAT FEEL NEEDED SOON FOR USING GOAL TRACKER
+
+If teacher changes goal, student can change checkpoints
+Goals are deleted when student is removed from class
+Student should be able to see all goals for the year.
+Moving a student also moves the appropriate goal_students
+    And it doesn't create new goal_students
+    The moved goal_students have the same details as the old one.
+Student Goal Icon
+Also needs to be able to zoom in on one specific goal_student, for conferencing with that student
+    View should be the same for both teacher and student
+Move the checkpoints stuff to its own controller. But if I do that, I should ajax the checkpoint choices.
+Select box for choosing target needs to be smaller
+Teacher can set due dates.
+    Thinking of adding "Checkpoint Dates column to Seminar." Its input could be a 4x4 array, one for each term.
+    Updating it will probably require getting the whole array, replacing the needed values, then saving the whole array to the db.
 
 POSSIBLE UPDATE TO D-C ALGORITHM
 If no students are proficient in a priority 3 assignments, consider setting the Threshold to consult that topic to be the highest score in class.
@@ -318,6 +409,15 @@ Make a plan for how to roll out updates after more users are using the apps.
 AWARDS
 Students can collect awards with their stars and goal achievements.
 
+TARGETED STUDY GUIDES
+
+The Desk Consultants system that I've been using is not proving very helpful for many students. The next idea that I have to improve the system is to find a way to get each student talking about a 
+question he can answer correctly, where possible. Then have the student try to fix a question he missed.
+
+Would be really cool if the app could create them automatically. Pull two correct and two inccorect questions for each student.
+    Perhaps even merge them with spaces for taking notes on their groupmate's ideas.
+    But students who have never tried that objective will still need the explanatory study guide.
+
 ******
 BEGIN SERIOUSLY ANNOUNCING THE APP
 Quora article: Which websites should a Front-end developer look up to for inspiration?
@@ -329,13 +429,13 @@ Try to recruit several teachers to begin using and providing feedback
 ******
 
 
-
-CUSTOM GOALS
-Teachers need to be able to create new goals
-
 REPORTS
 Show teachers some aggregated data from objectives.
 And specific questions.
+
+TARGETED STUDY GUIDE
+If a student is assigned to a D-C group for an objective she has already tried, teacher can print a custom study guide showing the questions and answers that the student missed on previous tries.
+
 
 SPIRAL REVIEW
 Allow students to take a small review quiz for topics that they've already passed.
@@ -529,6 +629,10 @@ Right now the make_username method ends by generating a random token if the firs
     it's generating a unique token for the username
 Option to show "My questions only" in "All Questions"
 
+CUSTOM GOALS
+Teachers need to be able to create new goals
+Ensure that all goals include at least one actions option is offered for all three checkpoints. Otherwise there will be errors.
+When writing actions, there should be an option to copy actions from #1 to #3.
 
 OPTIONAL FEATURES TO CONSIDER SOME DAY
 Upload student photos. Or have student icons.

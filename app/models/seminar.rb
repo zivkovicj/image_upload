@@ -15,6 +15,8 @@ class Seminar < ApplicationRecord
   validates :consultantThreshold, presence: true, numericality: { only_integer: true }
   
   attribute :consultantThreshold, :integer, default: 7
+  attribute :term, :integer, default: 0
+  attribute :which_checkpoint, :integer, default: 0
   
     include ModelMethods
   
@@ -62,5 +64,9 @@ class Seminar < ApplicationRecord
         end
       end
     end
+  end
+  
+  def goals_needing_approval
+    self.goal_students.select{|x| x.this_gs_term == self.term && !x.approved}.count
   end
 end

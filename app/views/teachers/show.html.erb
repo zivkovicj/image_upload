@@ -43,7 +43,7 @@
         </td>
         <td><%= link_to image_tag("objectives.png"), edit_seminar_path(sem), :id => "edit_seminar_#{sem.id}" %></td>
         <td><%= link_to image_tag("priorities.png"), priorities_seminar_path(sem), :id => "#{sem.name} priorities" %></td>
-        <td><%= link_to image_tag("apple.png"), student_goals_seminar_path(sem), :id => "#{sem.name} student goals" %></td>
+        <td><%= link_to image_tag("apple.png"), goal_students_path(:seminar => sem), :id => "#{sem.name} student goals" %></td>
       </tr>
     <% end %>
   </table>

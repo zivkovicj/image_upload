@@ -124,7 +124,11 @@ class SeminarsController < ApplicationController
         @student = Student.includes(:objective_students).find(params[:user])
         @seminar = Seminar.includes(:objective_seminars).find(params[:id])
         @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
-        @goal_students = @seminar.goal_students.where(:user => @student).order(:term)
+        
+        @this_checkpoint = @seminar.which_checkpoint
+        @this_term = @seminar.term
+        @this_gs = @student.goal_students.where(:seminar => @seminar)[@this_term]
+        
         @objectives = @seminar.objectives.order(:name)
         objective_ids = @objectives.map(&:id)
         @student_scores = @student.objective_students.where(:objective_id => objective_ids)
@@ -150,10 +154,6 @@ class SeminarsController < ApplicationController
         @seminar = Seminar.find(params[:id])
         @teacher = @seminar.user
         update_current_class
-    end
-    
-    def student_goals
-       @seminar = Seminar.find(params[:id]) 
     end
     
     private 

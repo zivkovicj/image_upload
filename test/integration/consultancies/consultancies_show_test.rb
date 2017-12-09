@@ -358,7 +358,6 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         choose_consultants  # This is tested earlier, but I also wanted to test consultants with a less-contrived setup.
         test_all_consultants
         place_apprentices_by_requests
-        #debugger
         
         # Students who had a request available received their request.
         assert request_obj, @student_6.teams.find_by(:consultancy => @consultancy).objective.id

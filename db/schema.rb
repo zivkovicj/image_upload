@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171118161414) do
+ActiveRecord::Schema.define(version: 20171125173030) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
-    t.integer  "number"
     t.string   "action"
-    t.string   "achievement"
-    t.text     "comments"
+    t.integer  "achievement"
+    t.text     "teacher_comment"
+    t.text     "student_comment"
     t.date     "due_date"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
@@ -31,7 +31,6 @@ ActiveRecord::Schema.define(version: 20171118161414) do
   end
 
   create_table "goal_students", force: :cascade do |t|
-    t.integer  "term"
     t.integer  "goal_id"
     t.integer  "user_id"
     t.integer  "seminar_id"
@@ -46,21 +45,12 @@ ActiveRecord::Schema.define(version: 20171118161414) do
   end
 
   create_table "goals", force: :cascade do |t|
-    t.string   "action_0"
-    t.string   "action_1"
-    t.string   "action_2"
-    t.string   "action_3"
-    t.string   "action_4"
-    t.string   "action_5"
-    t.string   "action_6"
-    t.string   "action_7"
-    t.string   "second_action_0"
-    t.string   "second_action_1"
-    t.string   "second_action_2"
+    t.text     "actions"
     t.integer  "style"
     t.string   "name"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.string   "statement_stem"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "label_objectives", force: :cascade do |t|
@@ -219,6 +209,8 @@ ActiveRecord::Schema.define(version: 20171118161414) do
     t.integer  "consultantThreshold"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.integer  "term"
+    t.integer  "which_checkpoint"
     t.index ["user_id"], name: "index_seminars_on_user_id"
   end
 

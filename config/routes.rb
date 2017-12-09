@@ -13,10 +13,12 @@ Rails.application.routes.draw do
 
   resources :admins
   resources :account_activations, only: [:edit]
+  resources :checkpoints
   resources :consultancies, only: [:new, :create, :show, :index, :destroy]
   resources :goal_students do
     get  'checkpoints', on: :member
     post 'update_checkpoints', on: :member
+    get 'approve', on: :member
   end
   resources :labels
   resources :label_objectives do
@@ -45,7 +47,6 @@ Rails.application.routes.draw do
     get 'scoresheet', on: :member
     get 'student_view', on: :member
     get 'benchmarks', on: :member
-    get 'student_goals', on: :member
   end
   resources :seminar_students do
     get 'removeFromClass', on: :member

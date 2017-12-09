@@ -9,6 +9,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         setup_objectives
         setup_questions
         setup_scores
+        setup_goals
     end
     
     def answer_question_correctly

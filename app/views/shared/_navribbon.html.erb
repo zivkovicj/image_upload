@@ -6,10 +6,9 @@
 
 <% if user_is_a_teacher %>
     <div class="ribbon">
-        
         <table class="table-borderless">
             <tr>
-                <td>Class:</td>
+                <td>Class</td>
                 <td class="spacer"></td>
                 <% current_user.own_seminars.order(:name).limit(8).each do |seminar| %>
                     

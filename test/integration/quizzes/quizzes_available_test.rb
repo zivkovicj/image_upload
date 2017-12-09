@@ -9,6 +9,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         setup_objectives
         setup_questions
         setup_scores
+        setup_goals
     end
 
     test "available from pretest" do
@@ -86,6 +87,8 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "quiz with questions" do
+        ObjectiveStudent.find_by(:objective => @objective_10, :user => @student_2).update(:points => 2)
+        
         go_to_first_period
         begin_quiz
         

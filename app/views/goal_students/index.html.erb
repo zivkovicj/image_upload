@@ -1,0 +1,56 @@
+<% provide(:title, 'View Student Goals') %>
+<% provide(:button_text, 'View Goals') %>
+
+<% provide(:headerText, "View Student Goals") %>
+<% provide(:headerPic, 'objectives.png') %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<h1>Beef and Spice!</h1>
+<h2>Showing Goals for Term <%= @this_term + 1 %>, Checkpoint <%= @this_checkpoint + 1 %></h2>
+
+<%= render 'shared/navribbon_goals' %>
+</br>
+
+<table class="table-borderless">
+    <% them_kids = @seminar.students.order(:last_name) %>
+    <% them_kids.each do |student| %>
+        <tr>
+            <td><%= student.last_name_first %></td>
+            <% this_gs = student.goal_students.where(:seminar => @seminar)[@this_term] %>
+            <td><%= this_gs.goal ? this_gs.statement_with_target : "No goal set." %></td>
+        </tr>
+        <% checkpoint = this_gs.checkpoints[@this_checkpoint] %>
+        <% this_id = checkpoint.id %>
+        <tr>
+            <td>
+                <h5 id="achievement_text_<%= this_id %>"><%= checkpoint.achievement if checkpoint.achievement %></h5>
+                <%= select("syl", "achievement",  percent_array.collect{|p| [ p[0], p[1] ] }, {:include_blank => "Mark Achievement"}, 
+                    {:class => "achievement_change select_box left_box", :checkpoint_id => "#{this_id}"}) %>
+            </td>
+            <td><%= checkpoint.statement %></td>
+        </tr>
+        <tr>
+            <% if checkpoint.student_comment %>
+                <td></td>
+                <td><strong><%= student.first_name %></strong>&emsp;<%= checkpoint.student_comment %></td>
+            <% end %>
+        </tr>
+        <tr>
+            <td></td>
+            <td width="75%">
+                <% if checkpoint.teacher_comment %>
+                    <strong>Me</strong>&emsp;<%= best_in_place(checkpoint, :teacher_comment, :inner_class => "commentInput") %>
+                <% else %>
+                    <strong><%= best_in_place(checkpoint, :teacher_comment, :inner_class => "commentInput", :place_holder => "No comment yet") %></strong>
+                <% end %>
+            </td>
+        </tr>
+        <% unless student == them_kids.last %>
+            <tr><td colspan="2" bgcolor="#AAFFAA"></br></td></tr>
+        <% end %>
+    <% end %>
+</table>
+
+<td><%= link_to image_tag("apple.png"), approve_goal_student_path(@seminar, :override => true), :id => "#{@seminar.name} student goals" %></td>

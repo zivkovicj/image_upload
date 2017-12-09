@@ -70,15 +70,9 @@ title_array = ["Mrs.", "Mr.", "Miss", "Ms.", "Dr."]
 end
 
 # Seminars
-Seminar.create!(name: "1st Period",
-                user_id: 5,
-                consultantThreshold: 7)
-Seminar.create!(name: "2nd Period",
-                user_id: 5,
-                consultantThreshold: 7)
-Seminar.create!(name: "Another Teacher, First  Period",
-                user_id: 6,
-                consultantThreshold: 7)
+Seminar.create!(name: "Main Teacher, 1st Period", user_id: 5, consultantThreshold: 7, term: 0, which_checkpoint: 0)
+Seminar.create!(name: "Main Teahcer, 2nd Period", user_id: 5, consultantThreshold: 7, term: 0, which_checkpoint: 0)
+Seminar.create!(name: "Another Teacher, First Period", user_id: 6, consultantThreshold: 7, term: 0, which_checkpoint: 0)
                 
 # objectives
 
@@ -341,15 +335,21 @@ end
 
 goal_array = [
     ["Turn in assignments",
-        ["Write all assignments in my planner.", "Check my grades online to see which assignments I'm missing.","Choose a classmate who is very good at completing assignments. Ask to be partners with that classmate."],
-        ["Turn in (?) % of my assignments so far."]],
-    ["Come to class on time",
-        ["Write a description of the reasons why I am sometimes tardy, and a short plan for how I will change my habits.", "Identify a friend who causes me to be tardy often."],
-        ["Come to class on time for (?) % of the school days so far."]]]
+      ["I will turn in (?) % of my assignments this term."],
+     [["Write all assignments in my planner.", "Check my grades online to see which assignments I'm missing.","Choose a classmate who is very good at completing assignments. Ask to be partners with that classmate."],
+      ["Turn in (?) % of my assignments so far."],
+      ["Write all assignments in my planner.", "Check my grades online to see which assignments I'm missing.","Choose a classmate who is very good at completing assignments. Ask to be partners with that classmate."],
+      ["I will turn in (?) % of my assignments since Checkpoint 2."]]],
+      
+    ["Arrive to class on time",
+       ["I will arrive to class on time for (?) % of the school days this term."],
+      [["Write a description of the reasons why I am sometimes tardy, and a short plan for how I will change my habits.", "Identify a friend who causes me to be tardy often."],
+       ["Arrive to class on time for for (?) % of the school days so far."],
+       ["Write a description of the reasons why I am sometimes tardy, and a short plan for how I will change my habits.", "Identify a friend who causes me to be tardy often."],
+       ["I will arrive to class on time for (?) % of the days since Checkpoint 2."]]]]
 
 goal_array.each do |this_goal|
-    Goal.create(:name => this_goal[0], :action_0 => this_goal[1][0], :action_1 => this_goal[1][1], :action_2 => this_goal[1][2], :action_3 => this_goal[1][3], :action_4 => this_goal[1][4], :action_5 => this_goal[1][5], 
-        :action_6 => this_goal[1][6], :action_7 => this_goal[1][7], :second_action_0 => this_goal[2][0], :second_action_1 => this_goal[2][1], :second_action_2 => this_goal[2][2])
+    Goal.create(:name => this_goal[0], :actions => this_goal[1])
 end
 
 Teacher.all[0..5].each do |teach|
@@ -364,7 +364,7 @@ Student.all.each do |stud|
     stud.update(:school => stud.sponsor.school)
     stud.seminars.each do |seminar|
         4.times do |n|
-            stud.goal_students.create(:seminar => seminar, :term => n+1)
+            stud.goal_students.create(:seminar => seminar)
         end
     end
 end

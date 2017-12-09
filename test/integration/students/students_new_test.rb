@@ -45,8 +45,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_equal old_ss_count + 5, SeminarStudent.count
         assert_equal old_goal_student_count + 20, @seminar.goal_students.count
         @gs = @seminar.goal_students.order(:created_at).last
-        assert_equal 3, @gs.checkpoints.count
-        assert_equal 4, @seminar.goal_students.last.term
+        assert_equal 4, @gs.checkpoints.count
         
         first_new_student = Student.find_by(:last_name => "Labonte")
         thisId = first_new_student.id

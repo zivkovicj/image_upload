@@ -1,7 +1,6 @@
 class CreateGoalStudents < ActiveRecord::Migration[5.0]
   def change
     create_table :goal_students do |t|
-      t.integer     :term
       t.references  :goal, foreign_key: true
       t.references  :user, foreign_key: true
       t.references  :seminar, foreign_key: true

@@ -1,4 +1,4 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# Read about fixtures at http//api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 # This model initially had no columns defined. If you add columns to the
 # model remove the '{}' from the fixture names and add the columns immediately
@@ -7,29 +7,18 @@
 Be_Awesome:
   name: Be Awesome 24/7
   style: 1
-  action_0: Play something awesome
-  action_1: Say something awesome
-  action_2: Do something awesome
-  action_3: Write something awesome
-  action_4: Sing something awesome
-  action_5: Watch something awesome
-  action_6: Eat something awesome
-  action_7: Imagine something awesome
-  second_action_0: Be halfway awesome
-  second_action_1: Be awesome with everything so far
-  second_action_2: Rewrite your plan for how to be more awesome.
-  
+  statement_stem: I will be awesome (?) % of the time this term.
+  actions: [["Play something awesome","Say something awesome","Do something awesome","Write something awesome","Sing something awesome","Watch something awesome","Eat something awesome","Imagine something awesome"],
+  ["Be halfway awesome","Be awesome (?) % of the time so far","Rewrite your plan for how to be more awesome."],
+  ["Play something awesome","Say something awesome","Do something awesome","Write something awesome","Sing something awesome","Watch something awesome","Eat something awesome","Imagine something awesome"],
+  ["I will be awesome for (?)% of the school days this term."]]
   
 #
 Be_Kind:
   name: Be kind
   style: 1
-  action_0: Play something kind
-  action_1: Say something kind
-  action_2: Do something kind
-  action_3: Write something kind
-  action_4: Sing something kind
-  action_5: Watch something kind
-  action_6: Eat something kind
-  action_7: Imagine something kind
-  second_action_0: Be halfway kind
+  statement_stem: I will be kind (?) % of the time this term.
+  actions: [["Play something kind","Say something kind","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind","Imagine something kind"],
+   ["I will be kind (?) % of the time so far."],
+   ["Play something kind","Say something kind","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind","Imagine something kind"],
+   ["I will be kind (?) % of the time."]]
