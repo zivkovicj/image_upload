@@ -65,7 +65,6 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   
   test 'add student to class' do
     first_assign = @seminar.objectives.first
-    @os = @student_80.objective_students.create(:objective => first_assign, :points => 8)   # for testing the benchmark
     
     capybara_login(@teacher_1)
     click_on('1st Period')

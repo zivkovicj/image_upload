@@ -31,140 +31,35 @@ Private Repo on Github
 
 CURRENT UPDATE:
 
-FIND THE ERROR IN DESK CONSULTANTS
 
-
-2.41 IN-APP GOAL TRACKING   
-Students can set a goal for each term, and checkpoints toward meeting those goals
-
-V Goal model
-    V Action_1 ...
-    V Action_8
-    V Second_action_1...Second_action_2
-    V Style (Percent or Number)
-V Goal_Student
-    V Student
-    V Seminar
-    V Goal
-    V Term
-    Approved
-V Checkpoint
-    V Belongs to one goal_student
-    V Action (Associates with one of the goal's 8 possible actions)
-    V Achievement
-    V Notes
-    V Due Date
-V Seminar has_many goal_students
-V Student has_many goal_students
-V GoalStudent belongs_to user
-    V belongs_to seminar
-    V belongs_to goal
-V Checkpoint belongs_to goal_student
-V Adding a student to a class creates four empty goal_students
-V Empty goals should also be created when a student is added to a class
-V In goal menu, student sees list of four goals
-V Can edit one of the four
-    V Default goal name should be or blank or something
-V Goal model needs different actions for the halfway checkpoint
-V Teacher can approve goal choice
-    V So add "approved" to goal_student
-    V Set it to default false when a new goal_student is created
-    V Teacher can click "approve" to change goal_student to approved
-V Teacher can change goal choice
-V When teacher a goal is set (by teacher or student), the checkpoint actions are automatically set to default actions
-V Student chooses target for goal. Then the text of the goal and checkpoints is updated to a goal statement that includes the target percentage.
-V If all goals are approved, teacher sees a list of checkpoints, where comments can be made and achievement marked
-    V If some goals are not approved, route teacher to the list of goals.
-V In goals_approve, teacher can change the student's goal target.
-V JQuery for teacher changing student's goals
-    V Ajax needs to work upon changing the select box, not pressing the "Approve" button
-    V Approve button disappears when a choice is made.
-    V Default for teacher's choices needs to be the currently selected choice, if it exists.
-V Need to create 4 checkpoints, not 3. This gives the chance to mark achievement and comments for the final goal.
-V Teacher can see a list of current checkpoints for whole class.
-V I think that instead of saving the action and final statement, there should just be a method in the goal_student model that creates the statement using the action and the target.
-    V Then it won't matter if the statement updates.
-    V So statement_stem can be eliminated from the goal_student model.
-    V But the data that used to be in statement_stem is now moved to the last row of the action_array.
-V Message at top of view_goals reads, "5 students have goals that you haven't yet approved"
-v Teacher needs a button to go from the "Approve" screen to the "View" screen
-    V And vice-versa
-V In student_view, student sees only the current goal and checkpoints by default.
-    V Display all checkpoints.
-    V Display simple made/not made indicator.
-    V Highlight the current checkpoint.
-V Show student comments and teacher comments in goal display.
-V Student can edit his comment.
-    V But only the current comment.
-V Teacher can see comments and edit her comment.
-V After goal_student is approved, student can no longer change it
-    V Teacher can still change goal
-V NavRibbon for changing term needs to be in the approval screen also
-V Checkpoint should allow teacher_comments and student_comments
-V I'd like to move the goal stuff into goal_students controller instead of seminar controller
-V Each goal needs to have a statement_stem after all. Using the fourth action as the goal statement is awkward.
-
-
-ERROR["test_add_student_to_class", StudentsSearchTest, 41.013017462566495]
- test_add_student_to_class#StudentsSearchTest (41.01s)
-NoMethodError:         NoMethodError: undefined method `objective_students' for nil:NilClass
-            test/integration/students/students_search_test.rb:68:in `block in <class:StudentsSearchTest>'
-
- FAIL["test_create_new_students", StudentsNewTest, 245.26297028921545]
- test_create_new_students#StudentsNewTest (245.26s)
-        Expected: 3
-          Actual: 4
-        test/integration/students/students_new_test.rb:48:in `block in <class:StudentsNewTest>'
-
-ERROR["test_take_multiple-choice_quiz", NewQuizTest, 420.20338665880263]
- test_take_multiple-choice_quiz#NewQuizTest (420.20s)
-ActionView::Template::Error:         ActionView::Template::Error: undefined method `goal' for nil:NilClass
-            app/views/seminars/student_view.html.erb:40:in `_app_views_seminars_student_view_html_erb___1966607106936808386_69957480'
-            test/test_helper.rb:180:in `go_to_first_period'
-            test/integration/quizzes/quiz_new_test.rb:50:in `block in <class:NewQuizTest>'
-
-ERROR["test_100_total_score", NewQuizTest, 424.7008670847863]
- test_100_total_score#NewQuizTest (424.70s)
-ActionView::Template::Error:         ActionView::Template::Error: undefined method `goal' for nil:NilClass
-            app/views/seminars/student_view.html.erb:40:in `_app_views_seminars_student_view_html_erb___1966607106936808386_157597000'
-            test/test_helper.rb:180:in `go_to_first_period'
-            test/integration/quizzes/quiz_new_test.rb:106:in `block in <class:NewQuizTest>'
-
-ERROR["test_setup_quiz", NewQuizTest, 429.3753103259951]
- test_setup_quiz#NewQuizTest (429.38s)
-ActionView::Template::Error:         ActionView::Template::Error: undefined method `goal' for nil:NilClass
-            app/views/seminars/student_view.html.erb:40:in `_app_views_seminars_student_view_html_erb___1966607106936808386_151387520'
-            test/test_helper.rb:180:in `go_to_first_period'
-            test/integration/quizzes/quiz_new_test.rb:37:in `block in <class:NewQuizTest>'
-
-ERROR["test_add_to_total_stars", NewQuizTest, 433.4453409407288]
- test_add_to_total_stars#NewQuizTest (433.45s)
-ActionView::Template::Error:         ActionView::Template::Error: undefined method `goal' for nil:NilClass
-            app/views/seminars/student_view.html.erb:40:in `_app_views_seminars_student_view_html_erb___1966607106936808386_122912540'
-            test/test_helper.rb:180:in `go_to_first_period'
-            test/integration/quizzes/quiz_new_test.rb:125:in `block in <class:NewQuizTest>'
-
-ERROR["test_take_fill_in_quiz", NewQuizTest, 437.4244480840862]
- test_take_fill_in_quiz#NewQuizTest (437.42s)
-ActionView::Template::Error:         ActionView::Template::Error: undefined method `goal' for nil:NilClass
-            app/views/seminars/student_view.html.erb:40:in `_app_views_seminars_student_view_html_erb___1966607106936808386_79200700'
-            test/test_helper.rb:180:in `go_to_first_period'
-            test/integration/quizzes/quiz_new_test.rb:74:in `block in <class:NewQuizTest>'
-
-
-After migrating to production site, make sure to add needed goal_students and checkpoints.
-    And goals.
-    Current term to seminars
-    Which_checkpoint to seminars
     
 PRINTED PAGE FOR GOALS
 
-https://thoughtbot.com/upcase/videos/generating-pdfs-with-rails
-Can I prepare a printed page of the current goal with its checkpoints?
-Student can open a screen to show all of her goals
+Ensure that goal-setting is working properly
+
+
+ERROR["test_add_student_to_class", StudentsSearchTest, 230.97407641261816]
+ test_add_student_to_class#StudentsSearchTest (230.97s)
+NoMethodError:         NoMethodError: undefined method `objective_students' for nil:NilClass
+            test/integration/students/students_search_test.rb:68:in `block in <class:StudentsSearchTest>'
+
+ERROR["test_take_multiple-choice_quiz", NewQuizTest, 286.37045959569514]
+ test_take_multiple-choice_quiz#NewQuizTest (286.37s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link "percentages"
+            test/test_helper.rb:197:in `begin_quiz'
+            test/integration/quizzes/quiz_new_test.rb:52:in `block in <class:NewQuizTest>'
 
 
 NEXT UPDATE:
+
+SMALL FIXES
+
+It isn't adding the school when I add new students to my class.
+Samson got two different errors trying to log in to either of his classes. 
+Update student scores if they took add and subtract integers on the pretest
+Fix the mess with Add and subtract Integers Objectives
+
+
 
 LEARN HOW TO TEST AJAX
 
@@ -179,6 +74,10 @@ Score
 Teach Request
 Learn Request
 Pref Request
+
+STUDENT CAN OPEN A PAGE TO SEE ALL HER GOALS
+
+Student can open a screen to show all of her goals
 
 COLLECTION OF SMALL FIXES
 Newly-created students need to get a school id if the teacher is verified.

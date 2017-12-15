@@ -17,7 +17,7 @@
         <th>Current Goal</th>
         <th>Set Goal To</th>
     </thead>
-<% @seminar.students.each do |stud| %>
+<% @seminar.students.order(:last_name).each do |stud| %>
     <tr>
         <td><h4><%= stud.last_name_first %></h4></td>
         <% this_gs = stud.goal_students.where(:seminar => @seminar)[@seminar.term] %>

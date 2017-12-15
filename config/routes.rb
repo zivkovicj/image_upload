@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get  'checkpoints', on: :member
     post 'update_checkpoints', on: :member
     get 'approve', on: :member
+    get 'print', on: :collection
   end
   resources :labels
   resources :label_objectives do

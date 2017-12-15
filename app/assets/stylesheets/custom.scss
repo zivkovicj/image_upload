@@ -579,3 +579,9 @@ th.rotate > div > span {
   background: red;
   box-shadow: 0 3px 0 0 #000000;
 }
+
+@media print {
+  .break-here {
+    page-break-before: always;
+  }
+}

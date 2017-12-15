@@ -10,6 +10,8 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         setup_questions
         setup_scores
         setup_goals
+        
+        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 2)
     end
     
     def answer_question_correctly
@@ -29,7 +31,6 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "setup quiz" do
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 2)
         old_quiz_count = Quiz.count
         old_riposte_count = Riposte.count
         
@@ -117,8 +118,6 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "add to total stars" do
-        @os = ObjectiveStudent.find_by(:user => @student_2, :objective => @objective_10)
-        @os.update(:points => 1)
         @ss = SeminarStudent.find_by(:user => @student_2, :seminar => @seminar)
         old_stars = @student_2.total_stars(@seminar)
         

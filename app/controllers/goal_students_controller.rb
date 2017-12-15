@@ -13,6 +13,11 @@ class GoalStudentsController < ApplicationController
        goals_stuff
     end
     
+    def print
+       @seminar = Seminar.find(params[:seminar]) 
+       goals_stuff
+    end
+    
     def edit
         @goal_student = GoalStudent.find(params[:id])
     end

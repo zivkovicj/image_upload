@@ -53,4 +53,10 @@
     <% end %>
 </table>
 
-<td><%= link_to image_tag("apple.png"), approve_goal_student_path(@seminar, :override => true), :id => "#{@seminar.name} student goals" %></td>
+<%= link_to "Printable Version", print_goal_students_path(:seminar => @seminar), :id => "#{@seminar.name} print goals" %>
+</br>
+<%= link_to image_tag("apple.png"), approve_goal_student_path(@seminar, :override => true), :id => "#{@seminar.name} student goals" %>
+
+
+
+

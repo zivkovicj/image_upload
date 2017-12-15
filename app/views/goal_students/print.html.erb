@@ -1,0 +1,69 @@
+<% provide(:title, 'Print Student Goal Checkpoints') %>
+<% provide(:button_text, 'View Goals') %>
+
+<% provide(:headerText, "Print Student Goal Checkpoints") %>
+<% provide(:headerPic, 'objectives.png') %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+
+<h2>Printable Goals for Term <%= @this_term + 1 %>, Checkpoint <%= @this_checkpoint + 1 %></h2>
+
+<% them_kids = @seminar.students.order(:last_name) %>
+
+<% them_kids.each do |stud| %>
+    <div class="break-here"></div>
+    </br></br></br>
+    <h2><%= stud.first_name %> <%= stud.last_name %></h2>
+    </br>
+    <% this_gs = stud.goal_students.where(:seminar => @seminar)[@this_term] %>
+    
+    <h4>Your Goal for <%= (@this_term + 1).ordinalize %> Term </h4>
+    <h3><%= this_gs.goal ? this_gs.statement_with_target : "No goal set." %></h3>
+    </br>
+    
+    <table class="table-borderless">
+        <% this_gs.checkpoints.each_with_index do |checkpoint, index| %>
+            <% this_achievement = checkpoint.achievement %>
+            <tr>
+                <td><h4><%= index + 1 %>) &nbsp;</h4></td>
+                <% if this_achievement %>
+                    <% was_made =  this_gs.target && this_achievement >= this_gs.target %>
+                    <% this_color = was_made ? "#AAFFAA" : "#FFFFFF" %>
+                    <td bgcolor="<%= this_color %>">
+                        <h3 class="center">
+                            <%= this_achievement %>
+                            <% if was_made %>
+                                </br>
+                                <small>Made!</small>
+                            <% end %>
+                        </h3>
+                    </td>
+                <% else %>
+                    <td></td>
+                <% end %>
+                <td>
+                    <h4>&nbsp; <%= checkpoint.statement %></h4>
+                </td>
+            </tr>
+            <% if checkpoint.student_comment %>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>&emsp; &emsp; <strong>Me</strong>&emsp; <%= checkpoint.student_comment %></td>
+                </tr>
+            <% end %>
+            <% if checkpoint.teacher_comment %>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>&emsp; &emsp; <strong><%= @seminar.user.name_with_title %></strong>&emsp;<%= checkpoint.teacher_comment %></td>
+                </tr>
+            <% end %>
+        <% end %>
+    </table>
+    
+
+<% end %>
+
+
+

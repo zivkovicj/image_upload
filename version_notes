@@ -1,5 +1,82 @@
 
 
+
+2.41 IN-APP GOAL TRACKING   
+Students can set a goal for each term, and checkpoints toward meeting those goals
+
+Goal model
+    Action_1 ...
+    Action_8
+    Second_action_1...Second_action_2
+    Style (Percent or Number)
+Goal_Student
+    Student
+    Seminar
+    Goal
+    Term
+    Approved
+Checkpoint
+    Belongs to one goal_student
+    Action (Associates with one of the goal's 8 possible actions)
+    Achievement
+    Notes
+    Due Date
+Seminar has_many goal_students
+Student has_many goal_students
+GoalStudent belongs_to user
+    belongs_to seminar
+    belongs_to goal
+Checkpoint belongs_to goal_student
+Adding a student to a class creates four empty goal_students
+Empty goals should also be created when a student is added to a class
+In goal menu, student sees list of four goals
+Can edit one of the four
+    Default goal name should be or blank or something
+Goal model needs different actions for the halfway checkpoint
+Teacher can approve goal choice
+    So add "approved" to goal_student
+    Set it to default false when a new goal_student is created
+    Teacher can click "approve" to change goal_student to approved
+Teacher can change goal choice
+When teacher a goal is set (by teacher or student), the checkpoint actions are automatically set to default actions
+Student chooses target for goal. Then the text of the goal and checkpoints is updated to a goal statement that includes the target percentage.
+If all goals are approved, teacher sees a list of checkpoints, where comments can be made and achievement marked
+    If some goals are not approved, route teacher to the list of goals.
+In goals_approve, teacher can change the student's goal target.
+JQuery for teacher changing student's goals
+    Ajax needs to work upon changing the select box, not pressing the "Approve" button
+    Approve button disappears when a choice is made.
+    Default for teacher's choices needs to be the currently selected choice, if it exists.
+Need to create 4 checkpoints, not 3. This gives the chance to mark achievement and comments for the final goal.
+Teacher can see a list of current checkpoints for whole class.
+I think that instead of saving the action and final statement, there should just be a method in the goal_student model that creates the statement using the action and the target.
+    Then it won't matter if the statement updates.
+    So statement_stem can be eliminated from the goal_student model.
+    But the data that used to be in statement_stem is now moved to the last row of the action_array.
+Message at top of view_goals reads, "5 students have goals that you haven't yet approved"
+Teacher needs a button to go from the "Approve" screen to the "View" screen
+    And vice-versa
+In student_view, student sees only the current goal and checkpoints by default.
+    Display all checkpoints.
+    Display simple made/not made indicator.
+    Highlight the current checkpoint.
+Show student comments and teacher comments in goal display.
+Student can edit his comment.
+    But only the current comment.
+Teacher can see comments and edit her comment.
+After goal_student is approved, student can no longer change it
+    Teacher can still change goal
+NavRibbon for changing term needs to be in the approval screen also
+Checkpoint should allow teacher_comments and student_comments
+I'd like to move the goal stuff into goal_students controller instead of seminar controller
+Each goal needs to have a statement_stem after all. Using the fourth action as the goal statement is awkward.
+
+
+After migrating to production site, make sure to add needed goal_students and checkpoints.
+    And goals.
+    Current term to seminars
+    Which_checkpoint to seminars
+
 2.40_DESK_CONSULTANTS_TESTING
 Complete one test for each method needed in the DeskConsultants algorithm.
 Unplaced students should be one group that contains all unplaced students instead of creating a new group for each unplaced student.
