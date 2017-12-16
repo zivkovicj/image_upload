@@ -118,7 +118,7 @@ class User < ApplicationRecord
     end
     
     def desk_consulted_objectives(seminar)
-        blap = self.teams.where.not(:objective => nil).map(&:objective_id)
+        blap = self.teams.map(&:objective_id)
         return seminar.objectives.where(:id => blap).select{|x| self.has_not_scored_100(x) && !self.one_unfinished(x)}
     end
     
