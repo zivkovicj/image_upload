@@ -7,8 +7,8 @@
 
 <%= render :partial => 'shared/search_field', 
   :locals => {:whichPath => students_path,
-              :attrLabel1 => "Student Number", :attrLabel2 => "Last Name", :attrLabel3 => "First Name", :attrLabel4 => "E-Mail", :attrLabel5 => "ID", 
-              :attrData1 => :user_number,       :attrData2 => :last_name,  :attrData3 => :first_name, :attrData4 => :email, :attrData5 => :id} %>
+              :attrLabel1 => "Student Number", :attrLabel2 => "Last Name", :attrLabel3 => "First Name", :attrLabel4 => "E-Mail"
+              :attrData1 => :user_number,       :attrData2 => :last_name,  :attrData3 => :first_name, :attrData4 => :email} %>
 
 
 <% if @students != [0] %>

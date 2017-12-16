@@ -9,8 +9,8 @@ class Student < User
     
     validates_uniqueness_of :username, unless: Proc.new { |a| a.username.blank? }
     has_secure_password :validations => false, :allow_nil => true
+
     
-   
     # Add the total points for this student
     def total_stars(seminar)
         objective_students.where(:objective => seminar.objectives).sum(:points)

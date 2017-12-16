@@ -38,27 +38,19 @@ PRINTED PAGE FOR GOALS
 Ensure that goal-setting is working properly
 
 
-ERROR["test_add_student_to_class", StudentsSearchTest, 230.97407641261816]
- test_add_student_to_class#StudentsSearchTest (230.97s)
-NoMethodError:         NoMethodError: undefined method `objective_students' for nil:NilClass
-            test/integration/students/students_search_test.rb:68:in `block in <class:StudentsSearchTest>'
-
-ERROR["test_take_multiple-choice_quiz", NewQuizTest, 286.37045959569514]
- test_take_multiple-choice_quiz#NewQuizTest (286.37s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link "percentages"
-            test/test_helper.rb:197:in `begin_quiz'
-            test/integration/quizzes/quiz_new_test.rb:52:in `block in <class:NewQuizTest>'
-
-
 NEXT UPDATE:
 
 SMALL FIXES
 
-It isn't adding the school when I add new students to my class.
+V It needs to update the school upon adding a new student.
+    V But only if the teacher is verified.
+    V Test that it doesn't add the school if the teacher is unverified
 Samson got two different errors trying to log in to either of his classes. 
-Update student scores if they took add and subtract integers on the pretest
-Fix the mess with Add and subtract Integers Objectives
+V Remove "Id" from student search attribute choices.
 
+After push
+    Update student scores if they took add and subtract integers on the pretest
+    Then Fix the mess with Add and subtract Integers Objectives
 
 
 LEARN HOW TO TEST AJAX

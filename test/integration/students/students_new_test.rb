@@ -9,6 +9,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
     end
     
     test 'create new students' do
+        assert_not_nil @teacher_1.school
         old_ss_count = SeminarStudent.count
         old_score_count = ObjectiveStudent.count
         old_goal_student_count = @seminar.goal_students.count
@@ -54,6 +55,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert first_new_student.authenticate(thisId)
         assert_equal "", first_new_student.email
         assert_equal first_new_student.created_at, first_new_student.last_login
+        assert_equal @teacher_1.school, first_new_student.school
         
         second_new_student = Student.find_by(:last_name => "Burgaboot")
         assert @seminar.students.include?(second_new_student)
@@ -147,6 +149,21 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         stud_4 = Student.all[-2]
         assert_equal "abigailbarnes5", stud_4.username
         
+    end
+    
+    test "nil school if teacher unverified" do
+        assert_not_nil @teacher_1.school
+        @teacher_1.update(:verified => 0)
+        
+        go_to_create_student_view
+        
+        fill_in ("first_name_1"), :with => "Phil"
+        fill_in ("last_name_1"), :with => "Labonte"
+        click_on("Create these student accounts")
+        
+        assert_equal @old_stud_count+1, Student.count
+        first_new_student = Student.find_by(:last_name => "Labonte")
+        assert_nil first_new_student.school
     end
     
 end

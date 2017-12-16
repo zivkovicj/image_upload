@@ -15,7 +15,9 @@ class StudentsController < ApplicationController
     params["students"].each do |student|
       if student["first_name"] != "" && student["last_name"] != ""
         @student = Student.new(multi_params(student))
-        @student.sponsor = current_user
+        sponsor = current_user
+        @student.sponsor = sponsor
+        @student.school = sponsor.school if sponsor.verified > 0
         if @student.save
           one_saved = true
           @ss = @student.seminar_students.create(:seminar => @seminar)
