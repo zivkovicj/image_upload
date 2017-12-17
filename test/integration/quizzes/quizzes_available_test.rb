@@ -66,14 +66,28 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "available from desk consultants" do
+        # Creating a team for another class to ensure that team doesn't appear in the method
+        last_seminar = Seminar.last
+        last_seminar.students << @student_2
+        @crazy_obj = last_seminar.objectives.create(:name => "Crazy Objective")
+        c3 = last_seminar.consultancies.create
+        t3 = c3.teams.create(:objective => @crazy_obj)
+        t3.users << @student_2
+        
         @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 8)
+        @student_2.objective_students.find_by(:objective => @objective_30).update(:points => 8)
         assert_not @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
         
-        setup_consultancies
+        c1 = @seminar.consultancies.create
+        t1 = c1.teams.create(:objective => @objective_10)
+        @student_2.teams << t1
         assert @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
         
         @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 10)
         assert_not @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
+        
+        assert @student_2.desk_consulted_objectives(last_seminar).include?(@crazy_obj)
+        assert_not @student_2.desk_consulted_objectives(@seminar).include?(@crazy_obj)
     end
     
     test "quiz without questions" do
