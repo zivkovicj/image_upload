@@ -207,17 +207,17 @@ ready = ->
    
     if $('.clickySeat').length > 0
         $('.clickySeat').on "click", ->
-            goobergonk = $(this).find(".presentTag")
-            seminar_student_id = $(this).attr('id')
+            this_present_marking = $(this).find(".presentTag")
+            seminar_student_id = $(this).attr('id').replace('attendance_div_','')
             url = '/seminar_students/'+seminar_student_id
-            if goobergonk.text() == "Absent"
+            if this_present_marking.text() == "Absent"
                 attendance = true
                 $(this).removeClass("absent")
-                goobergonk.text("Present")
+                this_present_marking.text("Present")
             else
                 attendance = false
                 $(this).addClass("absent")
-                goobergonk.text("Absent")
+                this_present_marking.text("Absent")
             $.ajax
                 type: "PUT",
                 url: url,

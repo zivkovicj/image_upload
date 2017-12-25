@@ -1,12 +1,25 @@
 
 
-BUSINESS TO-DO'S
-
- 
+BUSINESS / MARKETING TO-DO'S
 
 Look at Allen Maxwell's Snowbird app to see if I can help him to improve his code
     See if pagination loads all rows before index view, or if it only loads one page.
     If so, his app can be made far smoother with queries.
+
+Find other collaborators
+    It seems I've reached a point where it's foolish to continue all this work that I'm doing on my own. Is it time to seek other teachers to help develop study guides and lesson plans?
+        Maybe that is the priority, because if I do that while I still have MfA funds, I can pay teachers who might be able to contribute study guides. 
+    Is it more important to seek additional software devs to get the site up to speed?
+    Is it more important to seek investors so that I can pay salaries to the other people who are helping?
+    Lately, I'm feeling more like the GoalTracker feature might be more useful to a wider variety of teachers. (At least, it might be more useful sooner).  Spreading that feature is 
+        a more attainable goal than spreading the DeskConsultants feature. Is it foolish to change the main business plan at this point? If I do change the plan, how does that affect 
+        my decision for proceeding with content writers, coders, or investors?
+    How about this plan:
+        Continue developing GoalTracker myself until next spring.
+        In Spring, pursue opportunities to spread the work to other teachers. Get a few more teachers using the app and giving feedback.
+        Then I'll have something to pitch to companies/investors
+        Content takes a backseat, because it isn't very useful for GoalTracker, only for DeskConsultants. Only develop what I need for my own students.
+        
 
 Look into Investors
     Angel Investors seem like the best route to pursue at this point
@@ -29,31 +42,35 @@ Upload videos and link to them on social media
 Private Repo on Github
 
 
+
+
+
+
+
+
+
+
+
+
 CURRENT UPDATE:
 
+Trying to add a student is erroring.
 
-    
-PRINTED PAGE FOR GOALS
+Admin deleting an objective from the index threw an error
 
-Ensure that goal-setting is working properly
+
+
+
+
+
+
 
 
 NEXT UPDATE:
 
-SMALL FIXES
+AJAX TESTS 
 
-V It needs to update the school upon adding a new student.
-    V But only if the teacher is verified.
-    V Test that it doesn't add the school if the teacher is unverified
-Samson got two different errors trying to log in to either of his classes. 
-V Remove "Id" from student search attribute choices.
-
-After push
-    Update student scores if they took add and subtract integers on the pretest
-    Then Fix the mess with Add and subtract Integers Objectives
-
-
-LEARN HOW TO TEST AJAX
+Ensure that goal-setting is working properly
 
 The approval and goal choosing might work better as best_in_place functions.
     Then I can cut a bunch of jquery.
@@ -67,12 +84,23 @@ Teach Request
 Learn Request
 Pref Request
 
+
+
+
+
+
+
+
+
+ADMIN CAN CREATE GOALS AND EDIT ACTIONS
+
+
 STUDENT CAN OPEN A PAGE TO SEE ALL HER GOALS
 
 Student can open a screen to show all of her goals
 
 COLLECTION OF SMALL FIXES
-Newly-created students need to get a school id if the teacher is verified.
+
 README for loading only specific jquery-ui components.
     https://github.com/jquery-ui-rails/jquery-ui-rails
 School should be displayed on many views
@@ -88,7 +116,7 @@ Admin should be able to destroy students
         But what happens to students and teachers when their school gets destroyed.
         This can probably wait for awhile
 Live site has errors in student searching. It occurred when trying to add Melissa Suess to 7th period
-Consultants button in NavBar needs to link to consultancy show page  
+V Consultants button in NavBar needs to link to consultancy show page  
 Set up billing alerts with AWS.
 I moved the javascripts to the end of the body tag on the chance that it might help with loading. Test on the live site with school computers using both ways.
 Remove all visuals pertaining to Benchmark Stars

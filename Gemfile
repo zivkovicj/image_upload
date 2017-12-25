@@ -22,6 +22,7 @@ gem 'mini_magick', '~> 4.3'
 gem 'capybara'
 gem 'figaro'
 gem 'fog-aws', '0.12.0'
+gem 'poltergeist', '~> 1.10'
 
 group :development, :test do
   gem 'sqlite3', '1.3.11'
@@ -40,6 +41,7 @@ group :test do
   gem 'minitest-reporters',       '1.1.9'
   gem 'guard',                    '2.13.0'
   gem 'guard-minitest',           '2.4.4'
+  gem 'database_cleaner'
 end
 
 group :production do

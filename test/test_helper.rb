@@ -3,6 +3,8 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require "minitest/reporters"
 require 'capybara/rails'
+require 'capybara/poltergeist'
+
 Minitest::Reporters.use!
 
 CarrierWave.root = 'test/fixtures/files'
@@ -244,6 +246,8 @@ class ActionDispatch::IntegrationTest
   
   # Make the Capybara DSL available in all integration tests
   include Capybara::DSL
+
+  Capybara.javascript_driver = :poltergeist
 
   # Reset sessions and driver between tests
   # Use super wherever this method is redefined in your individual test classes

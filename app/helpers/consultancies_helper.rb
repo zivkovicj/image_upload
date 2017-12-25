@@ -1,7 +1,7 @@
 module ConsultanciesHelper
     
     def new_consultancy_button_text
-        "New Arrangement"
+        "Create Desk Consultants Groups"
     end
     
     def new_consultancy_headline

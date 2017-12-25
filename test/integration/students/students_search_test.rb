@@ -44,20 +44,20 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     click_button('Search')
     assert_text(@student_1.last_name_first)
     
-    fill_in "search_field", with: @student_2.id
-    choose('Id')
+    fill_in "search_field", with: @student_2.user_number
+    choose('Student number')
     click_button('Search')
     assert_text(@student_2.last_name_first)
     assert_text("Already registered for this class")
     
-    fill_in "search_field", with: @other_school_student.id
-    choose('Id')
+    fill_in "search_field", with: @other_school_student.user_number
+    choose('Student number')
     click_button('Search')
     assert_no_text(@other_school_student.last_name_first)
     
     assert_not_equal @teacher_1, @student_90.sponsor    # Student sponsored by another teacher
-    fill_in "search_field", with: @student_90.id
-    choose('Id')
+    fill_in "search_field", with: @student_90.user_number
+    choose('Student number')
     click_button('Search')
     assert_text(@student_90.last_name_first)
   end
@@ -92,7 +92,6 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     assert_equal @new_student, @student_80
     assert_equal 1, @new_aula.pref_request
     assert_equal true, @new_aula.present
-    assert_equal 8, @new_aula.benchmark
     assert_equal old_ss_count + 1, SeminarStudent.count
     assert_equal @teacher_1, @new_student.sponsor
     

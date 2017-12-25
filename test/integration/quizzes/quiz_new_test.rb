@@ -119,6 +119,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     
     test "add to total stars" do
         @ss = SeminarStudent.find_by(:user => @student_2, :seminar => @seminar)
+        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 1)
         old_stars = @student_2.total_stars(@seminar)
         
         # First try on quiz student scores 3 stars. An improvement of 2 stars.

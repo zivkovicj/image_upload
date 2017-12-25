@@ -25,7 +25,7 @@
                                 <% thisClass = "col-md-2 seat clickySeat absent" %>
                                 <% thisText = "Absent" %>
                             <% end %>
-                            <div class = "<%= thisClass %>" id="<%= this_ss.id %>">
+                            <div class = "<%= thisClass %>" id="attendance_div_<%= this_ss.id %>" name="ss_<%= this_ss.id %>">
                                 <%= student.first_plus_init %><br/>
                                 <p class="presentTag"><%= thisText %></p>
                             </div>
@@ -41,6 +41,6 @@
 <%= form_for(@consultancy) do |form| %>
     <%= form.hidden_field :seminar, :value => @seminar.id %>
     
-    <%= form.submit "Create Desk Consultants Groups", class: "btn btn-primary" %>
+    <%= form.submit new_consultancy_button_text, class: "btn btn-primary" %>
 
 <% end %>

@@ -163,6 +163,37 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_not @students.include?(@student_2)
     end
     
+    test "attendance with click" do
+        Capybara.current_driver = :poltergeist
+        
+        require 'database_cleaner'
+
+        DatabaseCleaner.strategy = :transaction
+        
+        # then, whenever you need to clean the DB
+        DatabaseCleaner.clean
+        
+        capybara_login(@teacher_1)
+        click_on("desk_consult_#{@seminar.id}")
+        @ss = @seminar.seminar_students.first
+        assert @ss.present
+        @student = @ss.user
+        assert_text("#{@student.first_plus_init} Present")
+        within(:css, "#attendance_div_#{@ss.id}") do
+            assert_text(@student.first_plus_init)
+            assert_text("Present")
+            assert_no_text("Absent")
+        end
+        find("#attendance_div_#{@ss.id}").click
+        
+        within(:css, "#attendance_div_#{@ss.id}") do
+            assert_text(@student.first_plus_init)
+            assert_no_text("Present")
+            assert_text("Absent")
+        end
+        assert_not @ss.reload.present
+    end
+    
     test "rank by consulting" do
         set_date = Date.today - 80.days
         c1 = Consultancy.create(:seminar => @seminar, :created_at => set_date, :updated_at => set_date)
@@ -254,8 +285,8 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @student_46.objective_students.find_by(:objective => @objective_20).update(:points => 7) 
         @student_1.objective_students.find_by(:objective => @objective_20).update(:points => 3)
         @student_2.objective_students.find_by(:objective => @objective_20).update(:points => 3)
-        
-        @student_7.objective_students.find_by(:objective => @objective_50).update(:points => 5)# So she doesn't get taken because of the priority of the objectives
+        @student_6.objective_students.find_by(:objective => @objective_20).update(:points => 7)  # To ensure that he's qualified to consult at least one topic.
+        @student_7.objective_students.find_by(:objective => @objective_50).update(:points => 5)  # So she doesn't get taken because of the priority of the objectives
         set_date_1 = Date.yesterday
         c1 = Consultancy.create(:seminar => @seminar, :created_at => set_date_1, :updated_at => set_date_1)
         t1 = c1.teams.create(:consultant => @student_4, :created_at => set_date_1, :updated_at => set_date_1)
@@ -265,6 +296,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         method_setup
         assert_equal @student_7, @rank_by_consulting[0]
         assert_equal @student_8, @rank_by_consulting[1]
+        assert_equal @student_6, @rank_by_consulting[2]
         assert_equal @student_46, @rank_by_consulting[3]
         
         # No teams before choose_consultants
@@ -293,6 +325,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         # Second student in rank_by_consulting gets skipped because she's unqualified
         assert_not @consultancy.users.include?(@rank_by_consulting[1])
+        debugger if !@consultancy.users.include?(@rank_by_consulting[2])
         assert @consultancy.users.include?(@rank_by_consulting[2])
         
         # Student with no teach_request gets teach_options[0]
@@ -428,7 +461,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert @consultancy.users.count > (@students.count / 2)
         
         # Unplaced students are proficent everywhere there's room
-        unplaced_so_far = @seminar.students.select{|x| need_placement(x)}
+        unplaced_so_far = @students.select{|x| need_placement(x)}
         assert unplaced_so_far.count > 0   # Even with random scores, student_5 should still be unplaced
         assert_equal @consultancy.users.count + unplaced_so_far.count, @students.count
         teams_with_room = @consultancy.teams.select{|x| x.has_room}

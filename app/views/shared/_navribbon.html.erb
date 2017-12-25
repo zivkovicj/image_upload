@@ -17,7 +17,7 @@
                             <% if action_name == 'scoresheet' %>
                                 <%= link_to seminar.limitedName, scoresheet_seminar_url(seminar) %>
                             <% elsif (action_name == 'preDeskConsultants' || action_name == 'deskConsultants') %>
-                                <%= link_to seminar.limitedName, new_consultancy_path(:seminar => seminar.id) %>
+                                <%= link_to seminar.limitedName, consultancy_path(:seminar => seminar.id) %>
                             <% elsif action_name == 'seatingChart' %>
                                 <%= link_to seminar.limitedName, seatingChart_url(seminar) %>
                             <% elsif action_name == 'edit' %>
