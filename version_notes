@@ -1,4 +1,10 @@
 
+2.43 AJAX TESTS (Didn't make a git branch)
+I considered converting the approval and goal choosing to best_in_place functions to cut a lot of jquery. But the jquery version seems to work better.
+Don't offer "Approve" button while no goal is set.
+I eliminated the dropdown menu for logging out and replaced it with a simple link. The dropdown wasn't needed.
+But now I'll need to fix all the tests that included logging out.
+Write test so that student can choose goal and teacher can approve it.
 
 
 

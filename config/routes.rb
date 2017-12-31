@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     get 'approve', on: :member
     get 'print', on: :collection
   end
+  resources :goals
   resources :labels
   resources :label_objectives do
     post 'update_quantities', on: :collection
