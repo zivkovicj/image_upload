@@ -22,18 +22,22 @@
         <td><h4><%= stud.last_name_first %></h4></td>
         <% this_gs = stud.goal_students.where(:seminar => @seminar)[@seminar.term] %>
         <% gs_id = this_gs.id if this_gs %>
-        <td>
-            <h5 id="goal_text_<%= gs_id %>"><%= this_gs.goal ? this_gs.goal.name : "No goal set" %></h5>
-            <h5 id="target_text_<%= gs_id %>"><%= this_gs.target ? this_gs.target : "? " %> % </h5>
-            </br>
-            </br>
-            <% if !this_gs.approved %>
-                <div class="btn btn-primary goal_approval" id="approval_button_<%= gs_id %>" gs_id="<%= gs_id %>">Approve</div>
+        <td id="approval_cell_<%= gs_id %>">
+            <% if this_gs.goal.present? %>
+                <h5 id="goal_text_<%= gs_id %>"><%= this_gs.goal.name %></h5>
+                <% if !this_gs.approved %>
+                    </br>
+                    </br>
+                    <div class="btn btn-primary goal_approval" id="approval_button_<%= gs_id %>" gs_id="<%= gs_id %>">Approve</div>
+                <% end %>
+            <% else %>
+                <h5 id="goal_text_<%= gs_id %>">No Goal Set</h5>
             <% end %>
+            <h5 id="target_text_<%= gs_id %>"><%= this_gs.target ? this_gs.target : "? " %> % </h5>
         </td>
         <td>
-            <%= select("syl", "goal", Goal.all.collect {|p| [ p.name, p.id ] }, {:include_blank => "Choose Student's Goal"}, {:class => "goal_change select_box left_box", :gs_id => "#{gs_id}"}) %>
-            <%= select("syl", "target", percent_array.collect{|p| [ p[0], p[1] ] },  {:include_blank => "Choose Student's Target"}, {:class => "target_change select_box left_box",  :gs_id => "#{gs_id}"}) %>
+            <%= select("syl", "goal", Goal.all.collect {|p| [ p.name, p.id ] }, {:include_blank => "Choose Student's Goal"}, {:class => "goal_change select_box left_box", :gs_id => "#{gs_id}", :id => "goal_select_#{gs_id}"}) %>
+            <%= select("syl", "target", percent_array.collect{|p| [ p[0], p[1] ] },  {:include_blank => "Choose Student's Target"}, {:class => "target_change select_box left_box",  :gs_id => "#{gs_id}", :id => "target_select_#{gs_id}"}) %>
         </td>
     </tr>
 <% end %>

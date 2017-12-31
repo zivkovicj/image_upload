@@ -65,6 +65,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   
   test 'add student to class' do
     first_assign = @seminar.objectives.first
+    @student_80 = users(:student_80)
     
     capybara_login(@teacher_1)
     click_on('1st Period')

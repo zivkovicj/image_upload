@@ -15,7 +15,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_template 'admins/show'
     assert_select "a[href=?]", login_path, count: 0
     assert_select "a[href=?]", logout_path
-    assert_select "a[href=?]", admin_path(@admin_user)
     
     delete logout_path
     assert_not is_logged_in?
@@ -36,7 +35,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_template 'teachers/show'
     assert_select "a[href=?]", login_path, count: 0
     assert_select "a[href=?]", logout_path
-    assert_select "a[href=?]", teacher_path(@teacher_1)
     
     delete logout_path
     assert_not is_logged_in?
@@ -57,7 +55,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_template 'students/show'
     assert_select "a[href=?]", login_path, count: 0
     assert_select "a[href=?]", logout_path
-    assert_select "a[href=?]", student_path(@student_1)
     
     delete logout_path
     assert_not is_logged_in?

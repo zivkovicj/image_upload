@@ -27,9 +27,9 @@ class GoalStudent < ApplicationRecord
     def gs_update_stuff
         this_goal = Goal.find(self.goal_id)
         self.goal = this_goal
-        self.checkpoints[0].update(:action => self.goal.actions[0][0])
-        self.checkpoints[1].update(:action => self.goal.actions[1][0])
-        self.checkpoints[2].update(:action => self.goal.actions[2][0])
+        self.checkpoints[0].update(:action => this_goal.actions[0][0])
+        self.checkpoints[1].update(:action => this_goal.actions[1][0])
+        self.checkpoints[2].update(:action => this_goal.actions[2][0])
         self.checkpoints[3].update(:action => this_goal.actions[3][0])
         self.save
     end

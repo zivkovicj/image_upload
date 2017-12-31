@@ -111,8 +111,6 @@ ready = ->
         $('.goal_change').on "change", ->
             gs_id = $(this).attr('gs_id')
             url = '/goal_students/'+gs_id
-            $('#approval_button_'+gs_id).fadeOut()
-            $('#goal_text_'+gs_id).text($("option:selected", this).text())
             $.ajax
                 type: "PUT",
                 url: url,
@@ -121,6 +119,8 @@ ready = ->
                     goal_student:
                         approved: true
                         goal_id: $(this).val()
+            $('#approval_button_'+gs_id).fadeOut()
+            $('#goal_text_'+gs_id).text($("option:selected", this).text())
         
         $('.target_change').on "change", ->
             gs_id = $(this).attr('gs_id')

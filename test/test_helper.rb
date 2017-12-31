@@ -144,11 +144,6 @@ class ActiveSupport::TestCase
     session[:user_id] = user.id
   end
   
-  def log_out
-    click_on("Account")
-    click_on("Log out")
-  end
-  
   def assert_on_teacher_page
     assert_text("Teacher Since:")
   end
@@ -237,6 +232,16 @@ class ActiveSupport::TestCase
     
   def fill_choice(a, b)
     fill_in "question_#{a}_choice_#{b}", with: @new_choice[a][b]
+  end
+  
+  def poltergeist_stuff
+    Capybara.register_driver :poltergeist do |app|
+      Capybara::Poltergeist::Driver.new(app, {:timeout => 60})
+    end
+    Capybara.current_driver = :poltergeist
+    require 'database_cleaner'
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean
   end
 end
 

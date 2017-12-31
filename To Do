@@ -54,8 +54,6 @@ Private Repo on Github
 
 CURRENT UPDATE:
 
-Trying to add a student is erroring.
-
 Admin deleting an objective from the index threw an error
 
 
@@ -72,8 +70,31 @@ AJAX TESTS
 
 Ensure that goal-setting is working properly
 
-The approval and goal choosing might work better as best_in_place functions.
-    Then I can cut a bunch of jquery.
+I considered converting the approval and goal choosing to best_in_place functions to cut a lot of jquery. But the jquery version seems to work better.
+
+V Don't offer "Approve" button while no goal is set.
+
+I eliminated the dropdown menu for logging out and replaced it with a simple link. The dropdown wasn't needed.
+
+But now I'll need to fix all the tests that included logging out.
+
+Write test so that student can choose goal and teacher can approve it.
+
+
+
+ FAIL["test_login/out_as_admin", UsersLoginTest, 423.2211627587676]
+ test_login/out_as_admin#UsersLoginTest (423.22s)
+        Expected at least 1 element matching "a[href="/admins/762146111"]", found 0..
+        Expected 0 to be >= 1.
+        test/integration/users/users_login_test.rb:18:in `block in <class:UsersLoginTest>'
+
+ERROR["test_add_student_to_class", StudentsSearchTest, 440.69878607057035]
+ test_add_student_to_class#StudentsSearchTest (440.70s)
+NoMethodError:         NoMethodError: undefined method `objectives' for nil:NilClass
+        Did you mean?  object_id
+            test/integration/students/students_search_test.rb:78:in `block (2 levels) in <class:StudentsSearchTest>'
+            test/integration/students/students_search_test.rb:78:in `block in <class:StudentsSearchTest>'
+
 Goal actions
     Targets
     Achievement

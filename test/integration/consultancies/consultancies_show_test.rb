@@ -164,21 +164,12 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     test "attendance with click" do
-        Capybara.current_driver = :poltergeist
-        
-        require 'database_cleaner'
-
-        DatabaseCleaner.strategy = :transaction
-        
-        # then, whenever you need to clean the DB
-        DatabaseCleaner.clean
-        
+        poltergeist_stuff
         capybara_login(@teacher_1)
         click_on("desk_consult_#{@seminar.id}")
         @ss = @seminar.seminar_students.first
         assert @ss.present
         @student = @ss.user
-        assert_text("#{@student.first_plus_init} Present")
         within(:css, "#attendance_div_#{@ss.id}") do
             assert_text(@student.first_plus_init)
             assert_text("Present")

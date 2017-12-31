@@ -47,7 +47,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         fill_in ("last_name_4"), :with => "Garden"
         click_on("Create these student accounts")
         
-        log_out
+        click_on("Log out")
         
         @new_student = Student.last
         assert_equal "Sound", @new_student.first_name
