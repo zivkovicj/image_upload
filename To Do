@@ -75,35 +75,6 @@ Admin deleting an objective from the index threw an error.
 Migrate to add extent and user to Goal model
 Check whether there are existing goals that need their extent and user filled
 
- FAIL["test_check_for_lone_students", ConsultanciesShowTest, 198.9265773035586]
- test_check_for_lone_students#ConsultanciesShowTest (198.93s)
-        Expected: 0
-          Actual: 1
-        test/integration/consultancies/consultancies_show_test.rb:499:in `block in <class:ConsultanciesShowTest>'
-
-
-
-
-ERROR["test_teacher_approves_goal", GoalStudentsEditTest, 611.0985984914005]
- test_teacher_approves_goal#GoalStudentsEditTest (611.10s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible css "h4" with text "50 students need you to choose/approve their goals for this term."
-            test/integration/goals/goal_students_edit_test.rb:88:in `block in <class:GoalStudentsEditTest>'
-
-ERROR["test_teacher_changes_goal", GoalStudentsEditTest, 626.5531161222607]
- test_teacher_changes_goal#GoalStudentsEditTest (626.55s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
-            test/integration/goals/goal_students_edit_test.rb:30:in `student_chooses_goal'
-            test/integration/goals/goal_students_edit_test.rb:119:in `block in <class:GoalStudentsEditTest>'
-
-  260/260: [===========================================================================================================] 100% Time: 00:11:01, Time: 00:11:01
-
-Finished in 661.15128s
-260 tests, 1416 assertions, 1 failures, 7 errors, 0 skips
-
-
-
-
-
 
 
 
