@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GoalsEditTest < ActionDispatch::IntegrationTest
+class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users

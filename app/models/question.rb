@@ -9,6 +9,8 @@ class Question < ApplicationRecord
   
   serialize :correct_answers
   
+  attribute  :extent, :string, default: "private"
+  
   validates :prompt, :presence => true
   validates :extent, :presence => true
   

@@ -5,7 +5,7 @@
 <div class="singleOption">
     <h2><strong><%= include_word.capitalize.pluralize(2) %></strong></h2>
     
-    <% if @assignPermission != "other" %>
+    <% if @assign_permission != "other" %>
         <h3>Check all of the <%= include_word.pluralize(2) %> that you want to include <%= include_on %>.</h3>
     
         <% 2.times do |n| %>

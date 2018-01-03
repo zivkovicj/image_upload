@@ -10,6 +10,7 @@ class User < ApplicationRecord
     has_many    :labels
     has_many    :quizzes
     has_many    :pictures
+    has_many    :goals
     has_and_belongs_to_many  :teams
     belongs_to  :school
     belongs_to   :sponsor,  :class_name => "User"
@@ -99,6 +100,10 @@ class User < ApplicationRecord
     
     def name_with_title
         "#{title.split.map(&:capitalize).join(' ')} #{last_name.split.map(&:capitalize).join(' ')}"
+    end
+    
+    def full_name_with_title
+        "#{title.split.map(&:capitalize).join(' ')} #{first_name.split.map(&:capitalize).join(' ')} #{last_name.split.map(&:capitalize).join(' ')}"
     end
     
     def one_unfinished(obj)

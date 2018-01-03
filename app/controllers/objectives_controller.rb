@@ -10,8 +10,8 @@ class ObjectivesController < ApplicationController
   
   
   def new
-    @objective = Objective.new()
-    new_objective_stuff()
+    @objective = Objective.new
+    new_objective_stuff
   end
   
   def create
@@ -22,7 +22,7 @@ class ObjectivesController < ApplicationController
       flash[:success] = "Objective Created"
       redirect_to quantities_objective_path(@objective)
     else # This actually shouldn't be able to happen right now, since the controller gives the objective a name
-      new_objective_stuff()
+      new_objective_stuff
       render 'new'
     end
   end
@@ -49,7 +49,7 @@ class ObjectivesController < ApplicationController
     @objective = Objective.find(params[:id])
     @labels = labels_to_offer
 
-    setPermissions(@objective)
+    set_permissions(@objective)
     @pre_req_list = build_pre_req_list(@objective)
   end
 
@@ -112,9 +112,8 @@ class ObjectivesController < ApplicationController
     def new_objective_stuff
       @objective.name = "Objective #{Objective.count}"
       @objective.user = current_user
-      @objective.extent = "public"
       @labels = labels_to_offer
-      setPermissions(@objective)
+      set_permissions(@objective)
       @pre_req_list = build_pre_req_list(@objective)
     end
     

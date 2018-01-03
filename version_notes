@@ -391,7 +391,7 @@ Clicking on a class in the navribbon directs to that class show view. It should 
     While editing a question, don't allow editing the style
     Add Style for seed questions
         And seed a few fill-in questions
-    Instead of splitting all the different form parts by @assignPermission, redirect the user to show or edit based on that variable.
+    Instead of splitting all the different form parts by @assign_permission, redirect the user to show or edit based on that variable.
         Update the tests for viewing another teacher's question.
     Test for editing fill-in questions
     The fixtures probably don't need to load associations in the test helper anymore

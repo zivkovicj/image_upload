@@ -3,22 +3,22 @@ module SetPermissions
     
     include SessionsHelper
     
-    def setPermissions(target)
+    def set_permissions(target)
       thisId = target.user_id
       if current_user.type == "Admin"
-          @assignPermission = "admin"
+          @assign_permission = "admin"
       else
         if thisId == current_user.id
-          @assignPermission = "thisUser"
+          @assign_permission = "thisUser"
         else
-          @assignPermission = "other"
+          @assign_permission = "other"
         end
       end
 
       if thisId == 0
-        @createdLabel = "Mr. Z School"
+        @created_by = "Mr. Z School"
       else
-        @createdLabel = User.find(thisId).name_with_title
+        @created_by = User.find(thisId).full_name_with_title
       end
     end
     

@@ -1,0 +1,43 @@
+<% limit_array = [8,4,8,1] %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<%= form_for(@goal) do |f| %>
+  <%= render 'shared/error_messages', object: @goal %>
+
+  <div class="singleOption">
+    </br>
+    <%= render 'shared/name_in_form', form: f %>
+    <%= render 'shared/user_and_extent', form: f %>
+  </div>
+  </br>
+  
+  <% if @assign_permission != "other" %>
+    <% 4.times do |n| %>
+      <div class="singleOption">
+        <h2>Options for Checkpoint <%= n+1 %></h2>
+        
+        <% limit_array[n].times do |m| %>
+          <% curr_val = @goal.actions[n][m] %>
+          <input type="text" name="goal[actions][<%= n %>][<%= m %>]" id="action_<%= n %>_choice_<%= m %>" value="<%= curr_val if curr_val.present? %>" />
+        <% end %>
+        </br>
+      </div>
+      </br>
+    <% end %>
+  <% else %>
+    <div class="singleOption">
+      <% @goal.actions.each_with_index do |n, indexn| %>
+        <h3>Options for Checkpoint <%= indexn+1 %></h3>
+        <ul>
+          <% n.each_with_index do |m, indexm| %>
+            <li><%= @goal.actions[indexn][indexm] %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= f.submit yield(:button_text), class: "btn btn-primary" if @assign_permission !="other" %>
+<% end %>

@@ -1,0 +1,20 @@
+
+<% object = form.object %>
+<% class_name = object.class.name %>
+
+<h4><%= class_name %> Created by: <%= @created_by %> </h4>
+<input type="hidden" name="<%= class_name.downcase %>[user_id]" value="<%= object.user_id %>">
+<%= form.hidden_field :user_id, :value => object.user_id %>
+<% if @assign_permission != "other" %>
+  <table class="table-borderless">
+    <tr>
+      <td width="15%"><input type="radio" name="<%= class_name.downcase %>[extent]" id="public_<%= class_name.downcase %>" value="public" checked="<%= "checked" if object.extent=="public" %>" /></td>
+      <td>Public <%= class_name %> &emsp;</td>
+      <td width="15%"><input type="radio" name="<%= class_name.downcase %>[extent]" id="private_<%= class_name.downcase %>" value="private" checked="<%= "checked" if object.extent=="private" %>"/></td>
+      <td>Private <%= class_name %></td>
+    </tr>
+  </table>
+<% else %>
+  <td><h5> &emsp; You are viewing the details of this <%= class_name.downcase %>. You may not make any edits because it was created by another teacher.</h5></td>
+<% end %>
+    

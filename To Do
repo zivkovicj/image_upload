@@ -54,13 +54,51 @@ Private Repo on Github
 
 CURRENT UPDATE:
 
-TEACHER GOAL ADDING AND EDITING
+GOAL ADDING AND EDITING
+
+V Admin and teachers can go to a "Goals" page
+V Can create a new goal, along with its actions
+V Can click an existing goal to change its name and actions
+V Can only edit goals created by yourself
+V Look at my existing tests for permissions for objectives, labels, etc. Duplicate those for goals
+V Submit button shouldn't appear in any forms if the viewer doesn't have editing permission
+V Use the partial for extent and user everywhere applicable
+V Tests should include changing the extent
+    V Label Test
+    V Objective Test
+V Test failing at creating a goal, then fixing it.
+V Goal will not validate unless an action is entered for all four checkpoints.
+
+Admin deleting an objective from the index threw an error.
+ Didn't show up in development. Check again in production.
+
+Migrate to add extent and user to Goal model
+Check whether there are existing goals that need their extent and user filled
+
+ FAIL["test_check_for_lone_students", ConsultanciesShowTest, 198.9265773035586]
+ test_check_for_lone_students#ConsultanciesShowTest (198.93s)
+        Expected: 0
+          Actual: 1
+        test/integration/consultancies/consultancies_show_test.rb:499:in `block in <class:ConsultanciesShowTest>'
 
 
 
-Admin deleting an objective from the index threw an error
 
+ERROR["test_teacher_approves_goal", GoalStudentsEditTest, 611.0985984914005]
+ test_teacher_approves_goal#GoalStudentsEditTest (611.10s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible css "h4" with text "50 students need you to choose/approve their goals for this term."
+            test/integration/goals/goal_students_edit_test.rb:88:in `block in <class:GoalStudentsEditTest>'
 
+ERROR["test_teacher_changes_goal", GoalStudentsEditTest, 626.5531161222607]
+ test_teacher_changes_goal#GoalStudentsEditTest (626.55s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
+            test/integration/goals/goal_students_edit_test.rb:30:in `student_chooses_goal'
+            test/integration/goals/goal_students_edit_test.rb:119:in `block in <class:GoalStudentsEditTest>'
+
+  260/260: [===========================================================================================================] 100% Time: 00:11:01, Time: 00:11:01
+
+Finished in 661.15128s
+260 tests, 1416 assertions, 1 failures, 7 errors, 0 skips
 
 
 
@@ -70,8 +108,6 @@ Admin deleting an objective from the index threw an error
 
 
 NEXT UPDATE:
-
-
 
 
 MORE AJAX TESTS 
@@ -92,8 +128,6 @@ Pref Request
 
 
 
-
-ADMIN CAN CREATE GOALS AND EDIT ACTIONS
 
 
 STUDENT CAN OPEN A PAGE TO SEE ALL HER GOALS
@@ -126,6 +160,11 @@ Deleting a consultancy from its own show page isn't working right now.
 Put goals in NavRibbon
 Fix NavRibbon for Desk Consultants
 
+
+DRY FORM FOR QUESTION CREATION
+
+The form for creating questions is the only one that doesn't use the partial for public/private extent. I paused there because of the input name and because questions
+    needs to be pluralized in the new question creator.
 
 OTHER TESTS TO ADD
 Seminars_edit_test
@@ -171,6 +210,16 @@ Test that a limited number of groups are created if many students are qualified 
     With priority 3's
     And total consultants
 Navigating with the NavRibbons
+Test failing at creating a record, then fixing it
+    Objective
+    Label
+    Picture
+    Question
+The current extent of an item needs to be checked by default
+    Objective
+    Label
+    Picture
+    Question
 
 DUE DATES FOR GOALS AND OTHER FEATURES THAT FEEL NEEDED SOON FOR USING GOAL TRACKER
 
@@ -337,6 +386,14 @@ question he can answer correctly, where possible. Then have the student try to f
 Would be really cool if the app could create them automatically. Pull two correct and two inccorect questions for each student.
     Perhaps even merge them with spaces for taking notes on their groupmate's ideas.
     But students who have never tried that objective will still need the explanatory study guide.
+    
+PICTURE NEEDS EXTENT
+
+Pictures that are uploaded need to have a column for public/private extent
+    And a column for user
+Test for all the results of extent that are tested for in the other models
+Test for picture AND FOR QUESTION should include changing the extent
+
 
 ******
 BEGIN SERIOUSLY ANNOUNCING THE APP
@@ -502,7 +559,7 @@ Allow students to be marked as ELL. When that happens, they are default exempt f
 SMALL IMPROVEMENTS TO COMPLETE MUCH LATER
 When there's only one public objective, the list looks really weird.
     I'm sure the problem is the same for private objectives.
-@createdLabel needs to include the users full title
+@created_by needs to include the users full title
 Make a partial for the name and extent on each form.
 When the user is selecting the number of questions from each label, that select box will be blank for a label that has no questions. This screen 
     needs some kind of warning or explanation for this fact.

@@ -8,4 +8,6 @@ class Picture < ApplicationRecord
   validates_presence_of :user
   
   mount_uploader :image, ImageUploader
+  
+  attribute   :extent, :string, default: "private"
 end

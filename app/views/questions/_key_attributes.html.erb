@@ -2,8 +2,9 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-6">
-            <h2><%= "Question".pluralize(q_num) %> Created by: <%= @createdLabel %> &nbsp;</h2>
+            <h2><%= "Question".pluralize(q_num) %> Created by: <%= @created_by %> &nbsp;</h2>
             </br>
+            
             <table><tr>
                 <td width="10%"><input type="radio" name="extent" id="public" value="public" checked="checked"/></td>
                 <td>Public <%= "Question".pluralize(q_num) %></td>

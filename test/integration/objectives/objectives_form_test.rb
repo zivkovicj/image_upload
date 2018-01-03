@@ -40,6 +40,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         fill_in "name", with: name
         check("check_#{@objective_20.id}")
         check('1st Period')
+        choose('public_objective')
         submit_objective
         
         assert_text "Quantities and Point Values"
@@ -80,7 +81,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_equal @old_objective_count + 1, Objective.count
         assert_equal name, @new_objective.name
         assert_equal @admin_user, @new_objective.user
-        assert_equal "public", @new_objective.extent
+        assert_equal "private", @new_objective.extent
         assert_equal 0, @new_objective.objective_seminars.count
         assert_equal 0, @new_objective.labels.count
         
@@ -172,22 +173,23 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         click_on(@objective_20.fullName)
         check(@seminar.name)
         
-        assert_text("You may only edit an objective that you have created. You may use this window to choose which classes this objective is assigned to.")
+        assert_text("You are viewing the details of this objective. You may not make any edits because it was created by another teacher.")
         assert_no_selector('input', :id => "name", :visible => true)
         assert_selector('li', :text => @objective_20.preassigns.first.short_name)
         assert_no_selector('input', :id => "#{@objective_20.name}", :visible => true)
     end
     
-    test "edit other teacher objective" do
+    test "view other teacher objective" do
         capybara_login(@teacher_1)
         click_on('All Objectives')
         click_on(@objective_20.fullName)
         check(@seminar.name)
         
-        assert_text("You may only edit an objective that you have created. You may use this window to choose which classes this objective is assigned to.")
+        assert_text("You are viewing the details of this objective. You may not make any edits because it was created by another teacher.")
         assert_no_selector('input', :id => "name", :visible => true)
         assert_selector('li', :text => @objective_20.preassigns.first.short_name)
         assert_no_selector('input', :id => "#{@objective_20.name}", :visible => true)
+        assert_no_text("Save Changes")
     end
     
     test "user edits own objective" do

@@ -7,10 +7,8 @@ class LabelsController < ApplicationController
   include SetPermissions
 
   def new
-    @label = Label.new
-    new_label_stuff()
-    @questions = questions_to_offer
-    setPermissions(@label)
+    @label = Label.new(:user => current_user)
+    set_permissions(@label)
   end
 
   def create
@@ -20,17 +18,14 @@ class LabelsController < ApplicationController
       flash[:success] = "Label Created"
       redirect_to current_user
     else
-      new_label_stuff()
-      setPermissions(@label)
-      @questions = questions_to_offer
+      set_permissions(@label)
       render 'new'
     end
   end
 
   def edit
     @label = Label.find(params[:id])
-    @questions = questions_to_offer
-    setPermissions(@label)
+    set_permissions(@label)
   end
 
   def update
@@ -40,6 +35,7 @@ class LabelsController < ApplicationController
       flash[:success] = "Label Updated"
       redirect_to current_user
     else
+      set_permissions(@label)
       render 'edit'
     end
   end
@@ -78,21 +74,5 @@ class LabelsController < ApplicationController
   
     def label_params
       params.require(:label).permit(:name, :extent, :user_id, question_ids: [])
-    end
-    
-    def questions_to_offer
-      build_list = []
-      question_list = (current_user.type == "Admin" ? Question.all : Question.where(:user => current_user))
-      
-      question_list.all.each do |question|
-        build_list.push([question.id, question.short_prompt, question.label])
-      end
-      
-      return build_list
-    end
-    
-    def new_label_stuff()
-      @label.user = current_user
-      @label.extent = "public"
     end
 end

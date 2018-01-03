@@ -11,6 +11,6 @@ class Label < ApplicationRecord
   
   include ModelMethods
   
-
+  attribute   :extent, :string, default: "private"
 
 end

@@ -10,29 +10,21 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
     end
     
     test "create new label" do
-        oldLabelCount = Label.count
-        @user_q.update(:label => @user_l)
+        old_label_count = Label.count
         
         capybara_login(@teacher_1)
         click_on("Create a New Label")
         
-        @user_q.reload
-        assert_equal @user_l, @user_q.label 
-        
         fill_in "name", with: @new_name
-        check("question_#{@user_q.id}")
         click_on("Create This Label")
         
-        assert_equal oldLabelCount + 1, Label.count
+        assert_equal old_label_count + 1, Label.count
         @new_label = Label.last
         assert_equal @new_name, @new_label.name
-        assert_equal "public", @new_label.extent
+        assert_equal "private", @new_label.extent
         assert_equal @teacher_1, @new_label.user
         
         @user_q.reload
-        assert @new_label.questions.include?(@user_q)
-        assert_not_equal @user_l, @user_q.label
-        assert_equal @new_label, @user_q.label
         
         # Need to assert redirection soon
     end
@@ -42,6 +34,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
         click_on("Create a New Label")
         
         fill_in "name", with: @new_name
+        choose("public_label")
         click_on("Create This Label")
         
         @new_label = Label.last
@@ -64,13 +57,15 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
         assert_selector('li', :text => "Name can't be blank")
     end
     
-    test "edit other teacher label" do
+    test "view other teacher label" do
         capybara_login(@teacher_1)
         click_on('All Labels')
         click_on(@other_l_pub.name)
         
-        assert_text("You may only edit a label that you have created.")
+        assert_text("You are viewing the details of this label. You may not make any edits because it was created by another teacher.")
         assert_no_selector('textarea', :id => "name", :visible => true)
+        assert_no_text("Save Changes")
+        
     end
     
     test "edit admin label" do
@@ -78,7 +73,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
         click_on('All Labels')
         click_on(@admin_l.name)
         
-        assert_text("You may only edit a label that you have created.")
+        assert_text("You are viewing the details of this label. You may not make any edits because it was created by another teacher.")
         assert_no_selector('textarea', :id => "name", :visible => true)
     end
     
@@ -97,25 +92,5 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
         
         @user_l.reload
         assert_equal new_name, @user_l.name
-    end
-    
-    test "user presence of question checkboxes" do
-        capybara_login(@teacher_1)
-        click_on("Create a New Label")
-        
-        assert_no_selector("input", :id => "question_#{@admin_q.id}")
-        assert_selector("input", :id => "question_#{@user_q.id}")
-        assert_no_selector("input", :id => "question_#{@other_q_pub.id}")
-        assert_no_selector("input", :id => "question_#{@other_q_priv.id}")
-    end
-    
-    test "admin presence of question checkboxes" do
-        capybara_login(@admin_user)
-        click_on("Create a New Label")
-        
-        assert_selector("input", :id => "question_#{@admin_q.id}")
-        assert_selector("input", :id => "question_#{@user_q.id}")
-        assert_selector("input", :id => "question_#{@other_q_pub.id}")
-        assert_selector("input", :id => "question_#{@other_q_priv.id}")        
     end
 end

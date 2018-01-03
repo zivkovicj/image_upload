@@ -1,0 +1,9 @@
+
+<% object = form.object %>
+<% class_name = object.class.name %>
+
+<% if @assign_permission != "other" %>
+    <%= form.text_field :name, {class: 'form-control short-field text-area', :id => "name", :placeholder =>  "Name of this #{class_name}"} %>
+<% else %>
+    <h2><%= object.name %></h2>
+<% end %>

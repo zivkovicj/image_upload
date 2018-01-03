@@ -17,8 +17,6 @@ class ApplicationController < ActionController::Base
     current_user&.type == "Admin"
   end
   
-
-  
   def redirect_for_non_admin
     redirect_to(login_url) unless user_is_an_admin
   end
@@ -39,5 +37,4 @@ class ApplicationController < ActionController::Base
   def redirect_for_students
     redirect_to(login_url) if current_user.type == "Student"
   end
-  
 end

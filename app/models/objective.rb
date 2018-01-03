@@ -1,9 +1,7 @@
 class Objective < ApplicationRecord
     has_many    :objective_students, dependent: :destroy
-    
     has_many    :objective_seminars, dependent: :destroy
     has_many    :seminars, through: :objective_seminars
-    
     has_many    :preconditions, class_name: "Precondition",
                                 foreign_key: "mainassign_id",
                                 dependent: :destroy
@@ -18,6 +16,8 @@ class Objective < ApplicationRecord
     has_many    :teams, dependent: :destroy
     
     belongs_to  :user
+    
+    attribute   :extent, :string, default: "private"
     
     validates :name, presence: true, length: { maximum: 40 }
     

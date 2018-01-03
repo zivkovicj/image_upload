@@ -21,34 +21,13 @@
       <%= render 'shared/error_messages', object: @objective %>
       
       <div class="singleOption">
-        <h2>Objective Created by: <%= @createdLabel %> &nbsp;</h2>
         </br>
-        <%= a.hidden_field :user_id, :value => @objective.user_id %>
-        <% if @assignPermission != "other" %>
-          <%= a.collection_radio_buttons :extent, [['public', 'Public Objective'] ,['private', 'Private Objective']],
-                           :first, :last, { item_wrapper_tag: false } do |b| %>
-            <label class="radio-inline">
-              <%= b.radio_button %> &nbsp; <%= b.label %>
-            </label>
-          <% end %>
-        <% else %>
-          </br>
-          </br>
-          You may only edit an objective that you have created. You may use this window to choose which classes this objective is assigned to.
-          <%= a.hidden_field :extent, :value => @objective.extent %>
-        <% end %>
+        <%= render 'shared/name_in_form', form: a %>
+        <%= render 'shared/user_and_extent', form: a %>
       </div>
+      </br>
       
-      <div class="singleOption">
-        <h2>Name &nbsp;</h2>
-        <% if @assignPermission != "other" %>
-          <%= a.text_area :name, {class: 'form-control short-field text-area', :id => "name"} %>
-        <% else %>
-          <h4><%= @objective.name %></h4>
-        <% end %>
-      </div>
-      
-      <% if @assignPermission != "admin" %>
+      <% if @assign_permission != "admin" %>
         <div class="singleOption" id="seminars_to_include">
           <h2>Classes To Include This Objective</h2>
           <table>
@@ -87,7 +66,7 @@
       
       <br/><br/>
       <%# @objective.preassign_ids = [] %>
-      <%= a.submit yield(:button_text), class: "btn btn-primary" %>
+      <%= a.submit yield(:button_text), class: "btn btn-primary" if @assign_permission !="other" %>
     <% end %>
     
 </div>

@@ -72,8 +72,8 @@ class QuestionsController < ApplicationController
     @question = Question.find(params[:id])
     @labels = labels_to_offer()
     @pictures = @question.label.pictures
-    setPermissions(@question)
-    render 'show' if @assignPermission == "other"
+    set_permissions(@question)
+    render 'show' if @assign_permission == "other"
   end
 
   def update
