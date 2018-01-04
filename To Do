@@ -54,26 +54,14 @@ Private Repo on Github
 
 CURRENT UPDATE:
 
-
-
-
-Need to be able to edit the statement stem
+V Need to be able to edit the statement stem
 
 Error upon admin deleting an objective. I think it only happens with private objectives.
 
 NEXT UPDATE:
 
 
-MORE AJAX TESTS 
 
-Goal actions
-    Achievement
-    Teacher comments and student comment on checkpoints
-Attendance
-Score
-Teach Request
-Learn Request
-Pref Request
 
 
 
@@ -120,6 +108,17 @@ DRY FORM FOR QUESTION CREATION
 The form for creating questions is the only one that doesn't use the partial for public/private extent. I paused there because of the input name and because questions
     needs to be pluralized in the new question creator.
 
+MORE AJAX TESTS 
+
+Goal actions
+    Achievement
+    Teacher comments and student comment on checkpoints
+Attendance
+Score
+Teach Request
+Learn Request
+Pref Request
+
 OTHER TESTS TO ADD
 Seminars_edit_test
 Test that "verify other teachers" message only appears for the mentor teacher
@@ -164,7 +163,7 @@ Test that a limited number of groups are created if many students are qualified 
     With priority 3's
     And total consultants
 Navigating with the NavRibbons
-Test failing at creating a record, then fixing it
+Test failing at creating a record, then fixing it. Needs to apply to creating a new record and also to editing an existing record.
     Objective
     Label
     Picture

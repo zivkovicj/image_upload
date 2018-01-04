@@ -45,7 +45,7 @@ class GoalsController < ApplicationController
     private
     
         def goal_params
-            params.require(:goal).permit(:name, :extent, :user_id)
+            params.require(:goal).permit(:name, :extent, :user_id, :statement_stem)
         end
     
         def set_actions

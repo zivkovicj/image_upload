@@ -6,6 +6,7 @@ class Goal < ApplicationRecord
     attribute   :extent, :string, default: "private"
     
     validates :name, length: {maximum: 50}, presence: true
+    validates :statement_stem, length: {maximum: 100}, presence: true
     validate   :four_actions
     
     private

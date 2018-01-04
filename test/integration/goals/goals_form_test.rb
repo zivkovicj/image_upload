@@ -21,15 +21,17 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
         assert_selector('div', :id => "error_explanation")
         assert_selector('li', :text => "Name can't be blank")
         assert_selector('li', :text => "checkpoint 2 needs at least one action")
+        assert_selector('li', :text => "Statement stem can't be blank")
         assert_equal @old_goal_count, Goal.count
         
         # Correct on second try
         fill_in "goal[name]", with: "Eat more beetles"
+        fill_in "goal[statement_stem]", with: "I will eat (?)% of the beetles in Utah"
         fill_in "goal[actions][0][2]", with: "Sneak in to a demolished building"
         fill_in "goal[actions][1][2]", with: "I will eat (?)% of the beetles in my county"
         fill_in "goal[actions][2][2]", with: "Break the glass at an insect museum"
         fill_in "goal[actions][2][4]", with: "Buy beetles from Rancho Market"
-        fill_in "goal[actions][3][0]", with: "I will eat (?)% of the beetles in Utah"
+        fill_in "goal[actions][3][0]", with: "I will eat (?) % of the beetles in the other counties."
         choose("public_goal")
         click_on('Create a New Goal Option')
         
@@ -39,8 +41,9 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
             [["Research types of beetles", "Buy beetles from Harmons", "Sneak in to a demolished building"], 
             ["I will eat (?)% of the beetles in my county"], 
             ["Break the glass at an insect museum", "Buy beetles from Rancho Market"], 
-            ["I will eat (?)% of the beetles in Utah"]]
+            ["I will eat (?) % of the beetles in the other counties."]]
         assert_equal "Eat more beetles", newest_goal.name
+        assert_equal "I will eat (?)% of the beetles in Utah", newest_goal.statement_stem
         assert_equal actions_should_be, newest_goal.actions
         assert_equal @teacher_1, newest_goal.user
         assert_equal "public", newest_goal.extent

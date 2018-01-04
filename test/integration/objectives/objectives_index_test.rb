@@ -79,10 +79,15 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     assert_equal mainassign_precount - 1, mainassign.preassigns.count
     assert_equal oldScoreCount - studentCount, ObjectiveStudent.count
     assert_equal old_os_count - 1, ObjectiveSeminar.count
-    
+  
     @ss.reload
     @second_ss.reload
     assert_not_equal obj_id, @ss.teach_request
     assert_not_equal obj_id, @second_ss.learn_request
+    
+    first_private_objective = Objective.find_by(:extent => "private")
+    find("#delete_#{first_private_objective.id}").click
+    click_on("confirm_#{first_private_objective.id}")
+    assert_equal old_obj_count - 2, Objective.count
   end
 end
