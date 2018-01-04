@@ -37,11 +37,11 @@ class ObjectivesController < ApplicationController
     end
     
     if current_user.type == "Admin"
-      @objectives ||= Objective.paginate(page: params[:page])
+      @objectives ||= Objective.paginate(page: params[:page]).order(:name)
     elsif current_user.type == "Student"
       redirect_to login_url
     else
-      @objectives ||= Objective.where("user_id = ? OR extent = ?", current_user.id, "public").paginate(page: params[:page])
+      @objectives ||= Objective.where("user_id = ? OR extent = ?", current_user.id, "public").paginate(page: params[:page]).order(:name)
     end
   end
 
