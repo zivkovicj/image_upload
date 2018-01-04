@@ -1,4 +1,23 @@
 
+2.44 GOAL ADDING AND EDITING
+
+V Admin and teachers can go to a "Goals" page
+V Can create a new goal, along with its actions
+V Can click an existing goal to change its name and actions
+V Can only edit goals created by yourself
+V Look at my existing tests for permissions for objectives, labels, etc. Duplicate those for goals
+V Submit button shouldn't appear in any forms if the viewer doesn't have editing permission
+V Use the partial for extent and user everywhere applicable
+V Tests should include changing the extent
+    V Label Test
+    V Objective Test
+V Test failing at creating a goal, then fixing it.
+V Goal will not validate unless an action is entered for all four checkpoints.
+
+
+
+
+
 2.43 AJAX TESTS (Didn't make a git branch)
 I considered converting the approval and goal choosing to best_in_place functions to cut a lot of jquery. But the jquery version seems to work better.
 Don't offer "Approve" button while no goal is set.

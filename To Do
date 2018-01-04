@@ -54,29 +54,12 @@ Private Repo on Github
 
 CURRENT UPDATE:
 
-GOAL ADDING AND EDITING
-
-V Admin and teachers can go to a "Goals" page
-V Can create a new goal, along with its actions
-V Can click an existing goal to change its name and actions
-V Can only edit goals created by yourself
-V Look at my existing tests for permissions for objectives, labels, etc. Duplicate those for goals
-V Submit button shouldn't appear in any forms if the viewer doesn't have editing permission
-V Use the partial for extent and user everywhere applicable
-V Tests should include changing the extent
-    V Label Test
-    V Objective Test
-V Test failing at creating a goal, then fixing it.
-V Goal will not validate unless an action is entered for all four checkpoints.
-
-Admin deleting an objective from the index threw an error.
- Didn't show up in development. Check again in production.
-
-Migrate to add extent and user to Goal model
-Check whether there are existing goals that need their extent and user filled
 
 
 
+Need to be able to edit the statement stem
+
+Error upon admin deleting an objective. I think it only happens with private objectives.
 
 NEXT UPDATE:
 
