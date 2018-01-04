@@ -40,6 +40,10 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
   end
   
   test "delete objective" do
+    first_private_objective = Objective.find_by(:extent => "private")
+    Quiz.create(:objective => first_private_objective, :user => Student.first)
+    old_quiz_count = Quiz.count
+    
     old_obj_count = Objective.count
     first_lab = @objective_40.labels.first
     assert_not_nil first_lab
@@ -85,9 +89,9 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     assert_not_equal obj_id, @ss.teach_request
     assert_not_equal obj_id, @second_ss.learn_request
     
-    first_private_objective = Objective.find_by(:extent => "private")
     find("#delete_#{first_private_objective.id}").click
     click_on("confirm_#{first_private_objective.id}")
     assert_equal old_obj_count - 2, Objective.count
+    assert_equal old_quiz_count - 1 , Quiz.count
   end
 end

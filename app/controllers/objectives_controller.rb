@@ -84,6 +84,9 @@ class ObjectivesController < ApplicationController
     ObjectiveStudent.where(:objective_id => @objective.id).each do |as|
       as.destroy!
     end
+    Quiz.where(:objective => @objective).each do |quiz|
+      quiz.destroy!
+    end
     oldAssignId = @objective.id
     @objective.destroy
     SeminarStudent.all.each do |ss|
