@@ -30,9 +30,9 @@ class ObjectivesController < ApplicationController
   def index
     if !params[:search].blank?
       if current_user.type == "Admin"
-        @objectives = Objective.paginate(page: params[:page]).search(params[:search], params[:whichParam])
+        @objectives = Objective.paginate(page: params[:page]).search(params[:search], params[:whichParam]).order(:name)
       else
-        @objectives = Objective.where("user_id = ? OR extent = ?", current_user, "public").paginate(page: params[:page]).search(params[:search], params[:whichParam])
+        @objectives = Objective.where("user_id = ? OR extent = ?", current_user, "public").paginate(page: params[:page]).search(params[:search], params[:whichParam]).order(:name)
       end
     end
     
