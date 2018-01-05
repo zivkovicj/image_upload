@@ -5,7 +5,6 @@ class CreateGoalStudents < ActiveRecord::Migration[5.0]
       t.references  :user, foreign_key: true
       t.references  :seminar, foreign_key: true
       t.integer     :target
-      t.integer     :term
       t.boolean     :approved
       
       t.timestamps

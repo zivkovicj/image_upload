@@ -6,8 +6,6 @@ class CreateGoals < ActiveRecord::Migration[5.0]
       t.integer :style
       t.string :name
       t.string :statement_stem
-      t.string  :extent
-      t.references :user, foreign_key: true
       
       t.timestamps
     end
