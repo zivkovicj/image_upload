@@ -26,7 +26,6 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     
     def student_chooses_goal
         go_to_first_period
-        sleep(0.5)
         click_on("Edit This Goal")
         select("#{Goal.second.name}", :from => 'goal_student_goal_id')
         select("60%", :from => 'goal_student_target')
@@ -55,7 +54,31 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         click_on("Log out")
     end
     
-       test "teacher changes target" do
+    test "dont choose goal" do
+        setup_scores
+        setup_goals
+        update_term_and_checkpoint
+        
+        go_to_first_period
+        sleep(0.5)
+        click_on("Edit This Goal")
+        
+        click_on("Save This Goal")
+        
+        assert_selector('h2', :text => "Current Stars for this Grading Term")
+        
+        @gs = @student_2.goal_students.where(:seminar => @seminar)[0]
+        assert_nil @gs.goal
+    end
+    
+    test "navigate goal screens" do
+        capybara_login(@teacher_1)
+        go_to_goals  
+    end
+    
+    ## POLTERGEIST TESTS
+    
+    test "teacher changes target" do
         goal_test_opening
         student_chooses_goal
         
@@ -143,22 +166,6 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         assert_equal "I will be awesome for 60% of the school days this term.", @gs.checkpoints[3].statement
     end
 
-    
-    test "dont choose goal" do
-        setup_scores
-        setup_goals
-        update_term_and_checkpoint
-        
-        go_to_first_period
-        sleep(0.5)
-        click_on("Edit This Goal")
-        
-        click_on("Save This Goal")
-        
-        assert_selector('h2', :text => "Current Stars for this Grading Term")
-        
-        @gs = @student_2.goal_students.where(:seminar => @seminar)[0]
-        assert_nil @gs.goal
-    end
+
         
 end
