@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(version: 20171125173030) do
     t.integer  "goal_student_id"
     t.string   "action"
     t.integer  "achievement"
-    t.integer  "sequence"
     t.text     "teacher_comment"
     t.text     "student_comment"
     t.date     "due_date"
@@ -36,7 +35,6 @@ ActiveRecord::Schema.define(version: 20171125173030) do
     t.integer  "user_id"
     t.integer  "seminar_id"
     t.integer  "target"
-    t.integer  "term"
     t.boolean  "approved"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -51,11 +49,8 @@ ActiveRecord::Schema.define(version: 20171125173030) do
     t.integer  "style"
     t.string   "name"
     t.string   "statement_stem"
-    t.string   "extent"
-    t.integer  "user_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.index ["user_id"], name: "index_goals_on_user_id"
   end
 
   create_table "label_objectives", force: :cascade do |t|
