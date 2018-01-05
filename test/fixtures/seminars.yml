@@ -5,12 +5,14 @@ one:
   user: archer
   consultantThreshold: 7
   term: 1
+  which_checkpoint: 0
 
 two:
   name: 2nd Period
   user: archer
   consultantThreshold: 7
   term: 1
+  which_checkpoint: 0
 
 three:
   name: 3rd Period

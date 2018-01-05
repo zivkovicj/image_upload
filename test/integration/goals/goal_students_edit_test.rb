@@ -72,8 +72,56 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "navigate goal screens" do
+        setup_scores
+        setup_goals
+        
+        assert_equal 1, @seminar.term
+        assert_equal 0, @seminar.which_checkpoint
+        
         capybara_login(@teacher_1)
-        go_to_goals  
+        go_to_goals
+        
+        assert_text("Approve Student Goals")
+        assert_no_text("View Student Goals")
+        
+        click_on("term_2")
+
+        assert_text("Approve Student Goals")
+        assert_no_text("View Student Goals")
+        @seminar.reload
+        assert_equal 2, @seminar.term
+        assert_equal 0, @seminar.which_checkpoint
+        
+        click_on("checkpoint_3")
+        
+        assert_text("Approve Student Goals")
+        assert_no_text("View Student Goals")
+        @seminar.reload
+        assert_equal 2, @seminar.term
+        assert_equal 3, @seminar.which_checkpoint
+        
+        click_on("#{@seminar.name}_view_goals")
+        
+        assert_text("View Student Goals")
+        assert_no_text("Approve Student Goals")
+        @seminar.reload
+        assert_equal 2, @seminar.term
+        assert_equal 3, @seminar.which_checkpoint
+        
+        click_on("term_3")
+        assert_text("View Student Goals")
+        assert_no_text("Approve Student Goals")
+        @seminar.reload
+        assert_equal 3, @seminar.term
+        assert_equal 3, @seminar.which_checkpoint
+        
+        click_on("checkpoint_1")
+        assert_text("View Student Goals")
+        assert_no_text("Approve Student Goals")
+        @seminar.reload
+        assert_equal 3, @seminar.term
+        assert_equal 1, @seminar.which_checkpoint
+        
     end
     
     ## POLTERGEIST TESTS

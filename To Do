@@ -56,18 +56,21 @@ CURRENT UPDATE:
 
 rm200083
 
-Allow student to choose from among all four checkpoints.
+2.46 GOAL FIXES
 
-When I logged-in as Tito and set his goal for 2nd term, it updated his goal for 4th term.
+V Error in teacher navigating among term and checkpoint
+V To ensure goals and checkpoints are updated and displayed correctly, goal_students and checkpoints need term and sequence after all
+V Won't need this_gs_term anymore
+V Students should be able to edit their comments for any checkpoint.
+V Allow student to choose from among all four checkpoints.
 
-Error in teacher navigating among term and checkpoint
+Rollback 5 steps before migrating.
+Existing GoalStudents should be deleted. Will need to create them again with seminar.create_goal_students
 
-Students should be able to edit their comments for any checkpoint.
 
-Tito's checkpoints are displayed out of order. On his page, they are shown 2, 4, 1, 3
 
-To ensure this doesn't happen, I think goal_students and checkpoints need term and which_checkpoint after all
 
+STUDENT NEEDS TO BE ABLE TO CHANGE CHECKPOINTS UNLESS THEY ARE PAST THEIR DUE DATE
 
 
 

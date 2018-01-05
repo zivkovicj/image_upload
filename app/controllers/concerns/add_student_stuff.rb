@@ -14,7 +14,7 @@ module AddStudentStuff
     
     def goals_for_new_student(seminar, student)
         4.times do |n|
-            student.goal_students.create(:seminar_id => seminar.id)
+            student.goal_students.create(:seminar_id => seminar.id, :term => n)
         end
     end
     

@@ -349,7 +349,7 @@ goal_array = [
        ["I will arrive to class on time for (?) % of the days since Checkpoint 2."]]]]
 
 goal_array.each do |this_goal|
-    Goal.create(:name => this_goal[0], :actions => this_goal[1])
+    Goal.create(:name => this_goal[0], :statement_stem => this_goal[1], :actions => this_goal[2])
 end
 
 Teacher.all[0..5].each do |teach|

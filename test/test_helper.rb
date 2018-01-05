@@ -130,7 +130,7 @@ class ActiveSupport::TestCase
     Seminar.all.each do |seminar|
       seminar.students.each do |stud|
         4.times do |n|
-          stud.goal_students.create(:seminar_id => seminar.id)
+          stud.goal_students.create(:seminar_id => seminar.id, :term => n)
         end
       end
     end

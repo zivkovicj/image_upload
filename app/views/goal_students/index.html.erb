@@ -18,10 +18,10 @@
     <% them_kids.each do |student| %>
         <tr>
             <td><%= student.last_name_first %></td>
-            <% this_gs = student.goal_students.where(:seminar => @seminar)[@this_term] %>
+            <% this_gs = student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
             <td><%= this_gs.goal ? this_gs.statement_with_target : "No goal set." %></td>
         </tr>
-        <% checkpoint = this_gs.checkpoints[@this_checkpoint] %>
+        <% checkpoint = this_gs.checkpoints.find_by(:sequence => @this_checkpoint) %>
         <% this_id = checkpoint.id %>
         <tr>
             <td>
@@ -55,7 +55,7 @@
 
 <%= link_to "Printable Version", print_goal_students_path(:seminar => @seminar), :id => "#{@seminar.name} print goals" %>
 </br>
-<%= link_to image_tag("apple.png"), approve_goal_student_path(@seminar, :override => true), :id => "#{@seminar.name} student goals" %>
+<%= link_to image_tag("apple.png"), approve_goal_student_path(@seminar, :override => true), :id => "#{@seminar.name}_approve_goals" %>
 
 
 

@@ -3,7 +3,7 @@
 <% class_name = object.class.name %>
 
 <% if @assign_permission != "other" %>
-    <% this_placeholder = submitted_placeholder || "Name of this #{class_name}" %>
+    <% this_placeholder = submitted_placeholder ? submitted_placeholder : "Name of this #{class_name}" %>
     <%= form.text_field :name, {class: 'form-control short-field text-area', :id => "name", :placeholder => this_placeholder} %>
 <% else %>
     <h2><%= object.name %></h2>
