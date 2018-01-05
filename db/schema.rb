@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171125173030) do
+ActiveRecord::Schema.define(version: 20180105234602) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20171125173030) do
     t.date     "due_date"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.integer  "sequence"
   end
 
   create_table "consultancies", force: :cascade do |t|
@@ -38,6 +39,7 @@ ActiveRecord::Schema.define(version: 20171125173030) do
     t.boolean  "approved"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "term"
     t.index ["goal_id", "user_id"], name: "index_goal_students_on_goal_id_and_user_id"
     t.index ["goal_id"], name: "index_goal_students_on_goal_id"
     t.index ["seminar_id"], name: "index_goal_students_on_seminar_id"
@@ -51,6 +53,9 @@ ActiveRecord::Schema.define(version: 20171125173030) do
     t.string   "statement_stem"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.string   "extent"
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_goals_on_user_id"
   end
 
   create_table "label_objectives", force: :cascade do |t|
