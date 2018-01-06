@@ -1,6 +1,19 @@
 
 
 
+
+2.46 GOAL FIXES
+
+Error in teacher navigating among term and checkpoint
+To ensure goals and checkpoints are updated and displayed correctly, goal_students and checkpoints need term and sequence after all
+Won't need this_gs_term anymore
+Students should be able to edit their comments for any checkpoint.
+Allow student to choose from among all four checkpoints.
+Fill in the terms and sequences for goal_students and checkpoints
+
+
+
+
 2.45 STATEMENT STEM
 
 Need to be able to edit the statement stem
@@ -9,18 +22,18 @@ Error upon admin deleting an objective. I think it only happens with private obj
 
 2.44 GOAL ADDING AND EDITING
 
-V Admin and teachers can go to a "Goals" page
-V Can create a new goal, along with its actions
-V Can click an existing goal to change its name and actions
-V Can only edit goals created by yourself
-V Look at my existing tests for permissions for objectives, labels, etc. Duplicate those for goals
-V Submit button shouldn't appear in any forms if the viewer doesn't have editing permission
-V Use the partial for extent and user everywhere applicable
-V Tests should include changing the extent
-    V Label Test
-    V Objective Test
-V Test failing at creating a goal, then fixing it.
-V Goal will not validate unless an action is entered for all four checkpoints.
+Admin and teachers can go to a "Goals" page
+Can create a new goal, along with its actions
+Can click an existing goal to change its name and actions
+Can only edit goals created by yourself
+Look at my existing tests for permissions for objectives, labels, etc. Duplicate those for goals
+Submit button shouldn't appear in any forms if the viewer doesn't have editing permission
+Use the partial for extent and user everywhere applicable
+Tests should include changing the extent
+    Label Test
+    Objective Test
+Test failing at creating a goal, then fixing it.
+Goal will not validate unless an action is entered for all four checkpoints.
 
 
 

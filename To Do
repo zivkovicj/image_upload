@@ -48,29 +48,22 @@ Private Repo on Github
 
 
 
+rm200083
+
+ag200094
 
 
 
 
 CURRENT UPDATE:
 
-rm200083
 
-2.46 GOAL FIXES
+2.47 STUDENT NEEDS TO BE ABLE TO CHANGE CHECKPOINTS UNLESS THEY ARE PAST THEIR DUE DATE
 
-V Error in teacher navigating among term and checkpoint
-V To ensure goals and checkpoints are updated and displayed correctly, goal_students and checkpoints need term and sequence after all
-V Won't need this_gs_term anymore
-V Students should be able to edit their comments for any checkpoint.
-V Allow student to choose from among all four checkpoints.
-
-Rollback 5 steps before migrating.
-Existing GoalStudents should be deleted. Will need to create them again with seminar.create_goal_students
-
-
-
-
-STUDENT NEEDS TO BE ABLE TO CHANGE CHECKPOINTS UNLESS THEY ARE PAST THEIR DUE DATE
+Teacher can set due dates for a seminar in the seminar edit screen.
+Option to copy due dates from another seminar.
+    But only offer seminars that have due dates set.
+If the due date for a checkpoint is two days away, or passed, it cannot be edited by a student.
 
 
 
