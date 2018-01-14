@@ -1,0 +1,47 @@
+                       List of relations
+ Schema |           Name            |   Type   |     Owner      
+--------+---------------------------+----------+----------------
+ public | ar_internal_metadata      | table    | egbboowgsiveay
+ public | checkpoints               | table    | egbboowgsiveay
+ public | checkpoints_id_seq        | sequence | egbboowgsiveay
+ public | consultancies             | table    | egbboowgsiveay
+ public | consultancies_id_seq      | sequence | egbboowgsiveay
+ public | goal_students             | table    | egbboowgsiveay
+ public | goal_students_id_seq      | sequence | egbboowgsiveay
+ public | goals                     | table    | egbboowgsiveay
+ public | goals_id_seq              | sequence | egbboowgsiveay
+ public | label_objectives          | table    | egbboowgsiveay
+ public | label_objectives_id_seq   | sequence | egbboowgsiveay
+ public | label_pictures            | table    | egbboowgsiveay
+ public | labels                    | table    | egbboowgsiveay
+ public | labels_id_seq             | sequence | egbboowgsiveay
+ public | objective_seminars        | table    | egbboowgsiveay
+ public | objective_seminars_id_seq | sequence | egbboowgsiveay
+ public | objective_students        | table    | egbboowgsiveay
+ public | objective_students_id_seq | sequence | egbboowgsiveay
+ public | objectives                | table    | egbboowgsiveay
+ public | objectives_id_seq         | sequence | egbboowgsiveay
+ public | pictures                  | table    | egbboowgsiveay
+ public | pictures_id_seq           | sequence | egbboowgsiveay
+ public | preconditions             | table    | egbboowgsiveay
+ public | preconditions_id_seq      | sequence | egbboowgsiveay
+ public | questions                 | table    | egbboowgsiveay
+ public | questions_id_seq          | sequence | egbboowgsiveay
+ public | quizzes                   | table    | egbboowgsiveay
+ public | quizzes_id_seq            | sequence | egbboowgsiveay
+ public | ripostes                  | table    | egbboowgsiveay
+ public | ripostes_id_seq           | sequence | egbboowgsiveay
+ public | schema_migrations         | table    | egbboowgsiveay
+ public | schools                   | table    | egbboowgsiveay
+ public | schools_id_seq            | sequence | egbboowgsiveay
+ public | seminar_students          | table    | egbboowgsiveay
+ public | seminar_students_id_seq   | sequence | egbboowgsiveay
+ public | seminars                  | table    | egbboowgsiveay
+ public | seminars_id_seq           | sequence | egbboowgsiveay
+ public | teams                     | table    | egbboowgsiveay
+ public | teams_id_seq              | sequence | egbboowgsiveay
+ public | teams_users               | table    | egbboowgsiveay
+ public | users                     | table    | egbboowgsiveay
+ public | users_id_seq              | sequence | egbboowgsiveay
+(42 rows)
+
