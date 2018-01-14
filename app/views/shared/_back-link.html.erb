@@ -6,7 +6,7 @@
         <% this_link = scoresheet_seminar_url(seminar) %>
     <% else %>
         <% back_message = "Back to Viewing Your Class" %>
-        <% this_link = student_view_seminar_url(seminar) %>
+        <% this_link = student_view_seminar_path(:user => current_user.id, :id => seminar.id) %>
     <% end %>
 <% else %>
     <% back_message = current_user.type == "Admin" ? "Admin Page" : "Back to Your Profile" %>

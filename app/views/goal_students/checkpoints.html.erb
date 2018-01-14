@@ -1,10 +1,18 @@
+<h1>Choose your Checkpoints</h1>
 
 <h2>Goal for Term <%= @gs.term + 1 %> &emsp; <strong><%= @gs.goal.name %></strong></h2>
 
 <%= form_tag update_checkpoints_goal_student_path do %>
     <% @gs.checkpoints[0..3].each_with_index do |checkpoint, index| %>
-        <h5>Checkpoint <%= index+1 %></h5>
-        <%= select("syl[#{checkpoint.id}]", "action", @gs.goal.actions[index], :class => "select_box left_box") %>
+        <h3>Checkpoint <%= index+1 %></h3>
+        <% this_due_date = Date.strptime(@gs.seminar.checkpoint_due_dates[@gs.term][index], "%m/%d/%Y") %>
+        <% if this_due_date < Date.today %>
+            <h5 id="past_due_<%= index %>">The due date for this checkpoint has already passed.</h5></br>
+        <% elsif this_due_date - 2.days < Date.today %>
+            <h5 id="too_soon_<%= index %>">The due date for this checkpoint is too soon. The checkpoint cannot be changed.</h5></br>
+        <% else %>
+            <div id="datepicker_<%= index %>"><%= select("syl[#{checkpoint.id}]", "action", @gs.goal.actions[index], :class => "select_box left_box") %></div>
+        <% end %>
     <% end %>
     </br>
 

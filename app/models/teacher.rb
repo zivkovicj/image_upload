@@ -11,6 +11,10 @@ class Teacher < User
                     allow_nil: true
     has_secure_password
     
+    def first_seminar
+        self.own_seminars.order(:name).first 
+    end
+    
     private
     
         def destroy_associated_records
@@ -21,5 +25,7 @@ class Teacher < User
                 seminar.destroy
             end
         end
+        
+        
 
 end

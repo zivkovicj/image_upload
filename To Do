@@ -47,7 +47,6 @@ Private Repo on Github
 
 
 
-
 rm200083
 
 ag200094
@@ -60,10 +59,20 @@ CURRENT UPDATE:
 
 2.47 STUDENT NEEDS TO BE ABLE TO CHANGE CHECKPOINTS UNLESS THEY ARE PAST THEIR DUE DATE
 
-Teacher can set due dates for a seminar in the seminar edit screen.
-Option to copy due dates from another seminar.
-    But only offer seminars that have due dates set.
-If the due date for a checkpoint is two days away, or passed, it cannot be edited by a student.
+V Due date is currently a column in the checkpoint table. It needs to be in the seminar table.
+V Teacher can set due dates for a seminar in the seminar edit screen.
+V If the due date for a checkpoint is two days away, or passed, it cannot be edited by a student.
+V Inform the student if the due date is past when she tries to choose a checkpoint.
+V Option to copy due dates from another seminar
+V The page where the student changes the goal needs to have the default value entered if the student has already chosen.
+V Error upon student using the back_link
+
+After migration, add checkpoint_due_dates to all existing seminars.
+
+
+
+
+
 
 
 
@@ -100,7 +109,8 @@ Teacher can suggest goal.
 Deleting a consultancy from its own show page isn't working right now.
 Put goals in NavRibbon
 Fix NavRibbon for Desk Consultants
-
+Don't mark a student as consultant if the student is alone. It wastes that student's consultant turn.
+Check on StackOverflow whether my approach to array columns is best practice
 
 DRY FORM FOR QUESTION CREATION
 
@@ -172,6 +182,7 @@ The current extent of an item needs to be checked by default
     Label
     Picture
     Question
+Are_some_unplaced test failed once, but it usually passes. I think it failed because @student_10 became a consultant, so he wasn't in the unplaced group.
 
 DUE DATES FOR GOALS AND OTHER FEATURES THAT FEEL NEEDED SOON FOR USING GOAL TRACKER
 
@@ -345,6 +356,8 @@ Pictures that are uploaded need to have a column for public/private extent
     And a column for user
 Test for all the results of extent that are tested for in the other models
 Test for picture AND FOR QUESTION should include changing the extent
+
+LINK TEACHER TO EDIT CHECKPOINT DUE DATES FROM GOALS MENUS
 
 
 ******

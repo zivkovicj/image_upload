@@ -1,13 +1,14 @@
 class Goal < ApplicationRecord
-    serialize :actions
     
     belongs_to :user
-    
-    attribute   :extent, :string, default: "private"
-    
+
     validates :name, length: {maximum: 50}, presence: true
     validates :statement_stem, length: {maximum: 100}, presence: true
     validate   :four_actions
+    
+    attribute   :extent, :string, default: "private"
+    
+    serialize :actions
     
     private
     

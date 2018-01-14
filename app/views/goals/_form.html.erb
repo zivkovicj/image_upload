@@ -32,6 +32,9 @@
         <h2>Options for Checkpoint <%= n+1 %></h2>
         <% if n == 0 %>
           <h3>You don't need to fill in every blank. You only need one option for each checkpoint.</h3>
+        <% elsif n == 1 or n == 3 %>
+          <h3>Include a question mark in parentheses in the spot where you want the student's target to appear. For example: If you type "Turn in (?) % of my assignments", 
+          the student will see "Turn in 70 % of my assignments". </h3>
         <% end %>
         <% limit_array[n].times do |m| %>
           <% curr_val = @goal.actions[n][m] %>

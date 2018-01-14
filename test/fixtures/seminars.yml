@@ -1,11 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+<% checkpoint_array = [["12/07/2017", "12/14/2017", "12/21/2017", "12/28/2017"],
+            ["01/11/2018","01/21/2018","01/31/2018","02/07/2018"],
+            ["03/07/2018","03/14/2018","03/21/2018","03/28/2018"],
+            ["04/07/2018","04/14/2018","04/21/2018","04/28/2018"]] %>
+
 one:
   name: 1st Period
   user: archer
   consultantThreshold: 7
   term: 1
   which_checkpoint: 0
+  checkpoint_due_dates: <%= checkpoint_array %>
 
 two:
   name: 2nd Period
@@ -13,6 +19,8 @@ two:
   consultantThreshold: 7
   term: 1
   which_checkpoint: 0
+  checkpoint_due_dates: <%= checkpoint_array %>
+  
 
 three:
   name: 3rd Period
@@ -20,6 +28,7 @@ three:
   consultantThreshold: 7
   term: 1
   which_checkpoint: 0
+  checkpoint_due_dates: <%= checkpoint_array %>
   
 four:
   name: Zacky's first period
@@ -27,6 +36,7 @@ four:
   consultantThreshold: 7
   term: 1
   which_checkpoint: 0
+  checkpoint_due_dates: <%= checkpoint_array %>
   
 <% 30.times do |n| %>
 seminar_<%= n %>:
@@ -35,6 +45,7 @@ seminar_<%= n %>:
   consultantThreshold: 7
   term: 1
   which_checkpoint: 0
+  checkpoint_due_dates: <%= checkpoint_array %>
 <% end %>
 
 unverified_teacher_class:
@@ -43,3 +54,4 @@ unverified_teacher_class:
   consultantThreshold: 7
   term: 1
   which_checkpoint: 0
+  checkpoint_due_dates: <%= checkpoint_array %>

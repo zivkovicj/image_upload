@@ -6,6 +6,13 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         setup_users
         @old_seminar_count = Seminar.count
     end
+    
+    def due_date_array
+        [["06/05/2019","06/05/2019","06/05/2019","06/05/2019"],
+         ["06/05/2019","06/05/2019","06/05/2019","06/05/2019"],
+         ["06/05/2019","06/05/2019","06/05/2019","06/05/2019"],
+         ["06/05/2019","06/05/2019","06/05/2019","06/05/2019"]]
+    end
    
     test "create new seminar" do
         setup_objectives
@@ -22,8 +29,10 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
        
         assert_equal @old_seminar_count + 1, Seminar.count
         @seminar = Seminar.last
-        assert @seminar.name == "4th Period"
-        assert @seminar.consultantThreshold == 8
+        assert_equal "4th Period",  @seminar.name
+        assert 8, @seminar.consultantThreshold
+        assert_equal due_date_array, @seminar.checkpoint_due_dates
+        
         obj_array.each do |obj|
             assert @seminar.objectives.include?(obj)
         end

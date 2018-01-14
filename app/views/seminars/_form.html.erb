@@ -1,4 +1,4 @@
-
+  
 <div id="dialog1" title="Setting the Priority of your Objective">
   <p>Set the Consultant Threshold to what you consider proficient. For example, 
   if you set the consultant threshold to 80%, then students will only
@@ -9,7 +9,6 @@
 </div>
 
 <%= render 'shared/pre_req_dialog' %>
-
 <%= render 'shared/back-link' %>
 <%= render 'shared/headline' %>
 
@@ -31,6 +30,26 @@
         <% end %>
       </div>
       <br/>
+      
+      <div class="singleOption">
+        <h2>Checkpoint Due Dates</h2>
+        <% if action_name == "edit" %>
+          <% first_seminar = current_user.first_seminar %>
+          <%= link_to "Copy Due Dates from #{first_seminar.name}", copy_due_dates_seminar_path(@seminar), :id => "copy_due_dates" unless first_seminar == @seminar %>
+        <% end %>
+        <% 4.times do |n| %>
+          <h3>&emsp; Term <%= n+1 %></h3>
+          <table class="table-borderless">
+            <% 4.times do |m| %>
+              <tr>
+                <td>&emsp; &emsp; Checkpoint <%= m+1 %> due</td>
+                <td>&emsp; <input type="text" class="datepicker" name="seminar[checkpoint_due_dates][<%= n %>][<%= m %>]" value="<%= @seminar.checkpoint_due_dates[n][m] if @seminar.checkpoint_due_dates %>"></td>
+              </tr>
+            <% end %>
+          </table>
+        <% end %>
+      </div>
+      </br>
     
       <%= render :partial => 'shared/include_checks', 
         :locals => {:list_for_checks => Objective.all, 
@@ -38,7 +57,8 @@
           :inclusion_var => @seminar.objectives, :boulderfist => true, 
           :include_word => "objectives", :include_on => "in this class",
           :model_name => "class"}  %>
-  
+          
+      </br>
       <%= f.submit yield(:button_text), class: "btn btn-primary" %>
     <% end %>
     

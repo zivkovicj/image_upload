@@ -364,7 +364,7 @@ Student.all.each do |stud|
     stud.update(:school => stud.sponsor.school)
     stud.seminars.each do |seminar|
         4.times do |n|
-            stud.goal_students.create(:seminar => seminar)
+            stud.goal_students.create(:seminar => seminar, :term => n)
         end
     end
 end

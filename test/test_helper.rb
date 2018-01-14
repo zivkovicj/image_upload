@@ -183,6 +183,10 @@ class ActiveSupport::TestCase
     click_on('Create New Students')
   end
   
+  def go_to_goals
+    click_on("#{@seminar.name}_student_goals")
+  end
+  
   def establish_objectives(seminar)
     (0..3).each do |n|
       this_obj = instance_variable_set("@obj_#{n}", seminar.objectives[n])
@@ -232,6 +236,10 @@ class ActiveSupport::TestCase
     
   def fill_choice(a, b)
     fill_in "question_#{a}_choice_#{b}", with: @new_choice[a][b]
+  end
+  
+  def travel_to_testing_date
+    travel_to Time.zone.local(2017, 12, 07, 01, 04, 44)
   end
   
   def poltergeist_stuff

@@ -46,6 +46,7 @@ class SeminarsController < ApplicationController
 
     def update
         @seminar = Seminar.find(params[:id])
+        
         #This section is a work-around because editing the class name was causing 
         #the seating parameter to save as a multi-dimensional array, which caused
         #it to fail.
@@ -67,6 +68,7 @@ class SeminarsController < ApplicationController
             update_current_class
             redirect_to seatingChart_url
         else
+            set_checkpoint_due_dates
             if @seminar.update_attributes(seminarParamsWithoutSeating)
                 flash[:success] = "Class Updated"
             end
@@ -155,6 +157,14 @@ class SeminarsController < ApplicationController
         update_current_class
     end
     
+    def copy_due_dates
+        @seminar = Seminar.find(params[:id])
+        first_seminar = current_user.first_seminar
+        @seminar.update(:checkpoint_due_dates => first_seminar.checkpoint_due_dates)
+        flash[:success] = "Checkpoint Due Dates Updated"
+        redirect_to edit_seminar_path(@seminar)
+    end
+    
     private 
         def readySeating
             @seminar = Seminar.find(params[:id])
@@ -196,6 +206,19 @@ class SeminarsController < ApplicationController
         
         def update_current_class
             current_user.update(:current_class => @seminar.id)
+        end
+        
+        def set_checkpoint_due_dates
+            date_array = [[],[],[],[]]
+            params[:seminar][:checkpoint_due_dates].each do |level_x|
+                x = level_x.to_i
+                params[:seminar][:checkpoint_due_dates][level_x].each do |level_y|
+                    y = level_y.to_i
+                    this_date = params[:seminar][:checkpoint_due_dates][level_x][level_y]
+                    date_array[x][y] = (this_date) if this_date.present?
+                end
+            end
+            @seminar.checkpoint_due_dates = date_array 
         end
         
 end

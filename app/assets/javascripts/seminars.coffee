@@ -272,5 +272,9 @@ ready = ->
             $('#confirm_'+id_to_fade).fadeOut()
             $(this).fadeOut()
             return false
-          
+    
+    if $('.datepicker').length > 0
+        $('.datepicker').on "click", (event) ->
+            $(this).datepicker()
+    
 $(document).on('turbolinks:load', ready)

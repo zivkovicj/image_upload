@@ -9,7 +9,6 @@ class Seminar < ApplicationRecord
   has_many    :teams, through: :consultancies
   has_many    :goal_students
   
-  
   validates :user_id, presence: true
   validates :name, presence: true, length: { maximum: 40 }
   validates :consultantThreshold, presence: true, numericality: { only_integer: true }
@@ -18,7 +17,16 @@ class Seminar < ApplicationRecord
   attribute :term, :integer, default: 0
   attribute :which_checkpoint, :integer, default: 0
   
-    include ModelMethods
+  serialize :checkpoint_due_dates
+  
+  due_date_array = 
+    [["06/05/2019","06/05/2019","06/05/2019","06/05/2019"],
+     ["06/05/2019","06/05/2019","06/05/2019","06/05/2019"],
+     ["06/05/2019","06/05/2019","06/05/2019","06/05/2019"],
+     ["06/05/2019","06/05/2019","06/05/2019","06/05/2019"]]
+  attribute :checkpoint_due_dates, :text, default: due_date_array
+  
+  include ModelMethods
   
   # Limited version of semianr's name
   def limitedName

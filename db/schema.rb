@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180105234602) do
+ActiveRecord::Schema.define(version: 20180106165423) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(version: 20180105234602) do
     t.integer  "achievement"
     t.text     "teacher_comment"
     t.text     "student_comment"
-    t.date     "due_date"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "sequence"
@@ -212,10 +211,11 @@ ActiveRecord::Schema.define(version: 20180105234602) do
     t.string   "name"
     t.integer  "user_id"
     t.integer  "consultantThreshold"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
     t.integer  "term"
     t.integer  "which_checkpoint"
+    t.text     "checkpoint_due_dates"
     t.index ["user_id"], name: "index_seminars_on_user_id"
   end
 
