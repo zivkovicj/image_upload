@@ -53,5 +53,11 @@ unverified_teacher_class:
   user: user_1
   consultantThreshold: 7
   term: 1
+
+unverified_teacher_class:
+  name: unverified teachers class
+  user: user_1
+  consultantThreshold: 7
+  term: 1
   which_checkpoint: 0
   checkpoint_due_dates: <%= checkpoint_array %>
