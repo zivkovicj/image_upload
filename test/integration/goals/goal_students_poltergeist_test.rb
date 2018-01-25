@@ -29,19 +29,20 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         goal_test_opening
         set_student_goals
         
+        assert_equal 60, @gs.target
+        assert_not @gs.approved
+        
         capybara_login(@teacher_1)
         go_to_goals
-        sleep(0.5)
-        within(:css, "#approval_cell_#{@gs.id}") do
-            assert_text("60")
-            assert_no_text("70")
-            assert_text("Approve")
+        sleep(1)
+        within(:css, "#target_cell_#{@gs.id}") do
+            assert_text("Current Target: 60 %")
+            assert_no_text("Current Target: 70 %")
         end
         select("70%", :from => "target_select_#{@gs.id}")
-        within(:css, "#approval_cell_#{@gs.id}") do
-            assert_text("70")
-            assert_no_text("60")
-            assert_no_text("Approve")
+        within(:css, "#target_cell_#{@gs.id}") do
+            assert_text("Current Target: 70 %")
+            assert_no_text("Current Target: 60 %")
         end
         
         @gs.reload
@@ -49,68 +50,83 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         assert_equal 70, @gs.target
     end
         
-    test "teacher approves goal" do
+    test "no goal set" do
         goal_test_opening
         
         capybara_login(@teacher_1)
         go_to_goals
-        sleep(0.5)
-        find('h4', :text => "#{@seminar.students.count} students need you to choose/approve their goals for this term.", :visible => true)
-        within(:css, "#approval_cell_#{@gs.id}") do
+        sleep(1)
+        within(:css, "#goal_text_#{@gs.id}") do
             assert_text("No Goal Set")
             assert_no_text(Goal.second.name)
-            assert_no_text("Approve")
         end
-        click_on("Log out")
-        
+        assert_no_selector('div', :id => "#approval_button_#{@gs.id}")
+    end
+    
+    test "teacher locks goal" do
+        goal_test_opening
         set_student_goals
         
         capybara_login(@teacher_1)
         go_to_goals
-        sleep(0.5)
-        assert_selector('h4', :text => "#{@seminar.students.count} students need you to choose/approve their goals for this term.")
-        within(:css, "#approval_cell_#{@gs.id}") do
-            assert_no_text("No Goal Set")
-            assert_text(Goal.second.name)
-            assert_text("Approve")
+        sleep(1)
+        within(:css, "#approval_button_#{@gs.id}") do
+            assert_text("Lock This Goal")
         end
+        
         find("#approval_button_#{@gs.id}").click
-        within(:css, "#approval_cell_#{@gs.id}") do
-            assert_no_text("No Goal Set")
-            assert_text(Goal.second.name)
-            assert_no_text("Approve")
+        within(:css, "#approval_button_#{@gs.id}") do
+            assert_text("Unlock This Goal")
         end
         @gs.reload
         assert @gs.approved
+        
+        find("#approval_button_#{@gs.id}").click
+        within(:css, "#approval_button_#{@gs.id}") do
+            assert_text("Lock This Goal")
+        end
+        @gs.reload
+        assert_equal false, @gs.approved
     end
     
     test "teacher changes goal" do
         goal_test_opening
         set_student_goals
         
+        assert_not @gs.approved
+        
         capybara_login(@teacher_1)
         go_to_goals
-        sleep(0.5)
-        within(:css, "#approval_cell_#{@gs.id}") do
+        sleep(1)
+        within(:css, "#goal_text_#{@gs.id}") do
             assert_no_text("No Goal Set")
-            assert_text(Goal.second.name)
-            assert_text("Approve")
+            assert_text("Be Kind")
         end
         select("#{Goal.first.name}", :from => "goal_select_#{@gs.id}")
-        within(:css, "#approval_cell_#{@gs.id}") do
-            assert_text(Goal.first.name)
-            assert_no_text(Goal.second.name)
-            assert_no_text("Approve")
+        within(:css, "#goal_text_#{@gs.id}") do
+            assert_text("Be Awesome 24/7")
+            assert_no_text("Be Kind")
+        end
+        
+        select("70%", :from => "target_select_#{@gs.id}")
+        within(:css, "#target_cell_#{@gs.id}") do
+            assert_text("Current Target: 70 %")
+            assert_no_text("Current Target: 60 %")
         end
         
         @gs.reload
-        assert_equal Goal.first, @gs.goal
         assert @gs.approved
+        assert_equal 70, @gs.target
+        
+        @gs.reload
+        assert @gs.approved
+        assert_equal Goal.first, @gs.goal
         assert_equal "Play something awesome", @gs.checkpoints[0].action
         assert_equal "Be halfway awesome", @gs.checkpoints[1].action
         assert_equal "Play something awesome", @gs.checkpoints[2].action
         assert_equal "I will be awesome for (?)% of the school days this term.", @gs.checkpoints[3].action
         assert_equal "I will be awesome for 60% of the school days this term.", @gs.checkpoints[3].statement
+        
     end
         
 end

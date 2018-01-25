@@ -2,6 +2,21 @@
 
 
 
+2.47 STUDENT NEEDS TO BE ABLE TO CHANGE CHECKPOINTS UNLESS THEY ARE PAST THEIR DUE DATE
+
+Due date is currently a column in the checkpoint table. It needs to be in the seminar table.
+Teacher can set due dates for a seminar in the seminar edit screen.
+If the due date for a checkpoint is two days away, or passed, it cannot be edited by a student.
+Inform the student if the due date is past when she tries to choose a checkpoint.
+Option to copy due dates from another seminar
+The page where the student changes the goal needs to have the default value entered if the student has already chosen.
+Error upon student using the back_link
+After migration, add checkpoint_due_dates to all existing seminars.
+
+
+
+
+
 2.46 GOAL FIXES
 
 Error in teacher navigating among term and checkpoint

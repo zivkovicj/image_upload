@@ -95,9 +95,14 @@ ready = ->
                         achievement: $(this).val()
             
     
-    if $('.goal_change').length > 0
+    if $('.goal_approval').length > 0
         $('.goal_approval').on "click", ->
-            $(this).remove()
+            if $(this).text() == "Lock This Goal"
+                send_boolean = true
+                $(this).text("Unlock This Goal")
+            else
+                send_boolean = false
+                $(this).text("Lock This Goal")
             gs_id = $(this).attr('gs_id')
             url = '/goal_students/'+gs_id
             $.ajax
@@ -106,7 +111,7 @@ ready = ->
                 dataType: "json"
                 data:
                     goal_student:
-                        approved: true
+                        approved: send_boolean
 
         $('.goal_change').on "change", ->
             gs_id = $(this).attr('gs_id')
@@ -125,8 +130,7 @@ ready = ->
         $('.target_change').on "change", ->
             gs_id = $(this).attr('gs_id')
             url = '/goal_students/'+gs_id
-            $('#approval_button_'+gs_id).fadeOut()
-            $('#target_text_'+gs_id).text($(this).val()+" %")
+            $('#target_text_'+gs_id).text("Current Target: "+$(this).val()+" %")
             $.ajax
                 type: "PUT",
                 url: url,
@@ -135,6 +139,19 @@ ready = ->
                     goal_student:
                         approved: true
                         target: $(this).val()
+                        
+    if $('.checkpoint_change').length > 0
+        $('.checkpoint_change').on "change", ->
+            checkpoint_id = $(this).attr('checkpoint_id')
+            url = '/checkpoints/'+checkpoint_id
+            $('#checkpoint_text_'+checkpoint_id).text($("option:selected", this).text())
+            $.ajax
+                type: "PUT",
+                url: url,
+                dataType: "json"
+                data:
+                    checkpoint:
+                        action: $(this).val()
                         
     
     if $('.tyrion').length > 0

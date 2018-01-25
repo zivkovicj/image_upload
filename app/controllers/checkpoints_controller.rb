@@ -10,6 +10,6 @@ class CheckpointsController < ApplicationController
     private
     
         def checkpoint_params
-            params.require(:checkpoint).permit(:achievement, :teacher_comment, :student_comment)
+            params.require(:checkpoint).permit(:achievement, :teacher_comment, :student_comment, :action)
         end
 end

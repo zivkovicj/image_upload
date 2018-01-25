@@ -1,15 +1,7 @@
 class GoalStudentsController < ApplicationController
     
-
-    
-    def approve
-       @seminar = Seminar.find(params[:id])
-       goals_stuff
-    end
-    
     def index
        @seminar = Seminar.find(params[:seminar])
-       redirect_to approve_goal_student_path(@seminar) unless @seminar.goals_needing_approval == 0 || params[:override]
        goals_stuff
     end
     

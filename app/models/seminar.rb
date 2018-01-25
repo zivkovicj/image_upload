@@ -73,8 +73,4 @@ class Seminar < ApplicationRecord
       end
     end
   end
-  
-  def goals_needing_approval
-    self.goal_students.select{|x| x.term == self.term && !x.approved}.count
-  end
 end

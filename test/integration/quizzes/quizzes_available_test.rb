@@ -110,6 +110,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "try quiz again" do
+        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 2)
         go_to_first_period
         begin_quiz
         answer_quiz_randomly

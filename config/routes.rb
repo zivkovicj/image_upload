@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   resources :goal_students do
     get  'checkpoints', on: :member
     post 'update_checkpoints', on: :member
-    get 'approve', on: :member
     get 'print', on: :collection
   end
   resources :goals
