@@ -6,10 +6,9 @@
             <td><h2>Switch to Term</h2></td>
             <td class="spacer"></td>
             <% 4.times do |n| %>
-                <% this_link = action_name=="approve" ? approve_goal_student_path(:seminar => @seminar, :term => n) : goal_students_path(:seminar => @seminar, :term => n, :override => true) %>
                 <td class="<%= 'highlighted' if n==@this_term %>">
                     <h2>
-                        <%= link_to n+1, this_link, :id => "term_#{n}" %>
+                        <%= link_to n+1, goal_students_path(:seminar => @seminar, :term => n), :id => "term_#{n}" %>
                     </h2>
                 </td>
             <% end %>
@@ -20,10 +19,9 @@
             <td><h2>Switch to Checkpoint</h2></td>
             <td class="spacer"></td>
             <% 4.times do |n| %>
-                <% this_link = action_name=="approve" ? approve_goal_student_path(:seminar => @seminar, :which_checkpoint => n) : goal_students_path(:seminar => @seminar, :which_checkpoint => n, :override => true) %>
                 <td class="<%= 'highlighted' if n==@this_checkpoint %>">
                     <h2>
-                        <%= link_to n + 1, this_link, :id => "checkpoint_#{n}" %>
+                        <%= link_to n + 1, goal_students_path(:seminar => @seminar, :which_checkpoint => n, :override => true), :id => "checkpoint_#{n}" %>
                     </h2>
                 </td>
             <% end %>

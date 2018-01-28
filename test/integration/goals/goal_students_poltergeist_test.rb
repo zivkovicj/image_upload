@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class GoalStudentsEditTest < ActionDispatch::IntegrationTest
+class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
 
 
     def setup
@@ -102,6 +102,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
             assert_no_text("No Goal Set")
             assert_text("Be Kind")
         end
+        bip_select(@gs, :goal_id, Goal.first.name)
         select("#{Goal.first.name}", :from => "goal_select_#{@gs.id}")
         within(:css, "#goal_text_#{@gs.id}") do
             assert_text("Be Awesome 24/7")

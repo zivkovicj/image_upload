@@ -62,95 +62,159 @@ Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find vis
 
 
 
+CURRENT UPDATE:
+
+
+2.48_MOVE GOALS WITH STUDENT
+
+<% if this_gs.target %>
+    <h5 id="target_text_<%= gs_id %>">Goal Target: <%= this_gs.target %> %</h5>
+    </br>
+<% else %>
+    <h5>No target set</h5>
+<% end %>
+<%= select("syl", "target", percent_array.collect{|p| [ p[0], p[1] ] },  {:include_blank => "Choose Student's Target"}, {:class => "target_change select_box left_box",  :gs_id => "#{gs_id}", :id => "target_select_#{gs_id}"}) %>
 
 
 
-FAIL["test_teacher_changes_target", GoalStudentsEditTest, 116.32909632707015]
- test_teacher_changes_target#GoalStudentsEditTest (116.33s)
-        Expected false to be truthy.
-        test/integration/goals/goal_students_poltergeist_test.rb:49:in `block in <class:GoalStudentsEditTest>'
 
-ERROR["test_goal_edit_back_button", GoalStudentsEditTest, 122.33193471096456]
- test_goal_edit_back_button#GoalStudentsEditTest (122.33s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
-            test/integration/goals/goal_students_edit_test.rb:79:in `block in <class:GoalStudentsEditTest>'
 
-ERROR["test_no_goal_set", GoalStudentsEditTest, 135.98942153993994]
- test_no_goal_set#GoalStudentsEditTest (135.99s)
+
+ERROR["test_teacher_changes_goal", GoalStudentsPoltergeistEditTest, 253.03596592397662]
+ test_teacher_changes_goal#GoalStudentsPoltergeistEditTest (253.04s)
+NoMethodError:         NoMethodError: undefined method `bip_select' for #<GoalStudentsPoltergeistEditTest:0x000000153d78a8>
+        Did you mean?  select
+            test/integration/goals/goal_students_poltergeist_test.rb:105:in `block in <class:GoalStudentsPoltergeistEditTest>'
+
+ERROR["test_no_goal_set", GoalStudentsPoltergeistEditTest, 268.41849052597536]
+ test_no_goal_set#GoalStudentsPoltergeistEditTest (268.42s)
 Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find text "No Goal Set" in "Be Kind"
-            test/integration/goals/goal_students_poltergeist_test.rb:60:in `block (2 levels) in <class:GoalStudentsEditTest>'
-            test/integration/goals/goal_students_poltergeist_test.rb:59:in `block in <class:GoalStudentsEditTest>'
+            test/integration/goals/goal_students_poltergeist_test.rb:60:in `block (2 levels) in <class:GoalStudentsPoltergeistEditTest>'
+            test/integration/goals/goal_students_poltergeist_test.rb:59:in `block in <class:GoalStudentsPoltergeistEditTest>'
 
- FAIL["test_teacher_changes_goal", GoalStudentsEditTest, 145.87192991911434]
- test_teacher_changes_goal#GoalStudentsEditTest (145.87s)
-        Expected true to be nil or false
-        test/integration/goals/goal_students_poltergeist_test.rb:96:in `block in <class:GoalStudentsEditTest>'
+ERROR["test_teacher_changes_target", GoalStudentsPoltergeistEditTest, 282.39898406298016]
+ test_teacher_changes_target#GoalStudentsPoltergeistEditTest (282.40s)
+Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find text "Current Target: 60 %" in "Goal Target: 60"
+            test/integration/goals/goal_students_poltergeist_test.rb:39:in `block (2 levels) in <class:GoalStudentsPoltergeistEditTest>'
+            test/integration/goals/goal_students_poltergeist_test.rb:38:in `block in <class:GoalStudentsPoltergeistEditTest>'
 
-ERROR["test_default_goal_if_already_chosen", GoalStudentsEditTest, 152.2073567151092]
- test_default_goal_if_already_chosen#GoalStudentsEditTest (152.21s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
-            test/integration/goals/goal_students_edit_test.rb:53:in `block in <class:GoalStudentsEditTest>'
+ FAIL["test_teacher_locks_goal", GoalStudentsPoltergeistEditTest, 295.8594210019801]
+ test_teacher_locks_goal#GoalStudentsPoltergeistEditTest (295.86s)
+        Expected: false
+          Actual: true
+        test/integration/goals/goal_students_poltergeist_test.rb:89:in `block in <class:GoalStudentsPoltergeistEditTest>'
 
-ERROR["test_teacher_locks_goal", GoalStudentsEditTest, 166.6707663720008]
- test_teacher_locks_goal#GoalStudentsEditTest (166.67s)
-Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find text "Lock This Goal" in "Unlock This Goal". (However, it was found 1 time using a case insensitive search.)
-            test/integration/goals/goal_students_poltergeist_test.rb:74:in `block (2 levels) in <class:GoalStudentsEditTest>'
-            test/integration/goals/goal_students_poltergeist_test.rb:73:in `block in <class:GoalStudentsEditTest>'
-
-ERROR["test_delete_picture", PicturesIndexTest, 171.02132813702337]
- test_delete_picture#PicturesIndexTest (171.02s)
+ERROR["test_delete_picture", PicturesIndexTest, 443.73526660498464]
+ test_delete_picture#PicturesIndexTest (443.74s)
 Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
         excon.error.response
-          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20171207T010444Z</RequestTime><ServerTime>2018-01-24T05:20:22Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>C5F210904326F3E9</RequestId><HostId>5h0XR65qgCN7wXl/TbsXZYIEwECps6+kvI2Fdn+vimnQF4yjNDSYmdU+wbUkhB3G0H2pTZ1vEuw=</HostId></Error>"
+          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20180420T010444Z</RequestTime><ServerTime>2018-01-27T17:50:20Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>A97C0968410B21D7</RequestId><HostId>9+6hXttsNaiSrohS94NreepdAIHzrf5xnVNnbBg1c46GmUhOzSNJAiYk1tVzijCupMZowHP3A2s=</HostId></Error>"
           :cookies       => [
           ]
           :headers       => {
             "Content-Type"     => "application/xml"
-            "Date"             => "Wed, 24 Jan 2018 05:20:20 GMT"
+            "Date"             => "Sat, 27 Jan 2018 17:50:19 GMT"
             "Server"           => "AmazonS3"
-            "x-amz-id-2"       => "5h0XR65qgCN7wXl/TbsXZYIEwECps6+kvI2Fdn+vimnQF4yjNDSYmdU+wbUkhB3G0H2pTZ1vEuw="
-            "x-amz-request-id" => "C5F210904326F3E9"
+            "x-amz-id-2"       => "9+6hXttsNaiSrohS94NreepdAIHzrf5xnVNnbBg1c46GmUhOzSNJAiYk1tVzijCupMZowHP3A2s="
+            "x-amz-request-id" => "A97C0968410B21D7"
           }
           :host          => "mrzschoolbucket.s3.amazonaws.com"
-          :local_address => "172.17.0.16"
-          :local_port    => 43450
+          :local_address => "172.17.0.103"
+          :local_port    => 54462
           :path          => "/uploads/picture/image/340665903/cheese_logo.jpg"
           :port          => 443
           :reason_phrase => "Forbidden"
-          :remote_ip     => "52.216.21.107"
+          :remote_ip     => "52.216.131.43"
           :status        => 403
           :status_line   => "HTTP/1.1 403 Forbidden\r\n"
         
             app/controllers/pictures_controller.rb:59:in `destroy'
             test/integration/pictures/pictures_index_test.rb:49:in `block in <class:PicturesIndexTest>'
 
-ERROR["test_try_quiz_again", QuizzesAvailableTest, 558.3197340860497]
- test_try_quiz_again#QuizzesAvailableTest (558.32s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link "percentages"
-            test/test_helper.rb:198:in `begin_quiz'
-            test/integration/quizzes/quizzes_available_test.rb:114:in `block in <class:QuizzesAvailableTest>'
+ERROR["test_default_picture_name_edit", PicturesEditTest, 445.1490857289755]
+ test_default_picture_name_edit#PicturesEditTest (445.15s)
+Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
+        excon.error.response
+          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20180420T010444Z</RequestTime><ServerTime>2018-01-27T17:50:21Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>0B79E9F1E10D5F78</RequestId><HostId>SrVYoYBtpfnoHs6kMkYcWRJMi45gp+eXfM+oUKvEHD40XIckcXU6I7EKqkG6Fv56c/SonTHntvE=</HostId></Error>"
+          :cookies       => [
+          ]
+          :headers       => {
+            "Content-Type"     => "application/xml"
+            "Date"             => "Sat, 27 Jan 2018 17:50:20 GMT"
+            "Server"           => "AmazonS3"
+            "x-amz-id-2"       => "SrVYoYBtpfnoHs6kMkYcWRJMi45gp+eXfM+oUKvEHD40XIckcXU6I7EKqkG6Fv56c/SonTHntvE="
+            "x-amz-request-id" => "0B79E9F1E10D5F78"
+          }
+          :host          => "mrzschoolbucket.s3.amazonaws.com"
+          :local_address => "172.17.0.103"
+          :local_port    => 52928
+          :path          => "/uploads/picture/image/298486374/druid_cropped.jpg"
+          :port          => 443
+          :reason_phrase => "Forbidden"
+          :remote_ip     => "52.216.230.203"
+          :status        => 403
+          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
+        
+            app/controllers/pictures_controller.rb:43:in `update'
+            test/integration/pictures/pictures_edit_test.rb:46:in `block in <class:PicturesEditTest>'
+
+ERROR["test_edit_picture", PicturesEditTest, 446.1239590829937]
+ test_edit_picture#PicturesEditTest (446.12s)
+Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
+        excon.error.response
+          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20180420T010444Z</RequestTime><ServerTime>2018-01-27T17:50:22Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>315130A5BD4B5EA9</RequestId><HostId>UG/a6xzo6Vt9MDEPkHK60IXYi5f6orrqtK7Z4rheQgDv9LixvGGJvabkWTz+6uQTpvmY5XPUsDc=</HostId></Error>"
+          :cookies       => [
+          ]
+          :headers       => {
+            "Content-Type"     => "application/xml"
+            "Date"             => "Sat, 27 Jan 2018 17:50:21 GMT"
+            "Server"           => "AmazonS3"
+            "x-amz-id-2"       => "UG/a6xzo6Vt9MDEPkHK60IXYi5f6orrqtK7Z4rheQgDv9LixvGGJvabkWTz+6uQTpvmY5XPUsDc="
+            "x-amz-request-id" => "315130A5BD4B5EA9"
+          }
+          :host          => "mrzschoolbucket.s3.amazonaws.com"
+          :local_address => "172.17.0.103"
+          :local_port    => 52962
+          :path          => "/uploads/picture/image/298486374/druid_cropped.jpg"
+          :port          => 443
+          :reason_phrase => "Forbidden"
+          :remote_ip     => "52.216.230.203"
+          :status        => 403
+          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
+        
+            app/controllers/pictures_controller.rb:43:in `update'
+            test/integration/pictures/pictures_edit_test.rb:28:in `block in <class:PicturesEditTest>'
+
+ FAIL["test_check_for_lone_students", ConsultanciesShowTest, 540.2569541589764]
+ test_check_for_lone_students#ConsultanciesShowTest (540.26s)
+        Expected: 0
+          Actual: 1
+        test/integration/consultancies/consultancies_show_test.rb:499:in `block in <class:ConsultanciesShowTest>'
+        
+        
+        
 
 
+Changed goal and checkpoints to best_in_place. 
+    Need to do the same for target.
+    And update the tests.
 
-CURRENT UPDATE:
+V Moving a student to a different class updates the goal_students for the new class to match the old class
+V Front-load the old gs with a goal
 
-Teacher can edit checkpoints
+V Erase the view for approve after tests pass
+    V And check for other references to "approve"
 
-Teacher can add a custom checkpoint.
-
-Erase the view for approve after tests pass
-    And check for other references to "approve"
-
-
+Attendance needs to be a goal
 
 
 NEXT UPDATE:
 
 Fields for choosing and changing goals should be best_in_place
 
-Moving a student to a different class also moves the appropriate goal_students
-    And it doesn't create new goal_students
-    The moved goal_students have the same details as the old one.
+Then I can erase most of the javascript for those functions
+
+
 
 
 
@@ -179,7 +243,7 @@ Put goals in NavRibbon
 Fix NavRibbon for Desk Consultants
 Don't mark a student as consultant if the student is alone. It wastes that student's consultant turn.
 Check on StackOverflow whether my approach to array columns is best practice
-
+When editing a goal, they're all marked as "Private" when the user enters the view.
 
 
 STUDENT ALL-GOALS VIEW
@@ -546,6 +610,8 @@ AJAX SCHOOL ADDING
 ADD SOMETHING FUN OR INTERESTING BEFORE MORE BORING FEATURES
 Perhaps student comments within classes. 
 
+
+
 REFRESHING CERTAIN SCREENS
 The "question details" screen causes an error when user refreshes. Perhaps it's because it's a custom view. Maybe I should simply load that functionality into a standard view.
 Reloading label form directs to index
@@ -599,7 +665,10 @@ If there's trouble logging in, add a message reminding users that teachers use a
          
 ELL STUDENTS
 Allow students to be marked as ELL. When that happens, they are default exempt from text-heavy objectives and questions
-   
+ 
+TEACHER CAN ADD A CUSTOM CHECKPOINT
+Teacher can add a custom checkpoint
+
 SMALL IMPROVEMENTS TO COMPLETE MUCH LATER
 When there's only one public objective, the list looks really weird.
     I'm sure the problem is the same for private objectives.

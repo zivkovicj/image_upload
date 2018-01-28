@@ -19,7 +19,11 @@ class SeminarStudentsController < ApplicationController
     goals_for_new_student(@seminar, @student)
     
     old_ss_id = params[:seminar_student][:is_move]
-    SeminarStudent.find(old_ss_id).destroy if old_ss_id
+    if old_ss_id
+      @old_ss = SeminarStudent.find(old_ss_id)
+      update_goal_students_for_new_class_to_match_old_class
+      @old_ss.destroy
+    end
     
     redirect_to scoresheet_seminar_url(@seminar)
   end
@@ -59,5 +63,17 @@ class SeminarStudentsController < ApplicationController
         @ss = SeminarStudent.find_by(id: params[:id])
         @seminar = Seminar.find(@ss.seminar_id)
         redirect_to login_url unless (current_user && current_user.own_seminars.include?(@seminar)) || user_is_an_admin
+      end
+      
+      def update_goal_students_for_new_class_to_match_old_class
+        @student.goal_students.where(:seminar => @old_ss.seminar).each do |old_gs|
+          new_gs = @student.goal_students.find_by(:seminar => @seminar, :term => old_gs.term)
+          new_gs.update(:goal => old_gs.goal, :target => old_gs.target, :approved => old_gs.approved)
+          old_gs.checkpoints.each do |old_checkpoint|
+            new_checkpoint = new_gs.checkpoints.find_by(:sequence => old_checkpoint.sequence)
+            new_checkpoint.update(:action => old_checkpoint.action, :achievement => old_checkpoint.achievement, :teacher_comment => old_checkpoint.teacher_comment, 
+              :student_comment => old_checkpoint.student_comment)
+          end
+        end
       end
 end

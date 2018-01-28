@@ -8,6 +8,7 @@
 <%= render 'shared/headline' %>
 
 
+
 <h2>Showing Goals for Term <%= @this_term + 1 %>, Checkpoint <%= @this_checkpoint + 1 %></h2>
 
 <%= render 'shared/navribbon_goals' %>
@@ -16,50 +17,48 @@
 <table class="table-borderless" style="table-layout:fixed">
     <% them_kids = @seminar.students.order(:last_name) %>
     <% them_kids.each do |student| %>
-        <% this_gs = student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
-        <% gs_id = this_gs.id if this_gs %>
-        <tr><td colspan="2"><h3><strong><%= student.last_name_first %></strong></h3></td></tr>
+        <% @gs = student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
+        <% gs_id = @gs.id if @gs %>
         <tr>
-            <% if this_gs.goal != nil %>
-                <% button_message = this_gs.approved ? "Unlock This Goal" : "Lock This Goal" %>
-                <td><div class="btn btn-primary goal_approval" id="approval_button_<%= gs_id %>" gs_id="<%= gs_id %>"><%= button_message %></div></td>
-                <td><h3 id="goal_text_<%= gs_id %>"><%= this_gs.goal.name %></h3></td>
-            <% else %>
-                <td colspan="2"><h3 id="goal_text_<%= gs_id %>">No Goal Set</h3></td>
-            <% end %>
+            <td colspan="2"><h3><strong><%= student.last_name_first %></strong></h3></td>
+        </tr>
+        <tr>
+            <td>
+                <% if @gs.goal != nil %>
+                    <% button_message = @gs.approved ? "Unlock This Goal" : "Lock This Goal" %>
+                    <div class="btn btn-primary goal_approval" id="approval_button_<%= gs_id %>" gs_id="<%= gs_id %>"><%= button_message %></div>
+                <% end %>
+            </td>
+            <td>
+                <% goal_options = Goal.all.collect {|p| [ p.id, p.name ] } %>
+                <% this_place_holder = @gs.goal != nil ? @gs.goal.name : "Click to Choose Student's Goal" %>
+                <h3 id="goal_text_<%= @gs.id %>"><%= best_in_place @gs, :goal_id, :as => :select, :collection => goal_options, :place_holder => this_place_holder %></h3>
+            </td>
         </tr>
         <tr>
             <td id="target_cell_<%= gs_id %>">
-                <% if this_gs.target %>
-                    <h5 id="target_text_<%= gs_id %>">Current Target: <%= this_gs.target %> %</h5>
-                    </br>
-                <% else %>
-                    <h5>No target set</h5>
-                <% end %>
-                <%= select("syl", "target", percent_array.collect{|p| [ p[0], p[1] ] },  {:include_blank => "Choose Student's Target"}, {:class => "target_change select_box left_box",  :gs_id => "#{gs_id}", :id => "target_select_#{gs_id}"}) %>
-            </td>
-            <td>
-                <%= select("syl", "goal", Goal.all.collect {|p| [ p.name, p.id ] }, {:include_blank => "Choose Student's Goal"}, {:class => "goal_change select_box left_box", :gs_id => "#{gs_id}", :id => "goal_select_#{gs_id}"}) %>
+                <% this_place_holder = @gs.target? ? @gs.target : "Choose Goal Target" %>
+                <h5>Goal Target:
+                    <%= best_in_place @gs, :target, :as => :select, :collection => percent_array, :place_holder => this_place_holder %>
+                </h5>
             </td>
         </tr>
-        <% this_gs.checkpoints.order(:sequence).each_with_index do |checkpoint, index| %>
+        <% @gs.checkpoints.order(:sequence).each_with_index do |checkpoint, index| %>
             <% this_id = checkpoint.id %>
             <tr>
                 <td>
-                    <h5 id="achievement_text_<%= this_id %>"><%= checkpoint.achievement if checkpoint.achievement %></h5>
-                    <%= select("syl", "achievement",  percent_array.collect{|p| [ p[0], p[1] ] }, {:include_blank => "Mark Achievement"}, 
-                        {:class => "achievement_change select_box left_box", :checkpoint_id => "#{this_id}"}) %>
+                    <% this_place_holder = checkpoint.achievement? ? checkpoint.achievement : "Achievement" %>
+                    <%= best_in_place checkpoint, :achievement, :as => :select, :collection => percent_array, :place_holder => this_place_holder %> 
                 </td>
-                <td><%= checkpoint.statement %></td>
-            </tr>
-            <% if this_gs.goal %>
-                <tr>
-                    <td></td>
-                    <td>
-                       <%= select("syl", "action", this_gs.goal.actions[index], {:include_blank => "Choose Checkpoint #{index}"}, {:class => "checkpoint_change select_box left_box", :checkpoint_id => checkpoint.id }) %>
-                    </td>
-                </tr>
-            <% end %>
+                <td>
+                    <% if @gs.goal %>
+                        <h5>
+                            Checkpoint <%= index + 1 %>: 
+                            <% this_place_holder = checkpoint.action == nil ? "Click to Choose The Action for This Checkpoint" : checkpoint.action %> 
+                            <%= best_in_place checkpoint, :action, :as => :select, :collection => @gs.goal.actions[index], :place_holder => this_place_holder %>
+                        </h5>
+                    <% end %>
+                </td>
             <tr>
                 <% if checkpoint.student_comment %>
                     <td></td>
@@ -72,7 +71,7 @@
                     <% if checkpoint.teacher_comment %>
                         <strong>Me</strong>&emsp;<%= best_in_place(checkpoint, :teacher_comment, :inner_class => "commentInput") %>
                     <% else %>
-                        <strong><%= best_in_place(checkpoint, :teacher_comment, :inner_class => "commentInput", :place_holder => "No comment yet") %></strong>
+                        <%= best_in_place(checkpoint, :teacher_comment, :inner_class => "commentInput", :place_holder => "No comment yet") %>
                     <% end %>
                     </br>
                 </td>

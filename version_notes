@@ -12,7 +12,7 @@ Option to copy due dates from another seminar
 The page where the student changes the goal needs to have the default value entered if the student has already chosen.
 Error upon student using the back_link
 After migration, add checkpoint_due_dates to all existing seminars.
-
+Teacher can edit checkpoints
 
 
 
