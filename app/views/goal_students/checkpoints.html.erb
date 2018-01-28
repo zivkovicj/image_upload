@@ -3,7 +3,7 @@
 <h2>Goal for Term <%= @gs.term + 1 %> &emsp; <strong><%= @gs.goal.name %></strong></h2>
 
 <%= form_tag update_checkpoints_goal_student_path do %>
-    <% @gs.checkpoints[0..3].each_with_index do |checkpoint, index| %>
+    <% @gs.checkpoints.order(:sequence).each_with_index do |checkpoint, index| %>
         <h3>Checkpoint <%= index+1 %></h3>
         <% this_due_date = Date.strptime(@gs.seminar.checkpoint_due_dates[@gs.term][index], "%m/%d/%Y") %>
         <% if this_due_date < Date.today %>
