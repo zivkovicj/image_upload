@@ -11,7 +11,7 @@
         <% elsif this_due_date - 2.days < Date.today %>
             <h5 id="too_soon_<%= index %>">The due date for this checkpoint is too soon. The checkpoint cannot be changed.</h5></br>
         <% else %>
-            <div id="datepicker_<%= index %>"><%= select("syl[#{checkpoint.id}]", "action", @gs.goal.actions[index], :class => "select_box left_box") %></div>
+            <div id="datepicker_<%= index %>"><%= select("syl[#{checkpoint.id}]", "action", @gs.all_actions_with_targets[index], :class => "select_box left_box") %></div>
         <% end %>
     <% end %>
     </br>

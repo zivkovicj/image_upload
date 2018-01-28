@@ -19,6 +19,17 @@ class GoalStudent < ApplicationRecord
         self.goal.statement_stem.gsub("(?)", self.target.to_s) if self.goal
     end
     
+    def all_actions_with_targets
+        actions_array = [[],[],[],[]]
+        these_actions = self.goal.actions
+        these_actions.each_with_index do |action_level, index|
+            action_level.each do |this_action|
+                actions_array[index].push(this_action.gsub("(?)", self.target.to_s))
+            end
+        end
+        return actions_array
+    end
+    
     def create_checkpoints
         4.times do |n|
             self.checkpoints.create(:sequence => n)
