@@ -43,8 +43,9 @@
                 </h5>
             </td>
         </tr>
-        <% @gs.checkpoints.order(:sequence).each_with_index do |checkpoint, index| %>
+        <% @gs.checkpoints_in_order.each do |checkpoint| %>
             <% this_id = checkpoint.id %>
+            <% this_sequence = checkpoint.sequence %>
             <tr>
                 <td>
                     <% this_place_holder = checkpoint.achievement? ? checkpoint.achievement : "Achievement" %>
@@ -53,9 +54,9 @@
                 <td>
                     <% if @gs.goal %>
                         <h5>
-                            Checkpoint <%= index + 1 %>: 
+                            Checkpoint <%= this_sequence + 1 %>: 
                             <% this_place_holder = checkpoint.action == nil ? "Click to Choose The Action for This Checkpoint" : checkpoint.action %> 
-                            <%= best_in_place checkpoint, :action, :as => :select, :collection => @gs.goal.actions[index], :place_holder => this_place_holder %>
+                            <%= best_in_place checkpoint, :action, :as => :select, :collection => @gs.goal.actions[this_sequence], :place_holder => this_place_holder %>
                         </h5>
                     <% end %>
                 </td>

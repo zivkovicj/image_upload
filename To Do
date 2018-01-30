@@ -44,49 +44,26 @@ Private Repo on Github
 
 
 
-
-
-
-rm200083
-
-ag200094
-
-
-
-
-
-CURRENT UPDATE:
-
-
-2.48_MOVE GOALS WITH STUDENT
-
 Question on GitHub for bip test helpers
     https://github.com/bernat/best_in_place/issues/596
 
-Can I set it so that students see the target number instead of the (?) when choosing their goals?
+CURRENT UPDATE:
 
-
-
-Changed goal and checkpoints to best_in_place. 
-    Need to do the same for target.
-
-V Moving a student to a different class updates the goal_students for the new class to match the old class
-V Front-load the old gs with a goal
-
-V Erase the view for approve after tests pass
-    V And check for other references to "approve"
-
-Attendance needs to be a goal
+I just changed a bunch of references from index to sequence, in hopes that will prevent future problems with checkpoints being saved in the wrong order.
+   Test this out before students use it on Tuesday.
+"Lock this goal" button changes color.
+Goals are deleted when student is removed from class
+Student Goal Icon
+Also needs to be able to zoom in on one specific goal_student, for conferencing with that student
+    View should be the same for both teacher and student
+Move the checkpoints stuff to its own controller. But if I do that, I should ajax the checkpoint choices.
+Select box for choosing target needs to be smaller
+Due date is shown when student checks her main profile
+Can erase most of the javascript for choosing goals, targets, checkpoints, and achievement
+Link teacher to edit checkpoint due dates from goals menus
 
 
 NEXT UPDATE:
-
-Fields for choosing and changing goals should be best_in_place
-
-Then I can erase most of the javascript for those functions
-
-
-
 
 
 COLLECTION OF SMALL FIXES
@@ -117,19 +94,6 @@ Check on StackOverflow whether my approach to array columns is best practice
 When editing a goal, they're all marked as "Private" when the user enters the view.
 
 
-STUDENT ALL-GOALS VIEW
-
-Student can open a screen to show all of her goals
-
-
-CLEAN UP GOAL_STUDENTS_INDEX VIEW
-
-Checkpoint and goal change select boxes should be best-in-place boxes, so that the teacher can click them to make the choices appear.
-But how do I update the choices in the select box if the teacher changes the goal?
-"Lock this goal" button changes color.
-
-
-
 MORE AJAX TESTS 
 
 Goal actions
@@ -140,6 +104,9 @@ Score
 Teach Request
 Learn Request
 Pref Request
+
+
+
 
 OTHER TESTS TO ADD
 Seminars_edit_test
@@ -198,79 +165,20 @@ The current extent of an item needs to be checked by default
 Are_some_unplaced test failed once, but it usually passes. I think it failed because @student_10 became a consultant, so he wasn't in the unplaced group.
 
 
-DUE DATES FOR GOALS AND OTHER FEATURES THAT FEEL NEEDED SOON FOR USING GOAL TRACKER
-
-If teacher changes goal, student can change checkpoints
-Goals are deleted when student is removed from class
-Student should be able to see all goals for the year.
-Student Goal Icon
-Also needs to be able to zoom in on one specific goal_student, for conferencing with that student
-    View should be the same for both teacher and student
-Move the checkpoints stuff to its own controller. But if I do that, I should ajax the checkpoint choices.
-Select box for choosing target needs to be smaller
-
-
-POSSIBLE UPDATE TO D-C ALGORITHM
-If no students are proficient in a priority 3 assignments, consider setting the Threshold to consult that topic to be the highest score in class.
-    But not if it's zero.
 
 EASIER SEARCHING
 Searching needs to collect results that are similar to what the user typed.
 And it isn't downcasing results like it use to. User must match capitalization to find results.
 
-EXTENT FOR PICS
-Currently, pics don't have option for public/private extent.
 
-TESTING OF PICS
-How do I test that pics are uploaded and changed?
-# assert_not_equal old_pic, @user_p.image
-# Learn how to test this some day
+ACCESS
+The "Questions" controller needs before_action stoppers
+    And the questions_index_test needs to test for them
+    And check which other models need similar updates
+Look again at Hartl's section about not editing admin via the web.
+Ensure that students cannot url into unauthorized objectives
+Check before_action for security of student page
 
-MECHANISM TO ALLOW USERS TO GIVE FEEDBACK
-
-
-        
-CLEAN UP JAVASCRIPTS AND STYLESHEETS
-http://thesassway.com/beginner/how-to-structure-a-sass-project
-
-TEACHER MANUAL QUIZ UNLOCKS
-Teachers need to be able to unlock specific quizzes for specific students when they want to
-    Usually quizzes are unlocked because they were pre-tests for the seminar, or because the students participated in a Desk-Consultants group
-    But teachers might have other reasons to allow students to take certain quizzes.
-Usually teachers will click the student view, and then be able to check/uncheck certain objectives to unlock the quizzes
-Also allow teacher to click the objective view, and then check/uncheck students.
-    Or for an entire class.
-Add a warning message to let teachers know that deleting a consultancy will quizzes to students.
-
-STUDY LINKS
-Create "link" model
-Teachers and admin can add links to outside websites
-    Ideally, they will be links to games and practice activities
-Each objectives can be associated with links
-Teachers can set those links to outside websites
-Students can view them and follow the path.
-
-MORE QUIZ UNLOCKS
-Unlock quiz if student has clicked at least two "study links"
-    That part should go into the Score model.
-    Don't show a quiz available if it has no questions
-
-ORGANIZING PICTURES
-Organizing them by label, the way I am currently doing, is a bad idea. Teachers cannot use community pictures for their questions because they cannot
-    edit the labels of a picture. Instead, I should prompt the user for whether she wants to be offered pictures from Algebra, Geometry, etc.
-Pictures will be associated with those domains.
-Find a better way to organize the other long lists, too
-    "Labels" comes to mind first
-
-STOP AUTOMATICALLY DIRECTING TEACHER TO PRETESTS AND PRIORITIES SCREENS
-This process is tedious. Can I instead have openable divs for those sections in the main seminar edit screen?
-These openable divs can adjust pretests and priorities by ajax
-
-ADD INFO BUTTONS FOR ALL FIELDS ON ALL FORMS
-Look for all places where users might need a little extra help/advice
-There's a blanked-out info button to explain pre-requisites in the objectives form.
-<button type="button" class="btn btn-info" id="btn-info1">?</button>
-The jquery for showing those info buttons needs to be dried down to one single function.
 
 APPEARANCE
 Most buttons should be turned into big links
@@ -297,6 +205,68 @@ Look at css for headings
 A better visual for the student's total stars can include some big stars for 10 and some giant stars for 100
 Small icons for each class period
 
+
+
+
+STUDENT ALL-GOALS VIEW
+
+Student can open a screen to show all of her goals
+
+
+UPDATE CHECKPOINTS UPON GOAL CHOICE
+
+When teacher chooses a goal, the checkpoint options for that goal are automatically updated
+Same for when student is choosing a goal
+    Move the checkpoint choices to the same screen
+    
+
+
+
+
+TESTING OF PICS
+How do I test that pics are uploaded and changed?
+# assert_not_equal old_pic, @user_p.image
+# Learn how to test this some day
+
+MECHANISM TO ALLOW USERS TO GIVE FEEDBACK
+
+
+        
+CLEAN UP JAVASCRIPTS AND STYLESHEETS
+http://thesassway.com/beginner/how-to-structure-a-sass-project
+
+
+
+TEACHER MANUAL QUIZ UNLOCKS
+Teachers need to be able to unlock specific quizzes for specific students when they want to
+    Usually quizzes are unlocked because they were pre-tests for the seminar, or because the students participated in a Desk-Consultants group
+    But teachers might have other reasons to allow students to take certain quizzes.
+Usually teachers will click the student view, and then be able to check/uncheck certain objectives to unlock the quizzes
+Also allow teacher to click the objective view, and then check/uncheck students.
+    Or for an entire class.
+Add a warning message to let teachers know that deleting a consultancy will quizzes to students.
+
+
+ORGANIZING PICTURES
+Organizing them by label, the way I am currently doing, is a bad idea. Teachers cannot use community pictures for their questions because they cannot
+    edit the labels of a picture. Instead, I should prompt the user for whether she wants to be offered pictures from Algebra, Geometry, etc.
+Pictures will be associated with those domains.
+Find a better way to organize the other long lists, too
+    "Labels" comes to mind first
+
+
+STOP AUTOMATICALLY DIRECTING TEACHER TO PRETESTS AND PRIORITIES SCREENS
+This process is tedious. Can I instead have openable divs for those sections in the main seminar edit screen?
+These openable divs can adjust pretests and priorities by ajax
+
+ADD INFO BUTTONS FOR ALL FIELDS ON ALL FORMS
+Look for all places where users might need a little extra help/advice
+There's a blanked-out info button to explain pre-requisites in the objectives form.
+<button type="button" class="btn btn-info" id="btn-info1">?</button>
+The jquery for showing those info buttons needs to be dried down to one single function.
+
+
+
 AUTO-UPDATE TOTAL
 The "total" field in the scoresheet should update upon changing one of that students' scores.
 Scoresheet show show mean and median for objectives
@@ -308,33 +278,29 @@ Or get rid of that message until I do have that taken care of.
 CHECK MAILERS
 Are they working properly since I reloaded the app?
 
-CURATED QUESTIONS
+CURATED CONTENT
 Should have another type of user called "Content Creator"
 Admin or content creators can curate questions.
 Teachers can choose whether their students will see all questions, or only curated questions.
 
+
 UNTRIED OBJECTIVES
 Some other symbol, instead of zero, should go in the scoresheet to keep track of objectives that haven't been attempted yet.
+
 
 TIME-SENSITIVE GRADEBOOK
 Allow option to show only scores that were updated within the current term.
 Will need term model.
     Or maybe term rows in seminar model.
 
-ACCESS
-The "Questions" controller needs before_action stoppers
-    And the questions_index_test needs to test for them
-    And check which other models need similar updates
-Look again at Hartl's section about not editing admin via the web.
-Ensure that students cannot url into unauthorized objectives
-Check before_action for security of student page
+
 
 CUSTOM DISPLAY FOR DESK CONSULTANTS
 Teachers need to be able to choose how many groups wide their display is.
 Someday, consider allowing different-sized groups. Maybe now?
 
 FRIENDLY WARNINGS BEFORE ANNOUNCING
-Errors for updating scores to invalid values
+Errors for updating scores to invalid values in the scoresheet
 
 STUDENT REQUEST UPDATING
 Update a student's learn_requests when that student passes an objective. 
@@ -347,17 +313,6 @@ Allow teachers to reset student passwords, but not to edit them.
 WRITE UPDATE PLAN
 Make a plan for how to roll out updates after more users are using the apps.
 
-AWARDS
-Students can collect awards with their stars and goal achievements.
-
-TARGETED STUDY GUIDES
-
-The Desk Consultants system that I've been using is not proving very helpful for many students. The next idea that I have to improve the system is to find a way to get each student talking about a 
-question he can answer correctly, where possible. Then have the student try to fix a question he missed.
-
-Would be really cool if the app could create them automatically. Pull two correct and two inccorect questions for each student.
-    Perhaps even merge them with spaces for taking notes on their groupmate's ideas.
-    But students who have never tried that objective will still need the explanatory study guide.
     
 PICTURE NEEDS EXTENT
 
@@ -366,7 +321,6 @@ Pictures that are uploaded need to have a column for public/private extent
 Test for all the results of extent that are tested for in the other models
 Test for picture AND FOR QUESTION should include changing the extent
 
-LINK TEACHER TO EDIT CHECKPOINT DUE DATES FROM GOALS MENUS
 
 
 ******
@@ -379,6 +333,25 @@ Try to recruit several teachers to begin using and providing feedback
 
 ******
 
+ALLOW FIVE LEVELS OF PRIORITY
+Instead of 3
+
+
+
+
+STUDY LINKS
+Create "link" model
+Teachers and admin can add links to outside websites
+    Ideally, they will be links to games and practice activities
+Each objectives can be associated with links
+Teachers can set those links to outside websites
+Students can view them and follow the path.
+
+MORE QUIZ UNLOCKS
+Unlock quiz if student has clicked at least two "study links"
+    That part should go into the Score model.
+    Don't show a quiz available if it has no questions
+    
 
 DRY FORM FOR QUESTION CREATION
 The form for creating questions is the only one that doesn't use the partial for public/private extent. I paused there because of the input name and because questions
@@ -388,6 +361,24 @@ The form for creating questions is the only one that doesn't use the partial for
 REPORTS
 Show teachers some aggregated data from objectives.
 And specific questions.
+
+
+AWARDS
+Students can collect awards with their stars and goal achievements.
+
+TARGETED STUDY GUIDES
+
+The Desk Consultants system that I've been using is not proving very helpful for many students. The next idea that I have to improve the system is to find a way to get each student talking about a 
+question he can answer correctly, where possible. Then have the student try to fix a question he missed.
+
+Would be really cool if the app could create them automatically. Pull two correct and two inccorect questions for each student.
+    Perhaps even merge them with spaces for taking notes on their groupmate's ideas.
+    But students who have never tried that objective will still need the explanatory study guide.
+
+POSSIBLE UPDATE TO D-C ALGORITHM
+If no students are proficient in a priority 3 assignments, consider setting the Threshold to consult that topic to be the highest score in class.
+    But not if it's zero.
+
 
 TARGETED STUDY GUIDE
 If a student is assigned to a D-C group for an objective she has already tried, teacher can print a custom study guide showing the questions and answers that the student missed on previous tries.

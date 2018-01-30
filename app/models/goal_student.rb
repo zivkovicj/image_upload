@@ -10,10 +10,9 @@ class GoalStudent < ApplicationRecord
     
     attribute :approved, :boolean, default: false
     
-    # Probably won't need this method anymore
-    #def this_gs_term
-        #self.user.goal_students.where(:seminar => self.seminar).find_index(self) 
-    #end
+    def checkpoints_in_order
+        self.checkpoints.order(:sequence) 
+    end
     
     def statement_with_target
         self.goal.statement_stem.gsub("(?)", self.target.to_s) if self.goal

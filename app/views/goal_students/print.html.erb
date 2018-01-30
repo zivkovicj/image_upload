@@ -24,10 +24,11 @@
     </br>
     
     <table class="table-borderless">
-        <% this_gs.checkpoints.order(:sequence).each_with_index do |checkpoint, index| %>
+        <% this_gs.checkpoints_in_order.each do |checkpoint| %>
             <% this_achievement = checkpoint.achievement %>
+            <% this_sequence = checkpoint.sequence %>
             <tr>
-                <td><h4><%= index + 1 %>) &nbsp;</h4></td>
+                <td><h4><%= this_sequence + 1 %>) &nbsp;</h4></td>
                 <% if this_achievement %>
                     <% was_made =  this_gs.target && this_achievement >= this_gs.target %>
                     <% this_color = was_made ? "#AAFFAA" : "#FFFFFF" %>

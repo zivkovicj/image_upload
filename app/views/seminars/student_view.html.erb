@@ -42,27 +42,28 @@
             </br>
             <table class="table-borderless">
                 <th colspan="2"></th><th>Checkpoints</th>
-                <% @this_gs.checkpoints.order(:sequence).each_with_index do |checkpoint, index| %>
+                <% @this_gs.checkpoints_in_order.each do |checkpoint| %>
                     <% this_achievement = checkpoint.achievement %>
+                    <% this_sequence = checkpoint.sequence %>
                     <tr>
-                        <td><h4><%= index + 1 %>) &nbsp;</h4></td>
+                        <td><h4><%= this_sequence + 1 %>) &nbsp;</h4></td>
                         <% if this_achievement %>
                             <% this_color = @this_gs.target && this_achievement >= @this_gs.target ? "#AAFFAA" : "#BB6666" %>
                             <td bgcolor="<%= this_color %>">
                                 <h3 class="center"><%= this_achievement %></h3>
                             </td>
-                        <% elsif index < @this_checkpoint %>
+                        <% elsif this_sequence < @this_checkpoint %>
                             <td class="center">
                                 <small><strong>Not</br> marked</strong></small>
                             </td>
-                        <% elsif index == @this_checkpoint %>
+                        <% elsif this_sequence == @this_checkpoint %>
                             <td class="center">
                                 <small><strong>In</br> progress</strong></small>
                             </td>
                         <% else %>
                             <td></td>
                         <% end %>
-                        <td class="<%= 'highlighted' if index == @this_checkpoint %>" colspan="2" >
+                        <td class="<%= 'highlighted' if this_sequence == @this_checkpoint %>" colspan="2" >
                             <h4>&nbsp; <%= checkpoint.statement %></h4>
                         </td>
                     </tr>
