@@ -49,10 +49,12 @@ Question on GitHub for bip test helpers
 
 CURRENT UPDATE:
 
+2.50 GOAL IMPROVEMENTS
+
 I just changed a bunch of references from index to sequence, in hopes that will prevent future problems with checkpoints being saved in the wrong order.
    Test this out before students use it on Tuesday.
-"Lock this goal" button changes color.
-Goals are deleted when student is removed from class
+V "Lock this goal" button changes color
+V Show deadlines on printed report
 Student Goal Icon
 Also needs to be able to zoom in on one specific goal_student, for conferencing with that student
     View should be the same for both teacher and student
@@ -61,6 +63,10 @@ Select box for choosing target needs to be smaller
 Due date is shown when student checks her main profile
 Can erase most of the javascript for choosing goals, targets, checkpoints, and achievement
 Link teacher to edit checkpoint due dates from goals menus
+
+
+
+
 
 
 NEXT UPDATE:

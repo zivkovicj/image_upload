@@ -84,9 +84,10 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
         find("#approval_button_#{@gs.id}").click
         within(:css, "#approval_button_#{@gs.id}") do
             assert_text("Lock This Goal")
+            assert_no_text("Unlock This Goal")
         end
         @gs.reload
-        assert_equal false, @gs.approved
+        assert_not @gs.approved
     end
     
     test "teacher changes goal" do

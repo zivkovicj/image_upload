@@ -99,10 +99,12 @@ ready = ->
         $('.goal_approval').on "click", ->
             if $(this).text() == "Lock This Goal"
                 send_boolean = true
-                $(this).text("Unlock This Goal")
+                new_text = "Unlock This Goal"
+                $(this).addClass("unlock_button")
             else
                 send_boolean = false
-                $(this).text("Lock This Goal")
+                new_text = "Lock This Goal"
+                $(this).removeClass("unlock_button")
             gs_id = $(this).attr('gs_id')
             url = '/goal_students/'+gs_id
             $.ajax
@@ -112,6 +114,7 @@ ready = ->
                 data:
                     goal_student:
                         approved: send_boolean
+            $(this).text(new_text)
 
         $('.goal_change').on "change", ->
             gs_id = $(this).attr('gs_id')

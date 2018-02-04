@@ -16,14 +16,16 @@
                         <h5>
                             <% if action_name == 'scoresheet' %>
                                 <%= link_to seminar.limitedName, scoresheet_seminar_url(seminar) %>
-                            <% elsif (action_name == 'preDeskConsultants' || action_name == 'deskConsultants') %>
-                                <%= link_to seminar.limitedName, consultancy_path(:seminar => seminar.id) %>
+                            <% elsif controller_name == 'consultancies' %>
+                                <%= link_to seminar.limitedName, consultancy_path(:id => Consultancy.first.id, :seminar => seminar.id) %>
                             <% elsif action_name == 'seatingChart' %>
                                 <%= link_to seminar.limitedName, seatingChart_url(seminar) %>
                             <% elsif action_name == 'edit' %>
                                 <%= link_to seminar.limitedName, edit_seminar_path(seminar) %>
                             <% elsif action_name == 'priorities' %>
                                 <%= link_to seminar.limitedName, priorities_seminar_path(seminar) %>
+                            <% elsif controller_name == 'goal_students' %>
+                                <%= link_to seminar.limitedName, goal_students_path(seminar) %>
                             <% else %>
                                 <%= link_to seminar.limitedName, seminar_path(seminar) %>
                             <% end %>
@@ -44,8 +46,8 @@
                     <td class="<%= 'highlighted' if action_name == 'scoresheet' %>"><%= link_to image_tag("scoresheet.png"), scoresheet_seminar_url(@seminar) %></td>
                     
                     <% if @seminar.shouldShowConsultLink %>
-                        <td class="<%= 'highlighted' if (action_name == 'preDeskConsultants' || action_name == 'deskConsultants') %>">
-                            <%= link_to image_tag("desk_consult.png"), new_consultancy_path(:seminar => @seminar.id) %>
+                        <td class="<%= 'highlighted' if controller_name == "consultancies" %>">
+                            <%= link_to image_tag("desk_consult.png"), consultancy_path(@seminar), :id => "desk_consult_#{@seminar.id}" %>
                         </td>
                     <% else %>
                         <td></td>
@@ -53,6 +55,9 @@
                     
                     <td class="<%= 'highlighted' if action_name == 'edit' %>"><%= link_to image_tag("objectives.png"), edit_seminar_path(@seminar) %></td>
                     <td class="<%= 'highlighted' if action_name == 'priorities' %>"><%= link_to image_tag("priorities.png"), priorities_seminar_path(@seminar) %></td>
+                    <td class="<%= 'highlighted' if controller_name == 'goal_students' %>">
+                        <%= link_to image_tag("apple.png"), goal_students_path(:seminar => @seminar), :id => "student_goals_#{@seminar.id}" %>
+                    </td>
                 <% end %>
             </tr>
             <tr>
@@ -63,7 +68,7 @@
                     <td class="<%= 'highlighted' if action_name == 'scoresheet' %> center"><b>Scoresheet</b></td>
                     
                     <% if @seminar.shouldShowConsultLink %>
-                        <td class="<%= 'highlighted' if (action_name == 'preDeskConsultants' || action_name == 'deskConsultants') %> center">
+                        <td class="<%= 'highlighted' if controller_name == "consultancies" %> center">
                             <b>Desk Consultants</b>
                         </td>
                     <% else %>
@@ -72,6 +77,7 @@
                     
                     <td class="<%= 'highlighted' if action_name == 'edit' %> center"><b>Objectives</b></td>
                     <td class="<%= 'highlighted' if action_name == 'priorities' %> center"><b>Priorities</b></td>
+                    <td class="<%= 'highlighted' if controller_name == 'goal_students' %> center"><b>Goals</b></td>
                 <% end %>
             </tr>
         </table>

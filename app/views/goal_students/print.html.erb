@@ -48,6 +48,13 @@
                     <h4>&nbsp; <%= checkpoint.statement %></h4>
                 </td>
             </tr>
+            <tr>
+                <% orig_due_date = Date.strptime(@seminar.checkpoint_due_dates[@this_term][@this_checkpoint], "%m/%d/%Y") %>
+                <% due_date_to_disp = orig_due_date.strftime("%A, %B %e") %>
+                <td></td>
+                <td></td>
+                <td>&emsp; &emsp; Due <%= due_date_to_disp %></td>
+            </tr>
             <% if checkpoint.student_comment %>
                 <tr>
                     <td colspan="2"></td>

@@ -6,7 +6,7 @@
 
 <%= render 'shared/back-link' %>
 <%= render 'shared/headline' %>
-
+<%= render 'shared/navribbon' %><br/>
 
 
 <h2>Showing Goals for Term <%= @this_term + 1 %>, Checkpoint <%= @this_checkpoint + 1 %></h2>
@@ -25,8 +25,14 @@
         <tr>
             <td>
                 <% if @gs.goal != nil %>
-                    <% button_message = @gs.approved ? "Unlock This Goal" : "Lock This Goal" %>
-                    <div class="btn btn-primary goal_approval" id="approval_button_<%= gs_id %>" gs_id="<%= gs_id %>"><%= button_message %></div>
+                    <% if @gs.approved %>
+                        <% button_message = "Unlock This Goal" %>
+                        <% button_class = "unlock_button" %>
+                    <% else %>
+                        <% button_message = "Lock This Goal" %>
+                        <% button_class = "lock_button" %>
+                    <% end %>
+                    <div class="btn btn-primary goal_approval <%= button_class %>" id="approval_button_<%= gs_id %>" gs_id="<%= gs_id %>"><%= button_message %></div>
                 <% end %>
             </td>
             <td>

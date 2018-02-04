@@ -39,7 +39,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         
         @gs.reload
         assert_equal "Eat something kind", @gs.checkpoints[0].action
-        assert_equal "I will be kind (?) % of the time so far.", @gs.checkpoints[1].action   # Not changed in the previous screen.
+        assert_equal "I will be kind 60 % of the time so far.", @gs.checkpoints[1].action   # Not changed in the previous screen.
         assert_equal "Play something kind", @gs.checkpoints[2].action
     end
     
