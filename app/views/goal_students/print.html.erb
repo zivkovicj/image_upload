@@ -49,7 +49,7 @@
                 </td>
             </tr>
             <tr>
-                <% orig_due_date = Date.strptime(@seminar.checkpoint_due_dates[@this_term][@this_checkpoint], "%m/%d/%Y") %>
+                <% orig_due_date = Date.strptime(@seminar.checkpoint_due_dates[@this_term][checkpoint.sequence], "%m/%d/%Y") %>
                 <% due_date_to_disp = orig_due_date.strftime("%A, %B %e") %>
                 <td></td>
                 <td></td>
