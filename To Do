@@ -47,22 +47,71 @@ Private Repo on Github
 Question on GitHub for bip test helpers
     https://github.com/bernat/best_in_place/issues/596
 
+
+
 CURRENT UPDATE:
 
-2.50 GOAL IMPROVEMENTS
 
-I just changed a bunch of references from index to sequence, in hopes that will prevent future problems with checkpoints being saved in the wrong order.
-   Test this out before students use it on Tuesday.
-V "Lock this goal" button changes color
-V Show deadlines on printed report
-Student Goal Icon
-Also needs to be able to zoom in on one specific goal_student, for conferencing with that student
-    View should be the same for both teacher and student
-Move the checkpoints stuff to its own controller. But if I do that, I should ajax the checkpoint choices.
-Select box for choosing target needs to be smaller
-Due date is shown when student checks her main profile
-Can erase most of the javascript for choosing goals, targets, checkpoints, and achievement
-Link teacher to edit checkpoint due dates from goals menus
+2.51 TEST SUITE 1
+Navigating with the NavRibbons
+Capybara test for chart attendance
+Seminars_edit_test
+Test that "verify other teachers" message only appears for the mentor teacher
+Only mentors can reach the verify screen through the url
+students_edit_test is in the test/controllers folder. Should probably move to integration
+Are the apprentice request choices taking pre-requisites into account?
+Test that learnRequest is set to nil if student doesn't have a learnRequest available. I think that means if learnOptions turns up an empty set.
+Test that removing a student from a class doesn't delete his/her scores
+Remove an objective from a class
+Remove a class from an objective
+Ensure that when the user removes pre-reqs for an objective, the updated pre-reqs are correct. Check that it is not keeping all of the previous pre-reqs, plus any
+    new ones that the user adds.
+Test that absent students are excluded from DeskConsultants
+Test that students assigned as consultants have a good score in that objective
+Test that students assigned as apprentices haven't yet mastered that objective with 100%
+See what happens if users enter improper data types in different fields. And test for those.
+Deleting a question
+Deleting a picture
+All of the "edit tests" need to ensure that no changes occur if the user presses "Save Changes" without actually changing anything
+    I ran into a problem with the label for questions not checking the correct label
+    Or should I disable the "Save Changes" button until the user does something.
+Searching
+    Right now there's not empty message when there's a student from another school that could show up.
+    Make sure Admin can find all students
+Deleting a consultancy deletes its teams
+Test that incorrect user cannot delete any records from models with correct_owner function
+
+
+
+
+
+2.52 TEST SUITE 2
+Ensure that database inputs are sanitized
+Test failing at creating a record, then fixing it. Needs to apply to creating a new record and also to editing an existing record.
+    Objective
+    Label
+    Picture
+    Question
+The current extent of an item needs to be checked by default
+    Objective
+    Label
+    Picture
+    Question
+Add enough question fixtures to test pagination in index
+    Same with labels
+    objectives
+    Students
+    Users
+
+2.53 TEST SUITE 3
+The piece of the DC algorithm that places straggling students should also check for the priority of the learnrequest, and whether the student has passed preReqs
+If teacher reached "Create New Objective" through a seminar view, re-route to that seminar. If not, re-route to user page.
+Test that consultant_days doesn't include other seminars
+Test that a limited number of groups are created if many students are qualified to connsult.
+    With priority 3's
+    And total consultants
+Are_some_unplaced test failed once, but it usually passes. I think it failed because @student_10 became a consultant, so he wasn't in the unplaced group.
+Test that checkpoints are displayed in the correct order?
 
 
 
@@ -73,15 +122,15 @@ NEXT UPDATE:
 
 
 COLLECTION OF SMALL FIXES
-
+Link teacher to edit checkpoint due dates from goals menus
 README for loading only specific jquery-ui components.
     https://github.com/jquery-ui-rails/jquery-ui-rails
 Dry up the four buttons shown in the bottom of seminar navigation
     See what pages they should be inncluded on
 Switching classes when you're in a screen that isn't the scoresheet goes to a blank page.
 Q/A
-    If a teacher signs in, but doesn't have a school, send them to school-choosing view
-NEXT UPDATE:    Test and re-route for incomplete school info
+If a teacher signs in, but doesn't have a school, send them to school-choosing view
+Test and re-route for incomplete school info
 Admin should be able to destroy students
     And schools
         But what happens to students and teachers when their school gets destroyed.
@@ -91,13 +140,17 @@ V Consultants button in NavBar needs to link to consultancy show page
 Set up billing alerts with AWS.
 I moved the javascripts to the end of the body tag on the chance that it might help with loading. Test on the live site with school computers using both ways.
 Remove all visuals pertaining to Benchmark Stars
-Teacher can suggest goal.
 Deleting a consultancy from its own show page isn't working right now.
 Put goals in NavRibbon
 Fix NavRibbon for Desk Consultants
 Don't mark a student as consultant if the student is alone. It wastes that student's consultant turn.
 Check on StackOverflow whether my approach to array columns is best practice
 When editing a goal, they're all marked as "Private" when the user enters the view.
+Can erase most of the javascript for choosing goals, targets, checkpoints, and achievement
+    Or maybe not, since I'll need to replace the best-in-place to get my tests working.
+    Either that, or I need to update my tests to RSpec
+Student Goal Icon
+
 
 
 MORE AJAX TESTS 
@@ -112,63 +165,6 @@ Learn Request
 Pref Request
 
 
-
-
-OTHER TESTS TO ADD
-Seminars_edit_test
-Test that "verify other teachers" message only appears for the mentor teacher
-Only mentors can reach the verify screen through the url
-Ensure that database inputs are sanitized
-If teacher reached "Create New Objective" through a seminar view, re-route to that seminar. If not, re-route to user page.
-students_edit_test is in the test/controllers folder. Should probably move to integration
-Test that new user info is saved downcase
-Are the apprentice request choices taking pre-requisites into account?
-Capybara test for chart attendance
-The piece of the DC algorithm that places straggling students should also check for the priority of the learnrequest, and whether the student has passed preReqs
-Test that learnRequest is set to nil if student doesn't have a learnRequest available. I think that means if learnOptions turns up an empty set.
-Test that removing a student from a class doesn't delete his/her scores
-I tried for a few hours to test clicking on the learn_request to see if it changes that student's request. It seems like I need the capybara-webkit gem 
-    to do that. But installing that gem seemed impossible at the time. I think the problem was the workspace enviroment that resulted from the Rails Tutorial.
-    Might be worth looking into that again.
-Remove an objective from a class
-Remove a class from an objective
-Remove a question from a label
-Ensure that when the user removes pre-reqs for an objective, the updated pre-reqs are correct. Check that it is not keeping all of the previous pre-reqs, plus any
-    new ones that the user adds.
-Test that absent students are excluded from DeskConsultants
-Test that students assigned as consultants have a good score in that objective
-Test that students assigned as apprentices haven't yet mastered that objective with 100%
-See what happens if users enter improper data types in different fields. And test for those.
-Deleting a question
-Deleting a picture
-All of the "edit tests" need to ensure that no changes occur if the user presses "Save Changes" without actually changing anything
-    I ran into a problem with the label for questions not checking the correct label
-Searching
-    Right now there's not empty message when there's a student from another school that could show up.
-    Make sure Admin can find all students
-Deleting a consultancy deletes its teams
-Test that incorrect user cannot delete any records from models with correct_owner function
-Add enough question fixtures to test pagination in index
-    Same with labels
-    objectives
-    Students
-    Users
-Test that consultant_days doesn't include other seminars
-Test that a limited number of groups are created if many students are qualified to connsult.
-    With priority 3's
-    And total consultants
-Navigating with the NavRibbons
-Test failing at creating a record, then fixing it. Needs to apply to creating a new record and also to editing an existing record.
-    Objective
-    Label
-    Picture
-    Question
-The current extent of an item needs to be checked by default
-    Objective
-    Label
-    Picture
-    Question
-Are_some_unplaced test failed once, but it usually passes. I think it failed because @student_10 became a consultant, so he wasn't in the unplaced group.
 
 
 
@@ -217,9 +213,11 @@ Small icons for each class period
 STUDENT ALL-GOALS VIEW
 
 Student can open a screen to show all of her goals
+Select box for choosing target needs to be smaller
+Due date is shown when student checks her main profile
 
 
-UPDATE CHECKPOINTS UPON GOAL CHOICE
+UPDATE CHECKPOINT CHOICES UPON GOAL CHOICE
 
 When teacher chooses a goal, the checkpoint options for that goal are automatically updated
 Same for when student is choosing a goal
@@ -343,6 +341,10 @@ ALLOW FIVE LEVELS OF PRIORITY
 Instead of 3
 
 
+
+VIEW A SINGLE GOAL
+Also needs to be able to zoom in on one specific goal_student, for conferencing with that student
+    View should be the same for both teacher and student
 
 
 STUDY LINKS
