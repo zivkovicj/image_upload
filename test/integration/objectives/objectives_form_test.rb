@@ -102,9 +102,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         click_on('1st Period')
         
         check("check_#{@assign_to_add.id}")
-        click_on('Update Class')
-        
-        assert_text("Edit #{@seminar.name} Pre-Tests")
+        click_on('Update This Class')
         
         @seminar.reload
         
@@ -127,7 +125,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on('1st Period')
         check("check_#{@assign_to_add.id}")
-        click_on('Update Class')
+        click_on('Update This Class')
 
         assert_equal old_os_count + 1, ObjectiveSeminar.count
         assert_equal 1, ObjectiveSeminar.where(:seminar_id => @seminar.id, :objective_id => @objective_80.id).count
@@ -141,7 +139,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on('1st Period')
         check("check_#{@main_objective.id}")
-        click_on('Update Class')
+        click_on('Update This Class')
         
         @seminar.students.each do |student|
             assert_not_nil student.objective_students.find_by(:objective_id => @already_preassign_to_main.id)

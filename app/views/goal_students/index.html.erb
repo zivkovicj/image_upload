@@ -1,7 +1,7 @@
-<% provide(:title, 'View Student Goals') %>
+<% provide(:title, 'Student Goals') %>
 <% provide(:button_text, 'View Goals') %>
 
-<% provide(:headerText, "View Student Goals") %>
+<% provide(:headerText, "Student Goals for #{@seminar.name}") %>
 <% provide(:headerPic, 'objectives.png') %>
 
 <%= render 'shared/back-link' %>
@@ -45,7 +45,7 @@
             <td id="target_cell_<%= gs_id %>">
                 <% this_place_holder = @gs.target? ? @gs.target : "Choose Goal Target" %>
                 <h5>Goal Target:
-                    <%= best_in_place @gs, :target, :as => :select, :collection => percent_array, :place_holder => this_place_holder %>
+                    <%= best_in_place @gs, :target, :as => :select, :collection => percent_array, :place_holder => this_place_holder %> %
                 </h5>
             </td>
         </tr>

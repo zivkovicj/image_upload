@@ -52,8 +52,34 @@ Question on GitHub for bip test helpers
 CURRENT UPDATE:
 
 
-2.51 TEST SUITE 1
-Navigating with the NavRibbons
+2.51 TEST NAVRIBBON
+V NavRibbon now needs an icon to edit the class.
+V Teacher profile should offer the same main icons as the navribbon.
+V Move objectives, pretests, and priorities into the seminars controller. Make them part of the seminar form editing
+Cancel button while creating a new class.
+
+
+
+
+
+
+When creating a new class, the default form view should be the class name. When editing a class, the default view should be objectives
+See what happens to the other views upon creating a new class. Probably don't offer most of the tabs. 
+
+
+Give the student view the same treatment that I gave the seminar_edit view, with submenu clicking
+And move the studentview into the seminar_students controller
+When updating a target, it doesn't seem to update the checkpoint actions.
+A few checkpoint actions are keeping the (?) instead of the target number.
+
+
+When clicking on an objective, it SHOULD offer the "Update Class" button, because teachers can choose which of their seminars that objective is connected to.
+Erase "Make sure to award consultant points"
+Student who is left alone as consultant should try one more time to place. If not, then at least don't mark them as a consultant. It takes up that student's turn.
+Smaller Apple Icon
+Home Icon instead of "Your teacher page"
+
+2.52 TEST SUITE 2
 Capybara test for chart attendance
 Seminars_edit_test
 Test that "verify other teachers" message only appears for the mentor teacher
@@ -85,7 +111,7 @@ Test that incorrect user cannot delete any records from models with correct_owne
 
 
 
-2.52 TEST SUITE 2
+2.52 TEST SUITE 23
 Ensure that database inputs are sanitized
 Test failing at creating a record, then fixing it. Needs to apply to creating a new record and also to editing an existing record.
     Objective
@@ -103,7 +129,7 @@ Add enough question fixtures to test pagination in index
     Students
     Users
 
-2.53 TEST SUITE 3
+2.53 TEST SUITE 23
 The piece of the DC algorithm that places straggling students should also check for the priority of the learnrequest, and whether the student has passed preReqs
 If teacher reached "Create New Objective" through a seminar view, re-route to that seminar. If not, re-route to user page.
 Test that consultant_days doesn't include other seminars

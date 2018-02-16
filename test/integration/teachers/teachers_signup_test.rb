@@ -32,7 +32,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         assert_equal 0, @this_teacher.verified
         
         click_on("Create a New Class")
-        fill_in "Name", with: "Myname"
+        fill_in "seminar[name]", with: "Myname"
         click_on("Create This Class")
         
         click_on('Create New Students')

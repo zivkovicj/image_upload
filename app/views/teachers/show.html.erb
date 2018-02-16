@@ -28,9 +28,8 @@
       <th></th>
       <th>Scoresheet</th>
       <th>Desk Consultants</th>
-      <th>Objectives</th>
-      <th>Priorities</th>
       <th>Student Goals</th>
+      <th>Edit</th>
     </thead>
     <% @own_seminars.order(:name).each do |sem| %>
       <tr>
@@ -41,9 +40,8 @@
             <%= link_to image_tag("desk_consult.png"), consultancy_path(:seminar => sem.id), :id => "desk_consult_#{sem.id}" %>
           <% end %>
         </td>
-        <td><%= link_to image_tag("objectives.png"), edit_seminar_path(sem), :id => "edit_seminar_#{sem.id}" %></td>
-        <td><%= link_to image_tag("priorities.png"), priorities_seminar_path(sem), :id => "#{sem.name} priorities" %></td>
-        <td><%= link_to image_tag("apple.png"), goal_students_path(:seminar => sem), :id => "#{sem.name}_student_goals" %></td>
+        <td><%= link_to image_tag("apple.png"), goal_students_path(:seminar => sem), :id => "#{sem.id}_student_goals" %></td>
+        <td><%= link_to image_tag("E.png"), edit_seminar_path(sem), :id => "edit_seminar_#{sem.id}" %></td>
       </tr>
     <% end %>
   </table>

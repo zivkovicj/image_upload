@@ -13,11 +13,11 @@ class SeminarsController < ApplicationController
     end
     
     def create
-        @seminar = current_user.own_seminars.build(seminarParamsWithoutSeating)
+        @seminar = current_user.own_seminars.build(seminar_params)
         if @seminar.save
             flash[:success] = "Class Created"
             update_current_class
-            pretest_or_not
+            redirect_to edit_seminar_path(@seminar)
         else
             render 'seminars/new'
         end
@@ -46,35 +46,12 @@ class SeminarsController < ApplicationController
 
     def update
         @seminar = Seminar.find(params[:id])
-        
-        #This section is a work-around because editing the class name was causing 
-        #the seating parameter to save as a multi-dimensional array, which caused
-        #it to fail.
-        
-        if params[:seminar][:seating]
-            if @seminar.update_attributes(seminarParamsWithSeating)
-                if @seminar.seating.class != "Array"
-                    comegente = @seminar.seating
-                    @seminar.seating = comegente.split(",")
-                    @seminar.save
-                end
-                if @seminar.needSeat.class != "Array"
-                    widower = @seminar.needSeat
-                    @seminar.needSeat = widower.split(",")
-                    @seminar.save
-                end
-                flash[:success] = "Class Updated"
-            end
-            update_current_class
-            redirect_to seatingChart_url
-        else
-            set_checkpoint_due_dates
-            if @seminar.update_attributes(seminarParamsWithoutSeating)
-                flash[:success] = "Class Updated"
-            end
-            update_current_class
-            pretest_or_not
-        end
+        set_checkpoint_due_dates
+        set_priorities
+        set_pretests
+        @seminar.update_attributes(seminar_params)
+        flash[:success] = "Class Updated"
+        redirect_to edit_seminar_path(@seminar)
     end
     
     def destroy
@@ -85,41 +62,17 @@ class SeminarsController < ApplicationController
         redirect_to @user
     end
     
-    def newChartByAchievement
-        @seminar = Seminar.find(params[:id])
-        @students = @seminar.students.order(:last_name)
-        @teacher = @seminar.user
-        set_objectives_and_scores(false)
-        profList = @students.sort {|a,b| a.total_stars(@seminar) <=> b.total_stars(@seminar)}
-        @tempSeating = []
-        profList.each do |student|
-            @tempSeating.push(student.id)
-        end
-        update_current_class
-    end
     
-    def pretests
-        @seminar = Seminar.find(params[:id])
-        @os = @seminar.objective_seminars.sort_by{|x| [x.objective.name]}
-        update_current_class
-    end
     
-    def priorities
-        @seminar = Seminar.find(params[:id])
-        @os = @seminar.objective_seminars.sort_by{|x| [x.objective.name]}
-        update_current_class
-    end
-
+    
+    ### Sub-menus for editing seminar
+    
     def scoresheet
         @seminar = Seminar.find(params[:id])
         @teacher = @seminar.user
         @students = @seminar.students.order(:last_name)
         set_objectives_and_scores(false)
         update_current_class
-    end
-    
-    def seatingChart
-        readySeating
     end
     
     def student_view
@@ -166,37 +119,8 @@ class SeminarsController < ApplicationController
     end
     
     private 
-        def readySeating
-            @seminar = Seminar.find(params[:id])
-            @teacher = @seminar.user
-            @students = @seminar.students.order(:last_name)
-            #if @seminar.seating.blank?
-                #tempSeating = []
-                #@students.each do |student|
-                    #tempSeating.push(student.id)
-                #end
-                #@seminar.seating = tempSeating
-                #@seminar.save
-            #end
-            #if @seminar.needSeat.blank?  #This is just in case people started their accounts before I added the needSeat feature
-               #@seminar.needSeat = []
-               #@seminar.save
-            #end
-            update_current_class
-        end
-        
-        def pretest_or_not
-            next_path = @seminar.objectives.present? ? pretests_seminar_path(@seminar) : scoresheet_seminar_path(@seminar)
-            redirect_to next_path
-        end
-        
-        def seminarParamsWithSeating
-            params.require(:seminar).permit(:seating, :needSeat)
-        end
-        
-        def seminarParamsWithoutSeating
+        def seminar_params
             params.require(:seminar).permit(:name, :user_id, :consultantThreshold, objective_ids: [])
-        
         end
         
         def correct_user
@@ -219,6 +143,18 @@ class SeminarsController < ApplicationController
                 end
             end
             @seminar.checkpoint_due_dates = date_array 
+        end
+        
+        def set_priorities
+            params[:priorities].each do |key, value|
+                @objective_seminar = ObjectiveSeminar.find(key)
+                @objective_seminar.update(:priority => value)
+            end
+        end
+        
+        def set_pretests
+            @seminar.objective_seminars.where.not(:id => params[:pretest_on]).update_all(:pretest => 0)
+            @seminar.objective_seminars.where(:id => params[:pretest_on]).update_all(:pretest => 1)
         end
         
 end

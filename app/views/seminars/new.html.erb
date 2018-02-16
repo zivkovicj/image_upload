@@ -5,5 +5,24 @@
 <% provide(:headerText, "New Class") %>
 <% provide(:headerPic, "square_fractal.png") %>
 
-<%= render "form" %>
+<%= render 'shared/headline' %>
+
+<%= form_for(@seminar) do |f| %>
+      <%= render 'shared/error_messages', :object => @seminar %>
+      
+      <div class="singleOption">
+        <%= f.label "Name for your new class:" %>
+        <%= f.text_field :name, class: 'form-control' %>
+      </div>
+      </br>
+      
+      <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+<% end %>
+
+<div>
+  <h4>
+    HINT: Begin the class with the period number first to make sure that your
+    classes are displayed in the correct order.</h4>
+  <h4> For example: 1 Math 7 Honors</h4>
+</div>
 

@@ -34,7 +34,7 @@ class SeminarsCheckpointDueDatesTest < ActionDispatch::IntegrationTest
         # [3][2] left out for testing
         fill_in "seminar[checkpoint_due_dates][3][3]", with: "01/26/2018"
         
-        click_on("Update Class")
+        click_on("Update This Class")
         
         @seminar.reload
         this_array_should_be =
@@ -76,7 +76,7 @@ class SeminarsCheckpointDueDatesTest < ActionDispatch::IntegrationTest
         click_on("edit_seminar_#{second_seminar.id}")
         click_on("Copy Due Dates from #{first_seminar.name}")
         
-        assert_selector("h1", :text => "Edit #{second_seminar.name} and Objectives")
+        assert_selector("h1", :text => "Edit #{second_seminar.name}")
         second_seminar.reload
         assert_equal @array_should_be, second_seminar.checkpoint_due_dates
     end

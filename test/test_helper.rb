@@ -53,6 +53,8 @@ class ActiveSupport::TestCase
   
   def setup_seminars
     @seminar = seminars(:one)
+    @seminar_2 = seminars(:two)
+    @seminar_3 = seminars(:three)
   end
   
   def setup_consultancies
@@ -160,10 +162,6 @@ class ActiveSupport::TestCase
     assert_no_text("Admin Control Page")
   end
   
-  def assert_on_scoresheet
-    assert_text("#{@seminar.name} Scoresheet")
-  end
-  
   def capybara_login(user)
     visit('/')
     click_on('Log In')
@@ -184,14 +182,7 @@ class ActiveSupport::TestCase
   end
   
   def go_to_goals
-    click_on("#{@seminar.name}_student_goals")
-  end
-  
-  def establish_objectives(seminar)
-    (0..3).each do |n|
-      this_obj = instance_variable_set("@obj_#{n}", seminar.objectives[n])
-      instance_variable_set("@os_#{n}", this_obj.objective_seminars.find_by(:seminar => seminar))
-    end
+    click_on("#{@seminar.id}_student_goals")
   end
   
   def begin_quiz
@@ -221,13 +212,6 @@ class ActiveSupport::TestCase
     assert_equal "Cut", @this_teacher.last_name
     assert_equal "burgle@cut.com", @this_teacher.email
     assert @this_teacher.authenticate("bigbigbigbig")
-  end
-  
-  def reload_oss
-    @os_0.reload
-    @os_1.reload
-    @os_2.reload
-    @os_3.reload
   end
   
   def fill_prompt(a)

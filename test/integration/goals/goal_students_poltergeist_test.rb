@@ -36,13 +36,13 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
         go_to_goals
         sleep(1)
         within(:css, "#target_cell_#{@gs.id}") do
-            assert_text("Current Target: 60 %")
-            assert_no_text("Current Target: 70 %")
+            assert_text("Goal Target: 60 %")
+            assert_no_text("Goal Target: 70 %")
         end
         select("70%", :from => "target_select_#{@gs.id}")
         within(:css, "#target_cell_#{@gs.id}") do
-            assert_text("Current Target: 70 %")
-            assert_no_text("Current Target: 60 %")
+            assert_text("Goal Target: 70 %")
+            assert_no_text("Goal Target: 60 %")
         end
         
         @gs.reload
@@ -57,7 +57,7 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
         go_to_goals
         sleep(1)
         within(:css, "#goal_text_#{@gs.id}") do
-            assert_text("No Goal Set")
+            assert_text("Click to Choose Student's Goal")
             assert_no_text(Goal.second.name)
         end
         assert_no_selector('div', :id => "#approval_button_#{@gs.id}")
@@ -100,7 +100,7 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
         go_to_goals
         sleep(1)
         within(:css, "#goal_text_#{@gs.id}") do
-            assert_no_text("No Goal Set")
+            assert_no_text("Click to Choose Student's Goal")
             assert_text("Be Kind")
         end
         bip_select(@gs, :goal_id, Goal.first.name)
@@ -112,8 +112,8 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
         
         select("70%", :from => "target_select_#{@gs.id}")
         within(:css, "#target_cell_#{@gs.id}") do
-            assert_text("Current Target: 70 %")
-            assert_no_text("Current Target: 60 %")
+            assert_text("Goal Target: 70 %")
+            assert_no_text("Goal Target: 60 %")
         end
         
         @gs.reload

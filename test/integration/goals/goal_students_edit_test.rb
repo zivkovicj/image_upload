@@ -93,18 +93,18 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         go_to_goals
         
-        assert_text("View Student Goals")
+        assert_text("Student Goals for #{@seminar.name}")
         
         click_on("term_2")
 
-        assert_text("View Student Goals")
+        assert_text("Student Goals for #{@seminar.name}")
         @seminar.reload
         assert_equal 2, @seminar.term
         assert_equal 0, @seminar.which_checkpoint
         
         click_on("checkpoint_3")
         
-        assert_text("View Student Goals")
+        assert_text("Student Goals for #{@seminar.name}")
         @seminar.reload
         assert_equal 2, @seminar.term
         assert_equal 3, @seminar.which_checkpoint

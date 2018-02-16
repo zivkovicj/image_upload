@@ -278,6 +278,13 @@ ready = ->
         
             $('#total_disp').text(points_poss)
     
+    if $('.reveal').length > 0
+        $('.reveal'). on "click", (event) ->
+            submenu = $(this).attr("submenu")
+            $('.reveal').removeClass('highlighted')
+            $(this).addClass('highlighted')
+            $('.submenu_item').hide()
+            $('.submenu_'+submenu).show()
      
     if $('.remove_btn').length > 0
         $('.cancel_button').hide()
