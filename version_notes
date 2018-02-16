@@ -1,4 +1,12 @@
 
+2.51 TEST NAVRIBBON
+NavRibbon now needs an icon to edit the class.
+Teacher profile should offer the same main icons as the navribbon.
+Move objectives, pretests, and priorities into the seminars controller. Make them part of the seminar form editing
+
+
+
+
 2.50 GOAL IMPROVEMENTS
 "Lock this goal" button changes color
 Show deadlines on printed report
