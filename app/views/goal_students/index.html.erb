@@ -44,8 +44,12 @@
         <tr>
             <td id="target_cell_<%= gs_id %>">
                 <% this_place_holder = @gs.target? ? @gs.target : "Choose Goal Target" %>
-                <h5>Goal Target:
-                    <%= best_in_place @gs, :target, :as => :select, :collection => percent_array, :place_holder => this_place_holder %> %
+                <h5>
+                    Goal Target:
+                    <span class="target_text" id="target_text_<%= @gs.id %>" gs_id="<%= @gs.id %>"><%= this_place_holder %></span> %
+                    <span class="" id="target_span_<%= @gs.id %>">
+                        <%= select("goal_student[#{@gs.id}]", "target", percent_array, {:selected => @gs.target}, :class => "select_box left_box target_change", :id => "target_select_#{@gs.id}", :gs_id => @gs.id) %>
+                    </span>
                 </h5>
             </td>
         </tr>
@@ -61,7 +65,7 @@
                     <% if @gs.goal %>
                         <h5>
                             Checkpoint <%= this_sequence + 1 %>: 
-                            <% this_place_holder = checkpoint.action == nil ? "Click to Choose The Action for This Checkpoint" : checkpoint.action %> 
+                            <% this_place_holder = checkpoint.action == nil ? "Click to Choose The Action for This Checkpoint" : checkpoint.statement %> 
                             <%= best_in_place checkpoint, :action, :as => :select, :collection => @gs.goal.actions[this_sequence], :place_holder => this_place_holder %>
                         </h5>
                     <% end %>

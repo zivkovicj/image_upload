@@ -129,19 +129,26 @@ ready = ->
                         goal_id: $(this).val()
             $('#approval_button_'+gs_id).fadeOut()
             $('#goal_text_'+gs_id).text($("option:selected", this).text())
-        
-        $('.target_change').on "change", ->
-            gs_id = $(this).attr('gs_id')
-            url = '/goal_students/'+gs_id
-            $('#target_text_'+gs_id).text("Current Target: "+$(this).val()+" %")
-            $.ajax
-                type: "PUT",
-                url: url,
-                dataType: "json"
-                data:
-                    goal_student:
-                        approved: true
-                        target: $(this).val()
+    
+    $('.target_text').on "click", ->
+        gs_id = $(this).attr('gs_id')
+        $(this).hide()
+        $('#target_span_'+gs_id).show()
+    
+    $('.target_change').on "change", ->
+        gs_id = $(this).attr('gs_id')
+        url = '/goal_students/'+gs_id
+        $.ajax
+            type: "PUT",
+            url: url,
+            dataType: "json"
+            data:
+                goal_student:
+                    approved: true
+                    target: $(this).val()
+        $(this).fadeOut()
+        $('#target_text_'+gs_id).show()
+        $('#target_text_'+gs_id).text($(this).val())
                         
     if $('.checkpoint_change').length > 0
         $('.checkpoint_change').on "change", ->

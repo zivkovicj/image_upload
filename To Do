@@ -52,38 +52,42 @@ Question on GitHub for bip test helpers
 CURRENT UPDATE:
 
 
-2.51 TEST NAVRIBBON
-V NavRibbon now needs an icon to edit the class.
-V Teacher profile should offer the same main icons as the navribbon.
-V Move objectives, pretests, and priorities into the seminars controller. Make them part of the seminar form editing
-Cancel button while creating a new class.
 
 
-
-
-
-
-When creating a new class, the default form view should be the class name. When editing a class, the default view should be objectives
-See what happens to the other views upon creating a new class. Probably don't offer most of the tabs. 
-
-
-Give the student view the same treatment that I gave the seminar_edit view, with submenu clicking
-And move the studentview into the seminar_students controller
-When updating a target, it doesn't seem to update the checkpoint actions.
+2.53 TARGETS WITHIN ACTIONS
+V When updating a target, it doesn't seem to update the checkpoint actions.
+Updating target is probably resetting the student's checkpoint choices to their default. The gs_update_stuff needs to happen only after the student chooses a new goal.
+Test that.
+Complete the percent_array. The lower numbers are needed for marking low achievement.
 A few checkpoint actions are keeping the (?) instead of the target number.
 
 
-When clicking on an objective, it SHOULD offer the "Update Class" button, because teachers can choose which of their seminars that objective is connected to.
+Cancel button while creating a new class.
+
+When creating a new class, the default form view should be the class name. When editing a class, the default view should be objectives
+
 Erase "Make sure to award consultant points"
 Student who is left alone as consultant should try one more time to place. If not, then at least don't mark them as a consultant. It takes up that student's turn.
+
+Capybara test for chart attendance
+Test that "verify other teachers" message only appears for the mentor teacher
+Only mentors can reach the verify screen through the url
+
+Give the student view the same treatment that I gave the seminar_edit view, with submenu clicking
+And move the studentview into the seminar_students controller
+
+When clicking on an objective, it SHOULD offer the "Update Class" button, because teachers can choose which of their seminars that objective is connected to.
+
 Smaller Apple Icon
 Home Icon instead of "Your teacher page"
 
+
+
+
+
+
 2.52 TEST SUITE 2
-Capybara test for chart attendance
-Seminars_edit_test
-Test that "verify other teachers" message only appears for the mentor teacher
-Only mentors can reach the verify screen through the url
+
 students_edit_test is in the test/controllers folder. Should probably move to integration
 Are the apprentice request choices taking pre-requisites into account?
 Test that learnRequest is set to nil if student doesn't have a learnRequest available. I think that means if learnOptions turns up an empty set.

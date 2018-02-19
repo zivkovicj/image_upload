@@ -22,7 +22,8 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
     end
     
     def set_student_goals
-        @gs.update(:goal => Goal.second, :target => 60)
+        @gs.update(:goal_id => Goal.second.id, :target => 60)
+        @gs.gs_update_stuff
     end
         
     test "teacher changes target" do
@@ -39,15 +40,20 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
             assert_text("Goal Target: 60 %")
             assert_no_text("Goal Target: 70 %")
         end
-        select("70%", :from => "target_select_#{@gs.id}")
+        assert_selector('select', :id => "target_select_#{@gs.id}", :visible => false)
+        find("#target_text_#{@gs.id}").click
+        assert_selector('select', :id => "target_select_#{@gs.id}", :visible => true)
+        select("85%", :from => "target_select_#{@gs.id}")
         within(:css, "#target_cell_#{@gs.id}") do
-            assert_text("Goal Target: 70 %")
+            assert_text("Goal Target: 85 %")
             assert_no_text("Goal Target: 60 %")
         end
         
+        # Manually use debugger here to check that the gs target has been updated. 
+        # Also check that the statement for checkpoints[1] includes the updated target.
         @gs.reload
-        assert @gs.approved
-        assert_equal 70, @gs.target
+        assert_equal "I will be kind 85 % of the time so far.", @gs.reload.checkpoints[1].statement
+        assert_equal 85, @gs.target
     end
         
     test "no goal set" do

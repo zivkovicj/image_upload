@@ -87,8 +87,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         setup_goals
         setup_scores
         
-        assert_equal 1, @seminar.term
-        assert_equal 0, @seminar.which_checkpoint
+        @seminar.update(:term => 1, :which_checkpoint => 0)
         
         capybara_login(@teacher_1)
         go_to_goals
