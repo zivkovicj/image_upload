@@ -56,6 +56,7 @@ CURRENT UPDATE:
 
 2.53 TARGETS WITHIN ACTIONS
 V When updating a target, it doesn't seem to update the checkpoint actions.
+Not yet finished with this update. But I paused so I could push the new privacy policy.
 Updating target is probably resetting the student's checkpoint choices to their default. The gs_update_stuff needs to happen only after the student chooses a new goal.
 Test that.
 Complete the percent_array. The lower numbers are needed for marking low achievement.
