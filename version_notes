@@ -1,4 +1,19 @@
 
+
+
+2.53 TARGETS WITHIN ACTIONS
+When updating a target, it doesn't seem to update the checkpoint actions.
+Make sure that updating a goal target, etc, doesn't change the student's actions by calling the gs_update_stuff function.
+Complete the percent_array. The lower numbers are needed for marking low achievement.
+Test that "Update this goal" button appears when student changes the goal.
+Cancel button while creating a new class.
+Erase "Make sure to award consultant points"
+Capybara test for chart attendance
+Test that "verify other teachers" message only appears for the mentor teacher
+Only mentors can reach the verify screen through the url
+
+
+
 2.51 TEST NAVRIBBON
 NavRibbon now needs an icon to edit the class.
 Teacher profile should offer the same main icons as the navribbon.
