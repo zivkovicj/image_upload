@@ -334,7 +334,6 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         # Second student in rank_by_consulting gets skipped because she's unqualified
         assert_not @consultancy.users.include?(@rank_by_consulting[1])
-        debugger if !@consultancy.users.include?(@rank_by_consulting[2])
         assert @consultancy.users.include?(@rank_by_consulting[2])
         
         # Student with no teach_request gets teach_options[0]

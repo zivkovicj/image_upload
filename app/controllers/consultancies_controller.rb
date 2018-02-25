@@ -33,7 +33,6 @@ class ConsultanciesController < ApplicationController
         place_apprentices_by_mastery
         check_for_lone_students
         new_place_for_lone_students
-        # assignSGSections
         are_some_unplaced
         
         current_user.update!(:current_class => @seminar.id)
