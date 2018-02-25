@@ -16,7 +16,9 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         
         go_to_first_period
         click_on("Edit This Goal")
+        assert_selector('input', :id => "goal_submit_button", :visible => false)
         select("#{Goal.second.name}", :from => 'goal_student_goal_id')
+        assert_selector('input', :id => "goal_submit_button", :visible => true)
         select("60%", :from => 'goal_student_target')
         click_on("Save This Goal")
         
@@ -56,20 +58,6 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         assert_selector('h1', :text => "Choose your Checkpoints")
         @this_gs.reload
         assert_equal Goal.first, @this_gs.goal
-    end
-    
-    test "dont choose goal" do    #counterpart to above goal
-        setup_goals
-        setup_scores
-        go_to_first_period
-        click_on("Edit This Goal")
-        
-        click_on("Save This Goal")
-        
-        assert_selector('h2', :text => "Current Stars for this Grading Term")
-        
-        @gs = @student_2.goal_students.where(:seminar => @seminar)[0]
-        assert_nil @gs.goal
     end
     
     test "goal edit back button" do

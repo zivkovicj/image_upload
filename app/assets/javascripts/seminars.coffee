@@ -149,6 +149,9 @@ ready = ->
         $(this).fadeOut()
         $('#target_text_'+gs_id).show()
         $('#target_text_'+gs_id).text($(this).val())
+        
+    $('#goal_student_goal_id').on "change", ->
+        $('.currently_hidden').show()
                         
     if $('.checkpoint_change').length > 0
         $('.checkpoint_change').on "change", ->

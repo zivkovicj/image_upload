@@ -5,10 +5,10 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
     def setup
         setup_users
         @old_seminar_count = Seminar.count
+        setup_objectives
     end
     
     test "create new seminar" do
-        setup_objectives
         capybara_login(@teacher_1)
         click_on("Create a New Class")
        
@@ -21,6 +21,16 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         assert_equal 7, @seminar.consultantThreshold
         
         assert_selector('h2', "Edit #{@seminar.name}")
+    end
+    
+    test "seminar back link" do
+        capybara_login(@teacher_1)
+        click_on("Create a New Class")
+        
+        click_on("back_button")
+        
+        assert_text("Mr. Z School Teacher Since:")
+        assert_equal @old_seminar_count, Seminar.count
     end
    
     test "empty seminar name" do

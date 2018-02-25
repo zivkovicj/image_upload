@@ -6,6 +6,11 @@ class TeachersShowTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
+        
+        @school = @teacher_1.school
+        @right_teacher = users(:user_2)
+        @wrong_teacher = users(:user_1)
+        @ignored_teacher = users(:user_3)
     end
     
     test "show" do
@@ -21,10 +26,6 @@ class TeachersShowTest < ActionDispatch::IntegrationTest
     end
     
     test "approve unverified teachers" do
-        @school = @teacher_1.school
-        @right_teacher = users(:user_2)
-        @wrong_teacher = users(:user_1)
-        @ignored_teacher = users(:user_3)
         assert_equal 0, @right_teacher.verified
         assert_equal 0, @wrong_teacher.verified
         assert_equal 0, @ignored_teacher.verified
@@ -46,10 +47,16 @@ class TeachersShowTest < ActionDispatch::IntegrationTest
     end
     
     test "unverified message doesn't appear when useless" do
-        @school = @teacher_1.school
         @school.teachers.update_all(:verified => 1)
         capybara_login(@teacher_1)
         assert_no_text(verify_waiting_teachers_message)
     end
     
+    test "unverified message should not appear for non mentor teacher" do
+        assert @school.check_for_unverified_teachers
+        
+        capybara_login(@wrong_teacher)
+        
+        assert_no_text(verify_waiting_teachers_message)
+    end
 end

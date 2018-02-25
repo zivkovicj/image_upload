@@ -1,4 +1,6 @@
 class SchoolsController < ApplicationController
+    
+    before_action :is_mentor
 
     def new
        @teacher = Teacher.find(params[:teacher_id])
@@ -54,5 +56,12 @@ class SchoolsController < ApplicationController
             first_step = School.order(created_at: :desc)
             second_step = (params[:search].blank? ? first_step : first_step.search(params[:search], params[:whichParam]))
             @all_schools = second_step.limit(10)
+        end
+        
+        def is_mentor
+            if params[:id]
+                @school = School.find(params[:id])
+                redirect_to current_user unless @school.mentor == current_user || user_is_an_admin
+            end
         end
 end

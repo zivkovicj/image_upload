@@ -36,13 +36,15 @@ class GoalStudent < ApplicationRecord
     end
     
     def gs_update_stuff
-        this_goal = Goal.find(self.goal_id)
-        self.goal = this_goal
-        self.checkpoints.find_by(:sequence => 0).update(:action => this_goal.actions[0][0])
-        self.checkpoints.find_by(:sequence => 1).update(:action => this_goal.actions[1][0])
-        self.checkpoints.find_by(:sequence => 2).update(:action => this_goal.actions[2][0])
-        self.checkpoints.find_by(:sequence => 3).update(:action => this_goal.actions[3][0])
-        self.save
+        if self.goal_id.present?
+            this_goal = Goal.find(self.goal_id)
+            self.goal = this_goal
+            self.checkpoints.find_by(:sequence => 0).update(:action => this_goal.actions[0][0])
+            self.checkpoints.find_by(:sequence => 1).update(:action => this_goal.actions[1][0])
+            self.checkpoints.find_by(:sequence => 2).update(:action => this_goal.actions[2][0])
+            self.checkpoints.find_by(:sequence => 3).update(:action => this_goal.actions[3][0])
+            self.save
+        end
     end
 
 end

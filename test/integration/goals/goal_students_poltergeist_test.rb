@@ -32,6 +32,7 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
         
         assert_equal 60, @gs.target
         assert_not @gs.approved
+        @gs.checkpoints[0].update(:action => @gs.goal.actions[0][1])
         
         capybara_login(@teacher_1)
         go_to_goals
@@ -51,9 +52,11 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
         
         # Manually use debugger here to check that the gs target has been updated. 
         # Also check that the statement for checkpoints[1] includes the updated target.
+        # Also, check that the student's actions are not changing when the target is changed.
         @gs.reload
         assert_equal "I will be kind 85 % of the time so far.", @gs.reload.checkpoints[1].statement
         assert_equal 85, @gs.target
+        assert_equal @gs.goal.actions[0][1], @gs.checkpoints[0].action
     end
         
     test "no goal set" do

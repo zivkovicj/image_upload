@@ -3,7 +3,7 @@ require 'test_helper'
 class TeachersControllerTest < ActionDispatch::IntegrationTest
    
     def setup
-        setup_users()   
+        setup_users
     end
     
     test "controller edit wrong user" do
@@ -16,5 +16,4 @@ class TeachersControllerTest < ActionDispatch::IntegrationTest
         assert_redirected_to login_path
         assert_not_equal "Valid", @other_teacher.first_name
     end
-    
 end

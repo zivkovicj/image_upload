@@ -56,23 +56,169 @@ CURRENT UPDATE:
 
 2.53 TARGETS WITHIN ACTIONS
 V When updating a target, it doesn't seem to update the checkpoint actions.
-Not yet finished with this update. But I paused so I could push the new privacy policy.
-Updating target is probably resetting the student's checkpoint choices to their default. The gs_update_stuff needs to happen only after the student chooses a new goal.
-Test that.
-Complete the percent_array. The lower numbers are needed for marking low achievement.
-A few checkpoint actions are keeping the (?) instead of the target number.
+V Make sure that updating a goal target, etc, doesn't change the student's actions by calling the gs_update_stuff function.
+V Complete the percent_array. The lower numbers are needed for marking low achievement.
+V Test that "Update this goal" button appears when student changes the goal.
+V Cancel button while creating a new class.
+V Erase "Make sure to award consultant points"
+
+V Capybara test for chart attendance
+V Test that "verify other teachers" message only appears for the mentor teacher
+V Only mentors can reach the verify screen through the url
 
 
-Cancel button while creating a new class.
 
-When creating a new class, the default form view should be the class name. When editing a class, the default view should be objectives
+ERROR["test_default_goal_if_already_chosen", GoalStudentsEditTest, 374.4404835610185]
+ test_default_goal_if_already_chosen#GoalStudentsEditTest (374.44s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
+            test/integration/goals/goal_students_edit_test.rb:55:in `block in <class:GoalStudentsEditTest>'
 
-Erase "Make sure to award consultant points"
-Student who is left alone as consultant should try one more time to place. If not, then at least don't mark them as a consultant. It takes up that student's turn.
+ERROR["test_student_chooses_goal", GoalStudentsEditTest, 387.21630350803025]
+ test_student_chooses_goal#GoalStudentsEditTest (387.22s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
+            test/integration/goals/goal_students_edit_test.rb:18:in `block in <class:GoalStudentsEditTest>'
 
-Capybara test for chart attendance
-Test that "verify other teachers" message only appears for the mentor teacher
-Only mentors can reach the verify screen through the url
+ERROR["test_goal_edit_back_button", GoalStudentsEditTest, 392.3137748360168]
+ test_goal_edit_back_button#GoalStudentsEditTest (392.31s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
+            test/integration/goals/goal_students_edit_test.rb:67:in `block in <class:GoalStudentsEditTest>'
+
+ FAIL["test_move_student_to_different_class", StudentsMoveClassTest, 401.92367622000165]
+ test_move_student_to_different_class#StudentsMoveClassTest (401.92s)
+        --- expected
+        +++ actual
+        @@ -1 +1 @@
+        -#<Goal id: 372289830, actions: [["Play something kind", "Say something kind", "Do something kind", "Write something kind", "Sing something kind", "Watch something kind", "Eat something kind", "Imagine something kind"], ["I will be kind (?) % of the time so far."], ["Play something kind", "Say something kind", "Do something kind", "Write something kind", "Sing something kind", "Watch something kind", "Eat something kind", "Imagine something kind"], ["I will be kind (?) % of the time."]], style: 1, name: "Be Kind", statement_stem: "I will be kind (?) % of the time this term.", created_at: "2018-02-24 23:29:31", updated_at: "2018-02-24 23:29:31", extent: "public", user_id: 950961012>
+        +nil
+        test/integration/students/students_move_class_test.rb:43:in `block in <class:StudentsMoveClassTest>'
+
+/home/ubuntu/workspace/app/views/goal_students/edit.html.erb:16: warning: key :prompt is duplicated and overwritten on line 16
+ERROR["test_delete_picture", PicturesIndexTest, 424.184930312098]
+ test_delete_picture#PicturesIndexTest (424.18s)
+Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
+        excon.error.response
+          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20180420T010444Z</RequestTime><ServerTime>2018-02-24T23:34:17Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>9B56A034852C543B</RequestId><HostId>IR25WnYz+qxoYsnyaWTMAqSpdu5CxgFIsFTxJ7lTYmsWisv3w4MBc1TgvI1WwAT+Kqr4mcGJlP8=</HostId></Error>"
+          :cookies       => [
+          ]
+          :headers       => {
+            "Content-Type"     => "application/xml"
+            "Date"             => "Sat, 24 Feb 2018 23:34:15 GMT"
+            "Server"           => "AmazonS3"
+            "x-amz-id-2"       => "IR25WnYz+qxoYsnyaWTMAqSpdu5CxgFIsFTxJ7lTYmsWisv3w4MBc1TgvI1WwAT+Kqr4mcGJlP8="
+            "x-amz-request-id" => "9B56A034852C543B"
+          }
+          :host          => "mrzschoolbucket.s3.amazonaws.com"
+          :local_address => "172.17.0.115"
+          :local_port    => 47396
+          :path          => "/uploads/picture/image/340665903/cheese_logo.jpg"
+          :port          => 443
+          :reason_phrase => "Forbidden"
+          :remote_ip     => "54.231.120.107"
+          :status        => 403
+          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
+
+            app/controllers/pictures_controller.rb:59:in `destroy'
+            test/integration/pictures/pictures_index_test.rb:49:in `block in <class:PicturesIndexTest>'
+
+ERROR["test_invalid_school_info", TeachersSignupTest, 432.49387976701837]
+ test_invalid_school_info#TeachersSignupTest (432.49s)
+ActiveRecord::RecordNotFound:         ActiveRecord::RecordNotFound: Couldn't find School with 'id'=
+            app/controllers/schools_controller.rb:62:in `is_mentor'
+            test/test_helper.rb:206:in `teacher_editing_stuff'
+            test/integration/teachers/teachers_signup_test.rb:97:in `block in <class:TeachersSignupTest>'
+
+ERROR["test_new_teacher_old_school", TeachersSignupTest, 432.6134963349905]
+ test_new_teacher_old_school#TeachersSignupTest (432.61s)
+ActiveRecord::RecordNotFound:         ActiveRecord::RecordNotFound: Couldn't find School with 'id'=
+            app/controllers/schools_controller.rb:62:in `is_mentor'
+            test/test_helper.rb:206:in `teacher_editing_stuff'
+            test/integration/teachers/teachers_signup_test.rb:20:in `block in <class:TeachersSignupTest>'
+
+ERROR["test_new_teacher_new_school", TeachersSignupTest, 432.80698642507195]
+ test_new_teacher_new_school#TeachersSignupTest (432.81s)
+ActiveRecord::RecordNotFound:         ActiveRecord::RecordNotFound: Couldn't find School with 'id'=
+            app/controllers/schools_controller.rb:62:in `is_mentor'
+            test/test_helper.rb:206:in `teacher_editing_stuff'
+            test/integration/teachers/teachers_signup_test.rb:68:in `block in <class:TeachersSignupTest>'
+
+ERROR["test_no_new_or_old_school", TeachersSignupTest, 432.9450557460077]
+ test_no_new_or_old_school#TeachersSignupTest (432.95s)
+ActiveRecord::RecordNotFound:         ActiveRecord::RecordNotFound: Couldn't find School with 'id'=
+            app/controllers/schools_controller.rb:62:in `is_mentor'
+            test/test_helper.rb:206:in `teacher_editing_stuff'
+            test/integration/teachers/teachers_signup_test.rb:116:in `block in <class:TeachersSignupTest>'
+
+ERROR["test_default_picture_name_edit", PicturesEditTest, 434.50148134306073]
+ test_default_picture_name_edit#PicturesEditTest (434.50s)
+Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
+        excon.error.response
+          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20180420T010444Z</RequestTime><ServerTime>2018-02-24T23:34:27Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>9C145FF9A85DBF2E</RequestId><HostId>5SOosr6HCUeQ8Wih5VxMm5vK+5ZwDsYXeTr50xpEakp9PiflvhzIl70emR5rIHJwvoS0sBnpRBM=</HostId></Error>"
+          :cookies       => [
+          ]
+          :headers       => {
+            "Content-Type"     => "application/xml"
+            "Date"             => "Sat, 24 Feb 2018 23:34:26 GMT"
+            "Server"           => "AmazonS3"
+            "x-amz-id-2"       => "5SOosr6HCUeQ8Wih5VxMm5vK+5ZwDsYXeTr50xpEakp9PiflvhzIl70emR5rIHJwvoS0sBnpRBM="
+            "x-amz-request-id" => "9C145FF9A85DBF2E"
+          }
+          :host          => "mrzschoolbucket.s3.amazonaws.com"
+          :local_address => "172.17.0.115"
+          :local_port    => 37166
+          :path          => "/uploads/picture/image/298486374/druid_cropped.jpg"
+          :port          => 443
+          :reason_phrase => "Forbidden"
+          :remote_ip     => "54.231.81.0"
+          :status        => 403
+          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
+
+            app/controllers/pictures_controller.rb:43:in `update'
+            test/integration/pictures/pictures_edit_test.rb:46:in `block in <class:PicturesEditTest>'
+
+ERROR["test_edit_picture", PicturesEditTest, 435.4982570509892]
+ test_edit_picture#PicturesEditTest (435.50s)
+Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
+        excon.error.response
+          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20180420T010444Z</RequestTime><ServerTime>2018-02-24T23:34:28Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>A6D20E606AE8F452</RequestId><HostId>gZlyL7O+SwM4rzk/IKOEspcrxrtjes2dEscVWHXc5M+qtHjU3ufuQn6Dosy3JZK9IyTZhjCNgMk=</HostId></Error>"
+          :cookies       => [
+          ]
+          :headers       => {
+            "Content-Type"     => "application/xml"
+            "Date"             => "Sat, 24 Feb 2018 23:34:26 GMT"
+            "Server"           => "AmazonS3"
+            "x-amz-id-2"       => "gZlyL7O+SwM4rzk/IKOEspcrxrtjes2dEscVWHXc5M+qtHjU3ufuQn6Dosy3JZK9IyTZhjCNgMk="
+            "x-amz-request-id" => "A6D20E606AE8F452"
+          }
+          :host          => "mrzschoolbucket.s3.amazonaws.com"
+          :local_address => "172.17.0.115"
+          :local_port    => 37222
+          :path          => "/uploads/picture/image/298486374/druid_cropped.jpg"
+          :port          => 443
+          :reason_phrase => "Forbidden"
+          :remote_ip     => "54.231.81.0"
+          :status        => 403
+          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
+        
+            app/controllers/pictures_controller.rb:43:in `update'
+            test/integration/pictures/pictures_edit_test.rb:28:in `block in <class:PicturesEditTest>'
+
+  270/270: [=======================================================================================================] 100% Time: 1297:37:32, Time: 1297:37:32
+
+Finished in 490.98037s
+270 tests, 1408 assertions, 2 failures, 11 errors, 0 skips
+
+
+
+
+
+
+
+
+
+
+
+
+2.54 STUDENT VIEW
 
 Give the student view the same treatment that I gave the seminar_edit view, with submenu clicking
 And move the studentview into the seminar_students controller
@@ -84,6 +230,40 @@ Home Icon instead of "Your teacher page"
 
 
 
+LONE CONSULTANTS
+Student who is left alone as consultant should try one more time to place. If not, then at least don't mark them as a consultant. It takes up that student's turn.
+
+
+GROWTH STARS
+If a student takes a quiz that he has already taken before and improves his score, the app create a record in the "GrowthStars" table.
+This record is attached to the objective_student.
+It is dated so that the teacher can look growth stars for a specific term.
+
+CONSULTANT STARS
+If a classmate from your consultant team earns growth stars, the consultant earns half that many growth stars. (Round up)
+If the classmate has never taken the quiz before, no growth stars will be earned. But the consultant can earn 1/4 of the teammate's fresh stars. (Round up)
+Consultant stars should probably be a separate model, just like growth stars. 
+They're dated, so the teacher can look at consultant stars for a specific term. 
+
+TOTAL STARS
+Show the total number of stars that a student has earned within a term. 
+One option is to count all of the quizzes that were taken during the window that the teacher designates.
+    It's a bit weird, since a student might get 3 stars for "Angle Concepts" during Term 2, and then earn 5 full stars again for "Angle Concepts" during Term 3. 
+        That student will also earn some growth stars.
+    I'm leaning toward this option, to give more favor to students who improve from a 9 to a 10. 
+        Then again, this student is probably the consultant, so she's probably earning consultant stars in addition to the growth stars. 
+Another option is to only count the improvement, which is the growth stars.
+    If so, there should be a "growth star bonus" with a minimum of 2 or 3 stars if the student shows any improvement at all.
+    This option might hurt the grade a bit for students who only improve from a 9 to a 10. That's only 4 stars, if there's a full bonus. This student would need to complete an extra quiz to stay
+        caught up with the students who earned 8 stars for taking a quiz that they hadn't taken before. 
+Perhaps the app could find the average between these two options?
+
+ADJUSTMENT STARS FOR STUDENTS WHO JOIN A CLASS LATER
+How to pro-rate stars to make things as fair as possible for new arrival students? 
+It will take a few rounds before the newer student can have a turn to be consultant. 
+And the new student won't be earning many growth stars until she finishes all of her pre-tests
+I think I should re-initiate the solution that involves giving that student the median number of total stars to begin with.
+But give a little more than the median (maybe 75%) to account for the other aspects.
 
 
 
