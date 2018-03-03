@@ -54,6 +54,8 @@ Keep eyes open for that problem.
 Sometimes teachers need to be able to share classes.
 
 Change architecture to allow for the possibility.
+    join table needs to include an "Accepted" column
+    And editing privileges column
 Creator of class can grant privileges to other teachers
     Viewing privileges
     Editing privileges
@@ -61,7 +63,6 @@ Creator of class can grant privileges to other teachers
 Add menu option to invite other teachers.
     Menu includes which privileges to grant the invited teachers
     Newly-invited teacher then accepts invitation
-    So the join table needs to include an "Accepted" column
     Teacher needs to be able to remove a class from her list without deleting the class
     But if the only teacher with editing privileges wants to remove a class, the "Remove" option is not available. Only the "Delete" option
 
@@ -70,6 +71,11 @@ Allow up to five levels of priority, instead of 3
 Put MrZ School image footer on the bottom of every page when printing student goals.
 But not the link. We don't want it to print that
 
+
+
+
+ARROW KEY NAVIGATION
+The scoresheet needs to allow for arrow key navigation
 
 
 GROWTH STARS
@@ -496,8 +502,7 @@ Make sure that everything is functioning for the regular site in case people sta
 Need an icon for every class. Seminar, Teacher, etc.
 Update the materials site
 
-ARROW KEY NAVIGATION
-The scoresheet needs to allow for arrow key navigation
+
 
 AJAX STUDENT ADDING, SIMILAR TO CLASSDOJO
 Make sure that the new system makes it easy to add multiple existing students to a class at once
