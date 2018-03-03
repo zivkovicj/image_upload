@@ -1,6 +1,27 @@
 
 
 
+2.54 STUDENT VIEW
+
+Finish erasing all references to benchmark
+Give the student view the same treatment that I gave the seminar_edit view, with submenu clicking
+Both the student_view and the seminar edit view need to start with a default tab highlighted
+And move the studentview into the seminar_students controller
+Deleting a class isn't working on the live site
+    But it is working in the test.
+    At the end of this update, see what's wrong on the live site.
+Navigating seminar_student view.  Certain fields should be visible/invisible
+When clicking on an objective, it SHOULD offer the "Update Class" button, because teachers can choose which of their seminars that objective is connected to.
+Smaller Apple Icon
+Home Icon instead of "Your teacher page"
+Maybe NavRibbon shouldn't show the class name.
+    That might allow me to delete limitedName method
+Fixed an error upon updating a class that has no objectives
+Printable Goal Screen links to scoresheet. Should have reg navribbon
+    Test that back-link
+Migrate to remove benchmark column
+
+
 2.53 TARGETS WITHIN ACTIONS
 When updating a target, it doesn't seem to update the checkpoint actions.
 Make sure that updating a goal target, etc, doesn't change the student's actions by calling the gs_update_stuff function.

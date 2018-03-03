@@ -47,124 +47,27 @@ Private Repo on Github
 Tried to find out why some students are occasionally being left alone in a group as the consultant. From a close look at the code, I cannot see why that's happening.
 Keep eyes open for that problem. 
 
-CURRENT UPDATE:
-
-
-2.54 STUDENT VIEW
-
-V Finish erasing all references to benchmark
-V Give the student view the same treatment that I gave the seminar_edit view, with submenu clicking
-V Both the student_view and the seminar edit view need to start with a default tab highlighted
-V And move the studentview into the seminar_students controller
-
-Deleting a class isn't working on the live site
-    But it is working in the test.
-    At the end of this update, see what's wrong on the live site.
-
-V Navigating seminar_student view.  Certain fields should be visible/invisible
-
-V When clicking on an objective, it SHOULD offer the "Update Class" button, because teachers can choose which of their seminars that objective is connected to.
-
-V Smaller Apple Icon
-V Home Icon instead of "Your teacher page"
-V Maybe NavRibbon shouldn't show the class name.
-    V That might allow me to delete limitedName method
-    
-V Fixed an error upon updating a class that has no objectives
-
-V Printable Goal Screen links to scoresheet. Should have reg navribbon
-    V Test that back-link
-    
-    
-Migrate to remove benchmark column
 
 
 
-
-
-
-
-
-ERROR["test_student_edits_self", StudentsEditTest, 284.3649068661034]
- test_student_edits_self#StudentsEditTest (284.36s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit Your Profile"
-            test/integration/students/students_edit_test.rb:38:in `block in <class:StudentsEditTest>'
-
-ERROR["test_default_picture_name_edit", PicturesEditTest, 345.46855631214567]
- test_default_picture_name_edit#PicturesEditTest (345.47s)
-Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
-        excon.error.response
-          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20171207T010444Z</RequestTime><ServerTime>2018-03-02T20:03:35Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>D194C49ED9DED52A</RequestId><HostId>L0qvsLzc/WZeiXqoOCkhYJEHi1doPPDntvubKtch2UX2paL6N0lS/sM24QGTBN/Y+PYiQX+vAl4=</HostId></Error>"
-          :cookies       => [
-          ]
-          :headers       => {
-            "Content-Type"     => "application/xml"
-            "Date"             => "Fri, 02 Mar 2018 20:03:33 GMT"
-            "Server"           => "AmazonS3"
-            "x-amz-id-2"       => "L0qvsLzc/WZeiXqoOCkhYJEHi1doPPDntvubKtch2UX2paL6N0lS/sM24QGTBN/Y+PYiQX+vAl4="
-            "x-amz-request-id" => "D194C49ED9DED52A"
-          }
-          :host          => "mrzschoolbucket.s3.amazonaws.com"
-          :local_address => "172.17.0.115"
-          :local_port    => 55452
-          :path          => "/uploads/picture/image/298486374/druid_cropped.jpg"
-          :port          => 443
-          :reason_phrase => "Forbidden"
-          :remote_ip     => "52.216.81.176"
-          :status        => 403
-          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
-        
-            app/controllers/pictures_controller.rb:43:in `update'
-            test/integration/pictures/pictures_edit_test.rb:46:in `block in <class:PicturesEditTest>'
-
-ERROR["test_edit_picture", PicturesEditTest, 346.47564441501163]
- test_edit_picture#PicturesEditTest (346.48s)
-Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
-        excon.error.response
-          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20171207T010444Z</RequestTime><ServerTime>2018-03-02T20:03:36Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>1358754E70CBF32D</RequestId><HostId>cZOg5cOEVh1fye/A8rBxhS6hx9fywTxvvR1PC6ga+poD+vFSw5vc9bepiEcOhjnznq/PhQGyBg8=</HostId></Error>"
-          :cookies       => [
-          ]
-          :headers       => {
-            "Content-Type"     => "application/xml"
-            "Date"             => "Fri, 02 Mar 2018 20:03:34 GMT"
-            "Server"           => "AmazonS3"
-            "x-amz-id-2"       => "cZOg5cOEVh1fye/A8rBxhS6hx9fywTxvvR1PC6ga+poD+vFSw5vc9bepiEcOhjnznq/PhQGyBg8="
-            "x-amz-request-id" => "1358754E70CBF32D"
-          }
-          :host          => "mrzschoolbucket.s3.amazonaws.com"
-          :local_address => "172.17.0.115"
-          :local_port    => 55492
-          :path          => "/uploads/picture/image/298486374/druid_cropped.jpg"
-          :port          => 443
-          :reason_phrase => "Forbidden"
-          :remote_ip     => "52.216.81.176"
-          :status        => 403
-          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
-        
-            app/controllers/pictures_controller.rb:43:in `update'
-            test/integration/pictures/pictures_edit_test.rb:28:in `block in <class:PicturesEditTest>'
-
-ERROR["test_quiz_without_questions", QuizzesAvailableTest, 390.7029659880791]
- test_quiz_without_questions#QuizzesAvailableTest (390.70s)
-NoMethodError:         NoMethodError: undefined method `student_view_seminar_path' for #<QuizzesController:0x0000000e8fa238>
-            app/controllers/quizzes_controller.rb:22:in `new'
-            test/integration/quizzes/quizzes_available_test.rb:98:in `block in <class:QuizzesAvailableTest>'
-
-Unused parameters passed to Capybara::Queries::SelectorQuery : ["Edit Macho Taco Period"]===                                ] 72% Time: 1157:06:55,  ETA: ??:??:??
-ERROR["test_create_new_students", StudentsNewTest, 473.7346820461098]
- test_create_new_students#StudentsNewTest (473.73s)
-NoMethodError:         NoMethodError: undefined method `benchmark' for #<SeminarStudent:0x00000011c6ee20>
-            test/integration/students/students_new_test.rb:80:in `block in <class:StudentsNewTest>'
-
-
-
-
-
-
-ALLOW CLASSES TO HAVE MULTIPLE TEACHERS
+2.55 ALLOW CLASSES TO HAVE MULTIPLE TEACHERS
 Sometimes teachers need to be able to share classes.
 
-Put MrZ School image footer on the bottom of every page.
+Change architecture to allow for the possibility.
+Creator of class can grant privileges to other teachers
+    Viewing privileges
+    Editing privileges
+    
+Add menu option to invite other teachers.
+    Menu includes which privileges to grant the invited teachers
+    Newly-invited teacher then accepts invitation
+    So the join table needs to include an "Accepted" column
+    Teacher needs to be able to remove a class from her list without deleting the class
+    But if the only teacher with editing privileges wants to remove a class, the "Remove" option is not available. Only the "Delete" option
+
+Allow up to five levels of priority, instead of 3
+
+Put MrZ School image footer on the bottom of every page when printing student goals.
 But not the link. We don't want it to print that
 
 
