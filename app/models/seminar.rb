@@ -7,7 +7,7 @@ class Seminar < ApplicationRecord
   has_many    :objectives, through: :objective_seminars
   has_many    :consultancies, dependent: :destroy
   has_many    :teams, through: :consultancies
-  has_many    :goal_students
+  has_many    :goal_students, dependent: :destroy
   
   validates :user_id, presence: true
   validates :name, presence: true, length: { maximum: 40 }
