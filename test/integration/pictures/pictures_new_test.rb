@@ -26,7 +26,7 @@ class PicturesNewTest < ActionDispatch::IntegrationTest
     test "create new picture" do
         goto_picture_create
         fill_in "picture_name", with: "Apple"
-        attach_file('picture[image]', Rails.root + 'app/assets/images/apple.png')
+        attach_file('picture[image]', Rails.root + 'app/assets/images/apple.jpg')
         check("check_#{@user_l.id}")
         check("check_#{@admin_l.id}")
         click_on ("Create Picture")
@@ -49,7 +49,7 @@ class PicturesNewTest < ActionDispatch::IntegrationTest
     test "default picture name" do
         goto_picture_create
         fill_in "picture_name", with: ""
-        attach_file('picture[image]', Rails.root + 'app/assets/images/apple.png')
+        attach_file('picture[image]', Rails.root + 'app/assets/images/apple.jpg')
         click_on ("Create Picture")
         
         @new_pic = Picture.last

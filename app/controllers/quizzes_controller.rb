@@ -19,7 +19,8 @@ class QuizzesController < ApplicationController
             redirect_to edit_riposte_path(@quiz.ripostes.first)
         else
             flash[:danger] = "This quiz doesn't have any questions. Please alert your teacher that you cannot take this quiz until some questions are added."
-            redirect_to student_view_seminar_path(current_user.current_class, :user => current_user)
+            @ss = SeminarStudent.find_by(:user => current_user, :seminar => current_user.current_class)
+            redirect_to seminar_student_path(@ss)
         end
     end
     

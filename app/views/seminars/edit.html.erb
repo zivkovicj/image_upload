@@ -128,9 +128,10 @@
   <%= button_to "Create a New Objective", new_objective_path(:origin => @seminar.id), :method => :get, class: "btn btn-lg btn-primary" %><br/>
   <%= button_to "Create New Students", new_student_path, :method => :get, class: "btn btn-lg btn-primary" %><br/>
   <%= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %><br/>
-  <%= button_to( "Delete This Class", @seminar, :method => :delete,
-     data: { confirm: "Are you sure you want to delete this class?" },
-                    :class => "btn btn-lg btn-primary") %>
+  
+  <p class="btn btn-lg btn-primary remove_btn" id="delete_<%= @seminar.id %>">Delete This Class</p>
+  <%= button_to "Click here to confirm that you want to delete #{@seminar.name}", @seminar, 
+      :method => :delete, :id => "confirm_#{@seminar.id}", class: "btn btn-lg btn-primary confirm_button" %><br/>
 </div>
 
 

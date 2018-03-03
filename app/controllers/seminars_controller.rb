@@ -75,41 +75,6 @@ class SeminarsController < ApplicationController
         update_current_class
     end
     
-    def student_view
-        @student = Student.includes(:objective_students).find(params[:user])
-        @seminar = Seminar.includes(:objective_seminars).find(params[:id])
-        @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
-        
-        @this_checkpoint = @seminar.which_checkpoint
-        @this_gs = @student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term)
-        
-        @objectives = @seminar.objectives.order(:name)
-        objective_ids = @objectives.map(&:id)
-        @student_scores = @student.objective_students.where(:objective_id => objective_ids)
-        
-        @ss = @student.seminar_students.find_by(:seminar => @seminar) # Is this needed?
-        @total_stars = @student.total_stars(@seminar)
-        @current_stars = @total_stars - @ss.benchmark
-        @teacher = @seminar.user
-        
-        @teach_options = @student.teach_options(@seminar, @seminar.rank_objectives_by_need)
-        @learn_options = @student.learn_options(@seminar, @seminar.rank_objectives_by_need)
-        
-        @unfinished_quizzes = @student.all_unfinished_quizzes(@seminar)
-        @desk_consulted_objectives = @student.desk_consulted_objectives(@seminar)
-        @all_pretest_objectives = @seminar.all_pretest_objectives(@student)
-        
-        @show_quizzes = @desk_consulted_objectives.present? || @all_pretest_objectives.present? || @unfinished_quizzes.present?
-        
-        update_current_class
-    end
-    
-    def benchmarks
-        @seminar = Seminar.find(params[:id])
-        @teacher = @seminar.user
-        update_current_class
-    end
-    
     def copy_due_dates
         @seminar = Seminar.find(params[:id])
         first_seminar = current_user.first_seminar
@@ -128,10 +93,6 @@ class SeminarsController < ApplicationController
             redirect_to(login_url) unless current_user && (current_user.own_seminars.include?(@seminar) || current_user.type == "Admin")
         end
         
-        def update_current_class
-            current_user.update(:current_class => @seminar.id)
-        end
-        
         def set_checkpoint_due_dates
             date_array = [[],[],[],[]]
             params[:seminar][:checkpoint_due_dates].each do |level_x|
@@ -146,9 +107,11 @@ class SeminarsController < ApplicationController
         end
         
         def set_priorities
-            params[:priorities].each do |key, value|
-                @objective_seminar = ObjectiveSeminar.find(key)
-                @objective_seminar.update(:priority => value)
+            if params[:priorities]
+                params[:priorities].each do |key, value|
+                    @objective_seminar = ObjectiveSeminar.find(key)
+                    @objective_seminar.update(:priority => value)
+                end
             end
         end
         

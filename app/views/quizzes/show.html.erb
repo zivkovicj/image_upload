@@ -42,9 +42,7 @@
                 <p>You have already tried this quiz twice.</p>
             </div>
         <% end %>
-        
-        <%= link_to "Back to Your Class Page", {:method => :get, :controller => "seminars", :action => "student_view", :id => current_user.current_class , :user => current_user.id},
-            :class => "btn btn-lg btn-primary" %>
+        <%= link_to "Back to Your Class Page", seminar_student_path(current_user.seminar_students.find_by(:seminar => current_user.current_class)), :class => "btn btn-lg btn-primary" %>
     </div>
 </div>
 </br>

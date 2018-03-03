@@ -4,7 +4,8 @@
 <% provide(:headerText, "Print Student Goal Checkpoints") %>
 <% provide(:headerPic, 'objectives.png') %>
 
-<%= render 'shared/back-link' %>
+<%= render 'shared/big_link', link_link: goal_students_path(:seminar => @seminar), 
+        link_text: "Back to Viewing Goals", link_image: "apple.jpg"  %>
 <%= render 'shared/headline' %>
 
 

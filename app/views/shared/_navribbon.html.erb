@@ -8,34 +8,33 @@
     <div class="ribbon">
         <table class="table-borderless">
             <tr>
-                <td>Class</td>
                 <td class="spacer"></td>
-                <% current_user.own_seminars.order(:name).limit(8).each do |seminar| %>
-                    
+                <% current_user.own_seminars.order(:name).limit(10).each do |seminar| %>
                     <td class="<%= 'highlighted' if (@seminar && @seminar==seminar) %>">
                         <h5>
                             <% if action_name == 'scoresheet' %>
-                                <%= link_to seminar.limitedName, scoresheet_seminar_url(seminar), :id => "other_class_scoresheet_#{seminar.id}" %>
+                                <%= link_to seminar.name[0], scoresheet_seminar_url(seminar), :id => "other_class_scoresheet_#{seminar.id}" %>
                             <% elsif action_name == 'edit' && controller_name == 'seminars' %>
-                                <%= link_to seminar.limitedName, edit_seminar_path(seminar), :id => "other_class_edit_#{seminar.id}" %>
+                                <%= link_to seminar.name[0], edit_seminar_path(seminar), :id => "other_class_edit_#{seminar.id}" %>
                             <% elsif controller_name == 'consultancies' %>
-                                <%= link_to seminar.limitedName, consultancy_path(:id => Consultancy.first.id, :seminar => seminar.id), :id => "other_class_desk_consult_#{seminar.id}" %>
+                                <%= link_to seminar.name[0], consultancy_path(:id => Consultancy.first.id, :seminar => seminar.id), :id => "other_class_desk_consult_#{seminar.id}" %>
                             <% elsif controller_name == 'goal_students' %>
-                                <%= link_to seminar.limitedName, goal_students_path(:seminar => seminar), :id => "other_class_student_goals_#{seminar.id}" %>
+                                <%= link_to seminar.name[0], goal_students_path(:seminar => seminar), :id => "other_class_student_goals_#{seminar.id}" %>
                             <% else %>
-                                <%= link_to seminar.limitedName, seminar_path(seminar) %>
+                                <%= link_to seminar.name[0], seminar_path(seminar) %>
                             <% end %>
                             &nbsp;
                         </h5>
                     </td>
+                    <td class="small_spacer"></td>
                 <% end %>
             </tr>
         </table>
         
         <table class="table-borderless">
             <tr>
-                <td><%= button_to "Your teacher page", current_user, 
-                        class: "btn btn-lg btn-primary", :method => :get %></td>
+                <td class="small_spacer"></td>
+                <td><%= link_to image_tag("home.png"), current_user, :id => "home_link" %></td>
                 <td class="spacer"></td>
                 
                 <% if @seminar %>
@@ -46,7 +45,7 @@
                         <% end %>
                     </td>
                     <td class="<%= 'highlighted' if controller_name == 'goal_students' %>">
-                        <%= link_to image_tag("apple.png"), goal_students_path(:seminar => @seminar), :id => "same_class_student_goals_#{@seminar.id}" %>
+                        <%= link_to image_tag("apple.jpg"), goal_students_path(:seminar => @seminar), :id => "same_class_student_goals_#{@seminar.id}" %>
                     </td>
                     <td class="<%= 'highlighted' if controller_name == 'seminars' && action_name == 'edit' %>">
                         <%= link_to image_tag("E.png"), edit_seminar_path(@seminar), :id => "same_class_edit_#{@seminar.id}" %>
@@ -56,7 +55,7 @@
             <tr>
                 <td></td>
                 <td></td>
-                
+                <td class="small_spacer"></td>
                 <% if @seminar %>
                     <td class="<%= 'highlighted' if action_name == 'scoresheet' %> center"><b>Scoresheet</b></td>
                     

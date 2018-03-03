@@ -28,18 +28,38 @@ class SeminarStudentsController < ApplicationController
     redirect_to scoresheet_seminar_url(@seminar)
   end
   
+  def show
+    @ss = SeminarStudent.find(params[:id])
+    @student = @ss.user
+    @seminar = @ss.seminar
+    @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
+    
+    @this_checkpoint = @seminar.which_checkpoint
+    @this_gs = @student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term)
+    
+    @objectives = @seminar.objectives.order(:name)
+    objective_ids = @objectives.map(&:id)
+    @student_scores = @student.objective_students.where(:objective_id => objective_ids)
+    
+    @total_stars = @student.total_stars(@seminar)
+    @teacher = @seminar.user
+    
+    @teach_options = @student.teach_options(@seminar, @seminar.rank_objectives_by_need)
+    @learn_options = @student.learn_options(@seminar, @seminar.rank_objectives_by_need)
+    
+    @unfinished_quizzes = @student.all_unfinished_quizzes(@seminar)
+    @desk_consulted_objectives = @student.desk_consulted_objectives(@seminar)
+    @all_pretest_objectives = @seminar.all_pretest_objectives(@student)
+    
+    @show_quizzes = @desk_consulted_objectives.present? || @all_pretest_objectives.present? || @unfinished_quizzes.present?
+    
+    update_current_class
+  end
+  
   def update
     @ss = SeminarStudent.find(params[:id])
     @ss.update_attributes(ss_params)
     respond_with @ss
-  end
-  
-  def update_benchmarks
-    seminar_id = params[:seminar]
-    params[:set_benchmark].each do |id|
-      SeminarStudent.find_by(:user_id => id, :seminar_id => seminar_id).ss_benchmark_stars
-    end
-    redirect_to scoresheet_seminar_path(seminar_id)
   end
   
   def destroy
@@ -60,9 +80,9 @@ class SeminarStudentsController < ApplicationController
       end
       
       def correct_ss_user
-        @ss = SeminarStudent.find_by(id: params[:id])
+        @ss = SeminarStudent.find(params[:id])
         @seminar = Seminar.find(@ss.seminar_id)
-        redirect_to login_url unless (current_user && current_user.own_seminars.include?(@seminar)) || user_is_an_admin
+        redirect_to login_url unless (current_user && (@ss.user == current_user || current_user.own_seminars.include?(@seminar))) || user_is_an_admin
       end
       
       def update_goal_students_for_new_class_to_match_old_class

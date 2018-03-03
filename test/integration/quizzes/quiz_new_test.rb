@@ -99,7 +99,6 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         @new_quiz = Quiz.last
         assert_equal 6, @new_quiz.total_score
         assert @student_2.quizzes.include?(@new_quiz)
-        
     end
     
     test "100_total_score" do

@@ -13,6 +13,9 @@
 
 <%= render 'shared/navribbon_goals' %>
 </br>
+<%= render 'shared/big_link', link_link: print_goal_students_path(:seminar => @seminar), 
+        link_text: "Printable Version", link_image: "apple.jpg"  %>
+</br>
 
 <table class="table-borderless" style="table-layout:fixed">
     <% them_kids = @seminar.students.order(:last_name) %>
@@ -94,7 +97,7 @@
     <% end %>
 </table>
 
-<%= link_to "Printable Version", print_goal_students_path(:seminar => @seminar), :id => "#{@seminar.name} print goals" %>
+
 </br>
 
 

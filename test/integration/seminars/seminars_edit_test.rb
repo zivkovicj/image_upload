@@ -73,4 +73,16 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         
         assert_selector('h2', "Edit #{@seminar.name}")
     end
+    
+    test "delete seminar" do
+        old_seminar_count = Seminar.count
+        
+        capybara_login(@teacher_1)
+        click_on("edit_seminar_#{@seminar.id}")
+        
+        find("#delete_#{@seminar.id}").click
+        click_on("confirm_#{@seminar.id}")
+        
+        assert_equal old_seminar_count - 1, Seminar.count
+    end
 end

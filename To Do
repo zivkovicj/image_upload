@@ -8,7 +8,6 @@ Look at Allen Maxwell's Snowbird app to see if I can help him to improve his cod
 
 Find other collaborators
     It seems I've reached a point where it's foolish to continue all this work that I'm doing on my own. Is it time to seek other teachers to help develop study guides and lesson plans?
-        Maybe that is the priority, because if I do that while I still have MfA funds, I can pay teachers who might be able to contribute study guides. 
     Is it more important to seek additional software devs to get the site up to speed?
     Is it more important to seek investors so that I can pay salaries to the other people who are helping?
     Lately, I'm feeling more like the GoalTracker feature might be more useful to a wider variety of teachers. (At least, it might be more useful sooner).  Spreading that feature is 
@@ -44,194 +43,130 @@ Private Repo on Github
 
 
 
-Question on GitHub for bip test helpers
-    https://github.com/bernat/best_in_place/issues/596
 
-
+Tried to find out why some students are occasionally being left alone in a group as the consultant. From a close look at the code, I cannot see why that's happening.
+Keep eyes open for that problem. 
 
 CURRENT UPDATE:
 
 
+2.54 STUDENT VIEW
+
+V Finish erasing all references to benchmark
+V Give the student view the same treatment that I gave the seminar_edit view, with submenu clicking
+V Both the student_view and the seminar edit view need to start with a default tab highlighted
+V And move the studentview into the seminar_students controller
+
+Deleting a class isn't working on the live site
+    But it is working in the test.
+    At the end of this update, see what's wrong on the live site.
+
+V Navigating seminar_student view.  Certain fields should be visible/invisible
+
+V When clicking on an objective, it SHOULD offer the "Update Class" button, because teachers can choose which of their seminars that objective is connected to.
+
+V Smaller Apple Icon
+V Home Icon instead of "Your teacher page"
+V Maybe NavRibbon shouldn't show the class name.
+    V That might allow me to delete limitedName method
+    
+V Fixed an error upon updating a class that has no objectives
+
+V Printable Goal Screen links to scoresheet. Should have reg navribbon
+    V Test that back-link
+    
+    
+Migrate to remove benchmark column
 
 
-2.53 TARGETS WITHIN ACTIONS
-V When updating a target, it doesn't seem to update the checkpoint actions.
-V Make sure that updating a goal target, etc, doesn't change the student's actions by calling the gs_update_stuff function.
-V Complete the percent_array. The lower numbers are needed for marking low achievement.
-V Test that "Update this goal" button appears when student changes the goal.
-V Cancel button while creating a new class.
-V Erase "Make sure to award consultant points"
-
-V Capybara test for chart attendance
-V Test that "verify other teachers" message only appears for the mentor teacher
-V Only mentors can reach the verify screen through the url
 
 
 
-ERROR["test_default_goal_if_already_chosen", GoalStudentsEditTest, 374.4404835610185]
- test_default_goal_if_already_chosen#GoalStudentsEditTest (374.44s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
-            test/integration/goals/goal_students_edit_test.rb:55:in `block in <class:GoalStudentsEditTest>'
 
-ERROR["test_student_chooses_goal", GoalStudentsEditTest, 387.21630350803025]
- test_student_chooses_goal#GoalStudentsEditTest (387.22s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
-            test/integration/goals/goal_students_edit_test.rb:18:in `block in <class:GoalStudentsEditTest>'
 
-ERROR["test_goal_edit_back_button", GoalStudentsEditTest, 392.3137748360168]
- test_goal_edit_back_button#GoalStudentsEditTest (392.31s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
-            test/integration/goals/goal_students_edit_test.rb:67:in `block in <class:GoalStudentsEditTest>'
 
- FAIL["test_move_student_to_different_class", StudentsMoveClassTest, 401.92367622000165]
- test_move_student_to_different_class#StudentsMoveClassTest (401.92s)
-        --- expected
-        +++ actual
-        @@ -1 +1 @@
-        -#<Goal id: 372289830, actions: [["Play something kind", "Say something kind", "Do something kind", "Write something kind", "Sing something kind", "Watch something kind", "Eat something kind", "Imagine something kind"], ["I will be kind (?) % of the time so far."], ["Play something kind", "Say something kind", "Do something kind", "Write something kind", "Sing something kind", "Watch something kind", "Eat something kind", "Imagine something kind"], ["I will be kind (?) % of the time."]], style: 1, name: "Be Kind", statement_stem: "I will be kind (?) % of the time this term.", created_at: "2018-02-24 23:29:31", updated_at: "2018-02-24 23:29:31", extent: "public", user_id: 950961012>
-        +nil
-        test/integration/students/students_move_class_test.rb:43:in `block in <class:StudentsMoveClassTest>'
+ERROR["test_student_edits_self", StudentsEditTest, 284.3649068661034]
+ test_student_edits_self#StudentsEditTest (284.36s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit Your Profile"
+            test/integration/students/students_edit_test.rb:38:in `block in <class:StudentsEditTest>'
 
-/home/ubuntu/workspace/app/views/goal_students/edit.html.erb:16: warning: key :prompt is duplicated and overwritten on line 16
-ERROR["test_delete_picture", PicturesIndexTest, 424.184930312098]
- test_delete_picture#PicturesIndexTest (424.18s)
+ERROR["test_default_picture_name_edit", PicturesEditTest, 345.46855631214567]
+ test_default_picture_name_edit#PicturesEditTest (345.47s)
 Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
         excon.error.response
-          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20180420T010444Z</RequestTime><ServerTime>2018-02-24T23:34:17Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>9B56A034852C543B</RequestId><HostId>IR25WnYz+qxoYsnyaWTMAqSpdu5CxgFIsFTxJ7lTYmsWisv3w4MBc1TgvI1WwAT+Kqr4mcGJlP8=</HostId></Error>"
+          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20171207T010444Z</RequestTime><ServerTime>2018-03-02T20:03:35Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>D194C49ED9DED52A</RequestId><HostId>L0qvsLzc/WZeiXqoOCkhYJEHi1doPPDntvubKtch2UX2paL6N0lS/sM24QGTBN/Y+PYiQX+vAl4=</HostId></Error>"
           :cookies       => [
           ]
           :headers       => {
             "Content-Type"     => "application/xml"
-            "Date"             => "Sat, 24 Feb 2018 23:34:15 GMT"
+            "Date"             => "Fri, 02 Mar 2018 20:03:33 GMT"
             "Server"           => "AmazonS3"
-            "x-amz-id-2"       => "IR25WnYz+qxoYsnyaWTMAqSpdu5CxgFIsFTxJ7lTYmsWisv3w4MBc1TgvI1WwAT+Kqr4mcGJlP8="
-            "x-amz-request-id" => "9B56A034852C543B"
+            "x-amz-id-2"       => "L0qvsLzc/WZeiXqoOCkhYJEHi1doPPDntvubKtch2UX2paL6N0lS/sM24QGTBN/Y+PYiQX+vAl4="
+            "x-amz-request-id" => "D194C49ED9DED52A"
           }
           :host          => "mrzschoolbucket.s3.amazonaws.com"
           :local_address => "172.17.0.115"
-          :local_port    => 47396
-          :path          => "/uploads/picture/image/340665903/cheese_logo.jpg"
-          :port          => 443
-          :reason_phrase => "Forbidden"
-          :remote_ip     => "54.231.120.107"
-          :status        => 403
-          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
-
-            app/controllers/pictures_controller.rb:59:in `destroy'
-            test/integration/pictures/pictures_index_test.rb:49:in `block in <class:PicturesIndexTest>'
-
-ERROR["test_invalid_school_info", TeachersSignupTest, 432.49387976701837]
- test_invalid_school_info#TeachersSignupTest (432.49s)
-ActiveRecord::RecordNotFound:         ActiveRecord::RecordNotFound: Couldn't find School with 'id'=
-            app/controllers/schools_controller.rb:62:in `is_mentor'
-            test/test_helper.rb:206:in `teacher_editing_stuff'
-            test/integration/teachers/teachers_signup_test.rb:97:in `block in <class:TeachersSignupTest>'
-
-ERROR["test_new_teacher_old_school", TeachersSignupTest, 432.6134963349905]
- test_new_teacher_old_school#TeachersSignupTest (432.61s)
-ActiveRecord::RecordNotFound:         ActiveRecord::RecordNotFound: Couldn't find School with 'id'=
-            app/controllers/schools_controller.rb:62:in `is_mentor'
-            test/test_helper.rb:206:in `teacher_editing_stuff'
-            test/integration/teachers/teachers_signup_test.rb:20:in `block in <class:TeachersSignupTest>'
-
-ERROR["test_new_teacher_new_school", TeachersSignupTest, 432.80698642507195]
- test_new_teacher_new_school#TeachersSignupTest (432.81s)
-ActiveRecord::RecordNotFound:         ActiveRecord::RecordNotFound: Couldn't find School with 'id'=
-            app/controllers/schools_controller.rb:62:in `is_mentor'
-            test/test_helper.rb:206:in `teacher_editing_stuff'
-            test/integration/teachers/teachers_signup_test.rb:68:in `block in <class:TeachersSignupTest>'
-
-ERROR["test_no_new_or_old_school", TeachersSignupTest, 432.9450557460077]
- test_no_new_or_old_school#TeachersSignupTest (432.95s)
-ActiveRecord::RecordNotFound:         ActiveRecord::RecordNotFound: Couldn't find School with 'id'=
-            app/controllers/schools_controller.rb:62:in `is_mentor'
-            test/test_helper.rb:206:in `teacher_editing_stuff'
-            test/integration/teachers/teachers_signup_test.rb:116:in `block in <class:TeachersSignupTest>'
-
-ERROR["test_default_picture_name_edit", PicturesEditTest, 434.50148134306073]
- test_default_picture_name_edit#PicturesEditTest (434.50s)
-Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
-        excon.error.response
-          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20180420T010444Z</RequestTime><ServerTime>2018-02-24T23:34:27Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>9C145FF9A85DBF2E</RequestId><HostId>5SOosr6HCUeQ8Wih5VxMm5vK+5ZwDsYXeTr50xpEakp9PiflvhzIl70emR5rIHJwvoS0sBnpRBM=</HostId></Error>"
-          :cookies       => [
-          ]
-          :headers       => {
-            "Content-Type"     => "application/xml"
-            "Date"             => "Sat, 24 Feb 2018 23:34:26 GMT"
-            "Server"           => "AmazonS3"
-            "x-amz-id-2"       => "5SOosr6HCUeQ8Wih5VxMm5vK+5ZwDsYXeTr50xpEakp9PiflvhzIl70emR5rIHJwvoS0sBnpRBM="
-            "x-amz-request-id" => "9C145FF9A85DBF2E"
-          }
-          :host          => "mrzschoolbucket.s3.amazonaws.com"
-          :local_address => "172.17.0.115"
-          :local_port    => 37166
+          :local_port    => 55452
           :path          => "/uploads/picture/image/298486374/druid_cropped.jpg"
           :port          => 443
           :reason_phrase => "Forbidden"
-          :remote_ip     => "54.231.81.0"
+          :remote_ip     => "52.216.81.176"
           :status        => 403
           :status_line   => "HTTP/1.1 403 Forbidden\r\n"
-
+        
             app/controllers/pictures_controller.rb:43:in `update'
             test/integration/pictures/pictures_edit_test.rb:46:in `block in <class:PicturesEditTest>'
 
-ERROR["test_edit_picture", PicturesEditTest, 435.4982570509892]
- test_edit_picture#PicturesEditTest (435.50s)
+ERROR["test_edit_picture", PicturesEditTest, 346.47564441501163]
+ test_edit_picture#PicturesEditTest (346.48s)
 Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
         excon.error.response
-          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20180420T010444Z</RequestTime><ServerTime>2018-02-24T23:34:28Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>A6D20E606AE8F452</RequestId><HostId>gZlyL7O+SwM4rzk/IKOEspcrxrtjes2dEscVWHXc5M+qtHjU3ufuQn6Dosy3JZK9IyTZhjCNgMk=</HostId></Error>"
+          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20171207T010444Z</RequestTime><ServerTime>2018-03-02T20:03:36Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>1358754E70CBF32D</RequestId><HostId>cZOg5cOEVh1fye/A8rBxhS6hx9fywTxvvR1PC6ga+poD+vFSw5vc9bepiEcOhjnznq/PhQGyBg8=</HostId></Error>"
           :cookies       => [
           ]
           :headers       => {
             "Content-Type"     => "application/xml"
-            "Date"             => "Sat, 24 Feb 2018 23:34:26 GMT"
+            "Date"             => "Fri, 02 Mar 2018 20:03:34 GMT"
             "Server"           => "AmazonS3"
-            "x-amz-id-2"       => "gZlyL7O+SwM4rzk/IKOEspcrxrtjes2dEscVWHXc5M+qtHjU3ufuQn6Dosy3JZK9IyTZhjCNgMk="
-            "x-amz-request-id" => "A6D20E606AE8F452"
+            "x-amz-id-2"       => "cZOg5cOEVh1fye/A8rBxhS6hx9fywTxvvR1PC6ga+poD+vFSw5vc9bepiEcOhjnznq/PhQGyBg8="
+            "x-amz-request-id" => "1358754E70CBF32D"
           }
           :host          => "mrzschoolbucket.s3.amazonaws.com"
           :local_address => "172.17.0.115"
-          :local_port    => 37222
+          :local_port    => 55492
           :path          => "/uploads/picture/image/298486374/druid_cropped.jpg"
           :port          => 443
           :reason_phrase => "Forbidden"
-          :remote_ip     => "54.231.81.0"
+          :remote_ip     => "52.216.81.176"
           :status        => 403
           :status_line   => "HTTP/1.1 403 Forbidden\r\n"
         
             app/controllers/pictures_controller.rb:43:in `update'
             test/integration/pictures/pictures_edit_test.rb:28:in `block in <class:PicturesEditTest>'
 
-  270/270: [=======================================================================================================] 100% Time: 1297:37:32, Time: 1297:37:32
+ERROR["test_quiz_without_questions", QuizzesAvailableTest, 390.7029659880791]
+ test_quiz_without_questions#QuizzesAvailableTest (390.70s)
+NoMethodError:         NoMethodError: undefined method `student_view_seminar_path' for #<QuizzesController:0x0000000e8fa238>
+            app/controllers/quizzes_controller.rb:22:in `new'
+            test/integration/quizzes/quizzes_available_test.rb:98:in `block in <class:QuizzesAvailableTest>'
 
-Finished in 490.98037s
-270 tests, 1408 assertions, 2 failures, 11 errors, 0 skips
-
-
-
-
-
-
-
-
-
+Unused parameters passed to Capybara::Queries::SelectorQuery : ["Edit Macho Taco Period"]===                                ] 72% Time: 1157:06:55,  ETA: ??:??:??
+ERROR["test_create_new_students", StudentsNewTest, 473.7346820461098]
+ test_create_new_students#StudentsNewTest (473.73s)
+NoMethodError:         NoMethodError: undefined method `benchmark' for #<SeminarStudent:0x00000011c6ee20>
+            test/integration/students/students_new_test.rb:80:in `block in <class:StudentsNewTest>'
 
 
 
-2.54 STUDENT VIEW
-
-Give the student view the same treatment that I gave the seminar_edit view, with submenu clicking
-And move the studentview into the seminar_students controller
-
-When clicking on an objective, it SHOULD offer the "Update Class" button, because teachers can choose which of their seminars that objective is connected to.
-
-Smaller Apple Icon
-Home Icon instead of "Your teacher page"
 
 
 
-LONE CONSULTANTS
-Student who is left alone as consultant should try one more time to place. If not, then at least don't mark them as a consultant. It takes up that student's turn.
+ALLOW CLASSES TO HAVE MULTIPLE TEACHERS
+Sometimes teachers need to be able to share classes.
+
+Put MrZ School image footer on the bottom of every page.
+But not the link. We don't want it to print that
+
 
 
 GROWTH STARS
@@ -267,12 +202,8 @@ But give a little more than the median (maybe 75%) to account for the other aspe
 
 
 
-2.52 TEST SUITE 2
+TESTS TO ADD
 
-students_edit_test is in the test/controllers folder. Should probably move to integration
-Are the apprentice request choices taking pre-requisites into account?
-Test that learnRequest is set to nil if student doesn't have a learnRequest available. I think that means if learnOptions turns up an empty set.
-Test that removing a student from a class doesn't delete his/her scores
 Remove an objective from a class
 Remove a class from an objective
 Ensure that when the user removes pre-reqs for an objective, the updated pre-reqs are correct. Check that it is not keeping all of the previous pre-reqs, plus any
@@ -291,12 +222,6 @@ Searching
     Make sure Admin can find all students
 Deleting a consultancy deletes its teams
 Test that incorrect user cannot delete any records from models with correct_owner function
-
-
-
-
-
-2.52 TEST SUITE 23
 Ensure that database inputs are sanitized
 Test failing at creating a record, then fixing it. Needs to apply to creating a new record and also to editing an existing record.
     Objective
@@ -313,8 +238,6 @@ Add enough question fixtures to test pagination in index
     objectives
     Students
     Users
-
-2.53 TEST SUITE 23
 The piece of the DC algorithm that places straggling students should also check for the priority of the learnrequest, and whether the student has passed preReqs
 If teacher reached "Create New Objective" through a seminar view, re-route to that seminar. If not, re-route to user page.
 Test that consultant_days doesn't include other seminars
@@ -323,13 +246,10 @@ Test that a limited number of groups are created if many students are qualified 
     And total consultants
 Are_some_unplaced test failed once, but it usually passes. I think it failed because @student_10 became a consultant, so he wasn't in the unplaced group.
 Test that checkpoints are displayed in the correct order?
+Navigating Seminar_Student view. Certain fields should be visible/invisible
+Test the navribbon in the seminar edit view.
+    I tried writing tests for the navribbon in the student class page, but the visible tags weren't working in the capybara tests.
 
-
-
-
-
-
-NEXT UPDATE:
 
 
 COLLECTION OF SMALL FIXES
@@ -350,7 +270,6 @@ Live site has errors in student searching. It occurred when trying to add Meliss
 V Consultants button in NavBar needs to link to consultancy show page  
 Set up billing alerts with AWS.
 I moved the javascripts to the end of the body tag on the chance that it might help with loading. Test on the live site with school computers using both ways.
-Remove all visuals pertaining to Benchmark Stars
 Deleting a consultancy from its own show page isn't working right now.
 Put goals in NavRibbon
 Fix NavRibbon for Desk Consultants
@@ -469,10 +388,6 @@ Pictures will be associated with those domains.
 Find a better way to organize the other long lists, too
     "Labels" comes to mind first
 
-
-STOP AUTOMATICALLY DIRECTING TEACHER TO PRETESTS AND PRIORITIES SCREENS
-This process is tedious. Can I instead have openable divs for those sections in the main seminar edit screen?
-These openable divs can adjust pretests and priorities by ajax
 
 ADD INFO BUTTONS FOR ALL FIELDS ON ALL FORMS
 Look for all places where users might need a little extra help/advice
@@ -618,8 +533,6 @@ PRACTICE QUIZZES
 With some objectives, students should be able to take the quiz as practice
     This will be especially useful for objectives that don't currently have study links
     
-ALLOW CLASSES TO HAVE MULTIPLE TEACHERS
-Sometimes teachers need to be able to share classes.
 
 TEACHER CAN ADJUST CONSULTANCY
 Teacher should be able to move a student from one team to another after the consutlancies are created.

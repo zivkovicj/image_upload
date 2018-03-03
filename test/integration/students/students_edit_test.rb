@@ -34,6 +34,7 @@ class StudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "student edits self" do
+        skip
         go_to_first_period
         click_on("Edit Your Profile")
         assert_no_selector('input', :id => "student_user_number")

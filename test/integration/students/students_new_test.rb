@@ -77,7 +77,6 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         @new_aula = SeminarStudent.find_by(:seminar_id => @seminar.id, :user => first_new_student)
         assert_equal 1, @new_aula.pref_request
         assert_equal true, @new_aula.present
-        assert_equal 0, @new_aula.benchmark
         
         assert_text("#{@seminar.name} Scoresheet")
     end

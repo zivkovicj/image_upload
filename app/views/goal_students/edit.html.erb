@@ -2,9 +2,10 @@
 <% provide(:button_text, 'Save This Goal') %>
 
 <% provide(:headerText, "Edit Goal" ) %>
-<% provide(:headerPic, "apple.png") %>
+<% provide(:headerPic, "apple.jpg") %>
 
-<%= link_to "Back to Viewing Your Class", student_view_seminar_path(@goal_student.seminar, :user => @goal_student.user.id), class: "btn btn-primary" %>
+<% @ss = SeminarStudent.find_by(:seminar => @goal_student.seminar, :user => @goal_student.user) %>
+<%= link_to "Back to Viewing Your Class", seminar_student_path(@ss), class: "btn btn-primary" %>
 <%= render 'shared/headline' %>
 
 

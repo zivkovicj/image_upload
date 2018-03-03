@@ -48,12 +48,10 @@ Rails.application.routes.draw do
     get 'scoresheet', on: :member
     get 'objectives', on: :member
     get 'due_dates', on: :member
-    get 'student_view', on: :member
     get 'copy_due_dates', on: :member
   end
   resources :seminar_students do
     get 'removeFromClass', on: :member
-    post 'update_benchmarks', on: :member
   end
   resources :schools do
     get 'verify', on: :member

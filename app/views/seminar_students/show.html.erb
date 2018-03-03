@@ -1,0 +1,137 @@
+<% provide(:scores_label, 'Your Scores in All Objectives') %>
+<% provide(:button_text, 'Change Your Requests') %>
+
+<% def quiz_link(quiz, age) %>
+    <% this_action = age == "new" ? "new" : "edit" %>
+    <%= link_to quiz.name, :controller => "quizzes", :action => "#{this_action}", :objective_id => quiz.id %>
+<% end %>
+
+<% def list_of_quizzes(list, category, age) %>
+    <% if list.count > 0 %>
+        <h3><%= category %></h3>
+        <ul><% list.each do |quiz| %>
+            <li id="quiz_<%= quiz.id %>">
+                <% quiz_link(quiz, age) %>
+            </li>
+        <% end %></ul>
+    <% end %>
+<% end %>
+
+
+
+<div class="row">
+    <div class="col-sm-7 singleOption">
+        <h1>&emsp;&emsp;<%= @student.fullName %>&emsp;&emsp; </br><small><%= @seminar.name %>&emsp; <%= @teacher.name_with_title %></small></h1>
+    </div>
+    
+    <div class="col-sm-1">
+        
+    </div>
+    
+    <% if @this_gs.goal %>    
+        <div class="col-sm-4">
+            <h2>Current Goal:</h2>
+            <h3><%= @this_gs.statement_with_target %></h3>
+        </div>
+    <% end %>
+</div>
+</br>
+<%= render 'sem_stud_navribbon' %>
+</br>
+
+<div class="submenu_item submenu_goal singleOption">
+    <h3>Your Goal for <%= (@seminar.term + 1).ordinalize %> Term </h3>
+    <% if @this_gs.goal %>
+        <h2><%= @this_gs.statement_with_target %></h2>
+        </br>
+        <table class="table-borderless">
+            <th colspan="2"></th><th>Checkpoints</th>
+            <% @this_gs.checkpoints_in_order.each do |checkpoint| %>
+                <% this_achievement = checkpoint.achievement %>
+                <% this_sequence = checkpoint.sequence %>
+                <tr>
+                    <td><h4><%= this_sequence + 1 %>) &nbsp;</h4></td>
+                    <% if this_achievement %>
+                        <% this_color = @this_gs.target && this_achievement >= @this_gs.target ? "#AAFFAA" : "#BB6666" %>
+                        <td bgcolor="<%= this_color %>">
+                            <h3 class="center"><%= this_achievement %></h3>
+                        </td>
+                    <% elsif this_sequence < @this_checkpoint %>
+                        <td class="center">
+                            <small><strong>Not</br> marked</strong></small>
+                        </td>
+                    <% elsif this_sequence == @this_checkpoint %>
+                        <td class="center">
+                            <small><strong>In</br> progress</strong></small>
+                        </td>
+                    <% else %>
+                        <td></td>
+                    <% end %>
+                    <td class="<%= 'highlighted' if this_sequence == @this_checkpoint %>" colspan="2" >
+                        <h4>&nbsp; <%= checkpoint.statement %></h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <% if checkpoint.student_comment %>
+                            <strong>Me</strong>&emsp;<%= best_in_place(checkpoint, :student_comment, :inner_class => "commentInput") %>
+                        <% else %>
+                            <strong><%= best_in_place(checkpoint, :student_comment, :inner_class => "commentInput", :place_holder => "No comment yet") %></strong>
+                        <% end %>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <% if checkpoint.teacher_comment %>
+                            <strong><%= @seminar.user.name_with_title %></strong>&emsp;<%= checkpoint.teacher_comment %>
+                        <% end %>
+                    </td>
+                </tr>
+            <% end %>
+        </table>
+    <% else %>
+        </br><h4>You don't have a goal set for this term.</h4>
+    <% end %> 
+    
+    <% if !@this_gs.approved %> 
+        </br><%= button_to( "Edit This Goal", edit_goal_student_path(@this_gs), :method => :get, :class => "btn btn-lg btn-primary") %>
+    <% end %>
+</div>
+</br>
+
+
+<div class="submenu_item submenu_quizzes singleOption currently_hidden">
+    <% if @show_quizzes %>
+        <h2>Quizzes Available</h2>
+        </br>
+        
+        <% list_of_quizzes(@unfinished_quizzes, "Unfinished Quizzes", "old") %>
+        
+        <% list_of_quizzes(@desk_consulted_objectives, "Desk Consultants Objectives", "new") %>
+    
+        <% list_of_quizzes(@all_pretest_objectives, "Pretest Objectives", "new") %>
+    <% else %>
+        <h3>No quizzes available right now.</h3>
+    <% end %>
+</div>
+
+</br>
+</br>
+
+<div class="submenu_item submenu_requests currently_hidden">
+    <%= render 'shared/teach_requests' %>
+</div>
+
+<div class="submenu_item submenu_stars currently_hidden">
+    <%= render 'shared/all_student_scores' %>
+</div>
+
+</br>
+<%#= button_to "Edit Your Profile", edit_student_path(@student), 
+        class: "btn btn-lg btn-primary", :method => :get %>

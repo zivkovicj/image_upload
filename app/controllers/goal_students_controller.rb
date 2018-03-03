@@ -38,7 +38,8 @@ class GoalStudentsController < ApplicationController
                 @checkpoint.update(:action => value[:action])
             end
         end
-        redirect_to student_view_seminar_path(@gs.seminar, :user => @gs.user.id)
+        @ss = SeminarStudent.find_by(:seminar => @gs.seminar, :user => @gs.user)
+        redirect_to seminar_student_path(@ss)
     end
     
     private

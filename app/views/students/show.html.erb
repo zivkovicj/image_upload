@@ -10,10 +10,10 @@
         <h3><strong>Your Classes</strong></h3>
     </div>
     <br/>
-    <% @student.seminars.each do |seminar| %>
-        <%= link_to student_view_seminar_path(seminar, :user => @student.id) do %>
+    <% @student.seminar_students.each do |ss| %>
+        <%= link_to seminar_student_path(ss) do %>
             <div class="singleOption lowSingOpt linkDiv hoverHigh">
-                <h4 class="linkHeader"><%= seminar.name %></h4>
+                <h4 class="linkHeader"><%= ss.seminar.name %></h4>
             </div>
         <% end %>
     <% end %>

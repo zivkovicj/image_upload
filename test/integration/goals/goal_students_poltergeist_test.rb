@@ -50,10 +50,9 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
             assert_no_text("Goal Target: 60 %")
         end
         
-        # Manually use debugger here to check that the gs target has been updated. 
-        # Also check that the statement for checkpoints[1] includes the updated target.
-        # Also, check that the student's actions are not changing when the target is changed.
+        # Manually use debugger here to check these assertions.
         @gs.reload
+        #debugger
         assert_equal "I will be kind 85 % of the time so far.", @gs.reload.checkpoints[1].statement
         assert_equal 85, @gs.target
         assert_equal @gs.goal.actions[0][1], @gs.checkpoints[0].action
@@ -88,6 +87,7 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
             assert_text("Unlock This Goal")
         end
         @gs.reload
+        #debugger
         assert @gs.approved
         
         find("#approval_button_#{@gs.id}").click
@@ -96,6 +96,7 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
             assert_no_text("Unlock This Goal")
         end
         @gs.reload
+        #debugger
         assert_not @gs.approved
     end
     

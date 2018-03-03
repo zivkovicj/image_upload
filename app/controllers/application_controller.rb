@@ -37,4 +37,8 @@ class ApplicationController < ActionController::Base
   def redirect_for_students
     redirect_to(login_url) if current_user.type == "Student"
   end
+  
+  def update_current_class
+    current_user.update(:current_class => @seminar.id)
+  end
 end

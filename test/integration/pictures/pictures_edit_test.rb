@@ -24,7 +24,7 @@ class PicturesEditTest < ActionDispatch::IntegrationTest
         fill_in "picture_name", with: "Beer and Pretzels"
         check("check_#{@admin_l.id}")
         uncheck("check_#{@user_l.id}")
-        attach_file('picture[image]', Rails.root + 'app/assets/images/apple.png')
+        attach_file('picture[image]', Rails.root + 'app/assets/images/apple.jpg')
         click_on("Update Picture")
         
         @user_p.reload
@@ -42,7 +42,7 @@ class PicturesEditTest < ActionDispatch::IntegrationTest
     test "default picture name edit" do
         goto_user_pic_edit
         fill_in "picture_name", with: ""
-        attach_file('picture[image]', Rails.root + 'app/assets/images/apple.png')
+        attach_file('picture[image]', Rails.root + 'app/assets/images/apple.jpg')
         click_on ("Update Picture")
         
         @user_p.reload

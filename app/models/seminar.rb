@@ -28,15 +28,6 @@ class Seminar < ApplicationRecord
   
   include ModelMethods
   
-  # Limited version of semianr's name
-  def limitedName
-    if name.length > 12
-      "#{name[0,10]}..."
-    else
-      name[0,12]
-    end
-  end
-  
   def shouldShowConsultLink
     students.count > 1 and objectives.count > 0
   end

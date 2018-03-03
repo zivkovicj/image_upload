@@ -5,11 +5,11 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     def setup
         setup_users
         setup_seminars
+        setup_goals
+        setup_scores
     end
     
     test "student chooses goal" do
-        setup_scores
-        setup_goals
         travel_to_testing_date
         
         @gs = @student_2.goal_students.find_by(:seminar => @seminar, :term => @seminar.term)
@@ -37,7 +37,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         select("Eat something kind", :from => "syl[#{@gs.checkpoints.first.id}][action]")
         click_on("Save These Checkpoints")
         
-        assert_selector('h2', :text => "Current Stars for this Grading Term")
+        assert_selector('h3', :text => "Total Stars Earned:")
         
         @gs.reload
         assert_equal "Eat something kind", @gs.checkpoints[0].action
@@ -46,8 +46,6 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "default goal if already chosen" do
-        setup_scores
-        setup_goals
         @this_gs = @student_2.goal_students.find_by(:seminar => @seminar, :term => 1)
         @this_gs.update(:goal => Goal.first)
         
@@ -61,20 +59,15 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "goal edit back button" do
-        setup_goals
-        setup_scores
         go_to_first_period
         click_on("Edit This Goal")
         
         click_on("Back to Viewing Your Class")
         
-        assert_selector('h2', :text => "Current Stars for this Grading Term")
+        assert_selector('h3', :text => "Total Stars Earned:")
     end
     
     test "navigate goal screens" do
-        setup_goals
-        setup_scores
-        
         @seminar.update(:term => 1, :which_checkpoint => 0)
         
         capybara_login(@teacher_1)
@@ -95,6 +88,21 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         @seminar.reload
         assert_equal 2, @seminar.term
         assert_equal 3, @seminar.which_checkpoint
+    end
+    
+    test "print screen and back" do
+        capybara_login(@teacher_1)
+        go_to_goals
+        
+        click_on("Printable Version")
+        
+        assert_text("Print Student Goal Checkpoints")
+        assert_no_text("Student Goals for #{@seminar.name}")
+        
+        click_on("Back to Viewing Goals")
+        
+        assert_no_text("Print Student Goal Checkpoints")
+        assert_text("Student Goals for #{@seminar.name}")
     end
 
         
