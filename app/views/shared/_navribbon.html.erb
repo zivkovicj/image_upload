@@ -9,7 +9,7 @@
         <table class="table-borderless">
             <tr>
                 <td class="spacer"></td>
-                <% current_user.own_seminars.order(:name).limit(10).each do |seminar| %>
+                <% current_user.seminars.order(:name).limit(10).each do |seminar| %>
                     <td class="<%= 'highlighted' if (@seminar && @seminar==seminar) %>">
                         <h5>
                             <% if action_name == 'scoresheet' %>

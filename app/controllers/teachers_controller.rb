@@ -21,10 +21,11 @@ class TeachersController < ApplicationController
   
   def show
     @teacher = Teacher.find(params[:id])
-    @own_seminars = @teacher.own_seminars
+    @seminars = @teacher.seminars
     current_user.update(:current_class => nil)
     @school = @teacher.school
     @unverified_teachers = @school.check_for_unverified_teachers if @school.mentor == @teacher
+    @unaccepted_classes = @teacher.unaccepted_classes
   end
   
   def index

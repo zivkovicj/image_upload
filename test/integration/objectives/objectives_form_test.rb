@@ -16,14 +16,10 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         @old_objective_count = Objective.count
     end
     
-    def submit_objective
-        click_on('Create a New Objective')
-    end
-    
     test "new objective button from main user page" do
         capybara_login(@teacher_1)
         assert_on_teacher_page
-        submit_objective
+        click_on('Create a New Objective')
         assert_selector('h1', :text => 'New Objective', :visible => true)
         assert_not_on_teacher_page
     end
@@ -33,7 +29,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         oldPreconditionCount = Precondition.count
         capybara_login(@teacher_1)
         click_on('1st Period')
-        submit_objective
+        click_on('Create a New Objective')
         
         assert_selector('div', :id => "seminars_to_include")
         name = "009 Compare Unit Rates"
@@ -41,7 +37,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         check("check_#{@objective_20.id}")
         check('1st Period')
         choose('public_objective')
-        submit_objective
+        click_on('Create a New Objective')
         
         assert_text "Quantities and Point Values"
         assert_text name
@@ -69,13 +65,13 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     test "admin creates objective" do
         oldPreconditionCount = Precondition.count
         capybara_login(@admin_user)
-        submit_objective
+        click_on('Create a New Objective')
 
         name = "010 Destroy Unit Rates"
         fill_in "name", with: name
         check("check_#{@objective_20.id}")
         assert_no_selector('div', :id => "seminars_to_include")
-        submit_objective
+        click_on('Create a New Objective')
         
         @new_objective = Objective.last
         assert_equal @old_objective_count + 1, Objective.count
@@ -91,30 +87,6 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_equal @objective_20.id, @newPrecondition.preassign_id
     end
         
-    test "add objective to seminar" do
-        old_os_count = ObjectiveSeminar.count
-        studToCheck = @seminar.students[11]
-        
-        assert_not @seminar.objectives.include?(@assign_to_add)
-        assert_nil studToCheck.objective_students.find_by(:objective_id => @assign_to_add.id)
-        
-        capybara_login(@teacher_1)
-        click_on('1st Period')
-        
-        check("check_#{@assign_to_add.id}")
-        click_on('Update This Class')
-        
-        @seminar.reload
-        
-        # Adds two objectives because @assign_to_add has one preReq
-        assert_equal old_os_count + 2, ObjectiveSeminar.count
-        assert @seminar.objectives.include?(@assign_to_add)
-        assert @seminar.objectives.include?(@assign_to_add.preassigns.first)
-        @seminar.students.each do |student|
-            assert_not_nil student.objective_students.find_by(:objective_id => @assign_to_add.id)
-        end
-        
-    end
     
     test "don't add prereq if seminar already has it" do
         @objective_80 = objectives(:objective_80)
@@ -129,6 +101,27 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
 
         assert_equal old_os_count + 1, ObjectiveSeminar.count
         assert_equal 1, ObjectiveSeminar.where(:seminar_id => @seminar.id, :objective_id => @objective_80.id).count
+    end
+    
+    test "remove pre_req" do
+        #@own_assign was chosen because it has two pre-requisites
+        assert @own_assign.preassigns.include?(@objective_40)
+        assert @objective_40.mainassigns.include?(@own_assign)
+        assert @own_assign.preassigns.include?(@objective_50)
+        assert @objective_50.mainassigns.include?(@own_assign)
+        
+        capybara_login(@own_assign.user)
+        click_on("All Objectives")
+        click_on(@own_assign.full_name)
+        
+        uncheck("check_#{@objective_40.id}")
+        click_on("Save Changes")
+        
+        @own_assign.reload
+        assert_not @own_assign.preassigns.include?(@objective_40)
+        assert_not @objective_40.mainassigns.include?(@own_assign)
+        assert @own_assign.preassigns.include?(@objective_50)
+        assert @objective_50.mainassigns.include?(@own_assign)
     end
     
     test "scores for preReqs" do
@@ -153,7 +146,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@assign_to_add.fullName)
+        click_on(@assign_to_add.full_name)
         check(@seminar.name)
         
         click_on("Save Changes")
@@ -165,10 +158,22 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         end
     end
     
+    test "remove seminar from objective" do
+        assert @seminar.objectives.include?(@objective_10)
+         
+        capybara_login(@teacher_1)
+        click_on('All Objectives')
+        click_on(@objective_10.full_name)
+        uncheck(@seminar.name)
+        click_on("Save Changes")
+        
+        assert_not @seminar.objectives.include?(@objective_10)
+    end
+    
     test "teacher edits public objective" do
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@objective_20.fullName)
+        click_on(@objective_20.full_name)
         check(@seminar.name)
         
         assert_text("You are viewing the details of this objective. You may not make any edits because it was created by another teacher.")
@@ -180,7 +185,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     test "view other teacher objective" do
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@objective_20.fullName)
+        click_on(@objective_20.full_name)
         check(@seminar.name)
         
         assert_text("You are viewing the details of this objective. You may not make any edits because it was created by another teacher.")
@@ -197,7 +202,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@own_assign.fullName)
+        click_on(@own_assign.full_name)
         assert_no_text("You may only edit an objective that you have created. You may use this window to choose which classes this objective is assigned to.")
         
         new_name = "Boobenfarten"
@@ -235,7 +240,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
        
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@own_assign.fullName)
+        click_on(@own_assign.full_name)
         uncheck("check_#{@admin_l.id}")
         click_on("Save Changes")
         
@@ -250,9 +255,9 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     test "empty name create" do
         capybara_login(@teacher_1)
         click_on('1st Period')
-        submit_objective
+        click_on('Create a New Objective')
         fill_in "name", with: ""
-        submit_objective
+        click_on('Create a New Objective')
         
         @new_objective = Objective.last
         assert_equal "Objective #{@old_objective_count}", @new_objective.name
@@ -262,7 +267,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     test "empty name update" do
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@own_assign.fullName)
+        click_on(@own_assign.full_name)
         
         fill_in "name", with: ""
         click_on("Save Changes")
@@ -285,7 +290,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@main_objective.fullName)
+        click_on(@main_objective.full_name)
         
         check("check_#{@preassign_to_add.id}")
         check("check_#{@already_preassign_to_super.id}")
@@ -310,7 +315,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         
         capybara_login(@teacher_1)
         click_on('All Objectives')
-        click_on(@main_objective.fullName)
+        click_on(@main_objective.full_name)
         
         check("check_#{@preassign_to_add.id}")
         check(@otherClass.name)
@@ -326,7 +331,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     test "mainassigns shouldnt appear" do
         capybara_login(@admin_user)
         click_on('All Objectives')
-        click_on(@objective_40.fullName)
+        click_on(@objective_40.full_name)
         
         assert_no_selector('input', :id => "check_#{@own_assign.id}")
         assert_selector('input', :id => "check_#{@objective_30.id}")
@@ -335,7 +340,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     test "but should appear for others" do
         capybara_login(@admin_user)
         click_on('All Objectives')
-        click_on(@super_objective.fullName)
+        click_on(@super_objective.full_name)
         
         assert_selector('input', :id => "check_#{@own_assign.id}")
     end
@@ -347,7 +352,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         fill_in('Password', :with => 'password')
         click_on('Log In')
         
-        submit_objective
+        click_on('Create a New Objective')
         assert_text("Nothing here right now.")
     end
     
@@ -360,7 +365,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     test "objective with no label" do
         capybara_login(@teacher_1)
         click_on("New Objective")
-        submit_objective
+        click_on('Create a New Objective')
         
         assert_text(no_label_message)
         assert_no_text(quantity_instructions)
@@ -370,7 +375,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("New Objective")
         check("check_#{@user_l.id}")
-        submit_objective
+        click_on('Create a New Objective')
         
         assert_no_text(no_label_message)
         assert_text(quantity_instructions)
@@ -382,7 +387,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("New Objective")
         check("check_#{@user_l.id}")
-        submit_objective
+        click_on('Create a New Objective')
         
         @lo = @user_l.label_objectives.find_by(:objective => Objective.last)
         assert_text(no_questions_message)
@@ -393,7 +398,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("New Objective")
         check("check_#{@user_l.id}")
-        submit_objective
+        click_on('Create a New Objective')
         
         @lo = @user_l.label_objectives.find_by(:objective => Objective.last)
         assert_no_text(no_questions_message)

@@ -82,7 +82,7 @@ class TeacherTest < ActiveSupport::TestCase
   
   test "associated seminars should be destroyed" do
     @teacher.save
-    @teacher.own_seminars.create(name: "1st period", consultantThreshold: 7)
+    @teacher.seminars.create(name: "1st period", consultantThreshold: 7)
     assert_difference 'Seminar.count', -1 do
       @teacher.destroy
     end

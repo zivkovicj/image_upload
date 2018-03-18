@@ -5,13 +5,14 @@ class ConsultanciesIndexTest < ActionDispatch::IntegrationTest
     include ConsultanciesHelper
     
     def setup
+        setup_users
         setup_seminars
     end
     
     test "link to one" do
         setup_consultancies
         
-        capybara_login(@seminar.user)
+        capybara_login(@teacher_1)
         click_on("desk_consult_#{@seminar.id}")
         click_on("List All Arrangements")
         
@@ -23,7 +24,7 @@ class ConsultanciesIndexTest < ActionDispatch::IntegrationTest
     test "link to new consultancy" do
         setup_consultancies
         
-        capybara_login(@seminar.user)
+        capybara_login(@teacher_1)
         click_on("desk_consult_#{@seminar.id}")
         click_on("List All Arrangements")
         
@@ -35,7 +36,7 @@ class ConsultanciesIndexTest < ActionDispatch::IntegrationTest
         setup_consultancies
         old_consultancy_count = Consultancy.count
         
-        capybara_login(@seminar.user)
+        capybara_login(@teacher_1)
         click_on("desk_consult_#{@seminar.id}")
         click_on("List All Arrangements")
         

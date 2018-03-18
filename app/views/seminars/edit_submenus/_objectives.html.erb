@@ -1,0 +1,16 @@
+
+<% if @this_teacher_can_edit %>
+    <%= render :partial => 'shared/include_checks', 
+        :locals => {:list_for_checks => Objective.all.order(:name), 
+        :check_box_name => "seminar[objective_ids][]", 
+        :inclusion_var => @seminar.objectives, :boulderfist => true, 
+        :include_word => "objectives", :include_on => "in this class",
+        :model_name => "class"}  %>
+<% else %>
+    <h2>Objectives in this Class</h2>
+    <ul>
+        <% @objectives.each do |objective| %>
+            <li><%= objective.name %></li>
+        <% end %>
+    </ul>
+<% end %>

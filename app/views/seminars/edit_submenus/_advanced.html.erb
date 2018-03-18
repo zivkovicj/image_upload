@@ -1,0 +1,11 @@
+<h2><button type="button" class="btn btn-info" id="btn-info1">?</button>&nbsp; Consultant Threshold </h2>
+<% if @this_teacher_can_edit %>
+    <%= @form.collection_radio_buttons :consultantThreshold, [[5, '5 stars'] , [6, '6 stars'] ,[7, '7 stars'], [8, '8 stars'], [9, '9 stars'], [10, '10 stars']],
+            :first, :last, { item_wrapper_tag: false } do |b| %>
+        <label class="radio-inline">
+            <%= b.radio_button%> &nbsp; <%= b.label %>
+        </label>
+    <% end %>
+<% else %>
+    <h3>The Consultant Threshold in this Class is <%= @seminar.consultantThreshold %> stars.</h3>
+<% end %>

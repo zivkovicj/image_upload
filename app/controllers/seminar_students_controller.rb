@@ -42,7 +42,7 @@ class SeminarStudentsController < ApplicationController
     @student_scores = @student.objective_students.where(:objective_id => objective_ids)
     
     @total_stars = @student.total_stars(@seminar)
-    @teacher = @seminar.user
+    @teachers = @seminar.teachers
     
     @teach_options = @student.teach_options(@seminar, @seminar.rank_objectives_by_need)
     @learn_options = @student.learn_options(@seminar, @seminar.rank_objectives_by_need)
@@ -82,7 +82,7 @@ class SeminarStudentsController < ApplicationController
       def correct_ss_user
         @ss = SeminarStudent.find(params[:id])
         @seminar = Seminar.find(@ss.seminar_id)
-        redirect_to login_url unless (current_user && (@ss.user == current_user || current_user.own_seminars.include?(@seminar))) || user_is_an_admin
+        redirect_to login_url unless (current_user && (@ss.user == current_user || current_user.seminars.include?(@seminar))) || user_is_an_admin
       end
       
       def update_goal_students_for_new_class_to_match_old_class

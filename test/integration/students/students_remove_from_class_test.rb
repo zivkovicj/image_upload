@@ -15,9 +15,9 @@ class StudentsRemoveFromClassTest < ActionDispatch::IntegrationTest
         click_on("scoresheet_#{@seminar.id}")
         click_on(@student_2.last_name_first)
         click_on("Edit/Move Student")
-        find("#delete_6").click
+        find("#delete_from_#{@seminar.id}").click
         @student = @student_2
-        click_on(confirm_remove_student)
+        click_on("confirm_delete_#{@seminar.id}")
         
         assert_not @seminar.students.include?(@student_2)
         assert_not @student_2.seminars.include?(@seminar)

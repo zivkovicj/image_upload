@@ -1,0 +1,12 @@
+<% if @show_quizzes %>
+    <h2>Quizzes Available</h2>
+    </br>
+    
+    <% list_of_quizzes(@unfinished_quizzes, "Unfinished Quizzes", "old") %>
+    
+    <% list_of_quizzes(@desk_consulted_objectives, "Desk Consultants Objectives", "new") %>
+
+    <% list_of_quizzes(@all_pretest_objectives, "Pretest Objectives", "new") %>
+<% else %>
+    <h3>No quizzes available right now.</h3>
+<% end %>

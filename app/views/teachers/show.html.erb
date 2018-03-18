@@ -12,9 +12,17 @@
   </div>
 <% end %>
 
+<% if @unaccepted_classes.present? %>
+  <div class="singleOption">
+    <h3>You have been invited to be a co-teacher.</h3>
+    <%= button_to "Accept or Reject Invitations", accept_invitations_seminar_teachers_path, 
+        class: "btn btn-lg btn-primary", :method => :get, :id => "accept_invites" %>
+  </div>
+<% end %>
+
 <p>
   <% if !@teacher.activated? %>
-    <p>Account not yet activated. Please check your e-mail for the activation link.</p>
+    <%# <p>Account not yet activated. Please check your e-mail for the activation link.</p> %>
   <% else %>
     <strong>Mr. Z School Teacher Since: &emsp;</strong><%= @teacher.created_at %>
   <% end %>
@@ -22,7 +30,7 @@
 
 
 <div>
-  <h3> <%= pluralize(@teacher.own_seminars.count, "Class") %> </h3>
+  <h3> <%= pluralize(@teacher.seminars.count, "Class") %> </h3>
   <table>
     <thead>
       <th></th>
@@ -31,7 +39,7 @@
       <th>Student Goals</th>
       <th>Edit</th>
     </thead>
-    <% @own_seminars.order(:name).each do |sem| %>
+    <% @seminars.order(:name).each do |sem| %>
       <tr>
         <td><h4><%= link_to sem.name, edit_seminar_path(sem) %></h4></td>
         <td><%= link_to image_tag("scoresheet.png"), scoresheet_seminar_url(sem), :id => "scoresheet_#{sem.id}" %></td>

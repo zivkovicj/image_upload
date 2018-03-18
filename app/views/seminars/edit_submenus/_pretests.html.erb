@@ -1,0 +1,24 @@
+
+<h2>Pretest Objectives</h2>
+
+<% if @this_teacher_can_edit %>
+    <h3>Would you like any of the objectives for this class to be considered Pre-Tests?</h3>
+    <h4>These objectives will be offered to students as soon as they enroll in the class.</h4>
+    </br>
+    <table>
+        <% @seminar.objective_seminars.each do |os| %>
+            <% obj = os.objective %>
+            <tr>
+                <td width="20%"><%= check_box_tag 'pretest_on[]', os.id, os.pretest > 0, {:id => "pretest_on_#{obj.id}"} %></td>
+                <td><%= obj.name %></td>
+            </tr>
+        <% end %>
+    </table>
+<% else %>
+    <h3>The following objectives are considered pre-tests in this class.</h3>
+    <ul>
+        <% @objectives.select{|x| x.objective_seminars.find_by(:seminar => @seminar).pretest == 1}.each do |objective| %>
+            <li><%= objective.name %></li>
+        <% end %>
+    </ul>
+<% end %>

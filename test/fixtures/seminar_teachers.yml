@@ -1,0 +1,55 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  seminar: one
+  user: archer
+  can_edit: true
+  accepted: true
+  
+two:
+  seminar: two
+  user: archer
+  can_edit: true
+  accepted: true
+
+  
+three:
+  seminar: three
+  user: archer
+  can_edit: true
+  accepted: true
+
+avcne1:
+  seminar: archer_can_view_not_edit
+  user: zacky
+  can_edit: true
+  accepted: true
+
+avcne2:
+  seminar: archer_can_view_not_edit
+  user: archer
+  can_edit: false
+  accepted: true
+  
+four:
+  seminar: four
+  user: zacky
+  can_edit: true
+  accepted: true
+
+  
+<% 30.times do |n| %>
+sem_teach_<%= n %>:
+  seminar: <%= "seminar_#{n}" %>
+  user: archer
+  can_edit: true
+  accepted: true
+<% end %>
+
+unverified_teacher_class:
+  seminar: unverified_teacher_class
+  user: user_1
+  can_edit: true
+  accepted: true
+
+  
