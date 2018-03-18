@@ -54,7 +54,6 @@ class ObjectivesController < ApplicationController
   end
 
   def update
-    debugger
     name_protect
     @objective = Objective.find(params[:id])
     if current_user == @objective.user || current_user.type == "Admin" 
