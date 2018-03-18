@@ -52,20 +52,7 @@ Keep eyes open for that problem.
 2.55 ALLOW CLASSES TO HAVE MULTIPLE TEACHERS
 Sometimes teachers need to be able to share classes.
 
-<<<<<<< HEAD
-Change architecture to allow for the possibility.
-    join table needs to include an "Accepted" column
-    And editing privileges column
-Creator of class can grant privileges to other teachers
-    Viewing privileges
-    Editing privileges
-    
-Add menu option to invite other teachers.
-    Menu includes which privileges to grant the invited teachers
-    Newly-invited teacher then accepts invitation
-    Teacher needs to be able to remove a class from her list without deleting the class
-    But if the only teacher with editing privileges wants to remove a class, the "Remove" option is not available. Only the "Delete" option
-=======
+
 V Change architecture to allow for the possibility.
 V Creator of class can grant privileges to other teachers
     V Viewing privileges
@@ -87,19 +74,17 @@ V Remove an objective from a class
 V Remove a class from an objective
 V Remove a pre-requisite
 
+V Migrate to add seminar_teacher
 
-
-Migrate to add seminar_teacher
->>>>>>> 2.55_multiple_teachers
-
-Seminar.all.each do |seminar|                                                                                                              
-    seminar.teachers << Teacher.find(seminar.user_id)
-end
+V Seminar.all.each do |seminar|                                                                                                              
+    V seminar.teachers << Teacher.find(seminar.user_id)
+V end
 
 Error in live site upon visiting objectives index
 
+"Accept Invitations" list is one long row.  Should be many rows. 
 
-
+Cannot "Stop Editing Privileges" from self
 
 
 LEVELS OF PRIORITY
