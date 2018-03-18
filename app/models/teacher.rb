@@ -2,8 +2,9 @@ class Teacher < User
     
     before_destroy  :destroy_associated_records
     
-    has_many    :own_seminars, :class_name => "Seminar", foreign_key: 'user_id'
-    has_many    :students, through: :own_seminars
+    has_many    :seminar_teachers, dependent: :destroy, foreign_key: :user_id
+    has_many    :seminars, through: :seminar_teachers
+    has_many    :students, through: :seminars
     has_many    :sponsored_students, :class_name => "Student", :foreign_key => "sponsor_id"
 
     validates  :password, presence: true,
@@ -12,7 +13,11 @@ class Teacher < User
     has_secure_password
     
     def first_seminar
-        self.own_seminars.order(:name).first 
+        self.seminars.order(:name).first 
+    end
+    
+    def unaccepted_classes
+        self.seminars.select{|x| !x.seminar_teachers.find_by(:user => self).accepted}
     end
     
     private
@@ -21,7 +26,7 @@ class Teacher < User
             Objective.where(:user => self).each do |objective|
                 objective.destroy
             end
-            self.own_seminars.each do |seminar|
+            self.seminars.each do |seminar|
                 seminar.destroy
             end
         end

@@ -5,16 +5,11 @@ class SeminarTest < ActiveSupport::TestCase
   def setup
     setup_users()
     # This code is not idiomatically correct.
-    @test_seminar = @teacher_1.own_seminars.build(name: "1st Period", consultantThreshold: 7)
+    @test_seminar = @teacher_1.seminars.build(name: "1st Period", consultantThreshold: 7)
   end
 
   test "should be valid" do
     assert @test_seminar.valid?
-  end
-
-  test "Teacher id should be present" do
-    @test_seminar.user_id = nil
-    assert_not @test_seminar.valid?
   end
   
   test "name should be present" do

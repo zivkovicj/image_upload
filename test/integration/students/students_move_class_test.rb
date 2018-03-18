@@ -16,7 +16,7 @@ class StudentsMoveClassTest < ActionDispatch::IntegrationTest
         gs_term_1.checkpoints.find_by(:sequence => 1).update(:achievement => 95)
         @student_2.goal_students.find_by(:seminar => @seminar, :term => 2).checkpoints.find_by(:sequence => 2).update(:teacher_comment => "Sup dude!")
         @student_2.goal_students.find_by(:seminar => @seminar, :term => 2).checkpoints.find_by(:sequence => 3).update(:student_comment => "Sup teach!")
-        sem_2 = @teacher_1.own_seminars.second
+        sem_2 = @teacher_1.seminars.second
         assert_nil @student_2.goal_students.find_by(:seminar => sem_2)
         assert @student_2.seminars.include?(@seminar)
         assert @seminar.students.include?(@student_2)

@@ -127,6 +127,11 @@ class User < ApplicationRecord
         return seminar.objectives.where(:id => blap).select{|x| self.has_not_scored_100(x) && !self.one_unfinished(x)}
     end
     
+    def can_edit_this_seminar(seminar)
+        this_st = self.seminar_teachers.find_by(:seminar => seminar)
+        this_st && this_st.can_edit
+    end
+    
     private
 
         # Converts info to all lower-case.

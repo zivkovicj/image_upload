@@ -23,7 +23,7 @@ class Objective < ApplicationRecord
     
     include ModelMethods
     
-    def fullName
+    def full_name
         name[0,30] 
     end
     

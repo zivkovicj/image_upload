@@ -43,8 +43,8 @@ class SeminarsIndexTest < ActionDispatch::IntegrationTest
     setup_consultancies
     consultancy_count = @seminar.consultancies.count
     assert_not_equal 0, consultancy_count
-    this_user = @seminar.user
-    this_user_seminar_count = this_user.own_seminars.count
+    this_user = @seminar.teachers.first
+    this_user_seminar_count = this_user.seminars.count
     
     capybara_login(@admin_user)
     click_on("Seminars Index")
@@ -57,6 +57,6 @@ class SeminarsIndexTest < ActionDispatch::IntegrationTest
     this_user.reload
     assert_equal old_sem_count - 1, Seminar.count
     assert_equal first_obj_sem_count - 1, first_obj.seminars.count
-    assert_equal this_user_seminar_count - 1, this_user.own_seminars.count
+    assert_equal this_user_seminar_count - 1, this_user.seminars.count
   end
 end

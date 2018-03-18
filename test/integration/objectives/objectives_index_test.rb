@@ -11,11 +11,11 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     capybara_login(@admin_user)
     click_on("All Objectives")
 
-    assert_selector('a', :id => "edit_#{@objective_20.id}", :text => @objective_20.fullName)
+    assert_selector('a', :id => "edit_#{@objective_20.id}", :text => @objective_20.full_name)
     assert_selector('h5', :id => "delete_#{@objective_20.id}", :text => "Delete")
-    assert_selector('a', :id => "edit_#{@own_assign.id}", :text => @own_assign.fullName)
+    assert_selector('a', :id => "edit_#{@own_assign.id}", :text => @own_assign.full_name)
     assert_selector('h5', :id => "delete_#{@own_assign.id}", :text => "Delete")
-    assert_selector('a', :id => "edit_#{@other_teacher_objective.id}", :text => @other_teacher_objective.fullName)
+    assert_selector('a', :id => "edit_#{@other_teacher_objective.id}", :text => @other_teacher_objective.full_name)
     assert_selector('h5', :id => "delete_#{@other_teacher_objective.id}", :text => "Delete")
   end
 
@@ -23,11 +23,11 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     capybara_login(@teacher_1)
     click_on("All Objectives")
     
-    assert_selector('a', :id => "edit_#{@objective_20.id}", :text => @objective_20.fullName)
+    assert_selector('a', :id => "edit_#{@objective_20.id}", :text => @objective_20.full_name)
     assert_selector('h5', :id => "delete_#{@objective_20.id}", :text => "Delete", :count => 0)
-    assert_selector('a', :id => "edit_#{@own_assign.id}", :text => @own_assign.fullName)
+    assert_selector('a', :id => "edit_#{@own_assign.id}", :text => @own_assign.full_name)
     assert_selector('h5', :id => "delete_#{@own_assign.id}", :text => "Delete")
-    assert_selector('a', :id => "edit_#{@other_teacher_objective.id}", :text => @other_teacher_objective.fullName, :count => 0)
+    assert_selector('a', :id => "edit_#{@other_teacher_objective.id}", :text => @other_teacher_objective.full_name, :count => 0)
     assert_selector('h5', :id => "delete_#{@other_teacher_objective.id}", :text => "Delete",:count => 0)
   end
   

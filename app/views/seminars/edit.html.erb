@@ -5,7 +5,7 @@
 <% provide(:headerText, "Edit #{@seminar.name}" ) %>
 <% provide(:headerPic, "square_fractal.png") %>
 
-  
+
 <div id="dialog1" title="Setting the Priority of your Objective">
   <p>Set the Consultant Threshold to what you consider proficient. For example, 
   if you set the consultant threshold to 80%, then students will only
@@ -15,9 +15,12 @@
   <p>We recommend setting the consultant threshold to 7.</p>
 </div>
 
+<% @submenu_tabs = [["Priorities", "priorities", true], ["Objectives", "objectives", false], ["Pretests", "pretests", false],
+  ["Due Dates", "due_dates", false],  ["Teachers", "shared_teachers",false], ["Name", "name", false], ["Advanced", "advanced",false] ] %>
+
 <%= render 'shared/pre_req_dialog' %>
 <%= render 'shared/navribbon' %>
-<%= render 'seminars_navribbon' %>
+<%= render 'shared/submenu_navribbon' %>
 <%= render 'shared/headline' %>
 
 <div class="row">
@@ -25,95 +28,13 @@
     <%= form_for(@seminar) do |f| %>
       <%= render 'shared/error_messages', :object => @seminar %>
       
-      <div class="singleOption submenu_item submenu_name currently_hidden">
-        <%= f.label :name %>
-        <%= f.text_field :name, class: 'form-control' %>
-      </div>
+      <% @form = f %>
+      <% @submenu_tabs.each do |sub_tab| %>
+        <div class="singleOption submenu_item submenu_<%= sub_tab[1] %> <%= "currently_hidden" unless sub_tab[2] %>">
+          <%= render :partial => "seminars/edit_submenus/#{sub_tab[1]}" %>
+        </div>
+      <% end %>
       
-      <div class="singleOption submenu_item submenu_due_dates currently_hidden">
-        <h2>Checkpoint Due Dates</h2>
-        <% if action_name == "edit" %>
-          <% first_seminar = current_user.first_seminar %>
-          <%= link_to "Copy Due Dates from #{first_seminar.name}", copy_due_dates_seminar_path(@seminar), :id => "copy_due_dates" unless first_seminar == @seminar %>
-        <% end %>
-        <% 4.times do |n| %>
-          <h3>&emsp; Term <%= n+1 %></h3>
-          <table class="table-borderless">
-            <% 4.times do |m| %>
-              <tr>
-                <td>&emsp; &emsp; Checkpoint <%= m+1 %> due</td>
-                <td>&emsp; <input type="text" class="datepicker" name="seminar[checkpoint_due_dates][<%= n %>][<%= m %>]" value="<%= @seminar.checkpoint_due_dates[n][m] if @seminar.checkpoint_due_dates %>"></td>
-              </tr>
-            <% end %>
-          </table>
-        <% end %>
-      </div>
-      </br>
-    
-      <div class="submenu_item submenu_objectives currently_hidden" >
-        <%= render :partial => 'shared/include_checks', 
-          :locals => {:list_for_checks => Objective.all, 
-            :check_box_name => "seminar[objective_ids][]", 
-            :inclusion_var => @seminar.objectives, :boulderfist => true, 
-            :include_word => "objectives", :include_on => "in this class",
-            :model_name => "class"}  %>
-      </div>
-      
-      <div class="singleOption submenu_item submenu_priorities">
-        <h2>Priorities of Objectives</h2>
-        <table>
-          <thead>
-              <tr>
-                  <td></td>
-                  <td>0 - None</td>
-                  <td>1 - Low</td>
-                  <td>2 - Medium</td>
-                  <td>3 - High</td>
-              </tr>
-          </thead>
-          <% @seminar.objective_seminars.each do |os| %>
-              <tr>
-                  <% objective = os.objective %>
-                  <% petrie = [false,false,false,false] %>
-                  <% petrie[os.priority] = true %>
-                  <% if objective %>
-                      <td><%= objective.name %></td>
-                      <% 4.times do |n| %>
-                          <% checkTag = "" %>
-                          <% checkTag = "checked" if petrie[n] %>
-                          <td><%= radio_button("os", "priority", n, {:name => "priorities[#{os.id}]", :checked => petrie[n], :id => "#{os.id}_#{n}" }) %></td> 
-                      <% end %>
-                  <% end %>
-              </tr>
-          <% end %>
-        </table>
-      </div>
-      
-      <div class="singleOption submenu_item submenu_pretests currently_hidden">
-        <h2>Pretest Objectives</h2>
-        <h3>Would you like any of the objectives for this class to be considered Pre-Tests?</h2>
-        <h4>These objectives will be offered to students as soon as they enroll in the class.</h3>
-        </br>
-        <table>
-          <% @seminar.objective_seminars.each do |os| %>
-              <% obj = os.objective %>
-              <tr>
-                  <td width="20%"><%= check_box_tag 'pretest_on[]', os.id, os.pretest > 0, {:id => "pretest_on_#{obj.id}"} %></td>
-                  <td><%= obj.name %></td>
-              </tr>
-          <% end %>
-        </table>
-      </div>
-      
-      <div class="singleOption submenu_item submenu_advanced currently_hidden">
-        <h2><button type="button" class="btn btn-info" id="btn-info1">?</button>&nbsp; Consultant Threshold </h2> 
-        <%= f.collection_radio_buttons :consultantThreshold, [[5, '5 stars'] , [6, '6 stars'] ,[7, '7 stars'], [8, '8 stars'], [9, '9 stars'], [10, '10 stars']],
-                               :first, :last, { item_wrapper_tag: false } do |b| %>
-          <label class="radio-inline">
-            <%= b.radio_button%> &nbsp; <%= b.label %>
-          </label>
-        <% end %>
-      </div>
           
       </br>
       <%= f.submit yield(:button_text), class: "btn btn-primary" %>
@@ -129,9 +50,17 @@
   <%= button_to "Create New Students", new_student_path, :method => :get, class: "btn btn-lg btn-primary" %><br/>
   <%= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %><br/>
   
-  <p class="btn btn-lg btn-primary remove_btn" id="delete_<%= @seminar.id %>">Delete This Class</p>
-  <%= button_to "Click here to confirm that you want to delete #{@seminar.name}", @seminar, 
-      :method => :delete, :id => "confirm_#{@seminar.id}", class: "btn btn-lg btn-primary confirm_button" %><br/>
+  <% if @seminar.teachers.count > 1 %>
+    <p class="btn btn-lg btn-primary remove_btn" id="remove_<%= @seminar.id %>">Remove This Class</p>
+    <% @st = @seminar.seminar_teachers.find_by(:user => current_user) %>
+    
+    <%= link_to "Confirm Removing #{@seminar} from your Classes.", seminar_teacher_path(@st), 
+          :method => :delete,  class: "btn btn-small btn-primary", :id => "confirm_remove_#{@seminar.id}" %>
+  <% else %>
+    <p class="btn btn-lg btn-primary remove_btn" id="delete_<%= @seminar.id %>">Delete This Class</p>
+    <%= button_to "Click here to confirm that you want to delete #{@seminar.name}", @seminar, 
+        :method => :delete, :id => "confirm_#{@seminar.id}", class: "btn btn-lg btn-primary confirm_button" %>
+  <% end %>
 </div>
 
 

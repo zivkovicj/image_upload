@@ -37,7 +37,7 @@
               <td>Class</td>
             </tr>
           </thead>
-            <%= a.collection_check_boxes(:seminar_ids, current_user.own_seminars.order(:name), :id, :name) do |b| %>
+            <%= a.collection_check_boxes(:seminar_ids, current_user.seminars.order(:name), :id, :name) do |b| %>
               <% classType = "none" %>
               <% classType = "boulderfist" if (!@objective.seminar_ids.include?(b.object.id) && @objective.preassigns.count > 0) %>
               <tr>

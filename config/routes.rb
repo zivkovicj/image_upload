@@ -53,6 +53,9 @@ Rails.application.routes.draw do
   resources :seminar_students do
     get 'removeFromClass', on: :member
   end
+  resources :seminar_teachers do
+    get 'accept_invitations', on: :collection
+  end
   resources :schools do
     get 'verify', on: :member
     post 'verify_update', on: :member

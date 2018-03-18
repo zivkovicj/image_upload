@@ -1,6 +1,7 @@
 class Seminar < ApplicationRecord
   
-  belongs_to  :user
+  has_many    :seminar_teachers, dependent: :destroy
+  has_many    :teachers, through: :seminar_teachers, :source => :user
   has_many    :seminar_students, dependent: :destroy
   has_many    :students, through: :seminar_students, :source => :user
   has_many    :objective_seminars, dependent: :destroy
@@ -9,7 +10,6 @@ class Seminar < ApplicationRecord
   has_many    :teams, through: :consultancies
   has_many    :goal_students
   
-  validates :user_id, presence: true
   validates :name, presence: true, length: { maximum: 40 }
   validates :consultantThreshold, presence: true, numericality: { only_integer: true }
   

@@ -40,6 +40,7 @@ class ActiveSupport::TestCase
     @teacher_1 = users(:archer)
     @other_teacher = users(:zacky)
     @unverified_teacher = users(:user_1)
+    @teacher_3 = @teacher_1.school.teachers[3]
     @student_1 = users(:student_1)
     @student_2 = users(:student_2)
     @student_3 = users(:student_3)
@@ -55,6 +56,7 @@ class ActiveSupport::TestCase
     @seminar = seminars(:one)
     @seminar_2 = seminars(:two)
     @seminar_3 = seminars(:three)
+    @avcne_seminar = seminars(:archer_can_view_not_edit)
   end
   
   def setup_consultancies

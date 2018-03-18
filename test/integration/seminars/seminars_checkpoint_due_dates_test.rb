@@ -69,7 +69,7 @@ class SeminarsCheckpointDueDatesTest < ActionDispatch::IntegrationTest
     test "copy due dates" do
         first_seminar = @teacher_1.first_seminar
         first_seminar.update(:checkpoint_due_dates => @array_should_be)
-        second_seminar = @teacher_1.own_seminars.second
+        second_seminar = @teacher_1.seminars.second
         assert_not_equal @array_should_be, second_seminar.checkpoint_due_dates
         
         capybara_login(@teacher_1)

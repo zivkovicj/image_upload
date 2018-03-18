@@ -1,0 +1,33 @@
+<h2>Priorities of Objectives</h2>
+<table>
+  <thead>
+      <tr>
+          <td></td>
+          <td>0 - None</td>
+          <td>1 - Low</td>
+          <td>2 - Medium</td>
+          <td>3 - High</td>
+      </tr>
+  </thead>
+  <% @seminar.objective_seminars.each do |os| %>
+      <tr>
+        <% objective = os.objective %>
+        <% petrie = [false,false,false,false] %>
+        <% petrie[os.priority] = true %>
+        <% if objective %>
+            <td><%= objective.name %></td>
+            <% 4.times do |n| %>
+                <% checkTag = "" %>
+                <% checkTag = "checked" if petrie[n] %>
+                <td>
+                  <% if @this_teacher_can_edit %>
+                    <%= radio_button("os", "priority", n, {:name => "priorities[#{os.id}]", :checked => petrie[n], :id => "#{os.id}_#{n}" }) %>
+                  <% else %>
+                    <%= petrie[n] ? "X" : "" %>
+                  <% end %>
+                </td> 
+            <% end %>
+        <% end %>
+      </tr>
+  <% end %>
+</table>

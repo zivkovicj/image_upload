@@ -43,7 +43,6 @@ Private Repo on Github
 
 
 
-
 Tried to find out why some students are occasionally being left alone in a group as the consultant. From a close look at the code, I cannot see why that's happening.
 Keep eyes open for that problem. 
 
@@ -53,23 +52,64 @@ Keep eyes open for that problem.
 2.55 ALLOW CLASSES TO HAVE MULTIPLE TEACHERS
 Sometimes teachers need to be able to share classes.
 
-Change architecture to allow for the possibility.
-Creator of class can grant privileges to other teachers
-    Viewing privileges
-    Editing privileges
+V Change architecture to allow for the possibility.
+V Creator of class can grant privileges to other teachers
+    V Viewing privileges
+    V Editing privileges
     
 Add menu option to invite other teachers.
-    Menu includes which privileges to grant the invited teachers
-    Newly-invited teacher then accepts invitation
-    So the join table needs to include an "Accepted" column
-    Teacher needs to be able to remove a class from her list without deleting the class
-    But if the only teacher with editing privileges wants to remove a class, the "Remove" option is not available. Only the "Delete" option
+    V Menu includes which privileges to grant the invited teachers
+    V Newly-invited teacher then accepts invitation
+    V Test that decling an invitation deletes the SeminarTeacher
+    V Dry up the creation of submenus
+    V Teacher needs to be able to remove a class from her list without deleting the class
+    V But if the only teacher with editing privileges wants to remove a class, the "Remove" option is not available. Only the "Delete" option
+    V Seminar_edit_view shows all teachers that share the class, along with their priviliges.
 
+
+V Other aspects that teachers cannot edit if they don't have permission
+
+V Remove an objective from a class
+V Remove a class from an objective
+V Remove a pre-requisite
+
+
+
+Migrate to add seminar_teacher
+
+Seminar.all.each do |seminar|                                                                                                              
+    seminar.teachers << Teacher.find(seminar.user_id)
+end
+
+Error in live site upon visiting objectives index
+
+
+
+
+
+LEVELS OF PRIORITY
 Allow up to five levels of priority, instead of 3
+
+
+OBJECTIVES EDITING VIEWS
+
+Editing objectives should get the same treatment as seminar editing and student view.
+Then get rid of the forced redirection to quantities, etc.
+
+
+IMPROVED APPEARANCE OF CHECKPOINT PAGE
 
 Put MrZ School image footer on the bottom of every page when printing student goals.
 But not the link. We don't want it to print that
+It might be too easy to change a goal.  Teacher can click the goal inadvertantly
+Teacher updating student's goal shouldn't change the actions
 
+
+
+
+
+ARROW KEY NAVIGATION
+The scoresheet needs to allow for arrow key navigation
 
 
 GROWTH STARS
@@ -104,14 +144,12 @@ I think I should re-initiate the solution that involves giving that student the 
 But give a little more than the median (maybe 75%) to account for the other aspects.
 
 
+LIST ABSENT STUDENTS IN DESK CONSULTANTS
+Test that absent students are featured in a separate section in DeskConsultants, not the main section
 
 TESTS TO ADD
 
-Remove an objective from a class
-Remove a class from an objective
-Ensure that when the user removes pre-reqs for an objective, the updated pre-reqs are correct. Check that it is not keeping all of the previous pre-reqs, plus any
-    new ones that the user adds.
-Test that absent students are excluded from DeskConsultants
+
 Test that students assigned as consultants have a good score in that objective
 Test that students assigned as apprentices haven't yet mastered that objective with 100%
 See what happens if users enter improper data types in different fields. And test for those.
@@ -496,8 +534,7 @@ Make sure that everything is functioning for the regular site in case people sta
 Need an icon for every class. Seminar, Teacher, etc.
 Update the materials site
 
-ARROW KEY NAVIGATION
-The scoresheet needs to allow for arrow key navigation
+
 
 AJAX STUDENT ADDING, SIMILAR TO CLASSDOJO
 Make sure that the new system makes it easy to add multiple existing students to a class at once

@@ -1,9 +1,7 @@
 class SeminarsController < ApplicationController
     before_action :logged_in_user, only: [:create]
-    before_action only: [:delete, :destroy, :show, :edit, :scoresheet, :seatingChart, :newChartByAchievement] do
-        correct_owner(Seminar)
-    end
-    before_action :redirect_for_non_admin,    only: [:index] 
+    before_action :redirect_for_non_admin,    only: [:index]
+    before_action :correct_user, only: [:destroy]
     
     include SetObjectivesAndScores
     
@@ -13,7 +11,7 @@ class SeminarsController < ApplicationController
     end
     
     def create
-        @seminar = current_user.own_seminars.build(seminar_params)
+        @seminar = Seminar.new(seminar_params)
         if @seminar.save
             flash[:success] = "Class Created"
             update_current_class
@@ -33,7 +31,7 @@ class SeminarsController < ApplicationController
   
     def show
         @seminar = Seminar.find(params[:id])
-        @teacher = @seminar.user
+        @teachers = @seminar.teachers
         set_objectives_and_scores(false)
         @students = @seminar.students.order(:last_name)
         update_current_class
@@ -41,6 +39,10 @@ class SeminarsController < ApplicationController
     
     def edit
         @seminar = Seminar.find(params[:id])
+        @teacher = current_user
+        @school = @teacher.school if @teacher.verified
+        @objectives = @seminar.objectives.order(:name)
+        @this_teacher_can_edit = @teacher.can_edit_this_seminar(@seminar)
         update_current_class
     end
 
@@ -56,10 +58,9 @@ class SeminarsController < ApplicationController
     
     def destroy
         @seminar = Seminar.find(params[:id])
-        @user = @seminar.user
         @seminar.destroy
         flash[:success] = "Class Deleted"
-        redirect_to @user
+        redirect_to current_user
     end
     
     
@@ -69,7 +70,7 @@ class SeminarsController < ApplicationController
     
     def scoresheet
         @seminar = Seminar.find(params[:id])
-        @teacher = @seminar.user
+        @teacher = current_user
         @students = @seminar.students.order(:last_name)
         set_objectives_and_scores(false)
         update_current_class
@@ -90,7 +91,7 @@ class SeminarsController < ApplicationController
         
         def correct_user
             @seminar = Seminar.find(params[:id])
-            redirect_to(login_url) unless current_user && (current_user.own_seminars.include?(@seminar) || current_user.type == "Admin")
+            redirect_to(login_url) unless current_user && (current_user.type == "Admin" || current_user.can_edit_this_seminar(@seminar))
         end
         
         def set_checkpoint_due_dates

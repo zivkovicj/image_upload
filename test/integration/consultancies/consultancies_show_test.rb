@@ -65,12 +65,10 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @own_assign.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 1)
         @objective_zero_priority.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 0) # To test that student who requested this doesn't get a group.
             
-        @teacher = @seminar.user
         @cThresh = @seminar.consultantThreshold
     end
     
     def method_setup
-        @teacher = @seminar.user
         @cThresh = @seminar.consultantThreshold
         @consultancy = Consultancy.create(:seminar => @seminar)
         @students = setup_present_students
@@ -81,7 +79,8 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     def contrived_setup
-        @seminar = Seminar.create(:name => "Contrived Seminar", :user => @teacher_1)
+        @seminar = Seminar.create(:name => "Contrived Seminar")
+        @seminar.teachers << @teacher_1
         @c_obj_1 = @seminar.objectives.create(:name => "Contrived Already Mastered Objective")
         @c_obj_2 = @seminar.objectives.create(:name => "Contrived Pre-Objective")
         @c_obj_3 = @seminar.objectives.create(:name => "Contrived Main-Objective")
