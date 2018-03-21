@@ -49,52 +49,27 @@ Keep eyes open for that problem.
 
 
 
-2.55 ALLOW CLASSES TO HAVE MULTIPLE TEACHERS
-Sometimes teachers need to be able to share classes.
 
+2.56 LEVELS OF PRIORITY
 
-V Change architecture to allow for the possibility.
-V Creator of class can grant privileges to other teachers
-    V Viewing privileges
-    V Editing privileges
-    
-Add menu option to invite other teachers.
-    V Menu includes which privileges to grant the invited teachers
-    V Newly-invited teacher then accepts invitation
-    V Test that decling an invitation deletes the SeminarTeacher
-    V Dry up the creation of submenus
-    V Teacher needs to be able to remove a class from her list without deleting the class
-    V But if the only teacher with editing privileges wants to remove a class, the "Remove" option is not available. Only the "Delete" option
-    V Seminar_edit_view shows all teachers that share the class, along with their priviliges.
-
-
-V Other aspects that teachers cannot edit if they don't have permission
-
-V Remove an objective from a class
-V Remove a class from an objective
-V Remove a pre-requisite
-
-V Migrate to add seminar_teacher
-
-V Seminar.all.each do |seminar|                                                                                                              
-    V seminar.teachers << Teacher.find(seminar.user_id)
-V end
-
-Error in live site upon visiting objectives index
+Allow up to five levels of priority, instead of 3
 
 "Accept Invitations" list is one long row.  Should be many rows. 
 
 Cannot "Stop Editing Privileges" from self
 
+Include a zero in the percent array
 
-LEVELS OF PRIORITY
-Allow up to five levels of priority, instead of 3
+Removing a student from a class isn't working correctly.  The first button remains.  The second button doesn't become visible.
+    Isn't there a test for this?
 
+The error with the objective index occurs for admin
 
-OBJECTIVES EDITING VIEWS
+And also with creating a new objective
 
-Editing objectives should get the same treatment as seminar editing and student view.
-Then get rid of the forced redirection to quantities, etc.
+Test that students assigned as consultants have a good score in that objective
+Test that students assigned as apprentices haven't yet mastered that objective with 100%
+
 
 
 IMPROVED APPEARANCE OF CHECKPOINT PAGE
@@ -107,14 +82,27 @@ Teacher updating student's goal shouldn't change the actions
 
 
 
+OBJECTIVES EDITING VIEWS
+
+Editing objectives should get the same treatment as seminar editing and student view.
+Then get rid of the forced redirection to quantities, etc.
+Don't show the regular navribbon while editing label quantities.
+
+
+
+
+
+
+
 
 ARROW KEY NAVIGATION
 The scoresheet needs to allow for arrow key navigation
 
 
 
-ARROW KEY NAVIGATION
-The scoresheet needs to allow for arrow key navigation
+QUESTIONS YOU MISSED
+
+Students can pull up questions they missed on quizzes. 
 
 
 GROWTH STARS
@@ -152,11 +140,16 @@ But give a little more than the median (maybe 75%) to account for the other aspe
 LIST ABSENT STUDENTS IN DESK CONSULTANTS
 Test that absent students are featured in a separate section in DeskConsultants, not the main section
 
+
+INCLUDE GOALS IN SCORESHEET
+
+And in student's total scores
+
+
+
+
 TESTS TO ADD
 
-
-Test that students assigned as consultants have a good score in that objective
-Test that students assigned as apprentices haven't yet mastered that objective with 100%
 See what happens if users enter improper data types in different fields. And test for those.
 Deleting a question
 Deleting a picture
@@ -226,6 +219,10 @@ Can erase most of the javascript for choosing goals, targets, checkpoints, and a
     Or maybe not, since I'll need to replace the best-in-place to get my tests working.
     Either that, or I need to update my tests to RSpec
 Student Goal Icon
+Desk Consultants should have “Max Group Size” for topics such as Chess.
+There should also be Max Number of groups, so that I don’t end up with more than four groups doing chess when I have four boards.
+I also need to add multiple, already-existing students to a class at once.
+Searching by student number threw an error.
 
 
 

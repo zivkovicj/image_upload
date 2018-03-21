@@ -1,5 +1,30 @@
 
 
+2.55 ALLOW CLASSES TO HAVE MULTIPLE TEACHERS
+Sometimes teachers need to be able to share classes.
+Change architecture to allow for the possibility.
+Creator of class can grant privileges to other teachers
+    Viewing privileges
+    Editing privileges
+Add menu option to invite other teachers.
+    Menu includes which privileges to grant the invited teachers
+    Newly-invited teacher then accepts invitation
+    Test that decling an invitation deletes the SeminarTeacher
+    Dry up the creation of submenus
+    Teacher needs to be able to remove a class from her list without deleting the class
+    But if the only teacher with editing privileges wants to remove a class, the "Remove" option is not available. Only the "Delete" option
+    Seminar_edit_view shows all teachers that share the class, along with their priviliges.
+Other aspects that teachers cannot edit if they don't have permission
+Remove an objective from a class
+Remove a class from an objective
+Remove a pre-requisite
+Migrate to add seminar_teacher
+Seminar.all.each do |seminar|                                                                                                              
+    seminar.teachers << Teacher.find(seminar.user_id)
+end
+
+
+
 
 2.54 STUDENT VIEW
 
