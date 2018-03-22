@@ -235,12 +235,12 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     test "rank objectives by need" do
-        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
+        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
         @rank_objectives_by_need = @seminar.rank_objectives_by_need
         assert_equal @objective_40, @rank_objectives_by_need[0]
         
         @seminar.seminar_students.find_by(:user => @student_4).update(:learn_request => @objective_30.id)
-        @objective_30.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
+        @objective_30.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
         @objective_50.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 0)
         @seminar.seminar_students.find_by(:user => @student_5).update(:learn_request => @objective_20.id)
         @seminar.reload
@@ -280,9 +280,9 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     test "choose consultants" do
-        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
+        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
         @objective_40.objective_students.update_all(:points => 0)
-        @objective_50.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
+        @objective_50.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
         @objective_50.objective_students.update_all(:points => 0)
         @objective_20.objective_students.limit(12).update_all(:points => 3)
         @student_4.seminar_students.find_by(:seminar => @seminar).update(:pref_request => 2)
@@ -388,10 +388,10 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     test "place apprentices by request" do
-        @objective_20.objective_seminars.find_by(:seminar => @seminar).update(:priority => 3)
+        @objective_20.objective_seminars.find_by(:seminar => @seminar).update(:priority => 5)
         @student_1.objective_students.find_by(:objective => @objective_20).update(:points => 8)
         request_obj = Objective.find(@ss_6.learn_request)
-        request_obj.objective_seminars.find_by(:seminar => @seminar).update(:priority => 3)
+        request_obj.objective_seminars.find_by(:seminar => @seminar).update(:priority => 5)
         @student_2.objective_students.find_by(:objective => request_obj).update(:points => 8)
         
         method_setup

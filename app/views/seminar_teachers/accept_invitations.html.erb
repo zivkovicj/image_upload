@@ -2,11 +2,13 @@
 
 <table>
     <% @unaccepted_classes.each do |seminar| %>
-        <% @st = seminar.seminar_teachers.find_by(:user => current_user) %>
-        <td><%= seminar.name %></td>
-        <td><%= link_to "Accept", seminar_teacher_path(@st, :seminar_teacher => {:accepted => true}, :came_from_accepting_invites => true), 
-                        :method => :put,  class: "btn btn-small btn-primary", :id => "accept_#{@st.id}" %></td>
-        <td><%= link_to "Decline", seminar_teacher_path(@st), 
-                        :method => :delete,  class: "btn btn-small btn-primary", :id => "decline_#{@st.id}" %></td>
+    <% @st = seminar.seminar_teachers.find_by(:user => current_user) %>
+        <tr>
+            <td><%= seminar.name %></td>
+            <td><%= link_to "Accept", seminar_teacher_path(@st, :seminar_teacher => {:accepted => true}, :came_from_accepting_invites => true), 
+                            :method => :put,  class: "btn btn-small btn-primary", :id => "accept_#{@st.id}" %></td>
+            <td><%= link_to "Decline", seminar_teacher_path(@st), 
+                            :method => :delete,  class: "btn btn-small btn-primary", :id => "decline_#{@st.id}" %></td>
+        </tr>
     <% end %>
 </table>

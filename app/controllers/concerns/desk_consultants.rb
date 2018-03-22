@@ -61,8 +61,8 @@ module DeskConsultants
         @consultancy.teams.count >= @consultantsNeeded
       end
       
-      # First look at the priority 3 objectives
-      @seminar.objectives.select{|y| y.priority_in(@seminar) == 3}.each do |obj|
+      # First look at the priority 5 objectives
+      @seminar.objectives.select{|y| y.priority_in(@seminar) == 5}.each do |obj|
         still_needed = [(@consultantsNeeded - @consultancy.teams.count), @need_hash[obj.id]].min
         consult_list_still_needed.select{|x| x.score_on(obj) >= @cThresh }.take(still_needed).each do |student|
           establish_new_group(student, obj, true)

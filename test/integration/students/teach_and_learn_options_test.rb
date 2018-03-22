@@ -15,7 +15,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
         assert_equal num_of_objectives - 1, @student_1.teach_options(@seminar, @seminar.rank_objectives_by_need).count  # (-1) becaues one of the objectives has zero priority
         assert_not_equal @objective_10, @student_1.teach_options(@seminar, @seminar.rank_objectives_by_need)[0]
         
-        @seminar.objective_seminars.find_by(:objective => @objective_10).update(:priority => 3)
+        @seminar.objective_seminars.find_by(:objective => @objective_10).update(:priority => 5)
         assert_equal @objective_10, @student_1.teach_options(@seminar, @seminar.rank_objectives_by_need)[0]
         assert @student_1.teach_options(@seminar, @seminar.rank_objectives_by_need).include?(@objective_20)
         
@@ -50,7 +50,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
         
         newest_obj = @seminar.objectives.last
         assert_not_equal newest_obj, @student_1.learn_options(@seminar, @seminar.rank_objectives_by_need)[0]
-        @seminar.objective_seminars.find_by(:objective => newest_obj).update(:priority => 3)
+        @seminar.objective_seminars.find_by(:objective => newest_obj).update(:priority => 5)
         assert_equal newest_obj, @student_1.learn_options(@seminar, @seminar.rank_objectives_by_need)[0]
     end
     

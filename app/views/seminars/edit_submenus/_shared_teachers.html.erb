@@ -17,8 +17,10 @@
             <td>
               <% if @st.can_edit %>
                 Yes &emsp;
-                <%= link_to "Stop Editing Privileges", seminar_teacher_path(@st, :seminar_teacher => {:can_edit => false}), 
-                  :method => :put,  class: "btn btn-small btn-primary", :id => "stop_edit_privileges_#{teacher.id}" %>
+                <% unless teacher == @teacher %>
+                  <%= link_to "Stop Editing Privileges", seminar_teacher_path(@st, :seminar_teacher => {:can_edit => false}), 
+                    :method => :put,  class: "btn btn-small btn-primary", :id => "stop_edit_privileges_#{teacher.id}" %>
+                <% end %>
               <% else %>
                 No &emsp;
                 <%= link_to "Give Editing Privileges", seminar_teacher_path(@st, :seminar_teacher => {:can_edit => true}), 
