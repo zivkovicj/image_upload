@@ -117,6 +117,14 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         end
     end
     
+    def test_all_apprentices
+        @consultancy.teams.each do |team|
+            team.users.each do |member|
+                assert member.score_on(team.objective) <= @seminar.consultantThreshold unless member == team.consultant
+            end
+        end
+    end
+    
     test "show consultancy" do
         capybara_login(@teacher_1)
         click_on("desk_consult_#{@seminar.id}")
@@ -235,12 +243,12 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     test "rank objectives by need" do
-        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
+        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
         @rank_objectives_by_need = @seminar.rank_objectives_by_need
         assert_equal @objective_40, @rank_objectives_by_need[0]
         
         @seminar.seminar_students.find_by(:user => @student_4).update(:learn_request => @objective_30.id)
-        @objective_30.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
+        @objective_30.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
         @objective_50.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 0)
         @seminar.seminar_students.find_by(:user => @student_5).update(:learn_request => @objective_20.id)
         @seminar.reload
@@ -280,9 +288,9 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     test "choose consultants" do
-        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
+        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
         @objective_40.objective_students.update_all(:points => 0)
-        @objective_50.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 3)
+        @objective_50.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
         @objective_50.objective_students.update_all(:points => 0)
         @objective_20.objective_students.limit(12).update_all(:points => 3)
         @student_4.seminar_students.find_by(:seminar => @seminar).update(:pref_request => 2)
@@ -341,9 +349,9 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
         # Student whose request has zero priority did not get that request
         # (This could happen if the priority was changed after the request was made)
-        assert_not_equal Objective.find(@ss_46.teach_request), @consultancy.teams.find_by(:consultant => @student_46).objective
         assert_not_nil @consultancy.teams.find_by(:consultant => @student_46)
-        
+        assert_not_equal Objective.find(@ss_46.teach_request), @consultancy.teams.find_by(:consultant => @student_46).objective
+    
         test_all_consultants
     end
     
@@ -388,16 +396,17 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     test "place apprentices by request" do
-        @objective_20.objective_seminars.find_by(:seminar => @seminar).update(:priority => 3)
+        @objective_20.objective_seminars.find_by(:seminar => @seminar).update(:priority => 5)
         @student_1.objective_students.find_by(:objective => @objective_20).update(:points => 8)
         request_obj = Objective.find(@ss_6.learn_request)
-        request_obj.objective_seminars.find_by(:seminar => @seminar).update(:priority => 3)
+        request_obj.objective_seminars.find_by(:seminar => @seminar).update(:priority => 5)
         @student_2.objective_students.find_by(:objective => request_obj).update(:points => 8)
         
         method_setup
         choose_consultants  # This is tested earlier, but I also wanted to test consultants with a less-contrived setup.
         test_all_consultants
         place_apprentices_by_requests
+        test_all_apprentices
         
         # Students who had a request available received their request.
         assert request_obj, @student_6.teams.find_by(:consultancy => @consultancy).objective.id
@@ -455,6 +464,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_equal t4, find_placement(@c_stud_4)
         assert_equal 2, t4.users.count
         assert t4.users.include?(@c_stud_4)
+        test_all_apprentices
     end
     
     test "place apprentices by mastery" do
@@ -490,6 +500,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @seminar.students.each do |student|
             assert student.teams.where(:consultancy => @consultancy).count < 2
         end
+        test_all_apprentices
     end
     
     test "check for lone students" do
@@ -513,6 +524,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert @consultancy.teams.select{|x| x.users.count == 1}.count > 1
         check_for_lone_students
         assert_equal 0, @consultancy.teams.select{|x| x.users.count == 1}.count
+        test_all_apprentices
     end
     
     test "new place for lone students" do
@@ -582,6 +594,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         assert_equal 1, @consultancy.teams.where(:bracket => 1).count
         unplaced_team = @consultancy.teams.find_by(:bracket => 1)
+    
         assert unplaced_team.users.include?(@student_5)
         assert unplaced_team.users.include?(@student_10)
     end

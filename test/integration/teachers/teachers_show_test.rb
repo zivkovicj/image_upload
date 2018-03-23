@@ -53,7 +53,7 @@ class TeachersShowTest < ActionDispatch::IntegrationTest
     end
     
     test "unverified message should not appear for non mentor teacher" do
-        assert @school.check_for_unverified_teachers
+        assert @school.unverified_teachers
         
         capybara_login(@wrong_teacher)
         

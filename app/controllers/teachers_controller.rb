@@ -24,7 +24,7 @@ class TeachersController < ApplicationController
     @seminars = @teacher.seminars
     current_user.update(:current_class => nil)
     @school = @teacher.school
-    @unverified_teachers = @school.check_for_unverified_teachers if @school.mentor == @teacher
+    @unverified_teachers = @school.unverified_teachers if @school.mentor == @teacher
     @unaccepted_classes = @teacher.unaccepted_classes
   end
   

@@ -52,23 +52,21 @@ Keep eyes open for that problem.
 
 2.56 LEVELS OF PRIORITY
 
-Allow up to five levels of priority, instead of 3
-
-"Accept Invitations" list is one long row.  Should be many rows. 
-
-Cannot "Stop Editing Privileges" from self
-
-Include a zero in the percent array
-
-Removing a student from a class isn't working correctly.  The first button remains.  The second button doesn't become visible.
-    Isn't there a test for this?
+V Allow up to five levels of priority, instead of 3
+V "Accept Invitations" list is one long row.  Should be many rows. 
+V Include a zero in the percent array
+V Cannot "Stop Editing Privileges" from self
+V Can only invite approved teachers to share classes
+V Rename "unverified_teachers" to simply "unverified_teachers"
+V Buttons are too big for their table rows.
 
 The error with the objective index occurs for admin
-
 And also with creating a new objective
+But it still isn't happening in development environment.
 
-Test that students assigned as consultants have a good score in that objective
-Test that students assigned as apprentices haven't yet mastered that objective with 100%
+
+
+
 
 
 
@@ -79,6 +77,8 @@ But not the link. We don't want it to print that
 It might be too easy to change a goal.  Teacher can click the goal inadvertantly
 Teacher updating student's goal shouldn't change the actions
 
+
+Try out suggestion for best_in_place test helpers
 
 
 
@@ -236,6 +236,9 @@ Score
 Teach Request
 Learn Request
 Pref Request
+
+Removing a student needs to be a poltergeist test if I'm going to check the confirm button appearing.
+    And the student being removed upon clicking a <p>
 
 
 

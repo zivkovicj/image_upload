@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StudentsMoveClassTest < ActionDispatch::IntegrationTest
+class StudentsMoveOrRemoveTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
@@ -52,6 +52,20 @@ class StudentsMoveClassTest < ActionDispatch::IntegrationTest
         assert_nil new_gs_2.checkpoints.find_by(:sequence => 1).achievement
         assert_nil new_gs_1.checkpoints.find_by(:sequence => 2).teacher_comment
         assert_nil new_gs_1.checkpoints.find_by(:sequence => 3).student_comment
+    end
+    
+    test "remove student from class" do
+        capybara_login(@teacher_1)
+        click_on("scoresheet_#{@seminar.id}")
+        click_on(@student_2.last_name_first)
+        click_on("Edit/Move Student")
+        find("#delete_#{@seminar.id}").click
+        
+        @student = @student_2
+        click_on("confirm_#{@seminar.id}")
+        
+        assert_not @seminar.students.include?(@student_2)
+        assert_not @student_2.seminars.include?(@seminar)
     end
     
 end

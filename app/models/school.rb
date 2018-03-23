@@ -9,7 +9,11 @@ class School < ApplicationRecord
     validates :city, presence: true
     validates :state, presence: true
     
-    def check_for_unverified_teachers
+    def verified_teachers
+        self.teachers.where(:verified => 1) 
+    end
+    
+    def unverified_teachers
         self.teachers.where(:verified => 0)
     end
 end

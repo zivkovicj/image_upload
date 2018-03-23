@@ -27,9 +27,8 @@
     <% current_user.seminars.each do |sem_to_cut| %>
       <% if sem_to_cut.students.include?(@student) %>
         <% this_ss = sem_to_cut.seminar_students.find_by(user: @student) %>
-        <p class="btn btn-lg btn-primary remove_btn" id="delete_from_<%= sem_to_cut.id %>">Remove <%= @student.first_name %> from <%= sem_to_cut.name %></p>
-        <%= button_to "Click here to confirm that you want to remove #{@student.first_name} from #{sem_to_cut.name}", this_ss, 
-            :method => :delete, :id => "confirm_delete_#{sem_to_cut.id}", class: "btn btn-lg btn-primary confirm_button" %><br/>
+        <p class="btn btn-lg btn-primary remove_btn" id="delete_<%= sem_to_cut.id %>">Remove <%= @student.first_name %> from <%= sem_to_cut.name %></p>
+        <%= button_to "Confirm", this_ss, :method => :delete, :id => "confirm_#{sem_to_cut.id}", class: "btn btn-lg btn-primary confirm_button" %><br/>
       <% end %>
     <% end %>
   <% end %>

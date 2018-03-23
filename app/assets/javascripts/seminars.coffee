@@ -301,6 +301,7 @@ ready = ->
         $('.confirm_button').hide()
         $('.remove_btn').on "click", (event) ->
             id_to_fade = $(this).prop("id").replace('delete_','')
+            $('#confirm_'+id_to_fade).text("Confirm")
             $('#confirm_'+id_to_fade).fadeIn()
             $('#cancel_'+id_to_fade).fadeIn()
             $(this).removeClass("btn btn-small btn-primary")

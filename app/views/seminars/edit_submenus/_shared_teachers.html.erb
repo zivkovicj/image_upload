@@ -7,18 +7,20 @@
       <td>Can View</td>
       <td>Can Edit</td>
     </thead>
-    <% @school.teachers.each do |teacher| %>
+    <% @school.verified_teachers.each do |teacher| %>
       <% @st = SeminarTeacher.find_by(:seminar => @seminar, :user => teacher) %>
       <tr>
         <td><%= teacher.full_name_with_title %></td>
         <% if @this_teacher_can_edit %>
           <% if @st %>
             <td>Yes</td>
-            <td>
+            <td class="button-within">
               <% if @st.can_edit %>
                 Yes &emsp;
-                <%= link_to "Stop Editing Privileges", seminar_teacher_path(@st, :seminar_teacher => {:can_edit => false}), 
-                  :method => :put,  class: "btn btn-small btn-primary", :id => "stop_edit_privileges_#{teacher.id}" %>
+                <% unless teacher == @teacher %>
+                  <%= link_to "Stop Editing Privileges", seminar_teacher_path(@st, :seminar_teacher => {:can_edit => false}), 
+                    :method => :put,  class: "btn btn-small btn-primary", :id => "stop_edit_privileges_#{teacher.id}" %>
+                <% end %>
               <% else %>
                 No &emsp;
                 <%= link_to "Give Editing Privileges", seminar_teacher_path(@st, :seminar_teacher => {:can_edit => true}), 
@@ -26,7 +28,7 @@
               <% end %>
             </td>
           <% else %>
-            <td colspan="2"><%= link_to "Invite", new_seminar_teacher_path(:user_id => teacher.id, :seminar_id => @seminar.id), 
+            <td colspan="2" class="button-within"><%= link_to "Invite", new_seminar_teacher_path(:user_id => teacher.id, :seminar_id => @seminar.id), 
               :method => :get, class: "btn btn-small btn-primary", :id => "invite_teacher_#{teacher.id}" %></td>
           <% end %>
         <% else %>
