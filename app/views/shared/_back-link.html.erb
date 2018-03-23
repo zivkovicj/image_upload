@@ -1,5 +1,7 @@
-
-<% if current_user&.current_class %>
+<% if current_user&.type == "Admin" %>
+    <% back_message = "Admin Page" %>
+    <% this_link = current_user %>
+<% elsif current_user&.current_class %>
     <% seminar = Seminar.find(current_user.current_class) %>
     <% if current_user.type == "Teacher" %>
         <% back_message = "Back to #{seminar.name} Scoresheet" %>
@@ -9,7 +11,7 @@
         <% this_link = student_view_seminar_path(:user => current_user.id, :id => seminar.id) %>
     <% end %>
 <% else %>
-    <% back_message = current_user.type == "Admin" ? "Admin Page" : "Back to Your Profile" %>
+    <% back_message = "Profile" %>
     <% this_link = current_user %>
 <% end %>
 
