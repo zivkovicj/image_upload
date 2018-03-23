@@ -59,12 +59,7 @@ class StudentsMoveOrRemoveTest < ActionDispatch::IntegrationTest
         click_on("scoresheet_#{@seminar.id}")
         click_on(@student_2.last_name_first)
         click_on("Edit/Move Student")
-        
-        assert_selector('p', :id => "confirm_#{@seminar.id}", :text => "Mrifnoc")
-        
         find("#delete_#{@seminar.id}").click
-
-        assert_selector('p', :text => "Confirm")
         
         @student = @student_2
         click_on("confirm_#{@seminar.id}")

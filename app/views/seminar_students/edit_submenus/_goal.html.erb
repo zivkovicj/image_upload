@@ -47,7 +47,7 @@
                 <td></td>
                 <td>
                     <% if checkpoint.teacher_comment %>
-                        <strong><%= @seminar.user.name_with_title %></strong>&emsp;<%= checkpoint.teacher_comment %>
+                        <strong><%= @seminar.teachers.first.name_with_title %></strong>&emsp;<%= checkpoint.teacher_comment %>
                     <% end %>
                 </td>
             </tr>

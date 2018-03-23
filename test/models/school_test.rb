@@ -8,7 +8,7 @@ class SchoolTest < ActiveSupport::TestCase
   
   test "unverified_teachers" do
     @last_teacher = Teacher.last
-    @unverified_teachers = @school.check_for_unverified_teachers
+    @unverified_teachers = @school.unverified_teachers
     assert @unverified_teachers.include?(@last_teacher)
     assert_not @unverified_teachers.include?(@teacher_1)
   end

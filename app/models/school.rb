@@ -13,7 +13,7 @@ class School < ApplicationRecord
         self.teachers.where(:verified => 1) 
     end
     
-    def check_for_unverified_teachers
+    def unverified_teachers
         self.teachers.where(:verified => 0)
     end
 end

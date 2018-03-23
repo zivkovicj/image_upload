@@ -32,7 +32,7 @@ class SchoolsController < ApplicationController
     
     def verify
         @school = School.find(params[:id])
-        @unverified_teachers = @school.check_for_unverified_teachers
+        @unverified_teachers = @school.unverified_teachers
     end
     
     def verify_update
