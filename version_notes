@@ -1,5 +1,21 @@
 
 
+2.56 LEVELS OF PRIORITY
+
+Allow up to five levels of priority, instead of 3
+"Accept Invitations" list is one long row.  Should be many rows. 
+Include a zero in the percent array
+Cannot "Stop Editing Privileges" from self
+Can only invite approved teachers to share classes
+Rename "unverified_teachers" to simply "unverified_teachers"
+Buttons are too big for their table rows.
+Live site is throwing an error with objective index for admin
+
+
+
+
+
+
 2.55 ALLOW CLASSES TO HAVE MULTIPLE TEACHERS
 Sometimes teachers need to be able to share classes.
 Change architecture to allow for the possibility.
