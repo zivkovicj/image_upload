@@ -89,21 +89,6 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         assert_equal 2, @seminar.term
         assert_equal 3, @seminar.which_checkpoint
     end
-    
-    test "print screen and back" do
-        capybara_login(@teacher_1)
-        go_to_goals
-        
-        click_on("Printable Version")
-        
-        assert_text("Print Student Goal Checkpoints")
-        assert_no_text("Student Goals for #{@seminar.name}")
-        
-        click_on("Back to Viewing Goals")
-        
-        assert_no_text("Print Student Goal Checkpoints")
-        assert_text("Student Goals for #{@seminar.name}")
-    end
 
         
 end

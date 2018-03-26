@@ -8,6 +8,7 @@ class GoalStudentsController < ApplicationController
     def print
        @seminar = Seminar.find(params[:seminar]) 
        goals_stuff
+       render :layout => false
     end
     
     def edit

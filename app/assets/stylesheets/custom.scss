@@ -592,7 +592,11 @@ th.rotate > div > span {
 }
 
 @media print {
-  .break-here {
+  .break_here {
     page-break-before: always;
+  }
+  
+  .no_print, .no_print *  {
+    display: none !important;
   }
 }

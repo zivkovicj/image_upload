@@ -49,37 +49,21 @@ Keep eyes open for that problem.
 
 
 
-
-2.56 LEVELS OF PRIORITY
-
-V Allow up to five levels of priority, instead of 3
-V "Accept Invitations" list is one long row.  Should be many rows. 
-V Include a zero in the percent array
-V Cannot "Stop Editing Privileges" from self
-V Can only invite approved teachers to share classes
-V Rename "unverified_teachers" to simply "unverified_teachers"
-V Buttons are too big for their table rows.
-
-The error with the objective index occurs for admin
-And also with creating a new objective
-But it still isn't happening in development environment.
-
-
-
-
-
-
-
 IMPROVED APPEARANCE OF CHECKPOINT PAGE
 
-Put MrZ School image footer on the bottom of every page when printing student goals.
-But not the link. We don't want it to print that
-It might be too easy to change a goal.  Teacher can click the goal inadvertantly
-Teacher updating student's goal shouldn't change the actions
+V Put MrZ School image footer on the bottom of every page when printing student goals.
+V But not the link. We don't want it to print that
+V Test that visits goal_students/print
 
 
+
+
+ARROW KEY NAVIGATION
+The scoresheet needs to allow for arrow key navigation
+
+
+IN-PLACE EDITING IN GOALS INDEX
 Try out suggestion for best_in_place test helpers
-
 
 
 OBJECTIVES EDITING VIEWS
@@ -94,9 +78,6 @@ Don't show the regular navribbon while editing label quantities.
 
 
 
-
-ARROW KEY NAVIGATION
-The scoresheet needs to allow for arrow key navigation
 
 
 
@@ -223,6 +204,7 @@ Desk Consultants should have “Max Group Size” for topics such as Chess.
 There should also be Max Number of groups, so that I don’t end up with more than four groups doing chess when I have four boards.
 I also need to add multiple, already-existing students to a class at once.
 Searching by student number threw an error.
+It might be too easy to change a goal.  Teacher can click the goal inadvertantly
 
 
 

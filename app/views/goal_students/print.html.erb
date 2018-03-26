@@ -1,76 +1,91 @@
-<% provide(:title, 'Print Student Goal Checkpoints') %>
-<% provide(:button_text, 'View Goals') %>
-
-<% provide(:headerText, "Print Student Goal Checkpoints") %>
-<% provide(:headerPic, 'objectives.png') %>
 
 <%= render 'shared/big_link', link_link: goal_students_path(:seminar => @seminar), 
         link_text: "Back to Viewing Goals", link_image: "apple.jpg"  %>
-<%= render 'shared/headline' %>
-
-
-<h2>Printable Goals for Term <%= @this_term + 1 %>, Checkpoint <%= @this_checkpoint + 1 %></h2>
+</br>
+</br>
+<div class="singleOption">
+    </br>
+    <h1><%= @seminar.name %></h1>
+    </br>
+    <h1><span class="no_print">Printable</span> Goals for Term <%= @this_term + 1 %>, Checkpoint <%= @this_checkpoint + 1 %></h1>
+    </br>
+    <h2 class="no_print">Click the "Print" feature in your web browser.</h2>
+    </br>
+    <h2 class="no_print">We recommend turning off headers and footers.</h2>
+    </br>
+    </br>
+</div>
+</br>
+</br>
+</br>
+</br>
 
 <% them_kids = @seminar.students.order(:last_name) %>
 
 <% them_kids.each do |stud| %>
-    <div class="break-here"></div>
-    </br></br></br>
-    <h2><%= stud.first_name %> <%= stud.last_name %></h2>
+    <div class="break_here"></div>
     </br>
-    <% this_gs = stud.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
-    
-    <h4>Your Goal for <%= (@this_term + 1).ordinalize %> Term </h4>
-    <h3><%= this_gs.goal ? this_gs.statement_with_target : "No goal set." %></h3>
-    </br>
-    
-    <table class="table-borderless">
-        <% this_gs.checkpoints_in_order.each do |checkpoint| %>
-            <% this_achievement = checkpoint.achievement %>
-            <% this_sequence = checkpoint.sequence %>
-            <tr>
-                <td><h4><%= this_sequence + 1 %>) &nbsp;</h4></td>
-                <% if this_achievement %>
-                    <% was_made =  this_gs.target && this_achievement >= this_gs.target %>
-                    <% this_color = was_made ? "#AAFFAA" : "#FFFFFF" %>
-                    <td bgcolor="<%= this_color %>">
-                        <h3 class="center">
-                            <%= this_achievement %>
-                            <% if was_made %>
-                                </br>
-                                <small>Made!</small>
-                            <% end %>
-                        </h3>
+    <div class="singleOption">
+        <h1><%= stud.first_name %> <%= stud.last_name %></h1>
+        </br>
+        <% this_gs = stud.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
+        
+        <h3>Your Goal for <%= (@this_term + 1).ordinalize %> Term </h3>
+        <h2><%= this_gs.goal ? this_gs.statement_with_target : "No goal set." %></h2>
+        </br>
+        
+        <table class="table-borderless">
+            <% this_gs.checkpoints_in_order.each do |checkpoint| %>
+                <% this_achievement = checkpoint.achievement %>
+                <% this_sequence = checkpoint.sequence %>
+                <tr>
+                    <td><h3><%= this_sequence + 1 %>) &nbsp;</h3></td>
+                    <% if this_achievement %>
+                        <% was_made =  this_gs.target && this_achievement >= this_gs.target %>
+                        <% this_color = was_made ? "#AAFFAA" : "#FFFFFF" %>
+                        <td bgcolor="<%= this_color %>">
+                            <h2 class="center">
+                                <%= this_achievement %>
+                                <% if was_made %>
+                                    </br>
+                                    <small>Made!</small>
+                                <% end %>
+                            </h2>
+                        </td>
+                    <% else %>
+                        <td></td>
+                    <% end %>
+                    <td>
+                        <h3>&nbsp; <%= checkpoint.statement %></h3>
                     </td>
-                <% else %>
+                </tr>
+                <tr>
+                    <% orig_due_date = Date.strptime(@seminar.checkpoint_due_dates[@this_term][checkpoint.sequence], "%m/%d/%Y") %>
+                    <% due_date_to_disp = orig_due_date.strftime("%A, %B %e") %>
                     <td></td>
+                    <td></td>
+                    <td>&emsp; &emsp; Due <%= due_date_to_disp %></td>
+                </tr>
+                <% if checkpoint.student_comment %>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td>&emsp; &emsp; <strong>Me</strong>&emsp; <%= checkpoint.student_comment %></td>
+                    </tr>
                 <% end %>
-                <td>
-                    <h4>&nbsp; <%= checkpoint.statement %></h4>
-                </td>
-            </tr>
-            <tr>
-                <% orig_due_date = Date.strptime(@seminar.checkpoint_due_dates[@this_term][checkpoint.sequence], "%m/%d/%Y") %>
-                <% due_date_to_disp = orig_due_date.strftime("%A, %B %e") %>
-                <td></td>
-                <td></td>
-                <td>&emsp; &emsp; Due <%= due_date_to_disp %></td>
-            </tr>
-            <% if checkpoint.student_comment %>
-                <tr>
-                    <td colspan="2"></td>
-                    <td>&emsp; &emsp; <strong>Me</strong>&emsp; <%= checkpoint.student_comment %></td>
-                </tr>
+                <% if checkpoint.teacher_comment %>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td>&emsp; &emsp; <strong><%= @seminar.teachers.first.name_with_title %></strong>&emsp;<%= checkpoint.teacher_comment %></td>
+                    </tr>
+                <% end %>
             <% end %>
-            <% if checkpoint.teacher_comment %>
-                <tr>
-                    <td colspan="2"></td>
-                    <td>&emsp; &emsp; <strong><%= @seminar.teachers.first.name_with_title %></strong>&emsp;<%= checkpoint.teacher_comment %></td>
-                </tr>
-            <% end %>
-        <% end %>
-    </table>
-    
+        </table>
+        </br>
+    </div>
+    </br>
+    <%= image_tag("logo.jpg") %>
+    <h3>www.MrZSchool.com</h3>
+    </br>
 
 <% end %>
 
