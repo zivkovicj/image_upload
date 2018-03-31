@@ -49,17 +49,15 @@ Keep eyes open for that problem.
 
 
 
-IMPROVED APPEARANCE OF CHECKPOINT PAGE
-
-V Put MrZ School image footer on the bottom of every page when printing student goals.
-V But not the link. We don't want it to print that
-V Test that visits goal_students/print
-
 
 
 
 ARROW KEY NAVIGATION
 The scoresheet needs to allow for arrow key navigation
+
+
+
+SCORESHEET SCROLLVIEW HEADER
 
 
 IN-PLACE EDITING IN GOALS INDEX
