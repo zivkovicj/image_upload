@@ -76,6 +76,15 @@ class SeminarsController < ApplicationController
         update_current_class
     end
     
+    def update_scoresheet
+        @seminar = Seminar.find(params[:id])
+        params[:scores].each do |key, value|
+            @score = ObjectiveStudent.find(key) 
+            @score.update(:points => value[0])
+        end
+        redirect_to scoresheet_seminar_path(@seminar)
+    end
+    
     def copy_due_dates
         @seminar = Seminar.find(params[:id])
         first_seminar = current_user.first_seminar

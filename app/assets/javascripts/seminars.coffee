@@ -5,6 +5,12 @@
 
 
 ready = ->
+    $("input:text").focus ->
+        $(this).select()
+        
+    $("input:text").click ->
+        $(this).select()
+    
     if $('.btn-info').length > 0
         $("#dialog1").dialog
             autoOpen: false
@@ -255,14 +261,37 @@ ready = ->
                 data:
                     seminar_student:
                         present: attendance
-            
+    
     if $('#scoreTable').length > 0
-        $('.steelPanther').on "click", ->
-            $('#scoreTable tr td').removeClass('highlighted')
-            $('#scoreTable tr th').removeClass('highlighted')
-            $(this).closest('tr').find('td,th').addClass('highlighted')
-            col = $(this).index()+1
-            $('#scoreTable').find('tr :nth-child('+col+')').addClass('highlighted');
+        $("#r0c0").focus()
+        
+        $('.score_cell').focus ->
+            $('.score_box').removeClass('highlighted')
+            $('.row_'+$(this).attr("cell_row")).addClass('highlighted')
+            $('.col_'+$(this).attr("cell_col")).addClass('highlighted')
+        
+        $(".score_cell").keydown (e) ->
+            if e.which == 38
+                next_row = parseInt($(this).attr("cell_row")) - 1
+                next_col = parseInt($(this).attr("cell_col"))
+                
+            else if e.which == 40
+                next_row = parseInt($(this).attr("cell_row")) + 1
+                next_col = parseInt($(this).attr("cell_col"))
+                
+            else if e.which == 37
+                next_row = parseInt($(this).attr("cell_row"))
+                next_col = parseInt($(this).attr("cell_col")) - 1
+                
+            else if e.which == 39
+                next_row = parseInt($(this).attr("cell_row"))
+                next_col = parseInt($(this).attr("cell_col")) + 1
+            
+            $("#r"+next_row+"c"+next_col).focus()
+            callback = -> 
+                $("#r"+next_row+"c"+next_col).select()
+            setTimeout callback, 10
+        
     
     if $('#dialog5').length > 0
         unpressed = true

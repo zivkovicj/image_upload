@@ -13,35 +13,43 @@
   <%= button_tag "Hide Scores", :id => "toggle_text", :first_text => "Hide Scores", :second_text => "Show Scores" %>
 </div>
 
-<br/>
-<div>
-  <table class="table-borderless scoreTable" id="scoreTable">
-    <thead class="table-borderless">
-      <th class="table-borderless">Student</th>
-      <% @objectives.each_with_index do |objective, index| %>
-        <th class="rotate table-borderless"><div><span>
-          <%= link_to objective.short_name, edit_objective_path(objective) %>
-        </span></div></th>
-      <% end %>
-    </thead>
-    <tbody>
-      <% @students.each do |student| %>
-        <tr>
-          <td><h4><%= link_to student.last_name_first, edit_teaching_requests_student_url(student) %> </h4></td>
-          <% this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id) %>
-          <% @objectives.each do |objective| %>
-            <% thisScore = @scores.find_by(:objective => objective, :user => student) %>
-            <td class="themScores to_unhide steelPanther">
-              <% if thisScore %>
-                <%= best_in_place thisScore, :points, :inner_class => "scoreInput" %>
-              <% end %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+<%= form_tag update_scoresheet_seminar_path(@seminar) do %>
+  <%= submit_tag "Save Scores", class: "btn btn-primary" %>
+
+  <br/>
+  <div>
+    <table class="table-borderless scoreTable" id="scoreTable">
+      <thead class="table-borderless">
+        <th class="table-borderless">Student</th>
+        <% @objectives.each_with_index do |objective, index| %>
+          <th class="rotate table-borderless score_box col_<%= index %>"><div><span>
+            <%= link_to objective.short_name, edit_objective_path(objective) %>
+          </span></div></th>
+        <% end %>
+      </thead>
+      <tbody>
+        <% @students.each_with_index do |student, indexx| %>
+          <tr>
+            <td class="score_box row_<%= indexx %>"><h4><%= link_to student.last_name_first, edit_teaching_requests_student_url(student) %> </h4></td>
+            <% this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id) %>
+            <% @objectives.each_with_index do |objective, indexy| %>
+              <% this_score = @scores.find_by(:objective => objective, :user => student) %>
+              <td class="themScores to_unhide score_box row_<%= indexx %> col_<%= indexy %>">
+                <% if this_score %>
+                  <%= text_field "scores[#{this_score.id}]", "", :class => "score_cell", :value => this_score.points,
+                    :id => "r#{indexx}c#{indexy}", :cell_row => indexx, :cell_col => indexy %>
+                <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  
+  <%= submit_tag "Save Scores", class: "btn btn-primary" %>
+  
+<% end %>
   
 <div>
   <h3> <%= pluralize(@students.count, "Student") %> </h3>

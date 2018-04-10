@@ -53,9 +53,34 @@ Keep eyes open for that problem.
 
 
 ARROW KEY NAVIGATION
-The scoresheet needs to allow for arrow key navigation
+V The scoresheet needs to allow for arrow key navigation
+V Crosshairs on selected cell
 
 
+
+
+
+
+ERROR["test_goal_edit_back_button", GoalStudentsEditTest, 444.69616629509255]
+ test_goal_edit_back_button#GoalStudentsEditTest (444.70s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
+            test/integration/goals/goal_students_edit_test.rb:63:in `block in <class:GoalStudentsEditTest>'
+
+ERROR["test_default_goal_if_already_chosen", GoalStudentsEditTest, 450.161572095938]
+ test_default_goal_if_already_chosen#GoalStudentsEditTest (450.16s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
+            test/integration/goals/goal_students_edit_test.rb:53:in `block in <class:GoalStudentsEditTest>'
+            
+            
+            
+
+ACTION SAVING
+When student saves her checkpoints, it should save with a (?), not the actual target number.
+I think the best place to change this is in the update_checkpoints action of the goal_students_controller
+Display the version with the target, but save the original action.
+
+
+TESTS FOR UPDATING SCORESHEET
 
 SCORESHEET SCROLLVIEW HEADER
 
@@ -75,7 +100,7 @@ Don't show the regular navribbon while editing label quantities.
 
 
 
-
+DELETE GOALS
 
 
 
@@ -262,6 +287,7 @@ Take a closer look at fonts
 Look at css for headings
 A better visual for the student's total stars can include some big stars for 10 and some giant stars for 100
 Small icons for each class period
+In the scoresheet, don't show cell border unless cell is focused
 
 
 

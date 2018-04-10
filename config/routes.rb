@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     get 'pretests', on: :member
     get 'priorities', on: :member
     get 'scoresheet', on: :member
+    post 'update_scoresheet', on: :member
     get 'objectives', on: :member
     get 'due_dates', on: :member
     get 'copy_due_dates', on: :member
