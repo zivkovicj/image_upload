@@ -52,51 +52,224 @@ Keep eyes open for that problem.
 
 
 
-ARROW KEY NAVIGATION
-V The scoresheet needs to allow for arrow key navigation
-V Crosshairs on selected cell
+2.60 ACTION SAVING
+V When student saves her checkpoints, it should save with a (?), not the actual target number.
+V I think the best place to change this is in the update_checkpoints action of the goal_students_controller
+V Display the version with the target, but save the original action.
+
+I think I finally fixed the testing that involves best_in_place.
+Repeat that pattern for targets and checkpoints
+    But maybe I should do it within the same test as changing the goal, in case there's a weird interaction there.
+
+Change the rest of the tests to match this one:
+find("#best_in_place_checkpoint_#{@check_2.id}_action").click.select("Imagine something kind")
 
 
 
-
-
-
-ERROR["test_goal_edit_back_button", GoalStudentsEditTest, 444.69616629509255]
- test_goal_edit_back_button#GoalStudentsEditTest (444.70s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
-            test/integration/goals/goal_students_edit_test.rb:63:in `block in <class:GoalStudentsEditTest>'
-
-ERROR["test_default_goal_if_already_chosen", GoalStudentsEditTest, 450.161572095938]
- test_default_goal_if_already_chosen#GoalStudentsEditTest (450.16s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Edit This Goal"
-            test/integration/goals/goal_students_edit_test.rb:53:in `block in <class:GoalStudentsEditTest>'
+$('.target_text').on "click", ->
+        gs_id = $(this).attr('gs_id')
+        $(this).hide()
+        $('#target_span_'+gs_id).show()
+    
+    $('.target_change').on "change", ->
+        gs_id = $(this).attr('gs_id')
+        url = '/goal_students/'+gs_id
+        $.ajax
+            type: "PUT",
+            url: url,
+            dataType: "json"
+            data:
+                goal_student:
+                    approved: true
+                    target: $(this).val()
+        $(this).fadeOut()
+        $('#target_text_'+gs_id).show()
+        $('#target_text_'+gs_id).text($(this).val())
+        
+        
+    $('#goal_student_goal_id').on "change", ->
+        $('.currently_hidden').show()
+                        
+    if $('.checkpoint_change').length > 0
+        $('.checkpoint_change').on "change", ->
+            checkpoint_id = $(this).attr('checkpoint_id')
+            url = '/checkpoints/'+checkpoint_id
+            $('#checkpoint_text_'+checkpoint_id).text($("option:selected", this).text())
+            $.ajax
+                type: "PUT",
+                url: url,
+                dataType: "json"
+                data:
+                    checkpoint:
+                        action: $(this).val()
+                        
+                        $('.goal_change').on "change", ->
+            gs_id = $(this).attr('gs_id')
+            url = '/goal_students/'+gs_id
+            $.ajax
+                type: "PUT",
+                url: url,
+                dataType: "json"
+                data:
+                    goal_student:
+                        approved: true
+                        goal_id: $(this).val()
+            $('#approval_button_'+gs_id).fadeOut()
+            $('#goal_text_'+gs_id).text($("option:selected", this).text())
             
             
-            
+            test "teacher changes target" do
+        goal_test_opening
+        set_student_goals
+        
+        assert_equal 60, @gs.target
+        assert_not @gs.approved
+        @gs.checkpoints[0].update(:action => @gs.goal.actions[0][1])
+        
+        capybara_login(@teacher_1)
+        go_to_goals
+        sleep(1)
+        within(:css, "#target_cell_#{@gs.id}") do
+            assert_text("Goal Target: 60%")
+            assert_no_text("Goal Target: 70%")
+        end
+        # Change Target
+        find("#best_in_place_goal_student_#{@gs.id}_target").click
+        find("#best_in_place_goal_student_#{@gs.id}_target").select("85%")
+        find("#best_in_place_goal_student_#{@gs.id}_target").click
+        within(:css, "#target_cell_#{@gs.id}") do
+            assert_text("Goal Target: 85%")
+            assert_no_text("Goal Target: 60%")
+        end
+        
+        # Manually use debugger here to check these assertions.
+        @gs.reload
+        #debugger
+        assert_equal "I will be kind 85 % of the time so far.", @gs.reload.checkpoints[1].statement
+        assert_equal 85, @gs.target
+        assert_equal @gs.goal.actions[0][1], @gs.checkpoints[0].action
+    end
 
-ACTION SAVING
-When student saves her checkpoints, it should save with a (?), not the actual target number.
-I think the best place to change this is in the update_checkpoints action of the goal_students_controller
-Display the version with the target, but save the original action.
+
+TEACHER MANUALLY ADD KEYS
+Need a new system that keeps track of how many total tries a student has on an objective
+Instead of unlocking a quiz, the teacher can give the student some keys.
+Keep track of sources of the keys
+    Pretest keys
+    Desk Consultants Keys
+    Keys Given By Teacher
+If a student earns keys from desk consultants or given by the teacher on an objective that is also a pretest objective, the pretest keys will disappear
+If the student already has six DC keys on one quiz, giving that student more keys will instead erase her oldest attempt on that quiz
+    If she has zero attempts, a new key cannot be added.
+    Student should receive a note to explain this.  Maybe a ghost key shows up.  With a note like "Some of your quizzes on this objective have been erased. This happened because you earned
+        more than six keys.  Instead of giving you more keys, we erased your old quiz attempts to allow you to try the quiz again."
+Same with teacher-granted keys
+Instead of offering all pretests, students receive keys to the pretests.
+    But if they fail an earlier pretest, they lose their keys to all of the post-requisites for that objective
+    Keys are given when a student joins a class
+        It shouldn't matter whether this happens at the beginning of the year or in the middle
+    Keys are also given when an objective is changed to a pretest
+    If pretest objective loses its pretest status, students with pretest keys lose them
+
+Teachers need to be able to unlock specific quizzes for specific students when they want to
+    Usually quizzes are unlocked because they were pre-tests for the seminar, or because the students participated in a Desk-Consultants group
+    But teachers might have other reasons to allow students to take certain quizzes.
+Usually teachers will click the student view, and then be able to check/uncheck certain objectives to unlock the quizzes
+Also allow teacher to click the objective view, and then check/uncheck students.
+    Or for an entire class.
+Add a warning message to let teachers know that deleting a consultancy will quizzes to students.
+
+
+
+
 
 
 TESTS FOR UPDATING SCORESHEET
+Alert teacher if she's leaving with unsaved changes.
+
+TESTS TO ADD
+See what happens if users enter improper data types in different fields. And test for those.
+Deleting a question
+Deleting a picture
+All of the "edit tests" need to ensure that no changes occur if the user presses "Save Changes" without actually changing anything
+    I ran into a problem with the label for questions not checking the correct label
+    Or should I disable the "Save Changes" button until the user does something.
+Searching
+    Right now there's not empty message when there's a student from another school that could show up.
+    Make sure Admin can find all students
+Deleting a consultancy deletes its teams
+Test that incorrect user cannot delete any records from models with correct_owner function
+Ensure that database inputs are sanitized
+Test failing at creating a record, then fixing it. Needs to apply to creating a new record and also to editing an existing record.
+    Objective
+    Label
+    Picture
+    Question
+The current extent of an item needs to be checked by default
+    Objective
+    Label
+    Picture
+    Question
+Add enough question fixtures to test pagination in index
+    Same with labels
+    objectives
+    Students
+    Users
+The piece of the DC algorithm that places straggling students should also check for the priority of the learnrequest, and whether the student has passed preReqs
+If teacher reached "Create New Objective" through a seminar view, re-route to that seminar. If not, re-route to user page.
+Test that consultant_days doesn't include other seminars
+Test that a limited number of groups are created if many students are qualified to connsult.
+    With priority 3's
+    And total consultants
+Are_some_unplaced test failed once, but it usually passes. I think it failed because @student_10 became a consultant, so he wasn't in the unplaced group.
+Test that checkpoints are displayed in the correct order?
+Navigating Seminar_Student view. Certain fields should be visible/invisible
+Test the navribbon in the seminar edit view.
+    I tried writing tests for the navribbon in the student class page, but the visible tags weren't working in the capybara tests.
+
+
+
+COLLECTION OF SMALL FIXES
+README for loading only specific jquery-ui components.
+    https://github.com/jquery-ui-rails/jquery-ui-rails
+Dry up the four buttons shown in the bottom of seminar navigation
+    See what pages they should be inncluded on
+Switching classes when you're in a screen that isn't the scoresheet goes to a blank page.
+Q/A
+If a teacher signs in, but doesn't have a school, send them to school-choosing view
+Test and re-route for incomplete school info
+Admin should be able to destroy students
+    And schools
+        But what happens to students and teachers when their school gets destroyed.
+        This can probably wait for awhile
+Live site has errors in student searching. It occurred when trying to add Melissa Suess to 7th period
+V Consultants button in NavBar needs to link to consultancy show page  
+Set up billing alerts with AWS.
+I moved the javascripts to the end of the body tag on the chance that it might help with loading. Test on the live site with school computers using both ways.
+Deleting a consultancy from its own show page isn't working right now.
+Put goals in NavRibbon
+Fix NavRibbon for Desk Consultants
+Don't mark a student as consultant if the student is alone. It wastes that student's consultant turn.
+Check on StackOverflow whether my approach to array columns is best practice
+When editing a goal, they're all marked as "Private" when the user enters the view.
+Can erase most of the javascript for choosing goals, targets, checkpoints, and achievement
+    Or maybe not, since I'll need to replace the best-in-place to get my tests working.
+    Either that, or I need to update my tests to RSpec
+Student Goal Icon
+Desk Consultants should have “Max Group Size” for topics such as Chess.
+There should also be Max Number of groups, so that I don’t end up with more than four groups doing chess when I have four boards.
+I also need to add multiple, already-existing students to a class at once.
+Searching by student number threw an error.
+
+
 
 SCORESHEET SCROLLVIEW HEADER
-
-
-IN-PLACE EDITING IN GOALS INDEX
-Try out suggestion for best_in_place test helpers
-
 
 OBJECTIVES EDITING VIEWS
 
 Editing objectives should get the same treatment as seminar editing and student view.
 Then get rid of the forced redirection to quantities, etc.
 Don't show the regular navribbon while editing label quantities.
-
-
-
 
 
 
@@ -141,6 +314,10 @@ I think I should re-initiate the solution that involves giving that student the 
 But give a little more than the median (maybe 75%) to account for the other aspects.
 
 
+
+LOOK AT THE CURRENT TERM'S SCORES
+
+
 LIST ABSENT STUDENTS IN DESK CONSULTANTS
 Test that absent students are featured in a separate section in DeskConsultants, not the main section
 
@@ -152,82 +329,7 @@ And in student's total scores
 
 
 
-TESTS TO ADD
 
-See what happens if users enter improper data types in different fields. And test for those.
-Deleting a question
-Deleting a picture
-All of the "edit tests" need to ensure that no changes occur if the user presses "Save Changes" without actually changing anything
-    I ran into a problem with the label for questions not checking the correct label
-    Or should I disable the "Save Changes" button until the user does something.
-Searching
-    Right now there's not empty message when there's a student from another school that could show up.
-    Make sure Admin can find all students
-Deleting a consultancy deletes its teams
-Test that incorrect user cannot delete any records from models with correct_owner function
-Ensure that database inputs are sanitized
-Test failing at creating a record, then fixing it. Needs to apply to creating a new record and also to editing an existing record.
-    Objective
-    Label
-    Picture
-    Question
-The current extent of an item needs to be checked by default
-    Objective
-    Label
-    Picture
-    Question
-Add enough question fixtures to test pagination in index
-    Same with labels
-    objectives
-    Students
-    Users
-The piece of the DC algorithm that places straggling students should also check for the priority of the learnrequest, and whether the student has passed preReqs
-If teacher reached "Create New Objective" through a seminar view, re-route to that seminar. If not, re-route to user page.
-Test that consultant_days doesn't include other seminars
-Test that a limited number of groups are created if many students are qualified to connsult.
-    With priority 3's
-    And total consultants
-Are_some_unplaced test failed once, but it usually passes. I think it failed because @student_10 became a consultant, so he wasn't in the unplaced group.
-Test that checkpoints are displayed in the correct order?
-Navigating Seminar_Student view. Certain fields should be visible/invisible
-Test the navribbon in the seminar edit view.
-    I tried writing tests for the navribbon in the student class page, but the visible tags weren't working in the capybara tests.
-
-
-
-COLLECTION OF SMALL FIXES
-Link teacher to edit checkpoint due dates from goals menus
-README for loading only specific jquery-ui components.
-    https://github.com/jquery-ui-rails/jquery-ui-rails
-Dry up the four buttons shown in the bottom of seminar navigation
-    See what pages they should be inncluded on
-Switching classes when you're in a screen that isn't the scoresheet goes to a blank page.
-Q/A
-If a teacher signs in, but doesn't have a school, send them to school-choosing view
-Test and re-route for incomplete school info
-Admin should be able to destroy students
-    And schools
-        But what happens to students and teachers when their school gets destroyed.
-        This can probably wait for awhile
-Live site has errors in student searching. It occurred when trying to add Melissa Suess to 7th period
-V Consultants button in NavBar needs to link to consultancy show page  
-Set up billing alerts with AWS.
-I moved the javascripts to the end of the body tag on the chance that it might help with loading. Test on the live site with school computers using both ways.
-Deleting a consultancy from its own show page isn't working right now.
-Put goals in NavRibbon
-Fix NavRibbon for Desk Consultants
-Don't mark a student as consultant if the student is alone. It wastes that student's consultant turn.
-Check on StackOverflow whether my approach to array columns is best practice
-When editing a goal, they're all marked as "Private" when the user enters the view.
-Can erase most of the javascript for choosing goals, targets, checkpoints, and achievement
-    Or maybe not, since I'll need to replace the best-in-place to get my tests working.
-    Either that, or I need to update my tests to RSpec
-Student Goal Icon
-Desk Consultants should have “Max Group Size” for topics such as Chess.
-There should also be Max Number of groups, so that I don’t end up with more than four groups doing chess when I have four boards.
-I also need to add multiple, already-existing students to a class at once.
-Searching by student number threw an error.
-It might be too easy to change a goal.  Teacher can click the goal inadvertantly
 
 
 
@@ -323,14 +425,6 @@ http://thesassway.com/beginner/how-to-structure-a-sass-project
 
 
 
-TEACHER MANUAL QUIZ UNLOCKS
-Teachers need to be able to unlock specific quizzes for specific students when they want to
-    Usually quizzes are unlocked because they were pre-tests for the seminar, or because the students participated in a Desk-Consultants group
-    But teachers might have other reasons to allow students to take certain quizzes.
-Usually teachers will click the student view, and then be able to check/uncheck certain objectives to unlock the quizzes
-Also allow teacher to click the objective view, and then check/uncheck students.
-    Or for an entire class.
-Add a warning message to let teachers know that deleting a consultancy will quizzes to students.
 
 
 ORGANIZING PICTURES

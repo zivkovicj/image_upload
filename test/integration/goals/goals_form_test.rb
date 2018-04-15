@@ -66,13 +66,13 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
         fill_in "goal[name]", with: "Be shockingly kind"
         fill_in "goal[actions][0][1]", with: "Buy pez for my homies"
         fill_in "goal[actions][0][7]", with: ""
-        fill_in "goal[actions][1][1]", with: "Will it add one option?"
+        fill_in "goal[actions][1][2]", with: "Will it add one option?"
         choose("private_goal")
         click_on('Update this Goal Option')
         
         actions_should_be =
             [["Play something kind","Buy pez for my homies","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind"],
-            ["I will be kind (?) % of the time so far.","Will it add one option?"],
+            ["Testing Placeholder","I will be kind (?) % of the time so far.","Will it add one option?"],
             ["Play something kind","Say something kind","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind","Imagine something kind"],
             ["I will be kind (?) % of the time."]]
         edited_goal.reload

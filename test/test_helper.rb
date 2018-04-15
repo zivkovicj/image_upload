@@ -1,6 +1,7 @@
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require 'best_in_place/test_helpers'
 require "minitest/reporters"
 require 'capybara/rails'
 require 'capybara/poltergeist'
@@ -242,6 +243,8 @@ end
 
 
 class ActionDispatch::IntegrationTest
+  
+  include BestInPlace::TestHelpers
   
   # Make the Capybara DSL available in all integration tests
   include Capybara::DSL

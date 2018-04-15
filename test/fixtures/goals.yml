@@ -24,7 +24,7 @@ Be_Kind:
   extent: public
   statement_stem: I will be kind (?) % of the time this term.
   actions: [["Play something kind","Say something kind","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind","Imagine something kind"],
-   ["I will be kind (?) % of the time so far."],
+   ["Testing Placeholder","I will be kind (?) % of the time so far."],
    ["Play something kind","Say something kind","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind","Imagine something kind"],
    ["I will be kind (?) % of the time."]]
 

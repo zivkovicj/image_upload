@@ -24,38 +24,10 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
     def set_student_goals
         @gs.update(:goal_id => Goal.second.id, :target => 60)
         @gs.gs_update_stuff
-    end
-        
-    test "teacher changes target" do
-        goal_test_opening
-        set_student_goals
-        
-        assert_equal 60, @gs.target
-        assert_not @gs.approved
-        @gs.checkpoints[0].update(:action => @gs.goal.actions[0][1])
-        
-        capybara_login(@teacher_1)
-        go_to_goals
-        sleep(1)
-        within(:css, "#target_cell_#{@gs.id}") do
-            assert_text("Goal Target: 60 %")
-            assert_no_text("Goal Target: 70 %")
-        end
-        assert_selector('select', :id => "target_select_#{@gs.id}", :visible => false)
-        find("#target_text_#{@gs.id}").click
-        assert_selector('select', :id => "target_select_#{@gs.id}", :visible => true)
-        select("85%", :from => "target_select_#{@gs.id}")
-        within(:css, "#target_cell_#{@gs.id}") do
-            assert_text("Goal Target: 85 %")
-            assert_no_text("Goal Target: 60 %")
-        end
-        
-        # Manually use debugger here to check these assertions.
-        @gs.reload
-        #debugger
-        assert_equal "I will be kind 85 % of the time so far.", @gs.reload.checkpoints[1].statement
-        assert_equal 85, @gs.target
-        assert_equal @gs.goal.actions[0][1], @gs.checkpoints[0].action
+        @check_0 = @gs.checkpoints.find_by(:sequence => 0)
+        @check_1 = @gs.checkpoints.find_by(:sequence => 1)
+        @check_2 = @gs.checkpoints.find_by(:sequence => 2)
+        @check_3 = @gs.checkpoints.find_by(:sequence => 3)
     end
         
     test "no goal set" do
@@ -104,35 +76,29 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
         goal_test_opening
         set_student_goals
         
-        assert_not @gs.approved
+        assert_not_equal Goal.first, @gs.goal
         
         capybara_login(@teacher_1)
         go_to_goals
         sleep(1)
         within(:css, "#goal_text_#{@gs.id}") do
-            assert_no_text("Click to Choose Student's Goal")
+            assert_no_text("Be Awesome 24/7")
             assert_text("Be Kind")
         end
-        bip_select(@gs, :goal_id, Goal.first.name)
-        select("#{Goal.first.name}", :from => "goal_select_#{@gs.id}")
+        
+        find("#best_in_place_goal_student_#{@gs.id}_goal_id").click
+        find("#best_in_place_goal_student_#{@gs.id}_goal_id").select(Goal.first.name)
+        find("#best_in_place_goal_student_#{@gs.id}_goal_id").click
+    
         within(:css, "#goal_text_#{@gs.id}") do
             assert_text("Be Awesome 24/7")
             assert_no_text("Be Kind")
         end
         
-        select("70%", :from => "target_select_#{@gs.id}")
-        within(:css, "#target_cell_#{@gs.id}") do
-            assert_text("Goal Target: 70 %")
-            assert_no_text("Goal Target: 60 %")
-        end
-        
+        sleep(1)
         @gs.reload
-        assert @gs.approved
-        assert_equal 70, @gs.target
-        
-        @gs.reload
-        assert @gs.approved
         assert_equal Goal.first, @gs.goal
+        #assert_equal 85, @gs.target
         assert_equal "Play something awesome", @gs.checkpoints[0].action
         assert_equal "Be halfway awesome", @gs.checkpoints[1].action
         assert_equal "Play something awesome", @gs.checkpoints[2].action
@@ -140,5 +106,97 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
         assert_equal "I will be awesome for 60% of the school days this term.", @gs.checkpoints[3].statement
         
     end
+    
+    test "teacher changes target" do
+        goal_test_opening
+        set_student_goals
         
+        @check_2 = @gs.checkpoints.find_by(:sequence => 2)
+        assert_equal 60, @gs.target
+        
+        capybara_login(@teacher_1)
+        go_to_goals
+        sleep(1)
+        within(:css, "#target_span_#{@gs.id}") do
+            assert_no_text("85%")
+            assert_text("60%")
+        end
+        
+        find("#best_in_place_goal_student_#{@gs.id}_target").click.select("85%")
+        
+        within(:css, "#target_span_#{@gs.id}") do
+            assert_text("85%")
+            assert_no_text("60%")
+        end
+        
+        sleep(1)
+        @gs.reload
+        assert_equal 85, @gs.target
+    end
+    
+    test "teacher changes checkpoint action" do
+        goal_test_opening
+        set_student_goals
+        
+        assert_equal "Play something kind", @check_2.action
+        assert_equal "I will be kind (?) % of the time.", @check_3.action
+        
+        capybara_login(@teacher_1)
+        go_to_goals
+        sleep(1)
+        within(:css, "#action_span_#{@check_2.id}") do
+            assert_no_text("Imagine something kind")
+            assert_text("Play something kind")
+        end
+        
+        find("#best_in_place_checkpoint_#{@check_2.id}_action").click.select("Imagine something kind")
+    
+        within(:css, "#action_span_#{@check_2.id}") do
+            assert_text("Imagine something kind")
+            assert_no_text("Play something kind")
+        end
+        
+        sleep(1)
+        @check_2.reload
+        assert_equal "Imagine something kind", @check_2.action
+    end
+    
+    test "teacher changes achievement" do
+        goal_test_opening
+        set_student_goals
+        
+        assert_equal nil, @check_2.achievement
+        
+        capybara_login(@teacher_1)
+        go_to_goals
+        sleep(1)
+        within(:css, "#achievement_span_#{@check_2.id}") do
+            assert_text("Achievement")
+        end
+        
+        find("#best_in_place_checkpoint_#{@check_2.id}_achievement").click.select("85%")
+        
+        within(:css, "#achievement_span_#{@check_2.id}") do
+            assert_text("85%")
+            assert_no_text("Achievement")
+        end
+        
+        sleep(1)
+        @check_2.reload
+        assert_equal 85, @check_2.achievement
+    end
+    
+    test "display action includes target" do
+        goal_test_opening
+        set_student_goals
+        
+        assert_equal "I will be kind (?) % of the time.", @check_3.action
+        
+        capybara_login(@teacher_1)
+        go_to_goals
+        sleep(1)
+        within(:css, "#action_span_#{@check_3.id}") do
+            assert_text("I will be kind 60 % of the time.")
+        end
+    end
 end
