@@ -48,121 +48,23 @@ Keep eyes open for that problem.
 
 
 
-
-
-
-
-2.60 ACTION SAVING
-V When student saves her checkpoints, it should save with a (?), not the actual target number.
-V I think the best place to change this is in the update_checkpoints action of the goal_students_controller
-V Display the version with the target, but save the original action.
-
-I think I finally fixed the testing that involves best_in_place.
-Repeat that pattern for targets and checkpoints
-    But maybe I should do it within the same test as changing the goal, in case there's a weird interaction there.
-
-Change the rest of the tests to match this one:
-find("#best_in_place_checkpoint_#{@check_2.id}_action").click.select("Imagine something kind")
-
-
-
-$('.target_text').on "click", ->
-        gs_id = $(this).attr('gs_id')
-        $(this).hide()
-        $('#target_span_'+gs_id).show()
+TEACHER-GRANTED TEST KEYS
+Students can earn "keys" to take their quizzes.
+Objective_student model needs to include:
+    pretest_keys
+    desk_consultant_keys
+    teacher_given_keys
+Teacher can click the student view, and then be able to check/uncheck certain objectives to unlock the quizzes
+Alternatively, teacher can visit the objective view, and then check/uncheck students.
+    Or check an entire class.
+Quiz appears to a student who has keys
+Starting a quiz subtracts a key
+If a student already has nine tries on one quiz, it erases his oldest when he starts a tenth try.
     
-    $('.target_change').on "change", ->
-        gs_id = $(this).attr('gs_id')
-        url = '/goal_students/'+gs_id
-        $.ajax
-            type: "PUT",
-            url: url,
-            dataType: "json"
-            data:
-                goal_student:
-                    approved: true
-                    target: $(this).val()
-        $(this).fadeOut()
-        $('#target_text_'+gs_id).show()
-        $('#target_text_'+gs_id).text($(this).val())
-        
-        
-    $('#goal_student_goal_id').on "change", ->
-        $('.currently_hidden').show()
-                        
-    if $('.checkpoint_change').length > 0
-        $('.checkpoint_change').on "change", ->
-            checkpoint_id = $(this).attr('checkpoint_id')
-            url = '/checkpoints/'+checkpoint_id
-            $('#checkpoint_text_'+checkpoint_id).text($("option:selected", this).text())
-            $.ajax
-                type: "PUT",
-                url: url,
-                dataType: "json"
-                data:
-                    checkpoint:
-                        action: $(this).val()
-                        
-                        $('.goal_change').on "change", ->
-            gs_id = $(this).attr('gs_id')
-            url = '/goal_students/'+gs_id
-            $.ajax
-                type: "PUT",
-                url: url,
-                dataType: "json"
-                data:
-                    goal_student:
-                        approved: true
-                        goal_id: $(this).val()
-            $('#approval_button_'+gs_id).fadeOut()
-            $('#goal_text_'+gs_id).text($("option:selected", this).text())
-            
-            
-            test "teacher changes target" do
-        goal_test_opening
-        set_student_goals
-        
-        assert_equal 60, @gs.target
-        assert_not @gs.approved
-        @gs.checkpoints[0].update(:action => @gs.goal.actions[0][1])
-        
-        capybara_login(@teacher_1)
-        go_to_goals
-        sleep(1)
-        within(:css, "#target_cell_#{@gs.id}") do
-            assert_text("Goal Target: 60%")
-            assert_no_text("Goal Target: 70%")
-        end
-        # Change Target
-        find("#best_in_place_goal_student_#{@gs.id}_target").click
-        find("#best_in_place_goal_student_#{@gs.id}_target").select("85%")
-        find("#best_in_place_goal_student_#{@gs.id}_target").click
-        within(:css, "#target_cell_#{@gs.id}") do
-            assert_text("Goal Target: 85%")
-            assert_no_text("Goal Target: 60%")
-        end
-        
-        # Manually use debugger here to check these assertions.
-        @gs.reload
-        #debugger
-        assert_equal "I will be kind 85 % of the time so far.", @gs.reload.checkpoints[1].statement
-        assert_equal 85, @gs.target
-        assert_equal @gs.goal.actions[0][1], @gs.checkpoints[0].action
-    end
-
-
-TEACHER MANUALLY ADD KEYS
-Need a new system that keeps track of how many total tries a student has on an objective
-Instead of unlocking a quiz, the teacher can give the student some keys.
-Keep track of sources of the keys
-    Pretest keys
-    Desk Consultants Keys
-    Keys Given By Teacher
+    
+    
+PRETEST KEYS
 If a student earns keys from desk consultants or given by the teacher on an objective that is also a pretest objective, the pretest keys will disappear
-If the student already has six DC keys on one quiz, giving that student more keys will instead erase her oldest attempt on that quiz
-    If she has zero attempts, a new key cannot be added.
-    Student should receive a note to explain this.  Maybe a ghost key shows up.  With a note like "Some of your quizzes on this objective have been erased. This happened because you earned
-        more than six keys.  Instead of giving you more keys, we erased your old quiz attempts to allow you to try the quiz again."
 Same with teacher-granted keys
 Instead of offering all pretests, students receive keys to the pretests.
     But if they fail an earlier pretest, they lose their keys to all of the post-requisites for that objective
@@ -171,13 +73,9 @@ Instead of offering all pretests, students receive keys to the pretests.
     Keys are also given when an objective is changed to a pretest
     If pretest objective loses its pretest status, students with pretest keys lose them
 
-Teachers need to be able to unlock specific quizzes for specific students when they want to
-    Usually quizzes are unlocked because they were pre-tests for the seminar, or because the students participated in a Desk-Consultants group
-    But teachers might have other reasons to allow students to take certain quizzes.
-Usually teachers will click the student view, and then be able to check/uncheck certain objectives to unlock the quizzes
-Also allow teacher to click the objective view, and then check/uncheck students.
-    Or for an entire class.
-Add a warning message to let teachers know that deleting a consultancy will quizzes to students.
+DESK CONSULTANT KEYS
+
+
 
 
 

@@ -1,5 +1,11 @@
 
 
+2.60 ACTION SAVING
+When student saves her checkpoints, it should save with a (?), not the actual target number.
+I think the best place to change this is in the update_checkpoints action of the goal_students_controller
+Display the version with the target, but save the original action.
+
+
 2.59 ARROW KEY NAVIGATION
 The scoresheet needs to allow for arrow key navigation
 Crosshairs on selected cell
