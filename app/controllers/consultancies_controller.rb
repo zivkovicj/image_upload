@@ -32,6 +32,7 @@ class ConsultanciesController < ApplicationController
         check_for_lone_students
         new_place_for_lone_students
         are_some_unplaced
+        give_dc_keys
         
         current_user.update!(:current_class => @seminar.id)
         render 'show'
@@ -64,14 +65,13 @@ class ConsultanciesController < ApplicationController
     end
     
     private
-    
-        def check_if_date_already()
+        def check_if_date_already
             date = Date.today
             old_consult = @seminar.consultancies.find_by(:created_at => date.midnight..date.end_of_day)
             old_consult.destroy if old_consult
         end
         
-        def check_if_ten()
+        def check_if_ten
             if @seminar.consultancies.count > 9
                 @seminar.consultancies.order('created_at asc').first.destroy
             end

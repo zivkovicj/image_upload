@@ -188,10 +188,6 @@ class ActiveSupport::TestCase
     click_on("#{@seminar.id}_student_goals")
   end
   
-  def begin_quiz
-    click_link("#{@objective_10.name}", match: :first)
-  end
-  
   def answer_quiz_randomly
     10.times do
       choose("choice_bubble_1")

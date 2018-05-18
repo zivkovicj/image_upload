@@ -32,14 +32,6 @@ class Seminar < ApplicationRecord
     students.count > 1 and objectives.count > 0
   end
   
-  def objective_is_pretest(obj)
-    self.objective_seminars.find_by(:objective => obj).pretest > 0
-  end
-  
-  def all_pretest_objectives(stud)
-    self.objectives.select{|x| objective_is_pretest(x) && stud.has_not_scored_100(x) && stud.has_not_tried_twice(x) && stud.check_if_ready(x) && !stud.one_unfinished(x)}
-  end
-  
   def scoreTransfer(fromObj, toObj)
     Objective.find(fromObj).objective_students.each do |oldScore|
       newScore = ObjectiveStudent.find_by(:user_id => oldScore.user_id, :objective_id => toObj)

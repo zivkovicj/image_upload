@@ -16,6 +16,7 @@ class SeminarStudentsController < ApplicationController
     
     addToSeatingChart(@seminar, @student)
     scores_for_new_student(@seminar, @student)
+    pretest_keys_for_new_student(@seminar, @student)
     goals_for_new_student(@seminar, @student)
     
     old_ss_id = params[:seminar_student][:is_move]
@@ -48,10 +49,11 @@ class SeminarStudentsController < ApplicationController
     @learn_options = @student.learn_options(@seminar, @seminar.rank_objectives_by_need)
     
     @unfinished_quizzes = @student.all_unfinished_quizzes(@seminar)
-    @desk_consulted_objectives = @student.desk_consulted_objectives(@seminar)
-    @all_pretest_objectives = @seminar.all_pretest_objectives(@student)
+    @desk_consulted_objectives = @student.quiz_collection(@seminar, "dc")
+    @pretest_objectives = @student.quiz_collection(@seminar, "pretest")
+    @teacher_granted_quizzes = @student.quiz_collection(@seminar, "teacher_granted")
     
-    @show_quizzes = @desk_consulted_objectives.present? || @all_pretest_objectives.present? || @unfinished_quizzes.present?
+    @show_quizzes = @desk_consulted_objectives.present? || @pretest_objectives.present? || @unfinished_quizzes.present? || @teacher_granted_quizzes.present?
     
     update_current_class
   end

@@ -6,6 +6,8 @@
 
 <%= render 'shared/headline' %>
 
+
+
 <% if current_user.type != "Student" %>
   <%= "#{current_user.type} #{current_user.title} #{current_user.last_name} is editing." %><br/><br/>
   <% if current_user.current_class && current_user != @user %>

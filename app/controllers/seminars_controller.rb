@@ -126,8 +126,20 @@ class SeminarsController < ApplicationController
         end
         
         def set_pretests
-            @seminar.objective_seminars.where.not(:id => params[:pretest_on]).update_all(:pretest => 0)
-            @seminar.objective_seminars.where(:id => params[:pretest_on]).update_all(:pretest => 1)
+            @seminar.objective_seminars.where.not(:id => params[:pretest_on]).each do |obj_sem|
+                obj_sem.update(:pretest => 0)
+                @seminar.students.each do |stud|
+                    this_obj_stud = stud.objective_students.find_by(:objective => obj_sem.objective)
+                    this_obj_stud.update(:pretest_keys => 0) if this_obj_stud
+                end
+            end
+            @seminar.objective_seminars.where(:id => params[:pretest_on]).each do |obj_sem|
+                obj_sem.update(:pretest => 1)
+                @seminar.students.each do |stud|
+                    this_obj_stud = stud.objective_students.find_by(:objective => obj_sem.objective)
+                    this_obj_stud.update(:pretest_keys => 2) if this_obj_stud
+                end
+            end
         end
         
 end

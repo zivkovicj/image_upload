@@ -14,13 +14,13 @@
         <div class="col-sm-6">
             <h1>New Stars</h1>
             <% 10.times do |x| %>
-                <% pic = @added_stars > x ? "stars/filled_star.png" : "stars/empty_star.png" %>
+                <% pic = @quiz.added_stars > x ? "stars/filled_star.png" : "stars/empty_star.png" %>
                 <%= image_tag (pic) %>
             <% end %>
             </br>
             
             
-            <h2><%= pluralize(@added_stars, 'Star') %></h2>
+            <h2><%= pluralize(@quiz.added_stars, 'Star') %></h2>
         </div>
     </div>
 </div>

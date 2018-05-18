@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   resources :objective_students
   resources :objectives do
     get 'quantities', on: :member
+    post 'whole_class_keys', on: :member
   end
   resources :password_resets, only: [:new, :create, :edit, :update]
   resources :pictures

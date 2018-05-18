@@ -88,11 +88,11 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     click_button('Add to this class')
     
     #After adding student
-    @new_aula = SeminarStudent.last
-    @new_student = Student.find(@new_aula.user_id)
+    @new_ss = SeminarStudent.last
+    @new_student = Student.find(@new_ss.user_id)
     assert_equal @new_student, @student_80
-    assert_equal 1, @new_aula.pref_request
-    assert_equal true, @new_aula.present
+    assert_equal 1, @new_ss.pref_request
+    assert_equal true, @new_ss.present
     assert_equal old_ss_count + 1, SeminarStudent.count
     assert_equal @teacher_1, @new_student.sponsor
     

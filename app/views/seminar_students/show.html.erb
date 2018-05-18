@@ -1,21 +1,9 @@
 <% provide(:scores_label, 'Your Scores in All Objectives') %>
 <% provide(:button_text, 'Change Your Requests') %>
 
-<% def quiz_link(quiz, age) %>
-    <% this_action = age == "new" ? "new" : "edit" %>
-    <%= link_to quiz.name, :controller => "quizzes", :action => "#{this_action}", :objective_id => quiz.id %>
-<% end %>
 
-<% def list_of_quizzes(list, category, age) %>
-    <% if list.count > 0 %>
-        <h3><%= category %></h3>
-        <ul><% list.each do |quiz| %>
-            <li id="quiz_<%= quiz.id %>">
-                <% quiz_link(quiz, age) %>
-            </li>
-        <% end %></ul>
-    <% end %>
-<% end %>
+
+
 
 <% @submenu_tabs = [["Goal", "goal", true], ["Quizzes", "quizzes", false], ["Requests", "requests", false], ["Stars", "stars", false]] %>
 

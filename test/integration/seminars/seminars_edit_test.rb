@@ -19,6 +19,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
    
     test "edit seminar" do
         setup_objectives
+        setup_scores
         obj_array = [@objective_30, @objective_40, @objective_50, @own_assign, @assign_to_add]
         @objective_zero_priority = objectives(:objective_zero_priority)
         @os_0 = @seminar.objective_seminars.find_by(:objective => @objective_30)
@@ -27,6 +28,24 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         @os_3 = @seminar.objective_seminars.find_by(:objective => @own_assign)
         @os_2.update(:pretest => 1)
         @os_3.update(:pretest => 1)
+        obj_stud_1_0 = ObjectiveStudent.find_by(:user => @student_1, :objective => @os_0.objective)
+        obj_stud_2_0 = ObjectiveStudent.find_by(:user => @student_2, :objective => @os_0.objective)
+        obj_stud_1_1 = ObjectiveStudent.find_by(:user => @student_1, :objective => @os_1.objective)
+        obj_stud_2_1 = ObjectiveStudent.find_by(:user => @student_2, :objective => @os_1.objective)
+        obj_stud_1_2 = ObjectiveStudent.find_by(:user => @student_1, :objective => @os_2.objective)
+        obj_stud_2_2 = ObjectiveStudent.find_by(:user => @student_2, :objective => @os_2.objective)
+        obj_stud_1_3 = ObjectiveStudent.find_by(:user => @student_1, :objective => @os_3.objective)
+        obj_stud_2_3 = ObjectiveStudent.find_by(:user => @student_2, :objective => @os_3.objective)
+        
+        obj_stud_1_0.update(:points => 8)
+        obj_stud_2_0.update(:points => 8)
+        obj_stud_1_1.update(:points => 8)
+        obj_stud_2_1.update(:points => 8)
+        obj_stud_1_2.update(:pretest_keys => 2, :points => 8)
+        obj_stud_2_2.update(:pretest_keys => 2, :points => 8)
+        obj_stud_1_3.update(:pretest_keys => 2, :points => 8)
+        obj_stud_2_3.update(:pretest_keys => 2, :points => 8)
+        
         assert_equal 2, @os_2.priority
         assert_equal 2, @os_3.priority
         assert @seminar.objectives.include?(@objective_zero_priority)
@@ -84,6 +103,15 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         assert_equal 0, @os_1.pretest
         assert_equal 0, @os_2.pretest
         assert_equal 1, @os_3.pretest
+        
+        assert_equal 2, obj_stud_1_0.reload.pretest_keys
+        assert_equal 2, obj_stud_2_0.reload.pretest_keys
+        assert_equal 0, obj_stud_1_1.reload.pretest_keys
+        assert_equal 0, obj_stud_2_1.reload.pretest_keys
+        assert_equal 0, obj_stud_1_2.reload.pretest_keys
+        assert_equal 0, obj_stud_2_2.reload.pretest_keys
+        assert_equal 2, obj_stud_1_3.reload.pretest_keys
+        assert_equal 2, obj_stud_2_3.reload.pretest_keys
 
         assert_equal 3, @os_2.priority
         assert_equal 0, @os_3.priority

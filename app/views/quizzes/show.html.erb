@@ -33,14 +33,13 @@
 
 <div class="container">
     <div class="row">
-        
-        <% if current_user.has_not_tried_twice(@objective) %>
-            <%= link_to "Try this quiz again", {:controller => "quizzes", :action => "new", :objective_id => @objective.id}, 
-                :class => "btn btn-lg btn-primary" %>
-        <% else %>
+        <% if @offer_next_try == "none" %>
             <div class="singleOption">
-                <p>You have already tried this quiz twice.</p>
+                You have used all your keys for this quiz.
             </div>
+        <% else %>
+            <%= link_to "Try this quiz again", {:controller => "quizzes", :action => "new", :objective_id => @objective.id, :origin => @offer_next_try}, 
+                :class => "btn btn-lg btn-primary" %>
         <% end %>
         <%= link_to "Back to Your Class Page", seminar_student_path(current_user.seminar_students.find_by(:seminar => current_user.current_class)), :class => "btn btn-lg btn-primary" %>
     </div>

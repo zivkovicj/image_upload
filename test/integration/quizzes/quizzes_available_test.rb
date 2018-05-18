@@ -10,89 +10,56 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         setup_questions
         setup_scores
         setup_goals
-    end
-
-    test "available from pretest" do
-        @seminar.objective_seminars.find_by(:objective => @objective_40).update(:pretest => 0)
-        @seminar.objective_seminars.find_by(:objective => @objective_50).update(:pretest => 0)
-        @seminar.objective_seminars.create(:objective => @objective_80, :pretest => 1)
-        @seminar.objective_seminars.create(:objective => @already_preassign_to_main, :pretest => 1)
-        @seminar.objective_seminars.create(:objective => @main_objective, :pretest => 1)
         
-        assert_not @seminar.objective_is_pretest(@objective_40)
-        assert_not @seminar.objective_is_pretest(@objective_50)
-        assert @seminar.objective_is_pretest(@objective_80)
-        assert @seminar.objective_is_pretest(@already_preassign_to_main)
-        assert @seminar.objective_is_pretest(@main_objective)
-        
-        #Student 1
-        @objective_40.objective_students.find_by(:user => @student_1).update(:points => 6)
-        @objective_50.objective_students.find_by(:user => @student_1).update(:points => 8)
-        @objective_80.objective_students.find_by(:user => @student_1).update(:points => 8)
-        @main_objective.objective_students.find_by(:user => @student_1).update(:points => 2)
-        @already_preassign_to_main.objective_students.find_by(:user => @student_1).update(:points => 6)
-        assert_not @seminar.all_pretest_objectives(@student_1).include?(@objective_40)
-        assert_not @seminar.all_pretest_objectives(@student_1).include?(@objective_50)
-        assert @seminar.all_pretest_objectives(@student_1).include?(@already_preassign_to_main)
-        assert_not @seminar.all_pretest_objectives(@student_1).include?(@main_objective)
-        assert @seminar.all_pretest_objectives(@student_1).include?(@objective_80)
-        
-        #Student 2
-        @objective_10.objective_students.find_by(:user => @student_2).update(:points => 2)
-        @objective_40.objective_students.find_by(:user => @student_2).update(:points => 6)
-        @objective_50.objective_students.find_by(:user => @student_2).update(:points => 8)
-        @objective_80.objective_students.find_by(:user => @student_2).update(:points => 10)
-        @main_objective.objective_students.find_by(:user => @student_2).update(:points => 2)
-        @already_preassign_to_main.objective_students.find_by(:user => @student_2).update(:points => 8)
-        assert_not @seminar.all_pretest_objectives(@student_2).include?(@objective_40)
-        assert_not @seminar.all_pretest_objectives(@student_2).include?(@objective_50)
-        assert @seminar.all_pretest_objectives(@student_2).include?(@already_preassign_to_main)
-        assert @seminar.all_pretest_objectives(@student_2).include?(@main_objective)
-        assert_not @seminar.all_pretest_objectives(@student_2).include?(@objective_80)
-        
-        #Take the quiz again to make sure that removes it from the offerings.
-        assert @seminar.all_pretest_objectives(@student_2).include?(@objective_10)
-        go_to_first_period
-        begin_quiz
-        answer_quiz_randomly
-        click_on("Back to Your Class Page")
-        
-        assert @seminar.all_pretest_objectives(@student_2).include?(@objective_10)
-        begin_quiz
-        answer_quiz_randomly
-        click_on("Back to Your Class Page")
-        
-        assert_not @seminar.all_pretest_objectives(@student_2).include?(@objective_10)
+        @test_os = @objective_10.objective_students.find_by(:user => @student_2)
     end
     
-    test "available from desk consultants" do
-        # Creating a team for another class to ensure that team doesn't appear in the method
-        last_seminar = Seminar.last
-        last_seminar.students << @student_2
-        @crazy_obj = last_seminar.objectives.create(:name => "Crazy Objective")
-        c3 = last_seminar.consultancies.create
-        t3 = c3.teams.create(:objective => @crazy_obj)
-        t3.users << @student_2
+    def begin_quiz(which_key)
+        find("#navribbon_quizzes").click
+        find("##{which_key}_#{@objective_10.id}").click
+    end
+    
+    test "has no keys" do
+        go_to_first_period
+        find("#navribbon_quizzes").click
         
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 8)
-        @student_2.objective_students.find_by(:objective => @objective_30).update(:points => 8)
-        assert_not @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
+        assert_no_selector('a', :id => "teacher_granted_#{@objective_10.id}")
+    end
+    
+    def try_quiz_twice(which_key)
+        @test_os.update(:"#{which_key}_keys" => 2)
+        old_quiz_count = Quiz.count
         
-        c1 = @seminar.consultancies.create
-        t1 = c1.teams.create(:objective => @objective_10)
-        @student_2.teams << t1
-        assert @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
+        go_to_first_period
+        begin_quiz(which_key)
         
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 10)
-        assert_not @student_2.desk_consulted_objectives(@seminar).include?(@objective_10)
+        assert_text("Question: 1")
         
-        assert @student_2.desk_consulted_objectives(last_seminar).include?(@crazy_obj)
-        assert_not @student_2.desk_consulted_objectives(@seminar).include?(@crazy_obj)
+        answer_quiz_randomly
+        click_on("Try this quiz again")
+        
+        assert_equal 0, @test_os.reload.read_attribute(:"#{which_key}_keys")
+        @quiz = Quiz.last
+        assert_equal which_key, @quiz.origin
+        
+        answer_quiz_randomly
+        
+        assert_equal old_quiz_count + 2, Quiz.count
+        assert_no_text("Try this quiz again")
+    end
+    
+    test "teacher keys" do
+        try_quiz_twice("teacher_granted")
+    end
+    
+    test "pretest keys" do
+        try_quiz_twice("pretest")
     end
     
     test "quiz without questions" do
         @bad_objective = Objective.create(:name => "Bad Objective")
         @bad_objective.objective_seminars.create(:seminar => @seminar, :pretest => 1)
+        @bad_objective.objective_students.find_by(:user => @student_2).update(:teacher_granted_keys => 2)
         
         go_to_first_period
         click_on(@bad_objective.name)
@@ -101,34 +68,24 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "quiz with questions" do
+        @test_os.update(:teacher_granted_keys => 2)
         ObjectiveStudent.find_by(:objective => @objective_10, :user => @student_2).update(:points => 2)
         
         go_to_first_period
-        begin_quiz
+        begin_quiz("teacher_granted")
         
         assert_text("Question: 1")
-    end
-    
-    test "try quiz again" do
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 2)
-        go_to_first_period
-        begin_quiz
-        answer_quiz_randomly
-        click_on ("Try this quiz again")
-        
-        answer_quiz_randomly
-        assert_no_text("Try this quiz again")
     end
     
     test "unfinished quizzes" do
         @seminar.objective_seminars.update_all(:pretest => 0)
         @seminar.objective_seminars.find_by(:objective => @objective_10).update(:pretest => 1)
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 0)
+        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 0, :pretest_keys => 2)
        
         go_to_first_period
         assert_no_text("Unfinished Quizzes")
         assert_text("Pretest Objectives")
-        begin_quiz
+        begin_quiz("pretest")
        
         3.times do |n|
             assert_text("Question: #{n+1}")
@@ -151,6 +108,42 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         end
        
        assert_text("This Score:")
+    end
+    
+    test "not ready for quiz" do
+        @test_os.update(:teacher_granted_keys => 2, :points => 2)
+        main_assign_os = @objective_20.objective_students.find_by(:user => @student_2)
+        main_assign_os.update(:teacher_granted_keys => 2)
+        
+        go_to_first_period
+        find("#navribbon_quizzes").click
+        
+        assert_no_selector('a', :id => "teacher_granted_#{@objective_20.id}")
+    end
+    
+    test "yes ready for quiz" do
+        @test_os.update(:teacher_granted_keys => 2, :points => 8)
+        main_assign_os = @objective_20.objective_students.find_by(:user => @student_2)
+        main_assign_os.update(:teacher_granted_keys => 2)
+        
+        go_to_first_period
+        find("#navribbon_quizzes").click
+        
+        assert_selector('a', :id => "teacher_granted_#{@objective_20.id}")
+    end
+    
+    test "erase oldest quiz if student has 6" do
+        @test_os.update(:points => 8, :teacher_granted_keys => 6)
+        go_to_first_period
+        begin_quiz("teacher_granted")
+        
+        should_array = [1,2,3,4,5,5,5,5]
+        8.times do |y|
+            @test_os.reload.update_keys("teacher_granted", 1)
+            assert_equal should_array[y], @student_2.quizzes.where(:objective => @objective_10).count
+            answer_quiz_randomly
+            click_on ("Try this quiz again")
+        end
     end
     
 end

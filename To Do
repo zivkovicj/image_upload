@@ -46,36 +46,116 @@ Private Repo on Github
 Tried to find out why some students are occasionally being left alone in a group as the consultant. From a close look at the code, I cannot see why that's happening.
 Keep eyes open for that problem. 
 
+Manually test:
+    The appearance and disappearance of keys when teaher grants them.
 
 
-TEACHER-GRANTED TEST KEYS
+2.61 TEACHER GRANTS KEYS
 Students can earn "keys" to take their quizzes.
-Objective_student model needs to include:
+
+V Objective_student model needs to include:
     pretest_keys
     desk_consultant_keys
-    teacher_given_keys
-Teacher can click the student view, and then be able to check/uncheck certain objectives to unlock the quizzes
-Alternatively, teacher can visit the objective view, and then check/uncheck students.
-    Or check an entire class.
-Quiz appears to a student who has keys
-Starting a quiz subtracts a key
-If a student already has nine tries on one quiz, it erases his oldest when he starts a tenth try.
+    teacher_granted_keys
+V Default for all keys should be 0 instead of nil
+V Teacher can click the student view, and then be able to check/uncheck certain objectives to unlock the quizzes
+V Teacher can add 1 key or 2 keys
+V Show the current keys when the teacher visits this view
+V Maximum of six keys
+V Teacher can visit the objective view, and then check/uncheck students.
+V Button to give keys to whole class
+V Don't allow keys to go below zero.
+V Teacher can take keys by clicking on any of the key icons
+V Make sure the newly-added keys also work
+V Test the objective side
+V Testing the appearance of the keys within the divs might work now that I fixed all the back end
+V Add key button needs to work for students who have multiple classes
+V Take away key-adding buttons if the student has more than six keys
+V Quiz appears to a student who has keys
+V Starting a quiz subtracts a key
+V Which key to use with the "Try Quiz Again" button
+V If a student already has six tries on one quiz, it erases his oldest when he starts a seventh try
+V Set all keys to zero if a student achieves a score of 100
+V Establish the scores upon finishing the quiz.  Not upon showing it.
+    V Will need to add an added_stars column to the quiz model so that it can update that only upon finishing the last question
+V Taking keys for a 100 percent score also needs to happen when the teacher inputs a score
+V Show student how many keys she has
+
+V Back-end won't add keys to a student who has already scored 100
+V Front-end shows "This student has scored 100" instead of key-adding buttons.
+
+V Only include teacher granted quizzes if the student is ready (has met the pre-reqs)
+V Teacher should see a small notice if students are not ready when teacher is granting keys
+
+V Merge "teacher_granted_quizzes" and "pretest_quizzes" into one method
+V Instead of offering all pretests, students receive keys to the pretests.
+    V Keys are given when a student joins a class
+    V Keys are also given when an objective is changed to a pretest
+    V If pretest objective loses its pretest status, students with pretest keys lose them
+    V If a student fails a pretest on her last try, she loses her pretest keys to all of the post-requisites for that objective
+        V Will need to keep track of whether a quiz is a pretest
+V If a student earns other keys on a pretest objective, the pretest keys will disappear
+V Being placed into a consultancy team gives a student two dc_keys
+
+V Add student PrivacyPledge logo on some pages.
+V Order objectives in priorities screen
+
+Migrate to add keys
+Change all keys for existing models to 0 instead of nil
+
+
+GOAL TOUCH-UPS
+Don't offer the choice to change the checkpoint action if there is only one choice
+Include grade percentage in checkpoint report
+Make sure the final goal report fits on one page
+Make checkpoint index screen take up less room
+
+PRIORITIES FOR SUMMER 2018
+Total stars for current term
+Quiz fixes (See section below)
+Materials site working
+Consultant Stars
+Growth Stars
+Adjust my grading scale so that some students can work a whole objective ahead with each quiz
+Students can print/download a study guide for their next topic
+Check again to make sure pictures are working correctly
+Short response quiz questions
+Don't put a student into a group if she already has keys for that topic
+Auto-include goal points into total stars
+
+
+
+SCHOOLS AND SPONSORS
+Are the sponsors affected by the fact that classes allow multiple teachers?
+
+
+Look up whether my architecture will work better if change the model instead of using a column in the join table
+    Seminar :has_many  :pretest_objectives
+    This approach seems like I can ruby some things a lot better
+    
+    
+
+QUIZ FIXES
+Ace-ing a quiz is showing zero stars
+Going back to an unfinished quiz seemed to leave a riposte tally with a nil value. 
+If student has scored 100, then end-of-quiz message reads, "You have scored 100% on this objective.  There is no need to take the quiz again."
+Test that it updates the points if the student improves.
+But if student doesn't improve, it at least updates the updated_at column. (So the score can count on the student's current term grade)
+Can I re-name the "present" attribute of the seminar student?  That's already a ruby word.
+For the sake of performance, the method "set_pretests" should only be called when pretests are changed.  Right now, it is getting called when
+    anything about the seminar is changed.
+
+
+REFACTOR TEACHER VIEWING STUDENT
+I like the idea of having the teacher also visit the seminar_student view just like the student does.  Will be helpful to see all
+    the same info, such as goal, quizzes, requests, and stars.  But there should be an extra tab that teachers can access for
+    granting keys, and for editing name, password, etc.
+Tab in seminar_students for granting keys
+Student cannot access this tab
+What else needs to move from the edit_student_path to the seminar_students view?
     
     
     
-PRETEST KEYS
-If a student earns keys from desk consultants or given by the teacher on an objective that is also a pretest objective, the pretest keys will disappear
-Same with teacher-granted keys
-Instead of offering all pretests, students receive keys to the pretests.
-    But if they fail an earlier pretest, they lose their keys to all of the post-requisites for that objective
-    Keys are given when a student joins a class
-        It shouldn't matter whether this happens at the beginning of the year or in the middle
-    Keys are also given when an objective is changed to a pretest
-    If pretest objective loses its pretest status, students with pretest keys lose them
-
-DESK CONSULTANT KEYS
-
-
 
 
 
@@ -85,8 +165,16 @@ DESK CONSULTANT KEYS
 TESTS FOR UPDATING SCORESHEET
 Alert teacher if she's leaving with unsaved changes.
 
+
+NON-QUIZ OBJECTIVES 
+Some objectives, such as paper cranes and tessellations, won't ever offer a quiz.
+    So there shouldn't be an option for quiz keys.
+    And they should be skipped on the student's quiz offerings.
+    
+    
+
+
 TESTS TO ADD
-See what happens if users enter improper data types in different fields. And test for those.
 Deleting a question
 Deleting a picture
 All of the "edit tests" need to ensure that no changes occur if the user presses "Save Changes" without actually changing anything
@@ -124,7 +212,17 @@ Test that checkpoints are displayed in the correct order?
 Navigating Seminar_Student view. Certain fields should be visible/invisible
 Test the navribbon in the seminar edit view.
     I tried writing tests for the navribbon in the student class page, but the visible tags weren't working in the capybara tests.
+Student using the sub-tabs to navigate the seminar_student view
 
+
+
+
+INCLUDE PARENT E-MAIL FOR STUDENTS
+E-mail students when a checkpoint deadline is coming up
+    Might need for the teacher to do that manually
+    Or maybe an e-mail can be scheduled when the goal is set.
+Also e-mail parents
+E-mail when a comment is made on a student's goal
 
 
 COLLECTION OF SMALL FIXES
@@ -157,7 +255,11 @@ Student Goal Icon
 Desk Consultants should have “Max Group Size” for topics such as Chess.
 There should also be Max Number of groups, so that I don’t end up with more than four groups doing chess when I have four boards.
 I also need to add multiple, already-existing students to a class at once.
-Searching by student number threw an error.
+Searching by student number threw an error
+Need the option to zoom in on one student's goal
+DC should NOT go back and place students into groups if they've already passed the objective.  New learning is more
+    important than having a group
+Don't place a student into a group if he/she already has keys for that group
 
 
 

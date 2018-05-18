@@ -312,6 +312,10 @@ table, th, td {
   margin-bottom: 20px;
 }
 
+.btn-primary a:link, a:visited, a:active {
+    color: white;
+}
+
 
 .big_link {
   border-radius: 36px;
@@ -333,9 +337,7 @@ a {
     text-decoration: none;
 }
 
-.btn-primary a:link, a:visited, a:active {
-    color: white;
-}
+
 
 .btn-small {
   width: 80px;

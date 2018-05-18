@@ -23,6 +23,7 @@ class StudentsController < ApplicationController
           @ss = @student.seminar_students.create(:seminar => @seminar)
           #addToSeatingChart(@seminar, @student)
           scores_for_new_student(@seminar, @student)
+          pretest_keys_for_new_student(@seminar, @student)
           goals_for_new_student(@seminar, @student)
         end
       end

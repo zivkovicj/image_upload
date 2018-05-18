@@ -7,11 +7,11 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     
     
     def setup
-        setup_users()
+        setup_users
         setup_seminars
-        setup_objectives()
-        setup_labels()
-        setup_questions()
+        setup_objectives
+        setup_labels
+        setup_questions
         
         @old_objective_count = Objective.count
     end
@@ -404,5 +404,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_no_text(no_questions_message)
         assert_selector('select', :id => "syl_#{@lo.id}_quantity")
     end
+    
+    
     
 end

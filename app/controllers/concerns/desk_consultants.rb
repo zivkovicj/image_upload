@@ -170,4 +170,13 @@ module DeskConsultants
         end
       end
     end
+    
+    def give_dc_keys
+      @consultancy.teams.each do |team|
+        team.users.each do |student|
+          this_obj_stud = student.objective_students.find_by(:objective => team.objective)
+          this_obj_stud.update_keys("dc", 2) if this_obj_stud
+        end
+      end
+    end
 end

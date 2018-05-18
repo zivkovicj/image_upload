@@ -71,6 +71,8 @@ student_1:
   user_number: 1
   username: nl1
   type: Student
+  activated: true
+  activated_at: <%= Time.zone.now %>
   last_login: Sun, 09 Apr 2017 23:56:14 UTC +00:00
   verified: 0
   school: school_1

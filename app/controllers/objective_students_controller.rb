@@ -3,18 +3,19 @@ class ObjectiveStudentsController < ApplicationController
   before_action :redirect_for_non_admin,    only: [:index, :destroy]
   
   def index
-    @objective_students = ObjectiveStudent.paginate(page: params[:page])
+    @o_ss = ObjectiveStudent.paginate(page: params[:page])
   end
   
   def update
-    @objective_student = ObjectiveStudent.find(params[:id])
-    @objective_student.update_attributes(score_params)
-    respond_with @objective_student
+    @o_s = ObjectiveStudent.find(params[:id])
+    @o_s.update_attributes(score_params)
+    @o_s.update_keys("teacher_granted", params[:objective_student][:new_keys])
+    respond_with @o_s
   end
   
   def destroy
-    @objective_student = ObjectiveStudent.find(params[:id])
-    @objective_student.destroy
+    @o_s = ObjectiveStudent.find(params[:id])
+    @o_s.destroy
   end
   
   private

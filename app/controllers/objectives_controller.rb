@@ -103,6 +103,15 @@ class ObjectivesController < ApplicationController
     redirect_to objectives_path
   end
   
+  def whole_class_keys
+    @objective = Objective.find(params[:id])
+    @seminar = Seminar.find(params[:sem_id])
+    new_keys = params[:new_keys]
+    @seminar.students.each do |student|
+      @objective.objective_students.find_by(:user => student).update_keys("teacher_granted", new_keys)
+    end
+  end
+  
   private
     def objective_params
         params.require(:objective).permit(:name, :extent, :user_id, preassign_ids: [], seminar_ids: [], label_ids: [])

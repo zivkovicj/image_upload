@@ -12,6 +12,43 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         setup_goals
         
         @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 2)
+        @test_os = @objective_10.objective_students.find_by(:user => @student_2)
+    end
+    
+    def begin_quiz
+        find("#navribbon_quizzes").click
+        find("#teacher_granted_#{@objective_10.id}").click
+    end
+    
+    test "fail pretest" do
+        @test_os.update(:teacher_granted_keys => 0, :pretest_keys => 2)
+        @first_mainassign = @objective_10.mainassigns.first
+        @mainassign_os = @student_2.objective_students.find_by(:objective => @first_mainassign)
+        @mainassign_os.update(:teacher_granted_keys => 0, :pretest_keys => 2)
+        
+        go_to_first_period
+        find("#navribbon_quizzes").click
+        find("#pretest_#{@objective_10.id}").click
+        10.times do
+            answer_question_incorrectly
+            click_on("Next Question")
+        end
+        
+        # Doesn't take the keys yet, because student still has another try
+        
+        assert_equal 1, @test_os.reload.pretest_keys
+        assert_equal 2, @mainassign_os.reload.pretest_keys  
+        
+        click_on("Try this quiz again")
+        10.times do
+            answer_question_incorrectly
+            click_on("Next Question")
+        end
+        
+        # Now it takes the pretest keys for the post-requisites to spare the student the struggle of taking a pre-test that she is doomed to fail.
+        
+        assert_equal 0, @test_os.reload.pretest_keys
+        assert_equal 0, @mainassign_os.reload.pretest_keys   
     end
     
     def answer_question_correctly
@@ -31,6 +68,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "setup quiz" do
+        @test_os.update(:teacher_granted_keys => 2)
         old_quiz_count = Quiz.count
         old_riposte_count = Riposte.count
         
@@ -48,6 +86,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "take multiple-choice quiz" do
+        @test_os.update(:teacher_granted_keys => 2)
         setup_consultancies
         go_to_first_period
         begin_quiz
@@ -73,9 +112,12 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "take fill in quiz" do
+        fill_in_objective = Objective.find_by(:name => "Fill-in Questions Only")
+        fill_in_objective.objective_students.find_by(:user => @student_2).update(:teacher_granted_keys => 2)
         go_to_first_period
         
-        click_on("Fill-in Questions Only")
+        find("#navribbon_quizzes").click
+        find("#teacher_granted_#{fill_in_objective.id}").click
         @quiz = Quiz.last
         fill_in "stud_answer", with: "Yes"
         click_on "Next Question"
@@ -101,8 +143,9 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         assert @student_2.quizzes.include?(@new_quiz)
     end
     
-    test "100_total_score" do
-        setup_consultancies()
+    test "100 total score" do
+        @test_os.update(:teacher_granted_keys => 2, :dc_keys => 2)
+        setup_consultancies
         
         go_to_first_period
         begin_quiz
@@ -114,11 +157,14 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         
         @new_quiz = Quiz.last
         assert_equal 10, @new_quiz.total_score
+        @test_os.reload
+        assert_equal 0, @test_os.teacher_granted_keys
+        assert_equal 0, @test_os.dc_keys
     end
     
     test "add to total stars" do
         @ss = SeminarStudent.find_by(:user => @student_2, :seminar => @seminar)
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 1)
+        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 1, :teacher_granted_keys => 2)
         old_stars = @student_2.total_stars(@seminar)
         
         # First try on quiz student scores 3 stars. An improvement of 2 stars.
@@ -151,5 +197,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         assert_equal old_stars + 7, @student_2.total_stars(@seminar)
         
     end
+    
+    
     
 end

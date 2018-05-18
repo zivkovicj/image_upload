@@ -1,14 +1,29 @@
 
 <div class="center jumbotron">
   <p><small>Update Version: 2.60</small></p>
-  <div class="singleOption lowSingOpt">
-    <h1><%= image_tag "logo.jpg" %>&nbsp; Mr. Z School</h1>
-  </div>
+    <div class="row">
+      <div class="col-sm-5">
+        <div class="singleOption lowSingOpt">
+          </br>
+          </br>
+          <%= image_tag "logo.jpg" %>
+          </br>
+          </br>
+          </br>
+        </div>
+      </div>
+      <div class="col-sm-7">
+        <div class="singleOption lowSingOpt">
+          <h2><strong>Proudly featuring</strong></h2>
+          <h3>Desk Consultants</h3>
+          <h3>Z-School Online Assessor</h3>
+          <h3>Goalkeeper</h3>
+        </div>
+      </div>
+    </div>
+    
   
-  <h2>Featuring Desk Consultants</h2>
-  <h2>And the Z-School Online Assessor</h2>
-  <h3>Better differentiation and student engagement than classrooms have ever known before.</h3>
-  
+  </br>
   <% if logged_in? %>
     <%= button_to "Your profile", polymorphic_path(current_user), class: "btn btn-lg btn-primary", :method => :get %>
   <% else %>
@@ -26,6 +41,11 @@
   <h3>Coming Soon</h3>
     <%#= button_to "Materials", materials_url, class: "btn btn-primary",
     :method => :get %>
+</div>
+
+<div>
+  <%= link_to image_tag("spp_logo.png", alt: "Student Privacy Pledge Signatory"),
+            'https://studentprivacypledge.org/signatories/' %>
 </div>
 
 

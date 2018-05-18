@@ -11,12 +11,12 @@
           <td class="center">5 - Critical</td>
       </tr>
   </thead>
-  <% @seminar.objective_seminars.each do |os| %>
+  <% @seminar.objectives.order(:name).each do |objective| %>
       <tr>
-        <% objective = os.objective %>
-        <% petrie = [false,false,false,false] %>
-        <% petrie[os.priority] = true %>
-        <% if objective %>
+        <% os = objective.objective_seminars.find_by(:seminar => @seminar) %>
+        <% if os %>
+          <% petrie = [false,false,false,false] %>
+          <% petrie[os.priority] = true %>
             <td><%= objective.name %></td>
             <% 6.times do |n| %>
                 <% checkTag = "" %>

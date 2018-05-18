@@ -165,7 +165,7 @@ class GoalStudentsPoltergeistEditTest < ActionDispatch::IntegrationTest
         goal_test_opening
         set_student_goals
         
-        assert_equal nil, @check_2.achievement
+        assert_nil @check_2.achievement
         
         capybara_login(@teacher_1)
         go_to_goals

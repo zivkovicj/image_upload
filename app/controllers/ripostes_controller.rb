@@ -32,6 +32,11 @@ class RipostesController < ApplicationController
         @quiz.update(:progress => @riposte.position)
         
         if @riposte == @quiz.ripostes.last
+            @student = @quiz.user
+            @objective = @quiz.objective
+            @this_obj_stud = @student.objective_students.find_by(:objective => @objective)
+            set_total_score
+            take_future_pretest_keys
             redirect_to quiz_path(@quiz)
         else
             next_riposte = @quiz.ripostes.find_by(:position => next_riposte_num)
@@ -39,5 +44,37 @@ class RipostesController < ApplicationController
         end
     end
 
+    private
+    
+        def set_total_score
+            @old_stars = (@this_obj_stud == nil ? 0 : @this_obj_stud.points) 
+        
+            poss = 0
+            stud_score = 0
+            @quiz.ripostes.each do |riposte|
+                poss += riposte.poss
+                stud_score += (riposte.tally)
+            end
+            
+            @new_total = ((stud_score * 100)/poss.to_f).round
+            @these_stars = (@new_total/10.to_f).ceil
+            added_stars = @these_stars - @old_stars
+            if added_stars > 0
+                @this_obj_stud.update(:points => @these_stars)
+            else
+                @this_obj_stud.update(:updated_at => Time.now)
+            end
+            added_stars_to_update = [0,added_stars].max
+            @quiz.update(:total_score => @these_stars, :added_stars => added_stars_to_update)
+        end
+        
+        def take_future_pretest_keys
+            if @this_obj_stud.points < 6 && @this_obj_stud.total_keys == 0
+                @objective.mainassigns.each do |mainassign|
+                    this_mainassign = mainassign.objective_students.find_by(:user => @student)
+                    this_mainassign.update(:pretest_keys => 0) if this_mainassign
+                end
+            end
+        end
     
 end

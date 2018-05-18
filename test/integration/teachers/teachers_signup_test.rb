@@ -96,7 +96,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         goto_signup_page
         teacher_editing_stuff(nil, 'Create My Account')
         
-        assert_text ("Choose Your School")
+        assert_text("Choose Your School")
         assert_no_text("Please complete all information for your school")
         
         fill_in "school_name", with: "Slunk Elementary"
@@ -107,7 +107,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         assert_equal @old_school_count, School.count
         assert_equal 0, @this_teacher.verified
         
-        assert_text ("Choose Your School")
+        assert_text("Choose Your School")
         assert_text("Please complete all information for your school")
     end
     
@@ -115,7 +115,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         goto_signup_page
         teacher_editing_stuff(nil, 'Create My Account')
         
-        assert_text ("Choose Your School")
+        assert_text("Choose Your School")
         assert_no_text("Please choose a school or create a new school.")
         
         click_on("This is my school")
@@ -125,7 +125,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         assert_equal @old_school_count, School.count
         assert_equal 0, @this_teacher.verified
         
-        assert_text ("Choose Your School")
+        assert_text("Choose Your School")
         assert_text("Please choose a school or create a new school.")
         assert_no_text("Please complete all information for your school")
     end

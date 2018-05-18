@@ -599,6 +599,27 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert unplaced_team.users.include?(@student_10)
     end
     
+    test "give dc keys" do
+        method_setup
+        choose_consultants
+        place_apprentices_by_requests
+        place_apprentices_by_mastery
+        check_for_lone_students
+        new_place_for_lone_students
+        are_some_unplaced
+        
+        this_team = @consultancy.teams.first
+        test_stud = this_team.users.last
+        test_os = test_stud.objective_students.find_by(:objective => this_team.objective)
+        test_os.update(:pretest_keys => 2)
+        
+        give_dc_keys
+        
+        test_os.reload
+        assert_equal 2, test_os.dc_keys
+        assert_equal 0, test_os.pretest_keys
+    end
+    
     test "what if some scores are nil" do
         @seminar.students[7].objective_students[3].destroy
         @seminar.students[8].objective_students[2].update(:points => nil)

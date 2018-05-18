@@ -113,18 +113,14 @@ class User < ApplicationRecord
     def all_unfinished_quizzes(seminar)
         seminar.objectives.select{|x| self.one_unfinished(x) } 
     end
- 
-    def has_not_scored_100(obj)
-        self.objective_students.find_by(:objective => obj).points < 10
-    end
-    
-    def has_not_tried_twice(obj)
-        self.quizzes.where(:objective => obj).count < 2 
-    end
     
     def desk_consulted_objectives(seminar)
         blap = self.teams.map(&:objective_id)
-        return seminar.objectives.where(:id => blap).select{|x| self.has_not_scored_100(x) && !self.one_unfinished(x)}
+        return seminar.objectives.where(:id => blap).select{|x| !self.one_unfinished(x)}
+    end
+    
+    def quiz_collection(seminar, which_key)
+        return seminar.objectives.select{|x| x.objective_students.find_by(:user => self).read_attribute(:"#{which_key}_keys") > 0 && !self.one_unfinished(x) && self.check_if_ready(x)}
     end
     
     def can_edit_this_seminar(seminar)

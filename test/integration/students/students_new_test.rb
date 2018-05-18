@@ -9,11 +9,12 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
     end
     
     test 'create new students' do
+        
         assert_not_nil @teacher_1.school
         old_ss_count = SeminarStudent.count
         old_score_count = ObjectiveStudent.count
         old_goal_student_count = @seminar.goal_students.count
-        assignmentCount = @seminar.objectives.count
+        assignment_count = @seminar.objectives.count
         
         go_to_create_student_view
         
@@ -42,7 +43,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         click_on("Create these student accounts")
         
         assert_equal @old_stud_count+5, Student.count
-        assert_equal old_score_count + (assignmentCount*5), ObjectiveStudent.count
+        assert_equal old_score_count + (assignment_count*5), ObjectiveStudent.count
         assert_equal old_ss_count + 5, SeminarStudent.count
         assert_equal old_goal_student_count + 20, @seminar.goal_students.count
         @gs = @seminar.goal_students.order(:created_at).last
@@ -56,6 +57,13 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_equal "", first_new_student.email
         assert_equal first_new_student.created_at, first_new_student.last_login
         assert_equal @teacher_1.school, first_new_student.school
+        @new_ss = SeminarStudent.find_by(:seminar_id => @seminar.id, :user => first_new_student)
+        assert_equal 1, @new_ss.pref_request
+        assert_equal true, @new_ss.present
+        @pretest_obj = @seminar.objective_seminars.where(:pretest => 1).last.objective
+        assert_not_nil @pretest_obj
+        @new_os = first_new_student.objective_students.find_by(:objective => @pretest_obj)
+        assert_equal 2, @new_os.pretest_keys
         
         second_new_student = Student.find_by(:last_name => "Burgaboot")
         assert @seminar.students.include?(second_new_student)
@@ -74,9 +82,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         fifth_new_student = Student.find_by(:last_name => "with Email")
         assert_equal "dude@email.com", fifth_new_student.email
         
-        @new_aula = SeminarStudent.find_by(:seminar_id => @seminar.id, :user => first_new_student)
-        assert_equal 1, @new_aula.pref_request
-        assert_equal true, @new_aula.present
+        
         
         assert_text("#{@seminar.name} Scoresheet")
     end

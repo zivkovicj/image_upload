@@ -3,19 +3,11 @@ class QuizzesController < ApplicationController
     def new
         @objective = Objective.find(params[:objective_id])
         if @objective.questions.count > 0
-            @quiz = Quiz.create(:objective => @objective, :user => current_user, :progress => 1)
-            quest_collect = []
-            @objective.label_objectives.each do |lo|
-                quant = lo.quantity
-                label = lo.label
-                label.questions.order("RANDOM()").limit(quant).each do |quest|
-                    quest_collect.push([quest.id, lo.point_value])
-                end
-            end
-            
-            quest_collect.shuffle.each_with_index do |q_info, index|
-                @quiz.ripostes.create(:question_id => q_info[0], :position => index+1, :poss => q_info[1]) 
-            end
+            @origin = params[:origin]
+            @quiz = Quiz.create(:objective => @objective, :user => current_user, :progress => 1, :origin => @origin)
+            take_a_key
+            check_if_six
+            build_the_quiz
             redirect_to edit_riposte_path(@quiz.ripostes.first)
         else
             flash[:danger] = "This quiz doesn't have any questions. Please alert your teacher that you cannot take this quiz until some questions are added."
@@ -34,28 +26,54 @@ class QuizzesController < ApplicationController
     def show
         @quiz = Quiz.find(params[:id])
         @objective = @quiz.objective
+        @student = @quiz.user
+        @this_os = @objective.objective_students.find_by(:user => @student) 
         
-        student = current_user
-        score = student.objective_students.find_by(:objective => @objective)
-        @old_stars = (score == nil ? 0 : score.points) 
+        establish_offer_next_try
+    end
     
-        poss = 0
-        stud_score = 0
-        @quiz.ripostes.each do |riposte|
-            poss += riposte.poss
-            stud_score += (riposte.tally)
+    private
+    
+        def take_a_key
+            this_os = @objective.objective_students.find_by(:user => current_user)
+            old_keys = this_os.read_attribute(:"#{@origin}_keys")
+            new_keys = old_keys - 1
+            this_os.update(:"#{@origin}_keys" => new_keys)
         end
         
-        @new_total = ((stud_score * 100)/poss.to_f).round
-        @these_stars = num_of_stars(@new_total)
-        @quiz.update(:total_score => @these_stars)
-        @added_stars = @these_stars - @old_stars
-        
-        score.update(:points => @these_stars) if @added_stars > 0
-    end
+        def check_if_six
+            quizzes_with_same_objective = current_user.quizzes.where(:objective => @objective).order(:created_at)
+            if quizzes_with_same_objective.count > 5
+               quizzes_with_same_objective.first.destroy
+            end
+        end
     
-    def num_of_stars(input)
-        (input/10.to_f).ceil
-    end
+        def build_the_quiz
+            quest_collect = []
+            @objective.label_objectives.each do |lo|
+                quant = lo.quantity
+                label = lo.label
+                label.questions.order("RANDOM()").limit(quant).each do |quest|
+                    quest_collect.push([quest.id, lo.point_value])
+                end
+            end
+            
+            quest_collect.shuffle.each_with_index do |q_info, index|
+                @quiz.ripostes.create(:question_id => q_info[0], :position => index+1, :poss => q_info[1]) 
+            end
+        end
+    
+        def establish_offer_next_try
+            if @this_os.dc_keys > 0
+                @offer_next_try = "dc"
+            elsif @this_os.teacher_granted_keys > 0
+                @offer_next_try = "teacher_granted"
+            elsif @this_os.pretest_keys > 0
+                @offer_next_try = "pretest"
+            else
+                @offer_next_try = "none"
+            end
+        end
+    
     
 end

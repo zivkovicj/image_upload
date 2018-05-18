@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180303174330) do
+ActiveRecord::Schema.define(version: 20180430113946) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -105,8 +105,11 @@ ActiveRecord::Schema.define(version: 20180303174330) do
     t.integer  "user_id"
     t.integer  "points"
     t.integer  "unlocked"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+    t.integer  "pretest_keys"
+    t.integer  "dc_keys"
+    t.integer  "teacher_granted_keys"
     t.index ["objective_id", "user_id"], name: "index_objective_students_on_objective_id_and_user_id"
     t.index ["objective_id"], name: "index_objective_students_on_objective_id"
     t.index ["user_id"], name: "index_objective_students_on_user_id"
@@ -165,6 +168,8 @@ ActiveRecord::Schema.define(version: 20180303174330) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.integer  "progress"
+    t.integer  "added_stars"
+    t.string   "origin"
     t.index ["objective_id"], name: "index_quizzes_on_objective_id"
     t.index ["user_id"], name: "index_quizzes_on_user_id"
   end
