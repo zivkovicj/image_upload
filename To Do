@@ -42,7 +42,6 @@ Private Repo on Github
 
 
 
-
 Tried to find out why some students are occasionally being left alone in a group as the consultant. From a close look at the code, I cannot see why that's happening.
 Keep eyes open for that problem. 
 
@@ -50,65 +49,17 @@ Manually test:
     The appearance and disappearance of keys when teaher grants them.
 
 
-2.61 TEACHER GRANTS KEYS
-Students can earn "keys" to take their quizzes.
 
-V Objective_student model needs to include:
-    pretest_keys
-    desk_consultant_keys
-    teacher_granted_keys
-V Default for all keys should be 0 instead of nil
-V Teacher can click the student view, and then be able to check/uncheck certain objectives to unlock the quizzes
-V Teacher can add 1 key or 2 keys
-V Show the current keys when the teacher visits this view
-V Maximum of six keys
-V Teacher can visit the objective view, and then check/uncheck students.
-V Button to give keys to whole class
-V Don't allow keys to go below zero.
-V Teacher can take keys by clicking on any of the key icons
-V Make sure the newly-added keys also work
-V Test the objective side
-V Testing the appearance of the keys within the divs might work now that I fixed all the back end
-V Add key button needs to work for students who have multiple classes
-V Take away key-adding buttons if the student has more than six keys
-V Quiz appears to a student who has keys
-V Starting a quiz subtracts a key
-V Which key to use with the "Try Quiz Again" button
-V If a student already has six tries on one quiz, it erases his oldest when he starts a seventh try
-V Set all keys to zero if a student achieves a score of 100
-V Establish the scores upon finishing the quiz.  Not upon showing it.
-    V Will need to add an added_stars column to the quiz model so that it can update that only upon finishing the last question
-V Taking keys for a 100 percent score also needs to happen when the teacher inputs a score
-V Show student how many keys she has
-
-V Back-end won't add keys to a student who has already scored 100
-V Front-end shows "This student has scored 100" instead of key-adding buttons.
-
-V Only include teacher granted quizzes if the student is ready (has met the pre-reqs)
-V Teacher should see a small notice if students are not ready when teacher is granting keys
-
-V Merge "teacher_granted_quizzes" and "pretest_quizzes" into one method
-V Instead of offering all pretests, students receive keys to the pretests.
-    V Keys are given when a student joins a class
-    V Keys are also given when an objective is changed to a pretest
-    V If pretest objective loses its pretest status, students with pretest keys lose them
-    V If a student fails a pretest on her last try, she loses her pretest keys to all of the post-requisites for that objective
-        V Will need to keep track of whether a quiz is a pretest
-V If a student earns other keys on a pretest objective, the pretest keys will disappear
-V Being placed into a consultancy team gives a student two dc_keys
-
-V Add student PrivacyPledge logo on some pages.
-V Order objectives in priorities screen
 
 Migrate to add keys
 Change all keys for existing models to 0 instead of nil
 
 
 GOAL TOUCH-UPS
-Don't offer the choice to change the checkpoint action if there is only one choice
 Include grade percentage in checkpoint report
 Make sure the final goal report fits on one page
 Make checkpoint index screen take up less room
+Don't offer the choice to change the checkpoint action if there is only one choice
 
 PRIORITIES FOR SUMMER 2018
 Total stars for current term
@@ -120,14 +71,9 @@ Adjust my grading scale so that some students can work a whole objective ahead w
 Students can print/download a study guide for their next topic
 Check again to make sure pictures are working correctly
 Short response quiz questions
+Are the sponsors affected by the fact that classes allow multiple teachers?
 Don't put a student into a group if she already has keys for that topic
 Auto-include goal points into total stars
-
-
-
-SCHOOLS AND SPONSORS
-Are the sponsors affected by the fact that classes allow multiple teachers?
-
 
 Look up whether my architecture will work better if change the model instead of using a column in the join table
     Seminar :has_many  :pretest_objectives

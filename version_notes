@@ -1,5 +1,58 @@
 
 
+
+
+2.61 TEACHER GRANTS KEYS
+Students can earn "keys" to take their quizzes.
+
+Objective_student model needs to include:
+    pretest_keys
+    desk_consultant_keys
+    teacher_granted_keys
+Default for all keys should be 0 instead of nil
+Teacher can click the student view, and then be able to check/uncheck certain objectives to unlock the quizzes
+Teacher can add 1 key or 2 keys
+Show the current keys when the teacher visits this view
+Maximum of six keys
+Teacher can visit the objective view, and then check/uncheck students.
+Button to give keys to whole class
+Don't allow keys to go below zero.
+Teacher can take keys by clicking on any of the key icons
+Make sure the newly-added keys also work
+Test the objective side
+Testing the appearance of the keys within the divs might work now that I fixed all the back end
+Add key button needs to work for students who have multiple classes
+Take away key-adding buttons if the student has more than six keys
+Quiz appears to a student who has keys
+Starting a quiz subtracts a key
+Which key to use with the "Try Quiz Again" button
+If a student already has six tries on one quiz, it erases his oldest when he starts a seventh try
+Set all keys to zero if a student achieves a score of 100
+Establish the scores upon finishing the quiz.  Not upon showing it.
+    Will need to add an added_stars column to the quiz model so that it can update that only upon finishing the last question
+Taking keys for a 100 percent score also needs to happen when the teacher inputs a score
+Show student how many keys she has
+
+Back-end won't add keys to a student who has already scored 100
+Front-end shows "This student has scored 100" instead of key-adding buttons.
+
+Only include teacher granted quizzes if the student is ready (has met the pre-reqs)
+Teacher should see a small notice if students are not ready when teacher is granting keys
+
+Merge "teacher_granted_quizzes" and "pretest_quizzes" into one method
+Instead of offering all pretests, students receive keys to the pretests.
+    Keys are given when a student joins a class
+    Keys are also given when an objective is changed to a pretest
+    If pretest objective loses its pretest status, students with pretest keys lose them
+    If a student fails a pretest on her last try, she loses her pretest keys to all of the post-requisites for that objective
+        Will need to keep track of whether a quiz is a pretest
+If a student earns other keys on a pretest objective, the pretest keys will disappear
+Being placed into a consultancy team gives a student two dc_keys
+
+Add student PrivacyPledge logo on some pages.
+Order objectives in priorities screen
+
+
 2.60 ACTION SAVING
 When student saves her checkpoints, it should save with a (?), not the actual target number.
 I think the best place to change this is in the update_checkpoints action of the goal_students_controller
