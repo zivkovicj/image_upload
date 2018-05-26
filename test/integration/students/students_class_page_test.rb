@@ -14,7 +14,7 @@ class StudentsClassPageTest < ActionDispatch::IntegrationTest
         click_on(@seminar.name)
         
         #The visible tags aren't working right now.
-        assert_selector('h3', :text => "Your Goal for 2nd Term")
+        assert_selector('h3', :text => "2nd Term Goal")
     end
     
 end

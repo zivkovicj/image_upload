@@ -17,88 +17,29 @@
         link_text: "Printable Version", link_image: "apple.jpg"  %>
 </br>
 
-<table class="table-borderless" style="table-layout:fixed">
-    <% them_kids = @seminar.students.order(:last_name) %>
-    <% them_kids.each do |student| %>
-        <% @gs = student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
-        <% gs_id = @gs.id if @gs %>
+
+<% them_kids = @seminar.students.order(:last_name) %>
+<% them_kids.each do |student| %>
+    <% @student = student %>
+    <% @gs = student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
+    <% @gs_id = @gs.id if @gs %>
+    <table class="table-borderless" style="table-layout:fixed">
         <tr>
-            <td colspan="2"><h3><strong><%= student.last_name_first %></strong></h3></td>
+            <td colspan="3"><h3><strong><%= student.last_name_first %></strong></h3></td>
+            
+            &emsp; <%= render 'goal_students/index_pieces/goal_choice' %>
         </tr>
+        
         <tr>
-            <td>
-                <% if @gs.goal != nil %>
-                    <% if @gs.approved %>
-                        <% button_message = "Unlock This Goal" %>
-                        <% button_class = "unlock_button" %>
-                    <% else %>
-                        <% button_message = "Lock This Goal" %>
-                        <% button_class = "lock_button" %>
-                    <% end %>
-                    <div class="btn btn-primary goal_approval <%= button_class %>" id="approval_button_<%= gs_id %>" gs_id="<%= gs_id %>"><%= button_message %></div>
-                <% end %>
-            </td>
-            <td>
-                <% goal_options = Goal.all.collect {|p| [ p.id, p.name ] } %>
-                <% this_place_holder = @gs.goal != nil ? @gs.goal.name : "Click to Choose Student's Goal" %>
-                <h3 id="goal_text_<%= @gs.id %>"><%= best_in_place @gs, :goal_id, :as => :select, :collection => goal_options, :place_holder => this_place_holder %></h3>
-            </td>
+            <%= render 'goal_students/index_pieces/target_cell' %>
+            &emsp; <%= render 'goal_students/index_pieces/approval_button' %>
         </tr>
-        <tr>
-            <td id="target_cell_<%= gs_id %>">
-                <% this_place_holder = @gs.target? ? @gs.target : "Choose Goal Target" %>
-                <h5>
-                    Goal Target:
-                    <span class="" id="target_span_<%= @gs.id %>">
-                        <%= best_in_place @gs, :target, :as => :select, :collection => bip_percent_array, :place_holder => this_place_holder %>
-                    </span>
-                </h5>
-            </td>
-        </tr>
-        <% @gs.checkpoints_in_order.each do |checkpoint| %>
-            <% this_id = checkpoint.id %>
-            <% this_sequence = checkpoint.sequence %>
-            <tr>
-                <td>
-                    <% this_place_holder = checkpoint.achievement? ? checkpoint.achievement : "Achievement" %>
-                    <span id="achievement_span_<%= checkpoint.id %>">
-                        <%= best_in_place checkpoint, :achievement, :as => :select, :collection => bip_percent_array, :place_holder => this_place_holder %> 
-                    </span>
-                </td>
-                <td>
-                    <% if @gs.goal %>
-                        <h5>
-                            Checkpoint <%= this_sequence + 1 %>: 
-                            <% this_place_holder = checkpoint.action == nil ? "Click to Choose The Action for This Checkpoint" : checkpoint.statement %> 
-                            <span id="action_span_<%= checkpoint.id %>">
-                                <%= best_in_place checkpoint, :action, :as => :select, :collection => @gs.goal.actions[this_sequence].collect {|act| [act, act.gsub("(?)", @gs.target.to_s)]}, :place_holder => this_place_holder %>
-                            </span>
-                        </h5>
-                    <% end %>
-                </td>
-            <tr>
-                <% if checkpoint.student_comment %>
-                    <td></td>
-                    <td><strong><%= student.first_name %></strong>&emsp;<%= checkpoint.student_comment %></td>
-                <% end %>
-            </tr>
-            <tr>
-                <td></td>
-                <td width="75%">
-                    <% if checkpoint.teacher_comment %>
-                        <strong>Me</strong>&emsp;<%= best_in_place(checkpoint, :teacher_comment, :inner_class => "commentInput") %>
-                    <% else %>
-                        <%= best_in_place(checkpoint, :teacher_comment, :inner_class => "commentInput", :place_holder => "No comment yet") %>
-                    <% end %>
-                    </br>
-                </td>
-            </tr>
-        <% end %>
-        <% unless student == them_kids.last %>
-            <tr><td colspan="2" bgcolor="#AAFFAA"></br></td></tr>
-        <% end %>
-    <% end %>
-</table>
+    </table>
+    <% @edit_type_for_comment = "teacher" %>
+    <%= render 'shared/checkpoint_table/checkpoint_table' %>
+    
+    
+<% end %>
 
 
 </br>

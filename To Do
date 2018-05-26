@@ -51,20 +51,72 @@ Manually test:
 
 
 
-Migrate to add keys
-Change all keys for existing models to 0 instead of nil
+2.62  GOAL TOUCH-UPS
+V Include grade percentage in teacher index report
+V Grade percentage should not go below zero.
+V Only use grade percentage if the checkpoint action includes (?)
+V "Made!" should only apply to checkpoitns that include (?)
+V Include grade percentage in student printout
+V Show goal deadlines and grade percentage in student show page
+V Make sure the final goal report fits on one page
+V Make checkpoint index screen take up less room
+V Student can't move on from screen after changing goal
+V Don't offer the choice to change the checkpoint action if there is only one choice
+V No goals are showing up in goal index
+V Add sequence to the checkpoint table
+V One comment is editable, but it's different depending on whether student or teacher is viewing
+V Put the color back into the table
+V Finish taking away all best_in_place cells for students and printing
+V Move all poltergeist tests into the poltergeist test folder
 
 
-GOAL TOUCH-UPS
-Include grade percentage in checkpoint report
-Make sure the final goal report fits on one page
-Make checkpoint index screen take up less room
-Don't offer the choice to change the checkpoint action if there is only one choice
+
+TOTAL STARS FOR CURRENT TERM
+Students need a column to track their school year.
+The scores column in the ObjectiveStudent model is an multi-dimensional array of scores by school year and term.
+    Column is an array [0,3,8,0].  In this example, the student scored a 3 during second term, and an "8" during third term.
+    Each year's array will need to hold a maximum of six grading terms
+        Then allow the teacher to set the number of terms in each class
+The points column still keeps track of a student's highest score so far.  That will be needed for desk consultants
+How should I handle scores from previous years?
+    I'll have several 8th graders who have already passed objectives from the previous year.  Where should those scores go?
+    It could be a multi-dimensional array where the first level is the student's year in school.  
+    This will be interesting for long-term data, and fairly natural.
+Need an "untaken" mark for all the scores that don't count.  Otherwise the scoresheet will highlight all the zeros for the untaken quizzes.
+When a student takes a quiz, the array is updated to 1 in the spot for that term
+    Unless the quiz is a pretest
+    It should also probably update for a consultant who had 100%, even though it doesn't give that student keys
+    Seems more fair than if I ignore that score and count the student for zero stars this term
+Function adds the total points from all obj_studs for the current term
+When teacher updates the scoresheet manually, that also updates the include_for_term column
+Scoresheet should show current term by default
+Or for showing all possible scores
+The scoresheet should dim any scores that aren't counting for the current term
+Give teachers an option to delete unfinished quizzes at the end of a term.
+    This will prevent students from finishing quizzes that they started in a previous term
+In the same view, also give the option to erase keys
+    This will only erase teacher keys and dc keys.  Not pretest keys.
+Allow teacher to set term start dates and end dates.
+    While doing so, set the number of terms.  Anything after term 4 is nil by default.
+    Check whether the current term needs to be updated when somebody logs in to the class
+    Don't update the term anymore just by the teacher switching views in the goal_students index
+It feels like I'll need to offer the option for the teachers to update the scoresheet without including those updates for the current term
+Will also need an advanced option where teacher can change whether a score counts for a certain term
+
+Give existing students a grade year
+Migrate existing scores into their proper place in the scores array
+
+Make a plan for how to update a students' school year.
+
+
 
 PRIORITIES FOR SUMMER 2018
 Total stars for current term
 Quiz fixes (See section below)
 Materials site working
+Bank Game Component
+    Students can put algebucks in their bank and earn interest
+Lunch Detention Record
 Consultant Stars
 Growth Stars
 Adjust my grading scale so that some students can work a whole objective ahead with each quiz
@@ -159,6 +211,8 @@ Navigating Seminar_Student view. Certain fields should be visible/invisible
 Test the navribbon in the seminar edit view.
     I tried writing tests for the navribbon in the student class page, but the visible tags weren't working in the capybara tests.
 Student using the sub-tabs to navigate the seminar_student view
+Mr. Z School needs to test a student visiting when there is a teacher comment.
+
 
 
 
@@ -172,6 +226,7 @@ E-mail when a comment is made on a student's goal
 
 
 COLLECTION OF SMALL FIXES
+Don't place a student into a group if he/she already has keys for that group
 README for loading only specific jquery-ui components.
     https://github.com/jquery-ui-rails/jquery-ui-rails
 Dry up the four buttons shown in the bottom of seminar navigation
@@ -205,8 +260,8 @@ Searching by student number threw an error
 Need the option to zoom in on one student's goal
 DC should NOT go back and place students into groups if they've already passed the objective.  New learning is more
     important than having a group
-Don't place a student into a group if he/she already has keys for that group
-
+Need to allow for multiple teachers to leave comments.
+So the comment needs to have the ID of the person who left it.
 
 
 SCORESHEET SCROLLVIEW HEADER

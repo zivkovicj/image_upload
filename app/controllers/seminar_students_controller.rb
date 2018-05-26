@@ -36,7 +36,7 @@ class SeminarStudentsController < ApplicationController
     @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
     
     @this_checkpoint = @seminar.which_checkpoint
-    @this_gs = @student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term)
+    @gs = @student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term)
     
     @objectives = @seminar.objectives.order(:name)
     objective_ids = @objectives.map(&:id)

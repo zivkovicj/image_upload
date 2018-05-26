@@ -18,6 +18,11 @@ class GoalStudent < ApplicationRecord
         self.goal.statement_stem.gsub("(?)", self.target.to_s) if self.goal
     end
     
+    def action_with_target(action)
+        temp = action.gsub("(?)", self.target.to_s)
+        return temp unless temp == nil
+    end
+    
     def create_checkpoints
         4.times do |n|
             self.checkpoints.create(:sequence => n)
@@ -35,5 +40,7 @@ class GoalStudent < ApplicationRecord
             self.save
         end
     end
+    
+
 
 end

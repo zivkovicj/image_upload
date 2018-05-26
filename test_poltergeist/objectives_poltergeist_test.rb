@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ObjectivesIndexTest < ActionDispatch::IntegrationTest
+class ObjectivesPoltergeistTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users

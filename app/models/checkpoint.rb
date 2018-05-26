@@ -8,4 +8,28 @@ class Checkpoint < ApplicationRecord
             replacer.present? ? self.action.gsub("(?)", replacer) : self.action
         end
     end
+    
+    def friendly_due_date
+        this_seminar = self.goal_student.seminar
+        orig_due_date = Date.strptime(this_seminar.checkpoint_due_dates[this_seminar.term][self.sequence], "%m/%d/%Y")
+        return orig_due_date.strftime("%A, %B %e")
+    end
+    
+    def grade_percentage
+        this_achieve = self.achievement
+        this_target = self.goal_student.target
+        if !self.action&.include?("(?)")
+            return this_achieve
+        elsif this_achieve == 0
+            return 0
+        elsif this_achieve && this_target
+            max_achieve = [this_achieve, this_target].min
+            temp_percent = (100 * max_achieve / this_target).round
+            temp_percent = temp_percent - 10 if (this_achieve < this_target)
+            temp_percent = [temp_percent, 10].max
+            return temp_percent
+        else
+            return ""
+        end
+    end
 end

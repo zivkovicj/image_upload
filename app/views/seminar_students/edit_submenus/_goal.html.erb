@@ -1,62 +1,14 @@
-<h3>Your Goal for <%= (@seminar.term + 1).ordinalize %> Term </h3>
-<% if @this_gs.goal %>
-    <h2><%= @this_gs.statement_with_target %></h2>
+<h3><%= (@seminar.term + 1).ordinalize %> Term Goal</h3>
+<% if @gs.goal %>
+    <h2><%= @gs.statement_with_target %></h2>
     </br>
-    <table class="table-borderless">
-        <th colspan="2"></th><th>Checkpoints</th>
-        <% @this_gs.checkpoints_in_order.each do |checkpoint| %>
-            <% this_achievement = checkpoint.achievement %>
-            <% this_sequence = checkpoint.sequence %>
-            <tr>
-                <td><h4><%= this_sequence + 1 %>) &nbsp;</h4></td>
-                <% if this_achievement %>
-                    <% this_color = @this_gs.target && this_achievement >= @this_gs.target ? "#AAFFAA" : "#BB6666" %>
-                    <td bgcolor="<%= this_color %>">
-                        <h3 class="center"><%= this_achievement %></h3>
-                    </td>
-                <% elsif this_sequence < @this_checkpoint %>
-                    <td class="center">
-                        <small><strong>Not</br> marked</strong></small>
-                    </td>
-                <% elsif this_sequence == @this_checkpoint %>
-                    <td class="center">
-                        <small><strong>In</br> progress</strong></small>
-                    </td>
-                <% else %>
-                    <td></td>
-                <% end %>
-                <td class="<%= 'highlighted' if this_sequence == @this_checkpoint %>" colspan="2" >
-                    <h4>&nbsp; <%= checkpoint.statement %></h4>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <% if checkpoint.student_comment %>
-                        <strong>Me</strong>&emsp;<%= best_in_place(checkpoint, :student_comment, :inner_class => "commentInput") %>
-                    <% else %>
-                        <strong><%= best_in_place(checkpoint, :student_comment, :inner_class => "commentInput", :place_holder => "No comment yet") %></strong>
-                    <% end %>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <% if checkpoint.teacher_comment %>
-                        <strong><%= @seminar.teachers.first.name_with_title %></strong>&emsp;<%= checkpoint.teacher_comment %>
-                    <% end %>
-                </td>
-            </tr>
-        <% end %>
-    </table>
+    
+    <% @edit_type_for_comment = "student" %>
+    <%= render 'shared/checkpoint_table/checkpoint_table' %>
 <% else %>
     </br><h4>You don't have a goal set for this term.</h4>
 <% end %> 
 
-<% if !@this_gs.approved %> 
-    </br><%= button_to "Edit This Goal", edit_goal_student_path(@this_gs), :method => :get, :class => "btn btn-lg btn-primary" %>
+<% if !@gs.approved %> 
+    </br><%= button_to "Edit This Goal", edit_goal_student_path(@gs), :method => :get, :class => "btn btn-lg btn-primary" %>
 <% end %>

@@ -6,16 +6,23 @@
     <% @gs.checkpoints_in_order.each_with_index do |checkpoint, index| %>
         <h3>Checkpoint <%= index+1 %></h3>
         <% this_due_date = Date.strptime(@gs.seminar.checkpoint_due_dates[@gs.term][index], "%m/%d/%Y") %>
-        <% if this_due_date < Date.today %>
-            <h5 id="past_due_<%= index %>">The due date for this checkpoint has already passed.</h5></br>
-        <% elsif this_due_date - 2.days < Date.today %>
-            <h5 id="too_soon_<%= index %>">The due date for this checkpoint is too soon. The checkpoint cannot be changed.</h5></br>
+        <% these_actions = @gs.goal.actions[index] %>
+        <% if these_actions.count > 1 %>
+            <% if this_due_date < Date.today %>
+                <h5 id="past_due_<%= index %>">The due date for this checkpoint has already passed.</h5></br>
+            <% elsif this_due_date - 2.days < Date.today %>
+                <h5 id="too_soon_<%= index %>">The due date for this checkpoint is too soon. The checkpoint cannot be changed.</h5></br>
+            <% else %>
+                <div id="action_picker_<%= index %>">
+                    <%= select("syl[#{checkpoint.id}]", "action", these_actions.collect {|act| [@gs.action_with_target(act), act]}, :class => "select_box left_box") %>
+                </div>
+            <% end %>
         <% else %>
-            <div id="datepicker_<%= index %>"><%= select("syl[#{checkpoint.id}]", "action", @gs.goal.actions[index].collect {|act| [act.gsub("(?)", @gs.target.to_s), act]}, :class => "select_box left_box") %></div>
+            <%= checkpoint.statement %>
         <% end %>
     <% end %>
     </br>
-
+    </br>
     <%= submit_tag "Save These Checkpoints" %>
 
 <% end %>

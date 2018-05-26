@@ -48,7 +48,7 @@ class SeminarsCheckpointDueDatesTest < ActionDispatch::IntegrationTest
     test "student cant edit old checkpoints" do
         setup_scores
         setup_goals
-        travel_to Time.zone.local(2018, 04, 20, 01, 04, 44)
+        travel_to Time.zone.local(2018, 04, 13, 01, 04, 44)
         @seminar.update(:term => 3) # To test for an error on the nil due date
         
         go_to_first_period
@@ -58,12 +58,14 @@ class SeminarsCheckpointDueDatesTest < ActionDispatch::IntegrationTest
         click_on("Save This Goal")
         
         assert_selector('h5', :id => "past_due_0")  # Past the due date
-        assert_no_selector('div', :id => "datepicker_0")
-        assert_selector('h5', :id => "past_due_1")
-        assert_no_selector('div', :id => "datepicker_1")
-        assert_selector('h5', :id => "too_soon_2")  # Day before the due date.
-        assert_no_selector('div', :id => "datepicker_2")
-        assert_selector('div', :id => "datepicker_3")  # This one should show.
+        assert_no_selector('div', :id => "action_picker_0")
+        
+        assert_selector('h5', :id => "too_soon_1")
+        assert_no_selector('div', :id => "action_picker_1")  # Too close to due date
+        
+        assert_selector('div', :id => "action_picker_2")  # Should show
+        
+        assert_no_selector('div', :id => "action_picker_3")  # Doesn't show because there's only one choice.
     end
     
     test "copy due dates" do

@@ -5,7 +5,7 @@
 
 
 
-<% @submenu_tabs = [["Goal", "goal", true], ["Quizzes", "quizzes", false], ["Requests", "requests", false], ["Stars", "stars", false]] %>
+<% @submenu_tabs = [["Goalkeeper", "goal", true], ["Quizzes", "quizzes", false], ["Requests", "requests", false], ["Stars", "stars", false]] %>
 
 <div class="row">
     <div class="col-sm-7 singleOption">
@@ -21,10 +21,10 @@
         
     </div>
     
-    <% if @this_gs.goal %>    
+    <% if @gs.goal %>    
         <div class="col-sm-4">
             <h2>Current Goal:</h2>
-            <h3><%= @this_gs.statement_with_target %></h3>
+            <h3><%= @gs.statement_with_target %></h3>
         </div>
     <% end %>
 </div>

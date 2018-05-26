@@ -1,0 +1,10 @@
+<% if @this_achievement %>
+    <% was_made =  @gs.target && @this_achievement >= @gs.target %>
+    <h2 class="center">
+        <%= @this_achievement %>
+        <% if was_made && @checkpoint.action&.include?("(?)") %>
+            </br>
+            <small><strong>Made!</strong></small>
+        <% end %>
+    </h2>
+<% end %>

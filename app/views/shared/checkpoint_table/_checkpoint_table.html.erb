@@ -1,0 +1,21 @@
+<table>
+    <tr>
+        <td></td>
+        <td>Achievement</td>
+        <td>Grade</td>
+        <td></td>
+    </tr>
+    <% @gs.checkpoints_in_order.each do |checkpoint| %>
+        <% @checkpoint = checkpoint %>
+        <tr>
+            <td><%= (checkpoint.sequence) + 1 %>) </td>
+            <%= render 'shared/checkpoint_table/achievement_choice' %>
+            <td class="center"><%= @checkpoint.grade_percentage %></td>
+            <td>
+                <%= render 'shared/checkpoint_table/action_choice' %>
+                <%= render 'shared/checkpoint_table/comments' %>
+            </td>
+        </tr>
+        
+    <% end %>
+</table>
