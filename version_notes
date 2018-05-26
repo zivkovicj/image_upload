@@ -1,5 +1,23 @@
 
 
+2.62  GOAL TOUCH-UPS
+Include grade percentage in teacher index report
+Grade percentage should not go below zero.
+Only use grade percentage if the checkpoint action includes (?)
+"Made!" should only apply to checkpoitns that include (?)
+Include grade percentage in student printout
+Show goal deadlines and grade percentage in student show page
+Make sure the final goal report fits on one page
+Make checkpoint index screen take up less room
+Student can't move on from screen after changing goal
+Don't offer the choice to change the checkpoint action if there is only one choice
+No goals are showing up in goal index
+Add sequence to the checkpoint table
+One comment is editable, but it's different depending on whether student or teacher is viewing
+Put the color back into the table
+Finish taking away all best_in_place cells for students and printing
+Move all poltergeist tests into the poltergeist test folder
+
 
 
 2.61 TEACHER GRANTS KEYS

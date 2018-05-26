@@ -51,62 +51,44 @@ Manually test:
 
 
 
-2.62  GOAL TOUCH-UPS
-V Include grade percentage in teacher index report
-V Grade percentage should not go below zero.
-V Only use grade percentage if the checkpoint action includes (?)
-V "Made!" should only apply to checkpoitns that include (?)
-V Include grade percentage in student printout
-V Show goal deadlines and grade percentage in student show page
-V Make sure the final goal report fits on one page
-V Make checkpoint index screen take up less room
-V Student can't move on from screen after changing goal
-V Don't offer the choice to change the checkpoint action if there is only one choice
-V No goals are showing up in goal index
-V Add sequence to the checkpoint table
-V One comment is editable, but it's different depending on whether student or teacher is viewing
-V Put the color back into the table
-V Finish taking away all best_in_place cells for students and printing
-V Move all poltergeist tests into the poltergeist test folder
 
-
-
-TOTAL STARS FOR CURRENT TERM
+2.63 TOTAL STARS FOR CURRENT TERM
 Students need a column to track their school year.
 The scores column in the ObjectiveStudent model is an multi-dimensional array of scores by school year and term.
     Column is an array [0,3,8,0].  In this example, the student scored a 3 during second term, and an "8" during third term.
-    Each year's array will need to hold a maximum of six grading terms
-        Then allow the teacher to set the number of terms in each class
-The points column still keeps track of a student's highest score so far.  That will be needed for desk consultants
-How should I handle scores from previous years?
-    I'll have several 8th graders who have already passed objectives from the previous year.  Where should those scores go?
-    It could be a multi-dimensional array where the first level is the student's year in school.  
-    This will be interesting for long-term data, and fairly natural.
+    The points column still keeps track of a student's highest score so far.  That will be needed for desk consultants
+    Also a pretest column, for results that don't go on the term grade
+    Also a teacher-manual column.  That might be needed sometimes.
 Need an "untaken" mark for all the scores that don't count.  Otherwise the scoresheet will highlight all the zeros for the untaken quizzes.
-When a student takes a quiz, the array is updated to 1 in the spot for that term
-    Unless the quiz is a pretest
+When a student takes a quiz, update the array score in the spot for that term, and also in the highest score so far
+    But update the pretest column instead of the term grade if the quiz is a pretest
     It should also probably update for a consultant who had 100%, even though it doesn't give that student keys
-    Seems more fair than if I ignore that score and count the student for zero stars this term
+        Seems more fair than if I ignore that score and count the student for zero stars this term
 Function adds the total points from all obj_studs for the current term
-When teacher updates the scoresheet manually, that also updates the include_for_term column
-Scoresheet should show current term by default
-Or for showing all possible scores
-The scoresheet should dim any scores that aren't counting for the current term
-Give teachers an option to delete unfinished quizzes at the end of a term.
-    This will prevent students from finishing quizzes that they started in a previous term
-In the same view, also give the option to erase keys
-    This will only erase teacher keys and dc keys.  Not pretest keys.
-Allow teacher to set term start dates and end dates.
-    While doing so, set the number of terms.  Anything after term 4 is nil by default.
-    Check whether the current term needs to be updated when somebody logs in to the class
-    Don't update the term anymore just by the teacher switching views in the goal_students index
-It feels like I'll need to offer the option for the teachers to update the scoresheet without including those updates for the current term
-Will also need an advanced option where teacher can change whether a score counts for a certain term
 
 Give existing students a grade year
 Migrate existing scores into their proper place in the scores array
 
 Make a plan for how to update a students' school year.
+
+UPDATE STARS WHEN TEACHER UPDATES SCORESHEET MANUALLY
+When teacher updates the scoresheet manually, that also updates the include_for_term column
+Scoresheet should show current term by default
+Also an option for showing all possible scores
+    If editing in this screen, scores will update into the teacher manual score column
+The scoresheet should dim any scores that aren't counting for the current term
+Give teachers an option to delete unfinished quizzes at the end of a term.
+    This will prevent students from finishing quizzes that they started in a previous term
+In the same view, also give the option to erase keys
+    This will only erase teacher keys and dc keys.  Not pretest keys.
+    
+CHANGE TERM BY DATE
+Allow mentor teacher to edit term start dates and end dates for the school.
+    Check whether the current term needs to be updated when somebody logs in to the class
+    Don't update the term anymore just by the teacher switching views in the goal_students index
+Will also need an advanced option where teacher can change whether a score counts for a certain term
+
+MORE DETAILED REPORT FOR STUDENTS TO SEE HER SCORES
 
 
 
