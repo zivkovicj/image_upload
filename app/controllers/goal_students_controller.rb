@@ -51,8 +51,7 @@ class GoalStudentsController < ApplicationController
         
         def goals_stuff
             @seminar.update(:which_checkpoint => params[:which_checkpoint]) if params[:which_checkpoint]
-            @seminar.update(:term => params[:term]) if params[:term]
-            @this_term = @seminar.term
+            @this_term = @seminar.term_for_seminar
             @this_checkpoint = @seminar.which_checkpoint
         end
 end

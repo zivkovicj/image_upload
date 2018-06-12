@@ -2,10 +2,10 @@ require 'test_helper'
 
 class SeminarsControllerTest < ActionDispatch::IntegrationTest
   
-  include SetObjectivesAndScores
   
   def setup
-    setup_users()
+    setup_users
+    setup_schools
     setup_seminars
     setup_scores()
   end
@@ -82,18 +82,6 @@ class SeminarsControllerTest < ActionDispatch::IntegrationTest
       post '/seminars/', params: { seminar: { name: "a"*41,  consultantThreshold: 7 } }
     end
     assert_template 'seminars/new'
-  end
-  
-  test "set_objectives_and_scores" do
-    whut = set_objectives_and_scores(true)
-    @objective_2 = objectives(:objective_20)
-    @objective_7 = objectives(:objective_70)
-    assert whut[0].include?(@objective_2)
-    assert_not whut[0].include?(@assigment_7)
-    assert whut[1].include?(@objective_2.id)
-    assert_not whut[1].include?(@objective_7.id)
-    assert whut[2].include?(@objective_2.objective_students.first)
-    assert_not whut[2].include?(@objective_7.objective_students.first)
   end
   
   

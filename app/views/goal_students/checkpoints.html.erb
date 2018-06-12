@@ -10,7 +10,7 @@
         <% if these_actions.count > 1 %>
             <% if this_due_date < Date.today %>
                 <h5 id="past_due_<%= index %>">The due date for this checkpoint has already passed.</h5></br>
-            <% elsif this_due_date - 2.days < Date.today %>
+            <% elsif this_due_date - 2.days <= Date.today %>
                 <h5 id="too_soon_<%= index %>">The due date for this checkpoint is too soon. The checkpoint cannot be changed.</h5></br>
             <% else %>
                 <div id="action_picker_<%= index %>">
@@ -18,7 +18,7 @@
                 </div>
             <% end %>
         <% else %>
-            <%= checkpoint.statement %>
+            <h5 id="statement_<%= index %>"><%= checkpoint.statement %></h5>
         <% end %>
     <% end %>
     </br>

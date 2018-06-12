@@ -24,7 +24,7 @@
 
 <% them_kids.each do |stud| %>
     <% @stud = stud %>
-    <% @gs = stud.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
+    <% @gs = stud.goal_students.find_by(:seminar => @seminar, :term => @seminar.term_for_seminar) %>
     <div class="break_here"></div>
     <div class="singleOption">
         <%= render 'goal_students/print_pieces/headline' %>

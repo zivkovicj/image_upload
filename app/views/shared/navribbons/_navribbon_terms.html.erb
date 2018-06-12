@@ -1,0 +1,34 @@
+
+<div class="ribbon">
+    <table class="table-borderless">
+        
+        <tr>
+            <td><h2>Switch to Term</h2></td>
+            <td class="spacer"></td>
+            <% 4.times do |n| %>
+                <td class="<%= 'highlighted' if n==@term %>">
+                    <h2>
+                        <% if @which_path == "seminar_scoresheet" %> 
+                            <%= link_to n+1, scoresheet_seminar_path(:seminar => @seminar, :term => n), :id => "term_#{n}" %>
+                        <% else %>
+                            <%= link_to n+1, goal_students_path(:seminar => @seminar, :term => n), :id => "term_#{n}" %>
+                        <% end %>
+                    </h2>
+                </td>
+            <% end %>
+            <% if @which_path == "seminar_scoresheet" %>
+                <td class="spacer"></td>
+                <td>
+                    <% if @show_all == "true" %>
+                        <%= link_to "Show only scores from this term", 
+                            scoresheet_seminar_path(:seminar => @seminar, :term => @this_term, :show_all => false) %>
+                    <% else %>
+                        <%= link_to "Show all objectives", 
+                            scoresheet_seminar_path(:seminar => @seminar, :term => @this_term, :show_all => true) %>
+                    <% end %>
+                </td>
+            <% end %>
+        </tr>
+        
+    </table>
+</div>

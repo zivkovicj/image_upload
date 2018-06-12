@@ -41,4 +41,10 @@ class ApplicationController < ActionController::Base
   def update_current_class
     current_user.update(:current_class => @seminar.id)
   end
+
+  def check_if_term_needs_updated
+    current_term = @school.term
+    current_term_ending_date = Date.strptime(@school.term_dates[@school.term][1], "%m/%d/%Y")
+    @school.update(:term => current_term + 1) if Date.today > current_term_ending_date.to_date
+  end
 end

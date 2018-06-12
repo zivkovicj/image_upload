@@ -8,16 +8,16 @@
 one:
   name: 1st Period
   consultantThreshold: 7
-  term: 1
   which_checkpoint: 0
+  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
 
 two:
   name: 2nd Period
   #user: archer
   consultantThreshold: 7
-  term: 1
   which_checkpoint: 0
+  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
   
 
@@ -25,24 +25,24 @@ three:
   name: 3rd Period
   #user: archer
   consultantThreshold: 7
-  term: 1
   which_checkpoint: 0
+  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
   
 archer_can_view_not_edit:
   name: Archer Can View
   #user: archer
   consultantThreshold: 7
-  term: 1
   which_checkpoint: 0
+  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
   
 four:
   name: Zacky's first period
   #user: zacky
   consultantThreshold: 7
-  term: 1
   which_checkpoint: 0
+  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
   
 
@@ -53,8 +53,8 @@ seminar_<%= n %>:
   name:  <%= "Seminar #{n}" %>
   #user: archer
   consultantThreshold: 7
-  term: 1
   which_checkpoint: 0
+  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
 <% end %>
 
@@ -63,6 +63,6 @@ unverified_teacher_class:
   name: unverified teachers class
   #user: user_1
   consultantThreshold: 7
-  term: 1
   which_checkpoint: 0
+  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>

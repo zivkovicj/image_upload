@@ -1,0 +1,23 @@
+
+<% start_end_label = ["Start Date", "End Date"] %>
+
+<%= form_for(@school) do |school| %>
+    <%= school.label :name %>
+    <%= school.text_field :name, class: 'form-control' %>
+    
+    <h3>Term Start and End Dates</h3>
+    <table>
+        <% 4.times do |j| %>
+            <tr>
+                <td>Term <%= j + 1 %></td>
+                <% 2.times do |k| %>
+                    <td><%= start_end_label[k] %>
+                    <input type="text" class="datepicker" name="school[term_dates][<%= j %>][<%= k %>]" 
+                        value="<%= @school.term_dates[j][k] if @school.term_dates %>"></td>
+                <% end %>
+            </tr>
+        <% end %>
+    </table>
+    </br>
+    <%= school.submit "Save Changes", class: "btn btn-primary" %>
+<% end %>

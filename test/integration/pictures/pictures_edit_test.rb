@@ -4,6 +4,7 @@ class PicturesEditTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
+        setup_schools
         setup_pictures
         setup_labels
         @old_picture_count = Picture.count

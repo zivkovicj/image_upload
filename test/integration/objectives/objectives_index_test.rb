@@ -4,6 +4,7 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
 
   def setup
     setup_users
+    setup_schools
     setup_objectives
   end
 

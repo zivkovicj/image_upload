@@ -4,6 +4,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
 
     def setup
         setup_users
+        setup_schools
         setup_labels
         setup_seminars
         setup_objectives
@@ -111,25 +112,27 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "not ready for quiz" do
-        @test_os.update(:teacher_granted_keys => 2, :points => 2)
+        @test_os.update(:pretest_keys => 2, :points => 2)
         main_assign_os = @objective_20.objective_students.find_by(:user => @student_2)
-        main_assign_os.update(:teacher_granted_keys => 2)
+        main_assign_os.update(:pretest_keys => 2)
         
         go_to_first_period
         find("#navribbon_quizzes").click
         
-        assert_no_selector('a', :id => "teacher_granted_#{@objective_20.id}")
+        assert_no_selector('a', :id => "pretest_#{@objective_20.id}")
     end
     
     test "yes ready for quiz" do
-        @test_os.update(:teacher_granted_keys => 2, :points => 8)
         main_assign_os = @objective_20.objective_students.find_by(:user => @student_2)
-        main_assign_os.update(:teacher_granted_keys => 2)
+        main_assign_os.update(:pretest_keys => 2)
+        @objective_20.preassigns.each do |obj|
+             obj.objective_students.find_by(:user => @student_2).update(:points => 8)
+        end
         
         go_to_first_period
         find("#navribbon_quizzes").click
         
-        assert_selector('a', :id => "teacher_granted_#{@objective_20.id}")
+        assert_selector('a', :id => "pretest_#{@objective_20.id}")
     end
     
     test "erase oldest quiz if student has 6" do

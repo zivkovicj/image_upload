@@ -3,8 +3,9 @@ require 'test_helper'
 class StudentsControllerTest < ActionDispatch::IntegrationTest
     
     def setup
-        setup_users()
-        setup_seminars()
+        setup_users
+        setup_schools
+        setup_seminars
     end
     
     test "students index test as admin" do

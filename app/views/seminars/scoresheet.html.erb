@@ -4,10 +4,15 @@
 <% provide(:headerPic, "scoresheet.png") %>
 
 
-<%= render 'shared/navribbon' %><br/>
+<%= render 'shared/navribbons/main_navribbon' %><br/>
 <%= render 'shared/teacher_name_and_edit', user: @teacher %><br/>
 <%= render 'shared/class_and_edit' %>
 <%= render 'shared/headline' %>
+
+<% @which_path = "seminar_scoresheet" %>
+<%= render 'shared/navribbons/navribbon_terms' %>
+
+
 
 <div>
   <%= button_tag "Hide Scores", :id => "toggle_text", :first_text => "Hide Scores", :second_text => "Show Scores" %>
@@ -15,12 +20,14 @@
 
 <%= form_tag update_scoresheet_seminar_path(@seminar) do %>
   <%= submit_tag "Save Scores", class: "btn btn-primary", :id => "save_scores_top" %>
+  <%= hidden_field_tag "term", @term %>
 
   <br/>
   <div>
     <table class="table-borderless scoreTable" id="scoreTable">
       <thead class="table-borderless">
         <th class="table-borderless">Student</th>
+        <th class="rotate table-borderless score_box"><div><span>Total Stars this Term</span></div></th>
         <% @objectives.each_with_index do |objective, index| %>
           <th class="rotate table-borderless score_box col_<%= index %>"><div><span>
             <%= link_to objective.short_name, edit_objective_path(objective) %>
@@ -31,13 +38,14 @@
         <% @students.each_with_index do |student, indexx| %>
           <tr>
             <td class="score_box row_<%= indexx %>"><h4><%= link_to student.last_name_first, edit_teaching_requests_student_url(student) %> </h4></td>
+            <td><%= student.stars_this_term(@seminar, @term) %></td>
             <% this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id) %>
             <% @objectives.each_with_index do |objective, indexy| %>
               <% this_score = @scores.find_by(:objective => objective, :user => student) %>
               <td class="themScores to_unhide score_box row_<%= indexx %> col_<%= indexy %>">
                 <% if this_score %>
-                  <%= text_field "scores[#{this_score.id}]", "", :class => "score_cell r#{indexx}c#{indexy}", :value => this_score.points,
-                    :cell_row => indexx, :cell_col => indexy %>
+                  <input type="text" name="scores[<%= this_score.id %>]" class="score_cell r<%= indexx %>c<%= indexy %>" 
+                    value="<%= this_score.current_scores[@term] %>" cell_row="<%= indexx %>" cell_col="<%= indexy %>" >
                 <% end %>
               </td>
             <% end %>

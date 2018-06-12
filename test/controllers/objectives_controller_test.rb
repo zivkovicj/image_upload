@@ -3,7 +3,8 @@ require 'test_helper'
 class ObjectivesControllerTest < ActionDispatch::IntegrationTest
   
   def setup
-    setup_users()
+    setup_users
+    setup_schools
     setup_seminars
     setup_objectives()
     setup_scores()

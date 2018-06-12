@@ -70,9 +70,12 @@ title_array = ["Mrs.", "Mr.", "Miss", "Ms.", "Dr."]
 end
 
 # Seminars
-sem_1 = Seminar.create!(name: "Main Teacher, 1st Period", user_id: 5, consultantThreshold: 7, term: 0, which_checkpoint: 0)
-sem_2 = Seminar.create!(name: "Main Teahcer, 2nd Period", user_id: 5, consultantThreshold: 7, term: 0, which_checkpoint: 0)
-sem_3 = Seminar.create!(name: "Another Teacher, First Period", user_id: 6, consultantThreshold: 7, term: 0, which_checkpoint: 0)
+sem_1 = Seminar.create!(name: "Main Teacher, 1st Period", user_id: 5, consultantThreshold: 7, term: 0, 
+    which_checkpoint: 0, school_year: 9)
+sem_2 = Seminar.create!(name: "Main Teacher, 2nd Period", user_id: 5, consultantThreshold: 7, term: 0, 
+    which_checkpoint: 0, school_year: 9)
+sem_3 = Seminar.create!(name: "Another Teacher, First Period", user_id: 6, consultantThreshold: 7, term: 0,
+    which_checkpoint: 0, school_year: 9)
 
 sem_1.teachers << Teacher.find(5)
 sem_2.teachers << Teacher.find(5)
@@ -102,7 +105,8 @@ end
                last_name:   last_name,
                email: email,
                user_number: n,
-               password: password)
+               password: password,
+               school_year: 9)
    SeminarStudent.create!(seminar_id: 1, user_id: @student.id)
 end
 
@@ -119,7 +123,8 @@ SeminarStudent.create!(seminar_id: 2, user_id: 18)
                last_name:   last_name,
                email: email,
                user_number: n,
-               password: password)
+               password: password,
+               school_year: 9)
    SeminarStudent.create!(seminar_id: 2, user_id: @student.id)
 end
 
@@ -132,7 +137,8 @@ end
                last_name:   last_name,
                email: email,
                user_number: n,
-               password: password)
+               password: password,
+               school_year: 9)
    SeminarStudent.create!(seminar_id: 3, user_id: @student.id)
 end
 

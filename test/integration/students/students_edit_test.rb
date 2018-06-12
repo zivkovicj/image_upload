@@ -4,6 +4,7 @@ class StudentsEditTest < ActionDispatch::IntegrationTest
     
     def setup
        setup_users
+       setup_schools
        setup_objectives
        setup_seminars
        setup_goals
@@ -81,6 +82,6 @@ class StudentsEditTest < ActionDispatch::IntegrationTest
         fill_in "student_username", with: "beersprinkles07"
         click_on("Save Changes")
         
-        assert_equal "mg2", @student_2.username
+        assert_equal "dv2", @student_2.username
     end
 end

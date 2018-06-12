@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-<% (1..50).each do |n| %>
+<% (0..50).each do |n| %>
 ss_<%= n %>:
   seminar: one
   user: student_<%= n %>

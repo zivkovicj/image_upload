@@ -4,6 +4,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
+        setup_schools
         setup_seminars
         setup_labels
         setup_objectives
@@ -12,45 +13,15 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         setup_goals
         
         @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 2)
-        @test_os = @objective_10.objective_students.find_by(:user => @student_2)
+        @test_obj_stud = @objective_10.objective_students.find_by(:user => @student_2)
+        @test_obj_stud.update(:teacher_granted_keys => 2)
     end
     
     def begin_quiz
         find("#navribbon_quizzes").click
         find("#teacher_granted_#{@objective_10.id}").click
     end
-    
-    test "fail pretest" do
-        @test_os.update(:teacher_granted_keys => 0, :pretest_keys => 2)
-        @first_mainassign = @objective_10.mainassigns.first
-        @mainassign_os = @student_2.objective_students.find_by(:objective => @first_mainassign)
-        @mainassign_os.update(:teacher_granted_keys => 0, :pretest_keys => 2)
-        
-        go_to_first_period
-        find("#navribbon_quizzes").click
-        find("#pretest_#{@objective_10.id}").click
-        10.times do
-            answer_question_incorrectly
-            click_on("Next Question")
-        end
-        
-        # Doesn't take the keys yet, because student still has another try
-        
-        assert_equal 1, @test_os.reload.pretest_keys
-        assert_equal 2, @mainassign_os.reload.pretest_keys  
-        
-        click_on("Try this quiz again")
-        10.times do
-            answer_question_incorrectly
-            click_on("Next Question")
-        end
-        
-        # Now it takes the pretest keys for the post-requisites to spare the student the struggle of taking a pre-test that she is doomed to fail.
-        
-        assert_equal 0, @test_os.reload.pretest_keys
-        assert_equal 0, @mainassign_os.reload.pretest_keys   
-    end
-    
+
     def answer_question_correctly
         this_id = current_path[/\d+/].to_i
         @riposte = Riposte.find(this_id)
@@ -67,12 +38,10 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         choose("choice_bubble_#{incorrect_answer}")
     end
     
+    
     test "setup quiz" do
-        @test_os.update(:teacher_granted_keys => 2)
         old_quiz_count = Quiz.count
         old_riposte_count = Riposte.count
-        
-        setup_consultancies
         
         go_to_first_period
         begin_quiz
@@ -86,7 +55,6 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "take multiple-choice quiz" do
-        @test_os.update(:teacher_granted_keys => 2)
         setup_consultancies
         go_to_first_period
         begin_quiz
@@ -144,7 +112,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "100 total score" do
-        @test_os.update(:teacher_granted_keys => 2, :dc_keys => 2)
+        @test_obj_stud.update(:dc_keys => 2)
         setup_consultancies
         
         go_to_first_period
@@ -157,15 +125,13 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         
         @new_quiz = Quiz.last
         assert_equal 10, @new_quiz.total_score
-        @test_os.reload
-        assert_equal 0, @test_os.teacher_granted_keys
-        assert_equal 0, @test_os.dc_keys
+        @test_obj_stud.reload
+        assert_equal 0, @test_obj_stud.teacher_granted_keys
+        assert_equal 0, @test_obj_stud.dc_keys
     end
     
-    test "add to total stars" do
-        @ss = SeminarStudent.find_by(:user => @student_2, :seminar => @seminar)
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 1, :teacher_granted_keys => 2)
-        old_stars = @student_2.total_stars(@seminar)
+    test "current score" do
+        @test_obj_stud.update(:points => 1, :teacher_granted_keys => 2, :current_scores => [1,1,nil,nil])
         
         # First try on quiz student scores 3 stars. An improvement of 2 stars.
         go_to_first_period
@@ -179,8 +145,9 @@ class NewQuizTest < ActionDispatch::IntegrationTest
             click_on("Next Question")
         end
         
-        @ss.reload
-        assert_equal old_stars + 2, @student_2.total_stars(@seminar)
+        @test_obj_stud.reload
+        assert_equal 3, @test_obj_stud.points
+        assert_equal [1,3,nil,nil], @test_obj_stud.current_scores
         
         # Second try on quiz student scores 8 stars. An improvement of 5 stars.
         click_on("Try this quiz again")
@@ -193,11 +160,93 @@ class NewQuizTest < ActionDispatch::IntegrationTest
             click_on("Next Question")
         end
         
-        @ss.reload
-        assert_equal old_stars + 7, @student_2.total_stars(@seminar)
-        
+        @test_obj_stud.reload
+        assert_equal 8, @test_obj_stud.points
+        assert_equal [1,8,nil,nil], @test_obj_stud.current_scores
     end
     
+    test "quizzed better last term" do
+        @test_obj_stud.update(:points => 8, :teacher_granted_keys => 2, :current_scores => [8,4,nil,nil])
+        
+        go_to_first_period
+        begin_quiz
+        5.times do
+            answer_question_correctly
+            click_on("Next Question")
+        end
+        5.times do
+            answer_question_incorrectly
+            click_on("Next Question")
+        end
+        
+        @test_obj_stud.reload
+        assert_equal 8, @test_obj_stud.points
+        assert_equal [8,5,nil,nil], @test_obj_stud.current_scores
+    end
+    
+    test "quizzed better this term" do
+        @test_obj_stud.update(:points => 8, :teacher_granted_keys => 2, :current_scores => [8,7,nil,nil])
+        
+        go_to_first_period
+        begin_quiz
+        5.times do
+            answer_question_correctly
+            click_on("Next Question")
+        end
+        5.times do
+            answer_question_incorrectly
+            click_on("Next Question")
+        end
+        
+        @test_obj_stud.reload
+        assert_equal 8, @test_obj_stud.points
+        assert_equal [8,7,nil,nil], @test_obj_stud.current_scores
+    end
+    
+    test "pretest" do
+        @test_obj_stud.update(:teacher_granted_keys => 0, :pretest_keys => 2, :current_scores => [1,nil,nil,nil])
+        @first_mainassign = @objective_10.mainassigns.first
+        @mainassign_os = @student_2.objective_students.find_by(:objective => @first_mainassign)
+        @mainassign_os.update(:teacher_granted_keys => 0, :pretest_keys => 2)
+        
+        go_to_first_period
+        find("#navribbon_quizzes").click
+        find("#pretest_#{@objective_10.id}").click
+        
+        # 1 times do
+        answer_question_correctly
+        click_on("Next Question")
+
+        9.times do
+            answer_question_incorrectly
+            click_on("Next Question")
+        end
+        
+        # Doesn't take the keys yet, because student still has another try
+        @test_obj_stud.reload
+        assert_equal 1, @test_obj_stud.pretest_keys
+        assert_equal 1, @test_obj_stud.pretest_score
+        assert_equal 2, @test_obj_stud.points  #Stays the same because it didn't increase from the previous score
+        assert_equal [1,nil,nil,nil], @test_obj_stud.current_scores  #Doesn't change
+        assert_equal 2, @mainassign_os.reload.pretest_keys  
+        
+        click_on("Try this quiz again")
+        3.times do
+            answer_question_correctly
+            click_on("Next Question")
+        end
+        7.times do
+            answer_question_incorrectly
+            click_on("Next Question")
+        end
+        
+        # Now it takes the pretest keys for the post-requisites to spare the student the struggle of taking a pre-test that she is doomed to fail.
+        @test_obj_stud.reload
+        assert_equal 0, @test_obj_stud.pretest_keys
+        assert_equal 3, @test_obj_stud.pretest_score
+        assert_equal 3, @test_obj_stud.points
+        assert_equal 0, @mainassign_os.reload.pretest_keys   
+    end
     
     
 end

@@ -4,6 +4,7 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
 
     def setup
         setup_users
+        setup_schools
         setup_labels
         setup_pictures
         

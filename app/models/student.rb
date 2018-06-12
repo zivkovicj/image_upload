@@ -11,7 +11,15 @@ class Student < User
     has_secure_password :validations => false, :allow_nil => true
 
     
-    # Add the total points for this student
+    def stars_this_term(seminar, term)
+        temp_stars = 0
+        self.objective_students.where(:objective => seminar.objectives).each do |obj_stud|
+            this_score = obj_stud.current_scores[term]
+            temp_stars = temp_stars + this_score if this_score
+        end
+        return temp_stars
+    end
+    
     def total_stars(seminar)
         objective_students.where(:objective => seminar.objectives).sum(:points)
     end
@@ -67,6 +75,15 @@ class Student < User
     
     def present_in(seminar)
         self.seminar_students.find_by(:seminar => seminar).present
+    end
+    
+    def advance_to_next_school_year
+        self.objective_students.each do |obj_stud|
+            obj_stud.score_record[self.school_year] = obj_stud.current_scores
+            obj_stud.current_scores = [nil,nil,nil,nil]
+            obj_stud.save
+        end
+        self.update(:school_year => self.school_year + 1)
     end
     
     # Checks whether a student has met all pre-requisites for an objective

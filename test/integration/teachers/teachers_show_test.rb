@@ -6,8 +6,7 @@ class TeachersShowTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
-        
-        @school = @teacher_1.school
+        setup_schools
         @right_teacher = users(:user_2)
         @wrong_teacher = users(:user_1)
         @ignored_teacher = users(:user_3)
@@ -29,6 +28,12 @@ class TeachersShowTest < ActionDispatch::IntegrationTest
         assert_equal 0, @right_teacher.verified
         assert_equal 0, @wrong_teacher.verified
         assert_equal 0, @ignored_teacher.verified
+        @right_teacher_student = Student.all[55]
+        @wrong_teacher_student = Student.all[56]
+        @ignored_teacher_student = Student.all[57]
+        @right_teacher_student.update(:sponsor => @right_teacher, :verified => 0)
+        @wrong_teacher_student.update(:sponsor => @wrong_teacher, :verified => 0)
+        @ignored_teacher_student.update(:sponsor => @ignored_teacher, :verified => 0)
         
         capybara_login(@teacher_1)
         assert_text(verify_waiting_teachers_message)
@@ -38,12 +43,12 @@ class TeachersShowTest < ActionDispatch::IntegrationTest
         choose("teacher_#{@wrong_teacher.id}_decline")
         click_on("Submit these approvals")
         
-        @right_teacher.reload
-        @wrong_teacher.reload
-        @ignored_teacher.reload
-        assert_equal 1, @right_teacher.verified
-        assert_equal 0, @ignored_teacher.verified
-        assert_equal (-1), @wrong_teacher.verified
+        assert_equal 1, @right_teacher.reload.verified
+        assert_equal 0, @ignored_teacher.reload.verified
+        assert_equal (-1), @wrong_teacher.reload.verified
+        assert_equal 1, @right_teacher_student.reload.verified
+        assert_equal 0, @ignored_teacher_student.reload.verified
+        assert_equal 0, @wrong_teacher_student.reload.verified
     end
     
     test "unverified message doesn't appear when useless" do

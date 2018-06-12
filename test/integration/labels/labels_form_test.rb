@@ -3,9 +3,10 @@ require 'test_helper'
 class LabelsFormTest < ActionDispatch::IntegrationTest
     
     def setup
-        setup_users()
-        setup_labels()
-        setup_questions()
+        setup_users
+        setup_schools
+        setup_labels
+        setup_questions
         @new_name = "20.1 One-step equations with diagrams"
     end
     

@@ -11,7 +11,7 @@ class Checkpoint < ApplicationRecord
     
     def friendly_due_date
         this_seminar = self.goal_student.seminar
-        orig_due_date = Date.strptime(this_seminar.checkpoint_due_dates[this_seminar.term][self.sequence], "%m/%d/%Y")
+        orig_due_date = Date.strptime(this_seminar.checkpoint_due_dates[this_seminar.term_for_seminar][self.sequence], "%m/%d/%Y")
         return orig_due_date.strftime("%A, %B %e")
     end
     

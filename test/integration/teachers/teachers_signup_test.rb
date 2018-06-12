@@ -6,6 +6,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         @old_teacher_count = Teacher.count
         @old_school_count = School.count
         setup_users
+        setup_schools
     end
     
     def goto_signup_page
@@ -14,8 +15,6 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
     end
     
     test "new teacher old school" do
-        @school = @teacher_1.school
-        
         goto_signup_page
         teacher_editing_stuff(nil, 'Create My Account')
         
@@ -52,15 +51,18 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         @new_student = Student.last
         assert_equal "Sound", @new_student.first_name
         assert_equal @this_teacher, @new_student.sponsor
-        assert_nil @new_student.school
+        assert_equal @school, @new_student.school
+        assert_equal 0, @new_student.verified
         
         capybara_login(@teacher_1)
         click_on("goto_verify")
         choose("teacher_#{@this_teacher.id}_approve")
         click_on("Submit these approvals")
         
+        @this_teacher.reload
+        assert_equal 1, @this_teacher.verified
         @new_student.reload
-        assert_equal @school, @new_student.school
+        assert_equal 1, @new_student.verified
     end
     
     test "new teacher new school" do
@@ -80,6 +82,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         assert_equal @new_school, @this_teacher.school
         assert_equal @old_school_count + 1, School.count
         assert_equal @this_teacher, @new_school.mentor
+        assert_equal 0, @new_school.term
         assert_equal 1, @this_teacher.verified
     end
     

@@ -6,6 +6,7 @@ class ConsultanciesIndexTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
+        setup_schools
         setup_seminars
     end
     

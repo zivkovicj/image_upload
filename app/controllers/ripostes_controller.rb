@@ -36,7 +36,7 @@ class RipostesController < ApplicationController
             @objective = @quiz.objective
             @this_obj_stud = @student.objective_students.find_by(:objective => @objective)
             set_total_score
-            take_future_pretest_keys
+            take_post_req_keys
             redirect_to quiz_path(@quiz)
         else
             next_riposte = @quiz.ripostes.find_by(:position => next_riposte_num)
@@ -59,16 +59,12 @@ class RipostesController < ApplicationController
             @new_total = ((stud_score * 100)/poss.to_f).round
             @these_stars = (@new_total/10.to_f).ceil
             added_stars = @these_stars - @old_stars
-            if added_stars > 0
-                @this_obj_stud.update(:points => @these_stars)
-            else
-                @this_obj_stud.update(:updated_at => Time.now)
-            end
             added_stars_to_update = [0,added_stars].max
             @quiz.update(:total_score => @these_stars, :added_stars => added_stars_to_update)
+            @this_obj_stud.update_scores(@these_stars, Seminar.find(current_user.current_class).term_for_seminar, @quiz.origin, false)
         end
         
-        def take_future_pretest_keys
+        def take_post_req_keys
             if @this_obj_stud.points < 6 && @this_obj_stud.total_keys == 0
                 @objective.mainassigns.each do |mainassign|
                     this_mainassign = mainassign.objective_students.find_by(:user => @student)

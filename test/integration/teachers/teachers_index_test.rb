@@ -3,7 +3,8 @@ require 'test_helper'
 class TeachersIndexTest < ActionDispatch::IntegrationTest
 
   def setup
-    setup_users()
+    setup_users
+    setup_schools
   end
 
   test "teacher index" do

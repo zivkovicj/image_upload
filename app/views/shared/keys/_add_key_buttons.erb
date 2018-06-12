@@ -1,7 +1,8 @@
 
 <% def add_key(this_os, num) %>
     <div class="key_area add_key add_key_<%= num %>_<%= this_os.id %>" new_keys=<%= num %> os_id=<%= this_os.id %>>
-        <%= this_os.teacher_granted_keys < 6 && this_os.points < 10 ? "+#{num}" : "" %>
+        <% current_score = this_os.current_scores[@term] %>
+        <%= this_os.teacher_granted_keys < 6 && (current_score == nil || current_score < 10) ? "+#{num}" : "" %>
     </div>
 <% end %>
 

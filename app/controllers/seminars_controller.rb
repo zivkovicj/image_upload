@@ -3,7 +3,6 @@ class SeminarsController < ApplicationController
     before_action :redirect_for_non_admin,    only: [:index]
     before_action :correct_user, only: [:destroy]
     
-    include SetObjectivesAndScores
     
     def new
         @seminar = Seminar.new
@@ -32,7 +31,7 @@ class SeminarsController < ApplicationController
     def show
         @seminar = Seminar.find(params[:id])
         @teachers = @seminar.teachers
-        set_objectives_and_scores(false)
+        gather_objectives_and_scores
         @students = @seminar.students.order(:last_name)
         update_current_class
     end
@@ -63,26 +62,29 @@ class SeminarsController < ApplicationController
         redirect_to current_user
     end
     
-    
-    
-    
     ### Sub-menus for editing seminar
     
     def scoresheet
         @seminar = Seminar.find(params[:id])
         @teacher = current_user
         @students = @seminar.students.order(:last_name)
-        set_objectives_and_scores(false)
+        @term = params[:term].to_i
+        @show_all = params[:show_all]
+        gather_objectives_and_scores
         update_current_class
     end
     
     def update_scoresheet
         @seminar = Seminar.find(params[:id])
+        this_term = params[:term].to_i
         params[:scores].each do |key, value|
-            @score = ObjectiveStudent.find(key) 
-            @score.update(:points => value[0])
+            this_val = Integer(value) rescue nil
+            if this_val
+                @this_obj_stud = ObjectiveStudent.find(key)
+                @this_obj_stud.update_scores(this_val, this_term, "teacher_granted", true) unless @this_obj_stud.current_scores[this_term] == this_val
+            end
         end
-        redirect_to scoresheet_seminar_path(@seminar)
+        redirect_to scoresheet_seminar_path(@seminar, :term => this_term)
     end
     
     def copy_due_dates
@@ -114,6 +116,19 @@ class SeminarsController < ApplicationController
                 end
             end
             @seminar.checkpoint_due_dates = date_array 
+        end
+        
+        def gather_objectives_and_scores
+            pre_objectives = @seminar.objectives.order(:name)
+            @scores = ObjectiveStudent.where(:objective => pre_objectives, :user => @seminar.students)
+            if @show_all == "true"
+                @objectives = pre_objectives
+            else
+                @objectives = []
+                pre_objectives.each do |obj|
+                    @objectives << obj if @scores.select{|x| x.current_scores[@term]}.count > 0
+                end
+            end
         end
         
         def set_priorities

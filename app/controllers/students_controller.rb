@@ -17,7 +17,8 @@ class StudentsController < ApplicationController
         @student = Student.new(multi_params(student))
         sponsor = current_user
         @student.sponsor = sponsor
-        @student.school = sponsor.school if sponsor.verified > 0
+        @student.school = sponsor.school
+        @student.verified = 1 if sponsor.verified == 1
         if @student.save
           one_saved = true
           @ss = @student.seminar_students.create(:seminar => @seminar)
@@ -41,6 +42,8 @@ class StudentsController < ApplicationController
   
   def show
     @student = Student.find(params[:id])
+    @school = @student.school
+    check_if_term_needs_updated
   end
   
   def index
@@ -54,7 +57,7 @@ class StudentsController < ApplicationController
       else
         @seminar = Seminar.find(current_user.current_class)
         @ss = SeminarStudent.new
-        second_layer = current_user.verified == 1 ? first_layer.where(:school => current_user.school) : first_layer.where(:sponsor => current_user)
+        second_layer = current_user.verified == 1 ? first_layer.where(:school => current_user.school, :verified => 1) : first_layer.where(:sponsor => current_user)
       end
     
       @students = second_layer.order(:last_name).paginate(page: params[:page])
@@ -113,7 +116,7 @@ class StudentsController < ApplicationController
     end
     
     def multi_params(my_params)
-      my_params.permit(:first_name, :last_name, :email, :password, :password_digest, :username, :user_number)
+      my_params.permit(:first_name, :last_name, :email, :password, :password_digest, :username, :user_number, :school_year)
     end
     
     # Confirms the correct student.

@@ -3,7 +3,7 @@
 <% provide(:headerText, show_consultancy_headline(@consultancy)) %>
 <% provide(:headerPic, "desk_consult.png") %>
 
-<%= render 'shared/navribbon' %><br/>
+<%= render 'shared/navribbons/main_navribbon' %><br/>
 <%= render 'shared/back-link' %>
 <%= render 'shared/teacher_name_and_edit', user: current_user %><br/>
 <%= render 'shared/class_and_edit' %>
@@ -46,7 +46,7 @@
       <% if this_student %>
         <%= this_student.first_plus_init %>
         <% this_score = this_student.objective_students.find_by(:objective => team.objective) %>
-        <% if this_score && this_score.points == 100 %>
+        <% if this_score && this_score.points == 10 %>
           <br/><small>(100%)</small>
         <% end %>
       <% end %>

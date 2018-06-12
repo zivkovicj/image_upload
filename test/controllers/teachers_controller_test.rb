@@ -4,6 +4,7 @@ class TeachersControllerTest < ActionDispatch::IntegrationTest
    
     def setup
         setup_users
+        setup_schools
     end
     
     test "controller edit wrong user" do

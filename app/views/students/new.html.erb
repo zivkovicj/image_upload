@@ -2,11 +2,13 @@
 <% provide(:headerText, "New Students") %>
 <% provide(:headerPic, 'student.png') %>
 
+<% default_year = Seminar.find(current_user.current_class).school_year %>
+
 <%= render 'shared/back-link' %>
 <%= render 'shared/headline' %>
 
 <%# This line is working fine in production, but for some reason the test is getting a nil value for current_user.current_class at this point. #>
-<%#= "For: #{Seminar.find(current_user.current_class).name}" %><br/>
+<%= "For: #{Seminar.find(current_user.current_class).name}" %><br/>
 
 
 <br/>
@@ -21,6 +23,7 @@ The default password will be exactly the same as the username.</h5>
   <table class="table-borderless">
     <tr>
       <th></th>
+      <th>School Year</th>
       <th>First Name</th>
       <th>Last Name</th>
       <th>Student Number</th>
@@ -40,6 +43,16 @@ The default password will be exactly the same as the username.</h5>
       <% end %>
       <tr class=<%= hoggle %>>
         <td><%= index+1 %></td>
+        <%#= select("syl[#{checkpoint.id}]", "action", these_actions.collect {|act| [@gs.action_with_target(act), act]}, :class => "select_box left_box") %>
+                
+        <td>
+          <select name="students[][school_year]" id="school_year_<%= index %>">
+            <% school_year_array.count.times do |n| %>
+              <option value="<%= n %>" <%= "selected" if n==default_year %>><%= school_year_array[n] %></option>
+            <% end %>
+            <%# Data value of 7 corresponds with 8th grade %>
+          </select>
+        </td>
         <td><%= text_field_tag "students[][first_name]", "", id: "first_name_#{index}", :class => "new-student-input" %></td>
         <td><%= text_field_tag "students[][last_name]", "", id: "last_name_#{index}",   :class => "new-student-input" %></td>
         <td><%= text_field_tag "students[][user_number]", "", id: "user_number_#{index}",   :class => "new-student-input" %></td> 

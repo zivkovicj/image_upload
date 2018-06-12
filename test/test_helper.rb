@@ -45,12 +45,20 @@ class ActiveSupport::TestCase
     @student_1 = users(:student_1)
     @student_2 = users(:student_2)
     @student_3 = users(:student_3)
-    @other_school_student = users(:other_school_student)
+    @other_school_student = Student.last
+    @other_school_student.update(:school => schools(:school_2))
     @student_90 = users(:student_90)
+    Student.all[0..70].each do |student|
+      student.update(:sponsor => @teacher_1)
+    end
+    Student.all[71..90].each do |student|
+      student.update(:sponsor => @other_teacher)
+    end
   end
   
   def setup_schools
-    @school = schools(:school_1)
+    @school = @teacher_1.school
+    @school.update(:term_dates => School.default_terms, :term => 1)
   end
   
   def setup_seminars

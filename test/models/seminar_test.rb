@@ -3,7 +3,7 @@ require 'test_helper'
 class SeminarTest < ActiveSupport::TestCase
 
   def setup
-    setup_users()
+    setup_users
     # This code is not idiomatically correct.
     @test_seminar = @teacher_1.seminars.build(name: "1st Period", consultantThreshold: 7)
   end

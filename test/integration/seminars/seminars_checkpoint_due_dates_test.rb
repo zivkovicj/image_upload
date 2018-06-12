@@ -4,6 +4,7 @@ class SeminarsCheckpointDueDatesTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
+        setup_schools
         setup_seminars
         
         @array_should_be = 
@@ -48,7 +49,7 @@ class SeminarsCheckpointDueDatesTest < ActionDispatch::IntegrationTest
     test "student cant edit old checkpoints" do
         setup_scores
         setup_goals
-        travel_to Time.zone.local(2018, 04, 13, 01, 04, 44)
+        travel_to Time.zone.local(2018, 01, 20, 01, 04, 44)
         @seminar.update(:term => 3) # To test for an error on the nil due date
         
         go_to_first_period
@@ -66,6 +67,7 @@ class SeminarsCheckpointDueDatesTest < ActionDispatch::IntegrationTest
         assert_selector('div', :id => "action_picker_2")  # Should show
         
         assert_no_selector('div', :id => "action_picker_3")  # Doesn't show because there's only one choice.
+        assert_selector('h5', :id => "statement_3")
     end
     
     test "copy due dates" do

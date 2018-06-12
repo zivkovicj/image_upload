@@ -4,6 +4,7 @@ class StudentsMoveOrRemoveTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
+        setup_schools
         setup_seminars
         setup_scores
         setup_goals

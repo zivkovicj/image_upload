@@ -4,6 +4,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
    
     def setup
         setup_users
+        setup_schools
         setup_seminars
         
         @old_seminar_count = Seminar.count

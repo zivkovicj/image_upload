@@ -53,52 +53,76 @@ Manually test:
 
 
 2.63 TOTAL STARS FOR CURRENT TERM
-Students need a column to track their school year.
-The scores column in the ObjectiveStudent model is an multi-dimensional array of scores by school year and term.
-    Column is an array [0,3,8,0].  In this example, the student scored a 3 during second term, and an "8" during third term.
-    The points column still keeps track of a student's highest score so far.  That will be needed for desk consultants
-    Also a pretest column, for results that don't go on the term grade
-    Also a teacher-manual column.  That might be needed sometimes.
-Need an "untaken" mark for all the scores that don't count.  Otherwise the scoresheet will highlight all the zeros for the untaken quizzes.
-When a student takes a quiz, update the array score in the spot for that term, and also in the highest score so far
-    But update the pretest column instead of the term grade if the quiz is a pretest
-    It should also probably update for a consultant who had 100%, even though it doesn't give that student keys
-        Seems more fair than if I ignore that score and count the student for zero stars this term
-Function adds the total points from all obj_studs for the current term
+E-mail MaryAnn Moore?
+V Students need a column to track their school year.
+V Also, a default school year for the class.
+V The scores_record column in the ObjectiveStudent model is an multi-dimensional array of scores by school year and term.
+    V Column is an array [0,3,8,0].  In this example, the student scored a 3 during second term, and an "8" during third term.
+    V The points column still keeps track of a student's highest score so far.  That will be needed for desk consultants
+V Also a pretest column, for results that don't go on the term grade
+V Also a teacher-manual column.  That might be needed sometimes.
+V The current_scores column will keep the scores that are used all year.  Only move them into score_record at the end
+V Put new columns in seeds, fixtures, current database, ...
+V When creating new students, this column is pre-filled with the seminar's default school year
+V Choosing the school year needs to present user with an array that includes kindergarten and pre-school.
+    V But the data goes into the db as an integer.
+V When a student takes a quiz, update the array score in the spot for that term, and also in the highest score so far
+V Update the pretest column instead of the term grade if the quiz is a pretest
+V Don't give dc_keys to a student who already has 100 as his current score
+V Complete all updates when teacher updates scores manually
+V I have manual scoresheet test for when the student did better last term.  Should have a quiz result test for the same 
+V Function adds the total points from all obj_studs for the current term
+V Fix the user fixtures so that I can add to them efficiently
+V Scoresheet should show current term by default
+V View scores from different terms
+V Need an option to show all possible scores, or just the objectives involved in this term
+V Change default student password to be completely equal to the username
+V Term needs to be located in school, not seminar
+V Seminar needs a method that looks at its school to determine its term
+V School model needs default term set to zero
+V School also needs term start and end dates
+V System needs default term start and end dates
+V Allow mentor teacher to edit term start dates and end dates for the school
+V Test that only mentor teacher can do this
+V Check whether the current term needs to be updated when somebody logs in to the class
+V Also do this when a student logs in
+V Students who have no school will run into errors with terms and stuff.  This will happen to all students whose teachers have not been verified.
+    V I should set a student for the specific school.  But also mark whether a student has been verified.
+    V Only verified students can be found in searches.
+    V Students get auto-verified if the teacher who creates them is already verified
+    V Test that students don't become verified if their sponsoring teacher is rejected by the mentor
+V Don't update the term anymore just by the teacher switching views in the goal_students index
+V Update a students' school year
+    V Which also moves the current scores into score record
+    V And turns current scores to nil
+V Default values are pre-filled when editing, particularly with labels for questions, and public extent
+V Don't place a student into a group if he/she already has keys for that group
+V Urgent priority objectives are choosing consultants who have already scored 100.  That needs to be minimized.
+V Show student's school year in profile view.
 
-Give existing students a grade year
+Give existing students a school year
+And a school
 Migrate existing scores into their proper place in the scores array
+Change password for existing students to be equal to their username
+Update existing students to verified
 
-Make a plan for how to update a students' school year.
 
-UPDATE STARS WHEN TEACHER UPDATES SCORESHEET MANUALLY
-When teacher updates the scoresheet manually, that also updates the include_for_term column
-Scoresheet should show current term by default
-Also an option for showing all possible scores
-    If editing in this screen, scores will update into the teacher manual score column
-The scoresheet should dim any scores that aren't counting for the current term
-Give teachers an option to delete unfinished quizzes at the end of a term.
-    This will prevent students from finishing quizzes that they started in a previous term
-In the same view, also give the option to erase keys
-    This will only erase teacher keys and dc keys.  Not pretest keys.
-    
-CHANGE TERM BY DATE
-Allow mentor teacher to edit term start dates and end dates for the school.
-    Check whether the current term needs to be updated when somebody logs in to the class
-    Don't update the term anymore just by the teacher switching views in the goal_students index
-Will also need an advanced option where teacher can change whether a score counts for a certain term
 
 MORE DETAILED REPORT FOR STUDENTS TO SEE HER SCORES
 
+Also, stop putting students as apprentices where they have passed the objective at the consultant threhold.
+At the end of a quiz, DC needs to offer students “I don’t want to use the rest of my keys”
+There's too much space with all he headers and stuff at the top.  Condense that.
 
 
 PRIORITIES FOR SUMMER 2018
 Total stars for current term
 Quiz fixes (See section below)
+Allow updating the school_year for each seminar
 Materials site working
 Bank Game Component
     Students can put algebucks in their bank and earn interest
-Lunch Detention Record
+Give student a total score that's based on percentile
 Consultant Stars
 Growth Stars
 Adjust my grading scale so that some students can work a whole objective ahead with each quiz
@@ -108,6 +132,8 @@ Short response quiz questions
 Are the sponsors affected by the fact that classes allow multiple teachers?
 Don't put a student into a group if she already has keys for that topic
 Auto-include goal points into total stars
+Lunch Detention Record?
+End-of-term Stuff
 
 Look up whether my architecture will work better if change the model instead of using a column in the join table
     Seminar :has_many  :pretest_objectives
@@ -134,10 +160,27 @@ Tab in seminar_students for granting keys
 Student cannot access this tab
 What else needs to move from the edit_student_path to the seminar_students view?
     
-    
+END-OF-TERM STUFF
+Give teachers an option to delete unfinished quizzes at the end of a term.
+    This will prevent students from finishing quizzes that they started in a previous term
+In the same view, also give teacher the option to erase keys
+    This will only erase teacher keys and dc keys.  Not pretest keys
     
 
 
+I TOOK OUT THIS PART FROM THE GOAL_STUDENTS NAVRIBBON.
+BUT THERE SHOULD BE A PART THAT CHANGES CHECKPOINT SOMEWHERE
+    <tr>
+        <td><h2>Switch to Checkpoint</h2></td>
+        <td class="spacer"></td>
+        <% 4.times do |n| %>
+            <td class="<%= 'highlighted' if n==@this_checkpoint %>">
+                <h2>
+                    <%= link_to n + 1, scoresheet_seminar_path(:seminar => @seminar, :which_checkpoint => n, :override => true), :id => "checkpoint_#{n}" %>
+                </h2>
+            </td>
+        <% end %>
+    </tr>
 
 
 
@@ -155,11 +198,8 @@ Some objectives, such as paper cranes and tessellations, won't ever offer a quiz
 
 
 TESTS TO ADD
-Deleting a question
+
 Deleting a picture
-All of the "edit tests" need to ensure that no changes occur if the user presses "Save Changes" without actually changing anything
-    I ran into a problem with the label for questions not checking the correct label
-    Or should I disable the "Save Changes" button until the user does something.
 Searching
     Right now there's not empty message when there's a student from another school that could show up.
     Make sure Admin can find all students
@@ -194,6 +234,7 @@ Test the navribbon in the seminar edit view.
     I tried writing tests for the navribbon in the student class page, but the visible tags weren't working in the capybara tests.
 Student using the sub-tabs to navigate the seminar_student view
 Mr. Z School needs to test a student visiting when there is a teacher comment.
+Should I enforce that term start and end dates are sequential?  I think I should
 
 
 
@@ -208,7 +249,6 @@ E-mail when a comment is made on a student's goal
 
 
 COLLECTION OF SMALL FIXES
-Don't place a student into a group if he/she already has keys for that group
 README for loading only specific jquery-ui components.
     https://github.com/jquery-ui-rails/jquery-ui-rails
 Dry up the four buttons shown in the bottom of seminar navigation
@@ -244,6 +284,11 @@ DC should NOT go back and place students into groups if they've already passed t
     important than having a group
 Need to allow for multiple teachers to leave comments.
 So the comment needs to have the ID of the person who left it.
+The OBjectiveStudent model has a column for "teacher score" which doesn't affect any of a student's term scores.
+    We need a scoresheet option where the teacher can input this
+Set_objectives_and_scores should be a model method so that it can be better tested
+Plan to update default term start and end dates each year
+Give mentor teacher a notice if the school's term dates haven't been set.
 
 
 SCORESHEET SCROLLVIEW HEADER

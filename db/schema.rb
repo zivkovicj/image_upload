@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180430113946) do
+ActiveRecord::Schema.define(version: 20180603155623) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -110,6 +110,10 @@ ActiveRecord::Schema.define(version: 20180430113946) do
     t.integer  "pretest_keys"
     t.integer  "dc_keys"
     t.integer  "teacher_granted_keys"
+    t.text     "current_scores"
+    t.text     "score_record"
+    t.integer  "pretest_score"
+    t.integer  "teacher_manual_score"
     t.index ["objective_id", "user_id"], name: "index_objective_students_on_objective_id_and_user_id"
     t.index ["objective_id"], name: "index_objective_students_on_objective_id"
     t.index ["user_id"], name: "index_objective_students_on_user_id"
@@ -194,6 +198,8 @@ ActiveRecord::Schema.define(version: 20180430113946) do
     t.integer  "mentor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "term"
+    t.text     "term_dates"
   end
 
   create_table "seminar_students", force: :cascade do |t|
@@ -227,9 +233,9 @@ ActiveRecord::Schema.define(version: 20180430113946) do
     t.integer  "consultantThreshold"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
-    t.integer  "term"
     t.integer  "which_checkpoint"
     t.text     "checkpoint_due_dates"
+    t.integer  "school_year"
     t.index ["user_id"], name: "index_seminars_on_user_id"
   end
 
@@ -276,6 +282,7 @@ ActiveRecord::Schema.define(version: 20180430113946) do
     t.integer  "school_id"
     t.integer  "verified"
     t.integer  "sponsor_id"
+    t.integer  "school_year"
   end
 
 end

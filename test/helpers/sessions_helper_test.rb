@@ -3,7 +3,8 @@ require 'test_helper'
 class SessionsHelperTest < ActionView::TestCase
     
     def setup
-        setup_users()
+        setup_users
+        setup_schools
         remember(@teacher_1)
     end
     

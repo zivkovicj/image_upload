@@ -4,6 +4,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
+        setup_schools
         setup_seminars
         setup_goals
         setup_scores
@@ -20,7 +21,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
             @check_3.reload
         end
         
-        @gs = @student_2.goal_students.find_by(:seminar => @seminar, :term => @seminar.term)
+        @gs = @student_2.goal_students.find_by(:seminar => @seminar, :term => @seminar.term_for_seminar)
         @check_0 = @gs.checkpoints.find_by(:sequence => 0)
         @check_1 = @gs.checkpoints.find_by(:sequence => 1)
         @check_2 = @gs.checkpoints.find_by(:sequence => 2)
@@ -81,29 +82,6 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         click_on("Back to Viewing Your Class")
         
         assert_selector('h3', :text => "Total Stars Earned:")
-    end
-    
-    test "navigate goal screens" do
-        @seminar.update(:term => 1, :which_checkpoint => 0)
-        
-        capybara_login(@teacher_1)
-        go_to_goals
-        
-        assert_text("Student Goals for #{@seminar.name}")
-        
-        click_on("term_2")
-
-        assert_text("Student Goals for #{@seminar.name}")
-        @seminar.reload
-        assert_equal 2, @seminar.term
-        assert_equal 0, @seminar.which_checkpoint
-        
-        click_on("checkpoint_3")
-        
-        assert_text("Student Goals for #{@seminar.name}")
-        @seminar.reload
-        assert_equal 2, @seminar.term
-        assert_equal 3, @seminar.which_checkpoint
     end
 
         

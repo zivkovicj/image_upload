@@ -2,8 +2,6 @@
 module DeskConsultants
     extend ActiveSupport::Concern
     
-    include SetObjectivesAndScores
-    
     # Populate preList with all students who are present today
     def setup_present_students
       @seminar.students.select{|x| x.present_in(@seminar)}
@@ -63,8 +61,18 @@ module DeskConsultants
       
       # First look at the priority 5 objectives
       @seminar.objectives.select{|y| y.priority_in(@seminar) == 5}.each do |obj|
-        still_needed = [(@consultantsNeeded - @consultancy.teams.count), @need_hash[obj.id]].min
-        consult_list_still_needed.select{|x| x.score_on(obj) >= @cThresh }.take(still_needed).each do |student|
+        def still_needed(obj)
+          [(@consultantsNeeded - @consultancy.teams.count), @need_hash[obj.id]].min
+        end
+        temp_consult_list = consult_list_still_needed.select{|x| x.score_on(obj) >= @cThresh}
+        hp_consult_list = temp_consult_list.select{|x| x.score_on(obj) < 10 && x.student_has_keys(obj) == 0}
+        hp_consult_list << temp_consult_list.select{|x| x.student_has_keys(obj) > 0}
+        hp_consult_list << temp_consult_list.select{|x| x.score_on(obj) == 10}
+        hp_consult_list.flatten!
+        hp_consult_list.take(still_needed(obj)).each do |student|
+          establish_new_group(student, obj, true)
+        end
+        consult_list_still_needed.select{|x| x.score_on(obj) >= @cThresh && x.student_has_keys(obj) == 0}.take(still_needed(obj)).each do |student|
           establish_new_group(student, obj, true)
         end
       end
@@ -80,7 +88,7 @@ module DeskConsultants
           next  # So that the requested topic isn't replaced with the teach_option topic
         end
         # If the request didn't work out, look at the student's teach_options
-        obj = student.teach_options(@seminar, @rank_objectives_by_need).detect{|x| @need_hash[x.id] > 0}
+        obj = student.teach_options(@seminar, @rank_objectives_by_need).detect{|x| @need_hash[x.id] > 0 && student.score_on(x) < 10 && student.student_has_keys(x) == 0}
         establish_new_group(student, obj, true) if obj
       end
     end
@@ -175,7 +183,12 @@ module DeskConsultants
       @consultancy.teams.each do |team|
         team.users.each do |student|
           this_obj_stud = student.objective_students.find_by(:objective => team.objective)
-          this_obj_stud.update_keys("dc", 2) if this_obj_stud
+          if this_obj_stud
+            current_score = this_obj_stud.current_scores[@seminar.term_for_seminar]
+            if current_score == nil || current_score < 10
+              this_obj_stud.update_keys("dc", 2)
+            end
+          end
         end
       end
     end

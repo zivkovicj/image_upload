@@ -4,7 +4,7 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
-        
+        setup_schools
         @old_goal_count = Goal.count
     end
     
@@ -83,6 +83,19 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
         assert_equal @teacher_1, edited_goal.user
         
         assert_text("Goal Options")
+    end
+    
+    test "default extent" do
+        edited_goal = Goal.second
+        assert_equal "public", edited_goal.extent
+        
+        capybara_login(@teacher_1)
+        click_on("Goals")
+        click_on(edited_goal.name)
+        click_on('Update this Goal Option')
+        
+        edited_goal.reload
+        assert_equal "public", edited_goal.extent
     end
     
     test "view other teacher goal" do

@@ -3,8 +3,9 @@ require 'test_helper'
 class LabelsIndexTest < ActionDispatch::IntegrationTest
     
     def setup
-        setup_users()
-        setup_labels()
+        setup_users
+        setup_schools
+        setup_labels
         @old_label_count = Label.count
     end
     

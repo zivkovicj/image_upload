@@ -7,6 +7,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
+        setup_schools
         setup_seminars
         setup_scores
         setup_objectives
@@ -220,7 +221,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_not @rank_objectives_by_need.include?(@objective_50)
     end
     
-    test "check_if_ready Test" do
+    test "check_if_ready test" do
         mainAssign = objectives(:objective_60)
         preAssign1 = objectives(:objective_50)
         preAssign2 = objectives(:objective_40)
@@ -313,6 +314,62 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_not_equal Objective.find(@ss_46.teach_request), @consultancy.teams.find_by(:consultant => @student_46).objective
     
         test_all_consultants
+    end
+    
+    test "no consultants who already have keys" do
+        method_setup
+        top_choice_consultant = @rank_by_consulting[0]
+        second_choice_consultant = @rank_by_consulting[1]
+        
+        top_choice_consultant.seminar_students.find_by(:seminar => @seminar).update(:teach_request => nil)
+        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
+        @objective_40.objective_students.update_all(:points => 0)
+        @objective_40.objective_students.find_by(:user => top_choice_consultant).update(:points => 8, :pretest_keys => 2)
+        @objective_40.objective_students.find_by(:user => second_choice_consultant).update(:points => 8)
+        
+        choose_consultants
+        
+        assert_equal 0, @consultancy.teams.where(:consultant => top_choice_consultant, :objective => @objective_40).count
+        assert_equal 1, @consultancy.teams.where(:consultant => second_choice_consultant, :objective => @objective_40).count
+    end
+    
+    test "deprioritize consultants with 100 score" do
+        method_setup
+        top_choice_consultant = @rank_by_consulting[0]
+        second_choice_consultant = @rank_by_consulting[1]
+        
+        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
+        @rank_by_consulting[2..4].each do |stud|
+            stud.objective_students.find_by(:objective => @objective_40).update(:points => 0) 
+        end
+        @rank_by_consulting[5..@rank_by_consulting.count].each do |stud|
+            stud.objective_students.find_by(:objective => @objective_40).update(:points => 7) 
+        end
+        @objective_40.objective_students.find_by(:user => top_choice_consultant).update(:points => 10)
+        @objective_40.objective_students.find_by(:user => second_choice_consultant).update(:points => 8)
+        
+        choose_consultants
+        
+        assert_equal 0, @consultancy.teams.where(:consultant => top_choice_consultant, :objective => @objective_40).count
+        assert_equal 1, @consultancy.teams.where(:consultant => second_choice_consultant, :objective => @objective_40).count
+    end
+    
+    test "but assign 100 score consultant if needed" do
+        method_setup
+        top_choice_consultant = @rank_by_consulting[0]
+        second_choice_consultant = @rank_by_consulting[1]
+        
+        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
+        @rank_by_consulting[2..@rank_by_consulting.count].each do |stud|
+            stud.objective_students.find_by(:objective => @objective_40).update(:points => 0) 
+        end
+        @objective_40.objective_students.find_by(:user => top_choice_consultant).update(:points => 10)
+        @objective_40.objective_students.find_by(:user => second_choice_consultant).update(:points => 8)
+        
+        choose_consultants
+        
+        assert_equal 1, @consultancy.teams.where(:consultant => top_choice_consultant, :objective => @objective_40).count
+        assert_equal 1, @consultancy.teams.where(:consultant => second_choice_consultant, :objective => @objective_40).count
     end
     
     test "team has room" do
@@ -568,16 +625,23 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         new_place_for_lone_students
         are_some_unplaced
         
-        this_team = @consultancy.teams.first
-        test_stud = this_team.users.last
-        test_os = test_stud.objective_students.find_by(:objective => this_team.objective)
-        test_os.update(:pretest_keys => 2)
+        this_team = @consultancy.teams.select{|x| x.users.count > 1}.first
+        test_stud = this_team.users.select{|x| x != this_team.consultant}.last
+        test_obj_stud = test_stud.objective_students.find_by(:objective => this_team.objective)
+        test_obj_stud.update(:pretest_keys => 2)
+        
+        this_consultant = @consultancy.teams.first.consultant
+        consultant_obj_stud = this_consultant.objective_students.find_by(:objective => this_team.objective)
+        consultant_obj_stud.update(:current_scores => [10,10,nil,nil], :dc_keys => 0)
         
         give_dc_keys
         
-        test_os.reload
-        assert_equal 2, test_os.dc_keys
-        assert_equal 0, test_os.pretest_keys
+        test_obj_stud.reload
+        assert_equal 2, test_obj_stud.dc_keys
+        assert_equal 0, test_obj_stud.pretest_keys
+        
+        consultant_obj_stud.reload
+        assert_equal 0, consultant_obj_stud.dc_keys
     end
     
     test "what if some scores are nil" do

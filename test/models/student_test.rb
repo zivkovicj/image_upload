@@ -7,6 +7,19 @@ class StudentTest < ActiveSupport::TestCase
           password: "foobar", password_confirmation: "foobar")
   end
   
+  test "stars this term" do
+    setup_users
+    setup_objectives
+    setup_seminars
+    setup_scores
+    
+    score_count = @seminar.objectives.count
+    @student_2.objective_students.update_all(:current_scores => [1,2,3,10])
+    @student_2.objective_students.last.update(:current_scores => [nil,nil,nil,nil])
+    #assert_equal score_count - 1, @student_2.stars_this_term(@seminar, 0)
+    assert_equal ((score_count - 1) * 2), @student_2.stars_this_term(@seminar, 1)
+  end
+  
   test "should be valid" do
     assert @student.valid?
   end
@@ -69,6 +82,25 @@ class StudentTest < ActiveSupport::TestCase
   
   test "authenticated? should return false for a user with nil digest" do
     assert_not @student.authenticated?(:remember, '')
+  end
+  
+  test "advance to next school year" do
+    setup_users
+    setup_seminars
+    setup_scores
+    
+    @this_obj_stud = @student_2.objective_students.first
+    @student_2.update(:school_year => 2)
+    @this_obj_stud.update(:current_scores => [4,5,6,7])
+    
+    @student_2.advance_to_next_school_year
+    
+    @student_2.reload
+    @this_obj_stud.reload
+    should_array = [[nil, nil, nil, nil], [nil, nil, nil, nil], [4, 5, 6, 7], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil]]
+    assert_equal should_array, @this_obj_stud.score_record
+    assert_equal [nil,nil,nil,nil], @this_obj_stud.current_scores
+    assert_equal 3, @student_2.school_year
   end
   
 

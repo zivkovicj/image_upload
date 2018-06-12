@@ -1,8 +1,10 @@
 require 'test_helper'
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
+  
   def setup
-    setup_users()
+    setup_users
+    setup_schools
   end
   
   test "login/out as admin" do

@@ -4,7 +4,7 @@ class SchoolsControllerTest < ActionDispatch::IntegrationTest
    
     def setup
         setup_users
-        @school = @teacher_1.school
+        setup_schools
         @school_url = "/schools/#{@school.id}/verify?"
     end
     

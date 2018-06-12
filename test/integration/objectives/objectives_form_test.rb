@@ -8,6 +8,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
+        setup_schools
         setup_seminars
         setup_objectives
         setup_labels

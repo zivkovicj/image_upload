@@ -128,6 +128,10 @@ class User < ApplicationRecord
         this_st && this_st.can_edit
     end
     
+    def student_has_keys(objective)
+        self.objective_students.find_by(:objective => objective).total_keys
+    end
+    
     private
 
         # Converts info to all lower-case.
@@ -178,7 +182,7 @@ class User < ApplicationRecord
         end
         
         def check_password
-            self.password = "#{self.user_number}" if self.password_digest.blank?
+            self.password = "#{self.username}" if self.password_digest.blank?
         end
         
         def update_last_login

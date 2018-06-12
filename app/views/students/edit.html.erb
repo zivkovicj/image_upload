@@ -38,28 +38,35 @@
 
 <br/>
 
-<%= form_for(@student) do |f| %>
-  <%= render 'shared/error_messages', object: @student %>
+<div>
+  <%= label_tag "School Year", "School Year", :style => "float:left;" %> &nbsp; <%= school_year_array[@student.school_year] %>
+</div>
+</br>
+
+<div>
+  <%= form_for(@student) do |f| %>
+    <%= render 'shared/error_messages', object: @student %>
+    
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name, class: 'form-control' %>
+    
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name, class: 'form-control' %>
+    
+    <% if current_user.type != "Student" %>
+      <%= f.label "Student Number" %>
+      <%= f.text_field :user_number, class: 'form-control' %>
+    <% end %>
   
-  <%= f.label :first_name %>
-  <%= f.text_field :first_name, class: 'form-control' %>
+    <%= f.label :username %>
+    <%= f.text_field :username, class: 'form-control' %>
+    
+    <%= f.label :password %>
+    <%= f.password_field :password, class: 'form-control' %>
+    
+    <%= f.label :email %>
+    <%= f.email_field :email, class: 'form-control' %>
   
-  <%= f.label :last_name %>
-  <%= f.text_field :last_name, class: 'form-control' %>
-  
-  <% if current_user.type != "Student" %>
-    <%= f.label "Student Number" %>
-    <%= f.text_field :user_number, class: 'form-control' %>
+    <%= f.submit yield(:button_text), class: "btn btn-primary" %>
   <% end %>
-
-  <%= f.label :username %>
-  <%= f.text_field :username, class: 'form-control' %>
-  
-  <%= f.label :password %>
-  <%= f.password_field :password, class: 'form-control' %>
-  
-  <%= f.label :email %>
-  <%= f.email_field :email, class: 'form-control' %>
-
-  <%= f.submit yield(:button_text), class: "btn btn-primary" %>
-<% end %>
+</div>

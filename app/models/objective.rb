@@ -36,14 +36,14 @@ class Objective < ApplicationRecord
     end
     
     def students_in_need(seminar)
-        studsInNeed = 0
+        students_in_need = 0
         seminar.students.each do |student|
             boog = student.objective_students.find_by(objective_id: id)
-            if boog and boog.points and boog.points < 7 and student.check_if_ready(self)
-                studsInNeed += 1
+            if boog and boog.points and boog.points < 6 and student.check_if_ready(self)
+                students_in_need += 1
             end
         end
-        return studsInNeed
+        return students_in_need
     end
     
 

@@ -1,7 +1,7 @@
 <% if @gs.goal %>
     <% this_sequence = @checkpoint.sequence %>
     <h5>
-        Checkpoint <%= this_sequence + 1 %>
+        Checkpoint <%= this_sequence + 1 %>) &nbsp;
         <% if @edit_type_for_comment == "teacher" %>
             <span id="action_span_<%= @checkpoint.id %>">
                 <%= best_in_place @checkpoint, :action, :as => :select, :collection => @gs.goal.actions[this_sequence].collect {|act| [act, @gs.action_with_target(act)]} %>

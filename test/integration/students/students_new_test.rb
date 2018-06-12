@@ -5,11 +5,13 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
     def setup
         setup_users
         setup_seminars
+        setup_schools
         @old_stud_count = Student.count
     end
     
     test 'create new students' do
-        
+        should_score_record = [[nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil]]
+        assert_equal 1, @teacher_1.verified
         assert_not_nil @teacher_1.school
         old_ss_count = SeminarStudent.count
         old_score_count = ObjectiveStudent.count
@@ -24,6 +26,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         fill_in ("first_name_2"), :with => "Other_kid"
         fill_in ("last_name_2"), :with => "Burgaboot"
         fill_in ("user_number_2"), :with => "5"
+        select("7", :from => 'school_year_2') #Data value of 7 corresponds with 8th grade.
         
         fill_in ("first_name_3"), :with => "Ed"
         fill_in ("last_name_3"), :with => ""
@@ -31,6 +34,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         fill_in ("first_name_5"), :with => "Kid"
         fill_in ("last_name_5"), :with => "with Password"
         fill_in ("password_5"), :with => "Bean Sprouts"
+        select("P", :from => 'school_year_5')
         
         fill_in ("first_name_6"), :with => "Chick"
         fill_in ("last_name_6"), :with => "with Username"
@@ -53,7 +57,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         thisId = first_new_student.id
         assert_equal thisId, first_new_student.user_number
         assert_equal "pl#{thisId}", first_new_student.username 
-        assert first_new_student.authenticate(thisId)
+        assert first_new_student.authenticate(first_new_student.username)
         assert_equal "", first_new_student.email
         assert_equal first_new_student.created_at, first_new_student.last_login
         assert_equal @teacher_1.school, first_new_student.school
@@ -64,6 +68,11 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_not_nil @pretest_obj
         @new_os = first_new_student.objective_students.find_by(:objective => @pretest_obj)
         assert_equal 2, @new_os.pretest_keys
+        newest_obj_stud = first_new_student.objective_students.last
+        assert_equal [nil,nil,nil,nil], newest_obj_stud.current_scores
+        assert_equal should_score_record, newest_obj_stud.score_record
+        assert_equal 9, first_new_student.school_year  #Chosen as 9 by default
+        assert_equal 1, first_new_student.verified
         
         second_new_student = Student.find_by(:last_name => "Burgaboot")
         assert @seminar.students.include?(second_new_student)
@@ -71,19 +80,19 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_equal "Burgaboot", second_new_student.last_name
         assert_equal 5, second_new_student.user_number
         assert_equal second_new_student.username, "ob5"
-        assert second_new_student.authenticate("5")
+        assert second_new_student.authenticate("ob5")
+        assert_equal 8, second_new_student.school_year  #Data value of 7 corresponds with 8th grade.
         
         third_new_student = Student.find_by(:last_name => "with Password")
         assert third_new_student.authenticate("Bean Sprouts")
+        assert_equal 0, third_new_student.school_year
         
         fourth_new_student = Student.find_by(:last_name => "with Username")
         assert_equal "my_username", fourth_new_student.username
         
         fifth_new_student = Student.find_by(:last_name => "with Email")
         assert_equal "dude@email.com", fifth_new_student.email
-        
-        
-        
+    
         assert_text("#{@seminar.name} Scoresheet")
     end
     
@@ -154,21 +163,6 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         stud_4 = Student.all[-2]
         assert_equal "abigailbarnes5", stud_4.username
         
-    end
-    
-    test "nil school if teacher unverified" do
-        assert_not_nil @teacher_1.school
-        @teacher_1.update(:verified => 0)
-        
-        go_to_create_student_view
-        
-        fill_in ("first_name_1"), :with => "Phil"
-        fill_in ("last_name_1"), :with => "Labonte"
-        click_on("Create these student accounts")
-        
-        assert_equal @old_stud_count+1, Student.count
-        first_new_student = Student.find_by(:last_name => "Labonte")
-        assert_nil first_new_student.school
     end
     
 end

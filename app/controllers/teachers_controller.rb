@@ -24,7 +24,11 @@ class TeachersController < ApplicationController
     @seminars = @teacher.seminars
     current_user.update(:current_class => nil)
     @school = @teacher.school
-    @unverified_teachers = @school.unverified_teachers if @school.mentor == @teacher
+    check_if_term_needs_updated
+    if @school.mentor == @teacher
+      @unverified_teachers = @school.unverified_teachers
+      @mentor = true
+    end
     @unaccepted_classes = @teacher.unaccepted_classes
   end
   
@@ -62,6 +66,4 @@ class TeachersController < ApplicationController
       params.require(:teacher).permit(:first_name, :last_name, :title, :email, :password, 
                                 :password_confirmation, :current_class, :user_number, :school_id)
     end
-
-
 end

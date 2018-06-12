@@ -4,6 +4,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
+        setup_schools
         setup_labels
         setup_questions
         setup_pictures
@@ -90,12 +91,16 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         assert_equal ["2"], @user_q.correct_answers
     end
     
-    test "edit fill-in question" do
+    test "edit fill in question" do  
+        # This test also checks that the default label and extent stays the same
+        
         @fill_q = Question.where(:style => "fill-in").first
         @fill_q.update(:user => @teacher_1)
+        @fill_q.update(:extent => "public")
         new_array = @fill_q.correct_answers
         new_array.push("Test if one choice left alone")
         @fill_q.update(:correct_answers => new_array)
+        old_label = @fill_q.label
         
         capybara_login(@teacher_1)
         click_on('All Questions')
@@ -114,6 +119,8 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         assert @fill_q.correct_answers.include?(@new_choice[0][1])
         assert @fill_q.correct_answers.include?("Of Course")
         assert @fill_q.correct_answers.include?("Test if one choice left alone")
+        assert_equal old_label, @fill_q.label
+        assert_equal "public", @fill_q.extent
         
         assert_selector('h1', :text => "All Questions")
     end
@@ -126,5 +133,15 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         assert_selector('h1', :text => "Edit Question")
         assert_selector('div', :id => "error_explanation")
         assert_selector('li', :text => "Prompt can't be blank")
+    end
+    
+    test "delete a question" do
+        old_question_count = Question.count
+        
+        goto_mc_question
+        find("#delete_#{@user_q.id}").click
+        click_on("confirm_#{@user_q.id}")
+        
+        assert_equal old_question_count - 1, Question.count
     end
 end

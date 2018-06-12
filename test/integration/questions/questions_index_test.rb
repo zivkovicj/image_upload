@@ -3,7 +3,8 @@ require 'test_helper'
 class QuestionsIndexTest < ActionDispatch::IntegrationTest
     
     def setup
-        setup_users()
+        setup_users
+        setup_schools
         @admin_q = questions(:one)
         @this_teachers_q = questions(:two)
         @other_teacher_public_q = questions(:three)

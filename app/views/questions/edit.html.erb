@@ -29,3 +29,8 @@
     <%= q.submit yield(:button_text), class: "btn btn-primary", :id => "save_changes_2" %>
   </div>
 <% end %>
+
+</br>
+<% if action_name == "edit" %>
+  <%= render 'shared/delete_and_confirm', object: @question %>
+<% end %>
