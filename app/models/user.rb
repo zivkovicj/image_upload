@@ -14,7 +14,7 @@ class User < ApplicationRecord
     has_and_belongs_to_many  :teams
     belongs_to  :school
     belongs_to   :sponsor,  :class_name => "User"
-    has_many    :goal_students
+    has_many    :goal_students, dependent: :destroy
     
     attribute :verified, :integer, default: 0
 

@@ -1,4 +1,62 @@
 
+2.63 TOTAL STARS FOR CURRENT TERM
+E-mail MaryAnn Moore?
+Students need a column to track their school year.
+Also, a default school year for the class.
+The scores_record column in the ObjectiveStudent model is an multi-dimensional array of scores by school year and term.
+    Column is an array [0,3,8,0].  In this example, the student scored a 3 during second term, and an "8" during third term.
+    The points column still keeps track of a student's highest score so far.  That will be needed for desk consultants
+Also a pretest column, for results that don't go on the term grade
+Also a teacher-manual column.  That might be needed sometimes.
+The current_scores column will keep the scores that are used all year.  Only move them into score_record at the end
+Put new columns in seeds, fixtures, current database, ...
+When creating new students, this column is pre-filled with the seminar's default school year
+Choosing the school year needs to present user with an array that includes kindergarten and pre-school.
+    But the data goes into the db as an integer.
+When a student takes a quiz, update the array score in the spot for that term, and also in the highest score so far
+Update the pretest column instead of the term grade if the quiz is a pretest
+Don't give dc_keys to a student who already has 100 as his current score
+Complete all updates when teacher updates scores manually
+I have manual scoresheet test for when the student did better last term.  Should have a quiz result test for the same 
+Function adds the total points from all obj_studs for the current term
+Fix the user fixtures so that I can add to them efficiently
+Scoresheet should show current term by default
+View scores from different terms
+Need an option to show all possible scores, or just the objectives involved in this term
+Change default student password to be completely equal to the username
+Term needs to be located in school, not seminar
+Seminar needs a method that looks at its school to determine its term
+School model needs default term set to zero
+School also needs term start and end dates
+System needs default term start and end dates
+Allow mentor teacher to edit term start dates and end dates for the school
+Test that only mentor teacher can do this
+Check whether the current term needs to be updated when somebody logs in to the class
+Also do this when a student logs in
+Students who have no school will run into errors with terms and stuff.  This will happen to all students whose teachers have not been verified.
+    I should set a student for the specific school.  But also mark whether a student has been verified.
+    Only verified students can be found in searches.
+    Students get auto-verified if the teacher who creates them is already verified
+    Test that students don't become verified if their sponsoring teacher is rejected by the mentor
+Don't update the term anymore just by the teacher switching views in the goal_students index
+Update a students' school year
+    Which also moves the current scores into score record
+    And turns current scores to nil
+Default values are pre-filled when editing, particularly with labels for questions, and public extent
+Don't place a student into a group if he/she already has keys for that group
+Urgent priority objectives are choosing consultants who have already scored 100.  That needs to be minimized.
+Show student's school year in profile view.
+
+Give existing students a school year
+And a school
+Schools need terms
+And term dates
+Update current scores and score record for existing students
+Change password for existing students to be equal to their username
+Update existing students to verified
+
+
+
 
 2.62  GOAL TOUCH-UPS
 Include grade percentage in teacher index report

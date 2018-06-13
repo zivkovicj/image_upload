@@ -50,61 +50,66 @@ Manually test:
 
 
 
+2.64 STAR MARKET
+Contact Teachers who have signed up
+
+Track bucks that a student has in each class
+    Students gain daily interest on bucks
+
+App creates a certain number of stars each day
+    Number created is based on allowing for 20 stars per student per term
+    120 students * 20 stars = 2400 stars divide 10 weeks = 240 stars per week.
+    (This is higher than what most students bought last year, but the possible will be higher if students are quizzing weekly)
+    (Release the stars all at once, to make more interesting fluctuations)
+Students can "buy and keep" stars using bucks from their savings account
+Students can also "buy and use" immediately
+Students can apply stars toward their grade
+    (Teacher also can, from student's view page, so it isn't based on current_user)
+    Total stars method includes stars that have been applied
+Students can sell stars back to the market for bucks
+
+Prices of stars and gems fluctuate based on supply in market
+    Each item has a standard price.
+    Item's price will equal standard when the supply in the store equals that item's standard supply.
+        I think standard amount should equal about five weeks worth of production
+    Current price is updated daily. (so that first period doesn't have a huge advantage for being able to buy first)
+        Current price is based on standard supply / current supply * standard price
+        Examples
+            Standard supply   1200  (240 x 5 weeks)
+            Current supply    1800  (Students have bought hardly anything for 2 1/2 weeks)
+            1200 / 1800 = 0.67 * 5 = $3.35
+            
+            Current supply  400
+            1200 / 400 = 3 * 5 = $15
+            
+    Triple the standard is maximum price
+    
+
+Scoresheet grade page shows quiz stars and total stars (including used stars)
+
+Students can buy gems
+Gems can be used toward class reward
+Gems can be sold back to the market 
+
+Screen to keep track of progress toward reward reward
+Teacher can name the reward
+Allow teacher to reset reward
+Re-establish new reward target based on number of students in class
+
+Allow teacher to customize which items can be purchased in each class
+    Change the supply (number per student per term)
+    Standard price
+    Day when new items are released
+Teacher can also create custom items
+
+School-wide leaderboard of most class currency
+Class-wide leaderboards of most class currency
+
+Allow a commission on specific classes to change the difficulty compared to other classes
+
+Printable version of goal report is showing (?) instead of target
 
 
-2.63 TOTAL STARS FOR CURRENT TERM
-E-mail MaryAnn Moore?
-V Students need a column to track their school year.
-V Also, a default school year for the class.
-V The scores_record column in the ObjectiveStudent model is an multi-dimensional array of scores by school year and term.
-    V Column is an array [0,3,8,0].  In this example, the student scored a 3 during second term, and an "8" during third term.
-    V The points column still keeps track of a student's highest score so far.  That will be needed for desk consultants
-V Also a pretest column, for results that don't go on the term grade
-V Also a teacher-manual column.  That might be needed sometimes.
-V The current_scores column will keep the scores that are used all year.  Only move them into score_record at the end
-V Put new columns in seeds, fixtures, current database, ...
-V When creating new students, this column is pre-filled with the seminar's default school year
-V Choosing the school year needs to present user with an array that includes kindergarten and pre-school.
-    V But the data goes into the db as an integer.
-V When a student takes a quiz, update the array score in the spot for that term, and also in the highest score so far
-V Update the pretest column instead of the term grade if the quiz is a pretest
-V Don't give dc_keys to a student who already has 100 as his current score
-V Complete all updates when teacher updates scores manually
-V I have manual scoresheet test for when the student did better last term.  Should have a quiz result test for the same 
-V Function adds the total points from all obj_studs for the current term
-V Fix the user fixtures so that I can add to them efficiently
-V Scoresheet should show current term by default
-V View scores from different terms
-V Need an option to show all possible scores, or just the objectives involved in this term
-V Change default student password to be completely equal to the username
-V Term needs to be located in school, not seminar
-V Seminar needs a method that looks at its school to determine its term
-V School model needs default term set to zero
-V School also needs term start and end dates
-V System needs default term start and end dates
-V Allow mentor teacher to edit term start dates and end dates for the school
-V Test that only mentor teacher can do this
-V Check whether the current term needs to be updated when somebody logs in to the class
-V Also do this when a student logs in
-V Students who have no school will run into errors with terms and stuff.  This will happen to all students whose teachers have not been verified.
-    V I should set a student for the specific school.  But also mark whether a student has been verified.
-    V Only verified students can be found in searches.
-    V Students get auto-verified if the teacher who creates them is already verified
-    V Test that students don't become verified if their sponsoring teacher is rejected by the mentor
-V Don't update the term anymore just by the teacher switching views in the goal_students index
-V Update a students' school year
-    V Which also moves the current scores into score record
-    V And turns current scores to nil
-V Default values are pre-filled when editing, particularly with labels for questions, and public extent
-V Don't place a student into a group if he/she already has keys for that group
-V Urgent priority objectives are choosing consultants who have already scored 100.  That needs to be minimized.
-V Show student's school year in profile view.
-
-Give existing students a school year
-And a school
-Migrate existing scores into their proper place in the scores array
-Change password for existing students to be equal to their username
-Update existing students to verified
 
 
 
@@ -116,12 +121,12 @@ There's too much space with all he headers and stuff at the top.  Condense that.
 
 
 PRIORITIES FOR SUMMER 2018
+Bank Game Component
+    Students can put algebucks in their bank and earn interest
 Show the total stars in the scoresheet
 Quiz fixes (See section below)
 Allow updating the school_year for each seminar
 Materials site working
-Bank Game Component
-    Students can put algebucks in their bank and earn interest
 Give student a total score that's based on percentile
 Consultant Stars
 Growth Stars
@@ -134,6 +139,8 @@ Don't put a student into a group if she already has keys for that topic
 Auto-include goal points into total stars
 Lunch Detention Record?
 End-of-term Stuff
+Archive Classes
+Remediation objectives
 
 Look up whether my architecture will work better if change the model instead of using a column in the join table
     Seminar :has_many  :pretest_objectives
