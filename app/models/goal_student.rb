@@ -6,7 +6,6 @@ class GoalStudent < ApplicationRecord
     belongs_to  :seminar
     has_many    :checkpoints
     
-    attr_accessor :goal_id
     
     attribute :approved, :boolean, default: false
     

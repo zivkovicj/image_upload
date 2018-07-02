@@ -14,11 +14,6 @@ class SeminarStudentsController < ApplicationController
     @student = Student.find(@ss.user_id)
     @student.update(:sponsor => current_user) if current_user.type == "Teacher"
     
-    addToSeatingChart(@seminar, @student)
-    scores_for_new_student(@seminar, @student)
-    pretest_keys_for_new_student(@seminar, @student)
-    goals_for_new_student(@seminar, @student)
-    
     old_ss_id = params[:seminar_student][:is_move]
     if old_ss_id
       @old_ss = SeminarStudent.find(old_ss_id)
@@ -31,18 +26,24 @@ class SeminarStudentsController < ApplicationController
   
   def show
     @ss = SeminarStudent.find(params[:id])
+    @new_ss = SeminarStudent.new
     @student = @ss.user
+    @school = @student.school
     @seminar = @ss.seminar
+    @term = @seminar.term_for_seminar
     @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
     
     @this_checkpoint = @seminar.which_checkpoint
-    @gs = @student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term_for_seminar)
+    @gs = @student.goal_students.find_by(:seminar => @seminar, :term => @term)
     
     @objectives = @seminar.objectives.order(:name)
     objective_ids = @objectives.map(&:id)
     @student_scores = @student.objective_students.where(:objective_id => objective_ids)
     
-    @total_stars = @student.total_stars(@seminar)
+    @quiz_stars_this_term = @student.quiz_stars_this_term(@seminar, @seminar.term_for_seminar)
+    @stars_used_toward_grade_this_term = @student.stars_used_toward_grade_this_term(@seminar, @seminar.term_for_seminar)
+    @total_stars_this_term = @quiz_stars_this_term + @stars_used_toward_grade_this_term
+    @quiz_stars_all_time = @student.quiz_stars_all_time(@seminar)
     @teachers = @seminar.teachers
     
     @teach_options = @student.teach_options(@seminar, @seminar.rank_objectives_by_need)
@@ -60,7 +61,19 @@ class SeminarStudentsController < ApplicationController
   
   def update
     @ss = SeminarStudent.find(params[:id])
-    @ss.update_attributes(ss_params)
+    @this_com_stud = CommodityStudent.find_by(params[:commodity_student_id]) if params[:commodity_student_id]
+    if params[:bucks_to_add]
+      @ss.update(:bucks_owned => @ss.bucks_owned + params[:bucks_to_add].to_i)
+    elsif params[:use]
+      use_commodity
+    elsif params[:commodity_student_id]
+      buy_commodity
+    else
+      req_type = params[:seminar_student][:req_type]
+      req_id = params[:seminar_student][:req_id]  
+      @ss.write_attribute(:"#{req_type}_request", req_id)
+      @ss.save
+    end
     respond_with @ss
   end
   
@@ -79,6 +92,30 @@ class SeminarStudentsController < ApplicationController
       def ss_params
         params.require(:seminar_student).permit(:seminar_id, :user_id, :teach_request, 
                                   :learn_request, :pref_request, :present)
+      end
+      
+      def buy_commodity
+        multiplier = params[:multiplier].to_i
+        commode = @this_com_stud.commodity
+        
+        buy_allowed = multiplier > 0 && @ss.bucks_owned > 0 && commode.quantity > 0
+        sell_allowed = multiplier < 0 && @this_com_stud.quantity > 0
+        if buy_allowed || sell_allowed
+          @this_com_stud.update(:quantity => @this_com_stud.quantity + multiplier)
+          
+          cost = (commode.current_price * multiplier)
+          @ss.update(:bucks_owned => @ss.bucks_owned - cost)
+          commode.update(:quantity => commode.quantity - 1)
+        end
+      end
+      
+      def use_commodity
+        @this_com_stud.update(:quantity => @this_com_stud.quantity - 1)
+        
+        term = @ss.seminar.term_for_seminar
+        old_stars = @ss.stars_used_toward_grade[term]
+        @ss.stars_used_toward_grade[term] = old_stars + 1
+        @ss.save
       end
       
       def correct_ss_user

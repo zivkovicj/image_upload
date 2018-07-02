@@ -7,7 +7,7 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
     setup_schools
     setup_seminars
     setup_objectives()
-    setup_scores()
+    setup_scores_and_commodities()
 
   end
 

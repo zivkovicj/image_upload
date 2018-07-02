@@ -1,0 +1,6 @@
+<select name="<%= name %>" id="school_year_<%= index %>">
+    <% school_year_array.count.times do |n| %>
+      <option value="<%= n %>" <%= "selected" if n==default_year %>><%= school_year_array[n] %></option>
+    <% end %>
+    <%# Data value of 7 corresponds with 8th grade %>
+</select>

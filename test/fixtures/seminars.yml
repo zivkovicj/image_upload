@@ -11,6 +11,7 @@ one:
   which_checkpoint: 0
   school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
+  default_buck_increment: 5
 
 two:
   name: 2nd Period
@@ -19,6 +20,7 @@ two:
   which_checkpoint: 0
   school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
+  default_buck_increment: 5
   
 
 three:
@@ -28,6 +30,7 @@ three:
   which_checkpoint: 0
   school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
+  default_buck_increment: 5
   
 archer_can_view_not_edit:
   name: Archer Can View
@@ -36,6 +39,7 @@ archer_can_view_not_edit:
   which_checkpoint: 0
   school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
+  default_buck_increment: 5
   
 four:
   name: Zacky's first period
@@ -44,6 +48,7 @@ four:
   which_checkpoint: 0
   school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
+  default_buck_increment: 5
   
 
 
@@ -56,6 +61,7 @@ seminar_<%= n %>:
   which_checkpoint: 0
   school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
+  default_buck_increment: 5
 <% end %>
 
 
@@ -66,3 +72,4 @@ unverified_teacher_class:
   which_checkpoint: 0
   school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
+  default_buck_increment: 5

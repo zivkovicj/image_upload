@@ -20,7 +20,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
    
     test "edit seminar" do
         setup_objectives
-        setup_scores
+        setup_scores_and_commodities
         obj_array = [@objective_30, @objective_40, @objective_50, @own_assign, @assign_to_add]
         @objective_zero_priority = objectives(:objective_zero_priority)
         @os_0 = @seminar.objective_seminars.find_by(:objective => @objective_30)
@@ -61,6 +61,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
             check("check_#{obj.id}")
         end
         uncheck("check_#{@objective_zero_priority.id}")
+        
         click_on("Update This Class")
         
         @seminar.reload
@@ -76,6 +77,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         end
 
         fill_in "Name", with: "Macho Taco Period"
+        find("#school_year_1").select("3")
         choose('8')
         check("pretest_on_#{@objective_30.id}")
         uncheck("pretest_on_#{@objective_50.id}")
@@ -86,12 +88,15 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
                 fill_in "seminar[checkpoint_due_dates][#{n}][#{m}]", with: due_date_array[n][m]
             end
         end
+        fill_in "seminar[default_buck_increment]", with: "6"
         
         click_on("Update This Class")
         
         @seminar.reload
         assert_equal "Macho Taco Period",  @seminar.name
-        assert 8, @seminar.consultantThreshold
+        assert_equal 6, @seminar.default_buck_increment
+        assert_equal 8, @seminar.consultantThreshold
+        assert_equal 4, @seminar.school_year
 
         @os_0.reload
         @os_1.reload

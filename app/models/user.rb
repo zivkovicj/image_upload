@@ -11,6 +11,8 @@ class User < ApplicationRecord
     has_many    :quizzes
     has_many    :pictures
     has_many    :goals
+    has_many    :commodities
+    has_many    :commodity_students
     has_and_belongs_to_many  :teams
     belongs_to  :school
     belongs_to   :sponsor,  :class_name => "User"

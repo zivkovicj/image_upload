@@ -15,11 +15,16 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
     end
     
     test "new teacher old school" do
+        commodity_count = Commodity.count
+        
         goto_signup_page
-        teacher_editing_stuff(nil, 'Create My Account')
+        teacher_form_stuff('Create My Account')
+        @this_teacher = Teacher.last
+        teacher_assertions(@this_teacher)
         
         assert_equal @old_teacher_count + 1, Teacher.count
         assert_in_delta @this_teacher.created_at, @this_teacher.last_login, 1.minute
+        assert_equal commodity_count + 1, Commodity.count
         
         assert_nil @this_teacher.school
         fill_in "search_field", with: @school.name
@@ -67,7 +72,9 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
     
     test "new teacher new school" do
         goto_signup_page
-        teacher_editing_stuff(nil, 'Create My Account')
+        teacher_form_stuff('Create My Account')
+        @this_teacher = Teacher.last
+        teacher_assertions(@this_teacher)
         
         assert_nil @this_teacher.school
         fill_in "school_name", with: "Slunk Elementary"
@@ -97,7 +104,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
     
     test "invalid school info" do
         goto_signup_page
-        teacher_editing_stuff(nil, 'Create My Account')
+        teacher_form_stuff('Create My Account')
         
         assert_text("Choose Your School")
         assert_no_text("Please complete all information for your school")
@@ -105,7 +112,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         fill_in "school_name", with: "Slunk Elementary"
         click_on("This is my school")
         
-        @this_teacher.reload
+        @this_teacher = Teacher.last
         assert_nil School.find_by(:name => "Slunk Elementary")
         assert_equal @old_school_count, School.count
         assert_equal 0, @this_teacher.verified
@@ -116,13 +123,14 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
     
     test "no new or old school" do
         goto_signup_page
-        teacher_editing_stuff(nil, 'Create My Account')
+        teacher_form_stuff('Create My Account')
         
         assert_text("Choose Your School")
         assert_no_text("Please choose a school or create a new school.")
         
         click_on("This is my school")
         
+        @this_teacher = Teacher.last
         @this_teacher.reload
         assert_nil School.find_by(:name => "Slunk Elementary")
         assert_equal @old_school_count, School.count

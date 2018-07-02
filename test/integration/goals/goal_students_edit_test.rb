@@ -7,7 +7,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         setup_schools
         setup_seminars
         setup_goals
-        setup_scores
+        setup_scores_and_commodities
     end
     
     test "student chooses goal" do
@@ -50,7 +50,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     
         select("Eat something kind", :from => "syl[#{@check_0.id}][action]")
         select("I will be kind 60 % of the time so far.", :from => "syl[#{@check_1.id}][action]")
-        
+        assert_no_selector('h5', :text => @seminar.name)
         click_on("Save These Checkpoints")
         
         reload_stuff
@@ -59,7 +59,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         assert_equal "I will be kind 60 % of the time so far.", @check_1.statement
         assert_equal "Play something kind", @check_2.action  # Should stay as the default because it wasn't changed.
         
-        assert_selector('h3', :text => "Total Stars Earned:")
+        assert_selector('h5', :text => @seminar.name)
     end
     
     test "default goal if already chosen" do
@@ -78,10 +78,11 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     test "goal edit back button" do
         go_to_first_period
         click_on("Edit This Goal")
+        assert_no_selector('h5', :text => @seminar.name)
         
         click_on("Back to Viewing Your Class")
         
-        assert_selector('h3', :text => "Total Stars Earned:")
+        assert_selector('h5', :text => @seminar.name)
     end
 
         

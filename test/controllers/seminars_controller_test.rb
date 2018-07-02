@@ -7,7 +7,7 @@ class SeminarsControllerTest < ActionDispatch::IntegrationTest
     setup_users
     setup_schools
     setup_seminars
-    setup_scores()
+    setup_scores_and_commodities()
   end
   
   test "seminars index test" do
@@ -64,14 +64,14 @@ class SeminarsControllerTest < ActionDispatch::IntegrationTest
   
   test "should redirect create when not logged in" do
     assert_no_difference 'Seminar.count' do
-      post '/seminars/', params: { seminar: { name: "2nd period",  consultantThreshold: 7 } }
+      post '/seminars/', params: { seminar: { name: "2nd period",  consultantThreshold: 7, school_year: 9} }
     end
   end
   
-  test "empty class name" do
+  test "empty seminar name" do
     log_in_as @teacher_1
     assert_no_difference 'Seminar.count' do
-      post '/seminars/', params: { seminar: { name: " ",  consultantThreshold: 7 } }
+      post '/seminars/', params: { seminar: { name: " ",  consultantThreshold: 7, school_year: 9 } }
     end
     assert_template 'seminars/new'
   end
@@ -79,7 +79,7 @@ class SeminarsControllerTest < ActionDispatch::IntegrationTest
   test "class name too long" do
     log_in_as @teacher_1
     assert_no_difference 'Seminar.count' do
-      post '/seminars/', params: { seminar: { name: "a"*41,  consultantThreshold: 7 } }
+      post '/seminars/', params: { seminar: { name: "a"*41,  consultantThreshold: 7, school_year: 9 } }
     end
     assert_template 'seminars/new'
   end

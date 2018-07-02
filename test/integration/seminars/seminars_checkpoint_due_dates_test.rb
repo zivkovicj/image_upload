@@ -47,7 +47,7 @@ class SeminarsCheckpointDueDatesTest < ActionDispatch::IntegrationTest
     end
     
     test "student cant edit old checkpoints" do
-        setup_scores
+        setup_scores_and_commodities
         setup_goals
         travel_to Time.zone.local(2018, 01, 20, 01, 04, 44)
         @seminar.update(:term => 3) # To test for an error on the nil due date

@@ -42,20 +42,6 @@ class StudentsEditTest < ActionDispatch::IntegrationTest
         student_edit_stuff
     end
     
-    test "teacher edits student" do
-        setup_scores
-        
-        capybara_login(@teacher_1)
-        click_on("scoresheet_#{@seminar.id}")
-        click_on(@student_2.last_name_first)
-        click_on("Edit/Move Student")
-        assert_selector('input', :id => "student_user_number")
-        
-        edit_student_user_number
-        student_edit_stuff
-        check_student_user_number
-    end
-    
     test "admin edits student" do
         capybara_login(@admin_user)
         click_on("Students Index")

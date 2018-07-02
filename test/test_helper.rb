@@ -32,6 +32,13 @@ class ActiveSupport::TestCase
     CarrierWave.clean_cached_files!(0)
   end
   
+  def answer_quiz_randomly
+    10.times do
+      choose("choice_bubble_1")
+      click_on("Next Question")
+    end
+  end
+  
   def disable_images
     Question.where.not(:picture_id => nil).update_all(:picture_id => nil) 
   end
@@ -54,6 +61,10 @@ class ActiveSupport::TestCase
     Student.all[71..90].each do |student|
       student.update(:sponsor => @other_teacher)
     end
+    
+    @teacher_1_star = @teacher_1.commodities.find_by(:name => "Star")
+    @testing_date_last_produced = "Sat, 16 Jun 2018 00:00:00 UTC +00:00"
+    @teacher_1_star.update(:date_last_produced => @testing_date_last_produced)
   end
   
   def setup_schools
@@ -127,12 +138,17 @@ class ActiveSupport::TestCase
     @other_p = pictures(:three)
   end
   
-  def setup_scores
+  def setup_scores_and_commodities
     Seminar.all.each do |seminar|
-      seminar.objectives.each do |objective|
-        seminar.students.each do |student|
+      seminar.students.each do |student|
+        seminar.objectives.each do |objective|
           if student.objective_students.find_by(:objective => objective) == nil
             student.objective_students.create(:objective => objective, :points => rand(11))
+          end
+        end
+        seminar.teachers.each do |teacher|
+          teacher.commodities.each do |commode|
+            commode.commodity_students.create(:user => student)
           end
         end
       end
@@ -196,14 +212,7 @@ class ActiveSupport::TestCase
     click_on("#{@seminar.id}_student_goals")
   end
   
-  def answer_quiz_randomly
-    10.times do
-      choose("choice_bubble_1")
-      click_on("Next Question")
-    end
-  end
-  
-  def teacher_editing_stuff(teacher, button_text)
+  def teacher_form_stuff(button_text)
     select('Mrs.', :from => 'teacher_title')
     fill_in "teacher_first_name", with: "Burgle"
     fill_in "teacher_last_name", with: "Cut"
@@ -211,14 +220,15 @@ class ActiveSupport::TestCase
     fill_in "teacher_password", with: "bigbigbigbig"
     fill_in "teacher_password_confirmation", with: "bigbigbigbig"
     click_on(button_text)
+  end
   
-    @this_teacher = teacher || Teacher.last
-    @this_teacher.reload
-    assert_equal "Mrs.", @this_teacher.title
-    assert_equal "Burgle", @this_teacher.first_name
-    assert_equal "Cut", @this_teacher.last_name
-    assert_equal "burgle@cut.com", @this_teacher.email
-    assert @this_teacher.authenticate("bigbigbigbig")
+  def teacher_assertions(teacher)
+    teacher.reload
+    assert_equal "Mrs.", teacher.title
+    assert_equal "Burgle", teacher.first_name
+    assert_equal "Cut", teacher.last_name
+    assert_equal "burgle@cut.com", teacher.email
+    assert teacher.authenticate("bigbigbigbig")
   end
   
   def fill_prompt(a)

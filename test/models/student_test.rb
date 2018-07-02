@@ -7,17 +7,18 @@ class StudentTest < ActiveSupport::TestCase
           password: "foobar", password_confirmation: "foobar")
   end
   
-  test "stars this term" do
+  test "quiz stars this term" do
     setup_users
     setup_objectives
     setup_seminars
-    setup_scores
+    setup_scores_and_commodities
     
     score_count = @seminar.objectives.count
     @student_2.objective_students.update_all(:current_scores => [1,2,3,10])
     @student_2.objective_students.last.update(:current_scores => [nil,nil,nil,nil])
+    
     #assert_equal score_count - 1, @student_2.stars_this_term(@seminar, 0)
-    assert_equal ((score_count - 1) * 2), @student_2.stars_this_term(@seminar, 1)
+    assert_equal ((score_count - 1) * 2), @student_2.quiz_stars_this_term(@seminar, 1)
   end
   
   test "should be valid" do
@@ -87,7 +88,7 @@ class StudentTest < ActiveSupport::TestCase
   test "advance to next school year" do
     setup_users
     setup_seminars
-    setup_scores
+    setup_scores_and_commodities
     
     @this_obj_stud = @student_2.objective_students.first
     @student_2.update(:school_year => 2)

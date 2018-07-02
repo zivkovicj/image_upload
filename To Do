@@ -51,67 +51,205 @@ Manually test:
 
 
 2.64 STAR MARKET
+
 Contact Teachers who have signed up
 
-Track bucks that a student has in each class
-    Students gain daily interest on bucks
+Commodity model
+    name
+    image
+    school
+    user
+    production_rate
+    current_price
+    production_day
+    quantity
+    date_last_produced
+CommodityStudent model
+    quantity (owned)
+    avg_price_paid
+CommoditySchool
+    production (will multiply by number of students)
+    current_price
+    production_day
+    created_this_week
+SeminarStudent (update)
+    bucks_owned
+    gems_given_toward_reward
+    stars_used_toward_grade (array with four spots for four terms)
+Seminar (update)
+    default_buck_increment
+    class_reward (name of the reward)
+    target_rate (gems per student)
 
-App creates a certain number of stars each day
-    Number created is based on allowing for 20 stars per student per term
-    120 students * 20 stars = 2400 stars divide 10 weeks = 240 stars per week.
-    (This is higher than what most students bought last year, but the possible will be higher if students are quizzing weekly)
+V Teacher needs to be able to edit the class that she just created.
+V Update teacher viewing student to resemble the student's own view
+    V One of the submenus is star market
+    V Edit/Move Student needs to be moved to this window
+    V edit_teaching requests action and view can be deleted
+    V Then I can probably move the teaching_requests and all_student_scores views out of shared and into the seminar_student folder
+    V Test teacher updating all aspects of show page
+    V Need to be able to get back to scoresheet
+V Teacher can give bucks to students.  Increases bucks_owned in SeminarStudent
+V Should be ajax, not a full http call
+V Teacher can set default increment for each seminar.
+V Students bucks increase by default increment.
+V Also allow for custom amount
+
+V Create new stars when weekday is past production day AND days since last production > 1
+V OR if days since last production > 7
     (Release the stars all at once, to make more interesting fluctuations)
-Students can "buy and keep" stars using bucks from their savings account
-Students can also "buy and use" immediately
-Students can apply stars toward their grade
-    (Teacher also can, from student's view page, so it isn't based on current_user)
-    Total stars method includes stars that have been applied
-Students can sell stars back to the market for bucks
+
+V Teacher can "buy and keep" stars for student
+V Submenu shows supply and current price
+V And number that student currently owns
+V Teacher can "buy and use" stars for student
+V Total stars method includes stars that have been applied
+V Don't show the buttons for adding bucks if student is viewing the page
+V Don't show buy button if student doesn't have enough money
+V Don't show sell button if student owns zero copies
+V Don't show buy button if school supply is out
+V Erase buy button if student cash goes below need
+    V Or if school supply hits zero
+V Erase sell button if student supply hits zero
+V Buy button should appear if student gains enough money
+V Sell button should appear if student gains a copy
+V Prevent sell in back-end if commodity quantity runs out
+    V Think about multiple students buying at the same time
+V Include the image for each item
+
+V Create stars commodity when new teachers are created
+V Creating a new class needs to assign that class to the teacher
+V Create commodity_students for new students
+V Create one for transferred student if it doesn't already exist 
+V Change the school_year of a seminar when creating
+    V And when editing
+V Scoresheet grade page shows quiz stars and total stars (including applied stars)
+V Student star page shows quiz stars and total stars
+    V Total quiz stars for all time includes pretest stars
+
+V Student can see account values
+V Dry up the javascript dealing with requests
+V Dry up view for requests
+
+
+Migrate
+    SeminarStudents
+        bucks_owned to 0
+        gems_given_toward_reward to 0
+        stars_used_toward_grade to [0,0,0,0]
+    Seminar
+        default_buck_increment to 5
+        class_reward to "Not yet named"
+        target_rate to 5
+    Existing SeminarTeachers need edit permission
+
+
+
+QUIZ FIXES
+
+Printable version of goal report is showing (?) instead of target
+ce-ing a quiz is showing zero stars
+Going back to an unfinished quiz seemed to leave a riposte tally with a nil value. 
+If student has scored 100, then end-of-quiz message reads, "You have scored 100% on this objective.  There is no need to take the quiz again."
+Test that it updates the points if the student improves.
+But if student doesn't improve, it at least updates the updated_at column. (So the score can count on the student's current term grade)
+Can I re-name the "present" attribute of the seminar student?  That's already a ruby word.
+For the sake of performance, the method "set_pretests" should only be called when pretests are changed.  Right now, it is getting called when
+    anything about the seminar is changed.
+Tests to add
+
+
+
+SCHOOL-WIDE MARKET
+
+School's mentor can create commodities for school market
+    Custom commodities cannot be named "star" or "gem"
+    Need to allow more people to do this, so that it isn't ME who does all that work at Bryant.
+    Maybe mentor needs to give other teachers access to edit the school.
+        I could use most of the same code as allowing other teachers access to a class
+    All of these admin teachers can create new students without placing them into a class
+    Only stars and gems will offer the use button
+Create a commodity student when new commodities are created
+    These should probably be saved for students who leave class and come back later
+Javascript for making the buy and sell buttons appear and disappear needs to iterate through all
+    commodities and have different results for the different prices
+Teacher can open and close availability for certain commodities
+Teacher can allow and disallow the use of stars and gems in a specific class
+    But not purchasing them, if the school has allowed it
+Mentor teacher can create new teachers who are automatically verified
+Teacher can make a comment while giving some currency
+Currency moves with student if student changes classes
+Teachers have limited amount of currency to give
+Teacher can give bucks to whole class.
+    Screen that allows unchecking boxes from certain students
+    Custom controller action that loops through whole class
+
+TEACHER-GRADED QUESTIONS
+
+
+
+GEM MARKET
+Students can buy gems
+Gems can be used toward class reward
+Gems can be sold back to the market
+
+Teacher can see account values for whole class
+Account values screen includes commodities owned and the total value
+
+Screen to keep track of progress toward reward
+Teacher can name the reward
+Allow teacher to reset reward
+Re-establish new reward target based on number of students in class
+
+Allow teacher to customize whether stars and gems can be used in their class
+But many commodity attributes need to be set school-wide
+    (The main reason to focus on prices school-wide is to reduce competition within a class period)
+    Change the supply (number per student per term)
+    Standard price
+    Day when new items are released
+Limit teachers to the number of bucks they can give
+    Based on number of students that teacher has
+
+School-wide leaderboard of most class currency
+    (only tracks savings account, not commodities)
+    Only shows bucks from current term.
+    
+Class-wide leaderboards of most class currency
+
+Allow a commission on specific classes to change the difficulty compared to other classes
+
+Students gain daily interest on their savings accounts
+
+Future update:
+    
+    To make the game more fair for students who arrive late, I would like to reset the leaderboard at some point.
+        This will also reign in students who begin making ridiculous levels of interest
+        But resetting the leaderboard means that I need to set everybody to zero assets.
+        How do I do that without robbing students of what they've accumulated?
+
+
+FLUCTUATING PRICES
 
 Prices of stars and gems fluctuate based on supply in market
+    current_price is updated daily
     Each item has a standard price.
     Item's price will equal standard when the supply in the store equals that item's standard supply.
         I think standard amount should equal about five weeks worth of production
     Current price is updated daily. (so that first period doesn't have a huge advantage for being able to buy first)
         Current price is based on standard supply / current supply * standard price
+        Add a flat amount to each to ease the spike on ridiculous price increase
+            Flat amount is 10% of standard supply
         Examples
-            Standard supply   1200  (240 x 5 weeks)
-            Current supply    1800  (Students have bought hardly anything for 2 1/2 weeks)
-            1200 / 1800 = 0.67 * 5 = $3.35
+            Standard supply   600  (120 x 5 weeks)
+            Current supply    900  (Students have bought hardly anything for 2 1/2 weeks)
+            700 / 1000 = 0.7 * 5 = $3.5
             
-            Current supply  400
-            1200 / 400 = 3 * 5 = $15
-            
+            Current supply  200
+            700 / 300 = 2.3 * 5 = $11.67
     Triple the standard is maximum price
     
-
-Scoresheet grade page shows quiz stars and total stars (including used stars)
-
-Students can buy gems
-Gems can be used toward class reward
-Gems can be sold back to the market 
-
-Screen to keep track of progress toward reward reward
-Teacher can name the reward
-Allow teacher to reset reward
-Re-establish new reward target based on number of students in class
-
-Allow teacher to customize which items can be purchased in each class
-    Change the supply (number per student per term)
-    Standard price
-    Day when new items are released
-Teacher can also create custom items
-
-School-wide leaderboard of most class currency
-Class-wide leaderboards of most class currency
-
-Allow a commission on specific classes to change the difficulty compared to other classes
-
-Printable version of goal report is showing (?) instead of target
-
-
-
-
+Students or whole classes can opt out of the price fluctuations.
+    The default is to be opted out.
 
 MORE DETAILED REPORT FOR STUDENTS TO SEE HER SCORES
 
@@ -120,27 +258,26 @@ At the end of a quiz, DC needs to offer students “I don’t want to use the re
 There's too much space with all he headers and stuff at the top.  Condense that.
 
 
+
 PRIORITIES FOR SUMMER 2018
-Bank Game Component
-    Students can put algebucks in their bank and earn interest
-Show the total stars in the scoresheet
+Star Market
 Quiz fixes (See section below)
+Teacher-graded quiz questions
 Allow updating the school_year for each seminar
 Materials site working
-Give student a total score that's based on percentile
+Give student a grade that's based on her percentile
 Consultant Stars
 Growth Stars
-Adjust my grading scale so that some students can work a whole objective ahead with each quiz
 Students can print/download a study guide for their next topic
 Check again to make sure pictures are working correctly
-Short response quiz questions
 Are the sponsors affected by the fact that classes allow multiple teachers?
 Don't put a student into a group if she already has keys for that topic
-Auto-include goal points into total stars
-Lunch Detention Record?
+    I think I already did this
 End-of-term Stuff
 Archive Classes
 Remediation objectives
+
+Auto-include goal points into total stars
 
 Look up whether my architecture will work better if change the model instead of using a column in the join table
     Seminar :has_many  :pretest_objectives
@@ -148,24 +285,6 @@ Look up whether my architecture will work better if change the model instead of 
     
     
 
-QUIZ FIXES
-Ace-ing a quiz is showing zero stars
-Going back to an unfinished quiz seemed to leave a riposte tally with a nil value. 
-If student has scored 100, then end-of-quiz message reads, "You have scored 100% on this objective.  There is no need to take the quiz again."
-Test that it updates the points if the student improves.
-But if student doesn't improve, it at least updates the updated_at column. (So the score can count on the student's current term grade)
-Can I re-name the "present" attribute of the seminar student?  That's already a ruby word.
-For the sake of performance, the method "set_pretests" should only be called when pretests are changed.  Right now, it is getting called when
-    anything about the seminar is changed.
-
-
-REFACTOR TEACHER VIEWING STUDENT
-I like the idea of having the teacher also visit the seminar_student view just like the student does.  Will be helpful to see all
-    the same info, such as goal, quizzes, requests, and stars.  But there should be an extra tab that teachers can access for
-    granting keys, and for editing name, password, etc.
-Tab in seminar_students for granting keys
-Student cannot access this tab
-What else needs to move from the edit_student_path to the seminar_students view?
     
 END-OF-TERM STUFF
 Give teachers an option to delete unfinished quizzes at the end of a term.
@@ -256,6 +375,9 @@ E-mail when a comment is made on a student's goal
 
 
 COLLECTION OF SMALL FIXES
+If student buys item that sold out after he loaded page, it appears to student that purchase is working.
+    This tutorial looks helpful for fixing the problem:
+    https://www.tutorialspoint.com/ruby-on-rails/rails-and-ajax.htm
 README for loading only specific jquery-ui components.
     https://github.com/jquery-ui-rails/jquery-ui-rails
 Dry up the four buttons shown in the bottom of seminar navigation
@@ -360,28 +482,6 @@ Test that absent students are featured in a separate section in DeskConsultants,
 INCLUDE GOALS IN SCORESHEET
 
 And in student's total scores
-
-
-
-
-
-
-
-
-MORE AJAX TESTS 
-
-Goal actions
-    Achievement
-    Teacher comments and student comment on checkpoints
-Attendance
-Score
-Teach Request
-Learn Request
-Pref Request
-
-Removing a student needs to be a poltergeist test if I'm going to check the confirm button appearing.
-    And the student being removed upon clicking a <p>
-
 
 
 

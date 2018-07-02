@@ -54,7 +54,7 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     preassign_maincount = preassign.mainassigns.count
     mainassign = @objective_40.mainassigns.first
     mainassign_precount = mainassign.preassigns.count
-    setup_scores
+    setup_scores_and_commodities
     oldScoreCount = ObjectiveStudent.count
     old_os_count = ObjectiveSeminar.count
     setup_seminars

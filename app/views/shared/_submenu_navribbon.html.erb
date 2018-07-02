@@ -3,7 +3,7 @@
     <table class="table-borderless">
         <tr>
             <% @submenu_tabs.each do |sub_tab| %>
-                <td class="reveal <%= "highlighted" if sub_tab[2] %>" submenu="<%= sub_tab[1] %>" id="navribbon_<%= sub_tab[1] %>">
+                <td class="reveal <%= "highlighted" if sub_tab[2] %>" submenu="<%= sub_tab[1] %>" id="navribbon_<%= sub_tab[1] %>" width="5%">
                     <%= sub_tab[0] %>
                 </td>
             <% end %>

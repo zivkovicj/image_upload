@@ -1,5 +1,5 @@
 class PicturesController < ApplicationController
-  before_action :set_picture, only: [:show, :edit, :update, :destroy]
+  
   before_action only: [:delete, :destroy] do
     correct_owner(Picture)
   end
@@ -33,7 +33,7 @@ class PicturesController < ApplicationController
   end
 
   def edit
-    set_picture
+    @picture = Picture.find(params[:id])
     @labels = labels_to_offer
   end
 
@@ -63,11 +63,6 @@ class PicturesController < ApplicationController
   end
 
   private
-  
-    # Use callbacks to share common setup or constraints between actions.
-    def set_picture
-      @picture = Picture.find(params[:id])
-    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def picture_params

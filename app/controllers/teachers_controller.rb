@@ -11,6 +11,7 @@ class TeachersController < ApplicationController
     @teacher = Teacher.new(teacher_params)
     if @teacher.save
       #@teacher.send_activation_email
+      create_star_commodity
       log_in @teacher
       flash[:success] = "Welcome to Mr.Z School!"
       redirect_to new_school_path(:teacher_id => @teacher.id)
@@ -25,6 +26,7 @@ class TeachersController < ApplicationController
     current_user.update(:current_class => nil)
     @school = @teacher.school
     check_if_term_needs_updated
+    create_commodities
     if @school.mentor == @teacher
       @unverified_teachers = @school.unverified_teachers
       @mentor = true
@@ -61,9 +63,25 @@ class TeachersController < ApplicationController
   end
   
   private
-  
+    
+    ## Always on top method
     def teacher_params
       params.require(:teacher).permit(:first_name, :last_name, :title, :email, :password, 
                                 :password_confirmation, :current_class, :user_number, :school_id)
+    end
+    
+    ## Other methods
+    def create_star_commodity
+      new_star = @teacher.commodities.new
+      new_star.name = "Star"
+      new_star.quantity = 25
+      new_star.current_price = 5
+      new_star.date_last_produced = Date.today
+      new_star.production_rate = 10
+      new_star.production_day = 0
+      image_src = File.join(Rails.root, "app/assets/images/stars/filled_star.png")
+      src_file = File.new(image_src)
+      new_star.image = src_file
+      new_star.save
     end
 end

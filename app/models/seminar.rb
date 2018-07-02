@@ -24,6 +24,7 @@ class Seminar < ApplicationRecord
   attribute :consultantThreshold, :integer, default: 7
   attribute :term, :integer, default: 0
   attribute :which_checkpoint, :integer, default: 0
+  attribute :default_buck_increment, :integer, default: 5
   
   include ModelMethods
   

@@ -9,7 +9,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         setup_users
         setup_schools
         setup_seminars
-        setup_scores
+        setup_scores_and_commodities
         setup_objectives
         
         @consultancy = @seminar.consultancies.create # Most tests rely on one consultancy already existing.
@@ -243,9 +243,9 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @students = setup_present_students
         @prof_list = setup_prof_list
         @prof_list.each_with_index do |stud, index|
-            assert stud.total_stars(@seminar) <= @prof_list[index+1].total_stars(@seminar) if index < @prof_list.count - 1
+            assert stud.quiz_stars_all_time(@seminar) <= @prof_list[index+1].quiz_stars_all_time(@seminar) if index < @prof_list.count - 1
         end
-        assert @prof_list.first.total_stars(@seminar) < @prof_list.last.total_stars(@seminar)
+        assert @prof_list.first.quiz_stars_all_time(@seminar) < @prof_list.last.quiz_stars_all_time(@seminar)
     end
     
     test "choose consultants" do
@@ -316,14 +316,17 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         test_all_consultants
     end
     
-    test "no consultants who already have keys" do
+    test "deprioritize consultants who already have keys" do
         method_setup
         top_choice_consultant = @rank_by_consulting[0]
         second_choice_consultant = @rank_by_consulting[1]
+        other_students = @seminar.students.select{|x| x != top_choice_consultant && x != second_choice_consultant}.take(3)
         
         top_choice_consultant.seminar_students.find_by(:seminar => @seminar).update(:teach_request => nil)
         @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
-        @objective_40.objective_students.update_all(:points => 0)
+        other_students.each do |stud|
+            stud.objective_students.find_by(:objective => @objective_40).update(:points => 0)
+        end
         @objective_40.objective_students.find_by(:user => top_choice_consultant).update(:points => 8, :pretest_keys => 2)
         @objective_40.objective_students.find_by(:user => second_choice_consultant).update(:points => 8)
         
@@ -441,17 +444,17 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     test "find placement" do
         contrived_setup
         
-        @c_stud_4.objective_students.create(:objective => @c_obj_1, :points => 9)
-        @c_stud_4.objective_students.create(:objective => @c_obj_2, :points => 2)
-        @c_stud_4.objective_students.create(:objective => @c_obj_3, :points => 2)
+        @c_stud_4.objective_students.find_by(:objective => @c_obj_1).update(:points => 9)
+        @c_stud_4.objective_students.find_by(:objective => @c_obj_2).update(:points => 2)
+        @c_stud_4.objective_students.find_by(:objective => @c_obj_3).update(:points => 2)
         
-        @c_stud_9.objective_students.create(:objective => @c_obj_1, :points => 2)
-        @c_stud_9.objective_students.create(:objective => @c_obj_2, :points => 2)
-        @c_stud_9.objective_students.create(:objective => @c_obj_3, :points => 2)
+        @c_stud_9.objective_students.find_by(:objective => @c_obj_1).update(:points => 2)
+        @c_stud_9.objective_students.find_by(:objective => @c_obj_2).update(:points => 2)
+        @c_stud_9.objective_students.find_by(:objective => @c_obj_3).update(:points => 2)
         
-        @c_stud_10.objective_students.create(:objective => @c_obj_1, :points => 9)
-        @c_stud_10.objective_students.create(:objective => @c_obj_2, :points => 9)
-        @c_stud_10.objective_students.create(:objective => @c_obj_3, :points => 2)
+        @c_stud_10.objective_students.find_by(:objective => @c_obj_1).update(:points => 9)
+        @c_stud_10.objective_students.find_by(:objective => @c_obj_2).update(:points => 9)
+        @c_stud_10.objective_students.find_by(:objective => @c_obj_3).update(:points => 2)
         
         t1 = @consultancy.teams.create(:consultant => @c_stud_1, :objective => @c_obj_1) # Student_4 scored too high on this objective
         t1.users << @c_stud_1
@@ -547,25 +550,25 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     test "new place for lone students" do
         contrived_setup
         
-        @c_stud_10.objective_students.create(:objective => @c_obj_1, :points => 2)
-        @c_stud_9.objective_students.create(:objective => @c_obj_1, :points => 9)
-        @c_stud_9.objective_students.create(:objective => @c_obj_2, :points => 9)
-        @c_stud_9.objective_students.create(:objective => @c_obj_3, :points => 9)
-        @c_stud_9.objective_students.create(:objective => @c_obj_4, :points => 6)
-        @c_stud_9.objective_students.create(:objective => @c_obj_5, :points => 5)
+        @c_stud_10.objective_students.find_by(:objective => @c_obj_1).update(:points => 2)
+        @c_stud_9.objective_students.find_by(:objective => @c_obj_1).update(:points => 9)
+        @c_stud_9.objective_students.find_by(:objective => @c_obj_2).update(:points => 9)
+        @c_stud_9.objective_students.find_by(:objective => @c_obj_3).update(:points => 9)
+        @c_stud_9.objective_students.find_by(:objective => @c_obj_4).update(:points => 6)
+        @c_stud_9.objective_students.find_by(:objective => @c_obj_5).update(:points => 5)
         @c_stud_9.seminar_students.find_by(:seminar => @seminar).update(:learn_request => @c_obj_4.id)
-        @c_stud_8.objective_students.create(:objective => @c_obj_1, :points => 9)
-        @c_stud_8.objective_students.create(:objective => @c_obj_2, :points => 9)
-        @c_stud_7.objective_students.create(:objective => @c_obj_1, :points => 7)
-        @c_stud_7.objective_students.create(:objective => @c_obj_2, :points => 7)
-        @c_stud_7.objective_students.create(:objective => @c_obj_3, :points => 7)
-        @c_stud_7.objective_students.create(:objective => @c_obj_4, :points => 7)
-        @c_stud_7.objective_students.create(:objective => @c_obj_5, :points => 0)
-        @c_stud_6.objective_students.create(:objective => @c_obj_1, :points => 7)
-        @c_stud_6.objective_students.create(:objective => @c_obj_2, :points => 7)
-        @c_stud_6.objective_students.create(:objective => @c_obj_3, :points => 7)
-        @c_stud_6.objective_students.create(:objective => @c_obj_4, :points => 7)
-        @c_stud_6.objective_students.create(:objective => @c_obj_5, :points => 7)
+        @c_stud_8.objective_students.find_by(:objective => @c_obj_1).update(:points => 9)
+        @c_stud_8.objective_students.find_by(:objective => @c_obj_2).update(:points => 9)
+        @c_stud_7.objective_students.find_by(:objective => @c_obj_1).update(:points => 7)
+        @c_stud_7.objective_students.find_by(:objective => @c_obj_2).update(:points => 7)
+        @c_stud_7.objective_students.find_by(:objective => @c_obj_3).update(:points => 7)
+        @c_stud_7.objective_students.find_by(:objective => @c_obj_4).update(:points => 7)
+        @c_stud_7.objective_students.find_by(:objective => @c_obj_5).update(:points => 0)
+        @c_stud_6.objective_students.find_by(:objective => @c_obj_1).update(:points => 7)
+        @c_stud_6.objective_students.find_by(:objective => @c_obj_2).update(:points => 7)
+        @c_stud_6.objective_students.find_by(:objective => @c_obj_3).update(:points => 7)
+        @c_stud_6.objective_students.find_by(:objective => @c_obj_4).update(:points => 7)
+        @c_stud_6.objective_students.find_by(:objective => @c_obj_5).update(:points => 7)
         
         method_setup
         

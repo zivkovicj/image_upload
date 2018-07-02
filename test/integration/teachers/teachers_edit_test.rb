@@ -15,7 +15,8 @@ class TeachersEditTest < ActionDispatch::IntegrationTest
         click_on("teacher_edit")
         assert_no_text("Teacher Since:")
         
-        teacher_editing_stuff(@teacher_1, "Save changes")
+        teacher_form_stuff("Save changes")
+        teacher_assertions(@teacher_1)
         
         assert_text("Teacher Since:")
     end
@@ -24,7 +25,8 @@ class TeachersEditTest < ActionDispatch::IntegrationTest
         capybara_login(@admin_user)
         click_on("Teachers Index")
         click_on(@teacher_1.name_with_title)
-        teacher_editing_stuff(@teacher_1, "Save changes")
+        teacher_form_stuff("Save changes")
+        teacher_assertions(@teacher_1)
         
         assert_text("Admin Control Page")
     end

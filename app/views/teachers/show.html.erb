@@ -102,6 +102,11 @@
           
 <%= button_to "All Pictures", pictures_path, class: "btn btn-lg btn-primary", :method => :get %>
 
+<%= button_to "New Item", new_commodity_path, class: "btn btn-lg btn-primary", :method => :get %>
+
+<%= button_to "All Items", commodities_path, class: "btn btn-lg btn-primary", :method => :get %>
+
+
 <% if @mentor %>
   <%= button_to "Edit #{@school.name}", edit_school_path(@school), class: "btn btn-lg btn-primary", :method => :get,
     :id => "edit_school_#{@school.id}" %>

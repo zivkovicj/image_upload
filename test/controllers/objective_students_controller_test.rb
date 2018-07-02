@@ -4,7 +4,7 @@ class ObjectiveStudentsControllerTest < ActionDispatch::IntegrationTest
   
   def setup
     @teacher_user = users(:archer)
-    setup_scores()
+    setup_scores_and_commodities()
   end
   
   test "integer points" do

@@ -14,12 +14,21 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         click_on("Create a New Class")
        
         fill_in "seminar[name]", with: "4th Period"
+        find("#school_year_1").select("7")
         click_on("Create This Class")
        
         assert_equal @old_seminar_count + 1, Seminar.count
         @seminar = Seminar.last
         assert_equal "4th Period",  @seminar.name
+        assert_equal 8, @seminar.school_year
         assert_equal 7, @seminar.consultantThreshold
+        assert_equal @teacher_1, @seminar.teachers.first
+        
+        sem_teach = SeminarTeacher.last
+        assert_equal @teacher_1, sem_teach.user
+        assert_equal @seminar, sem_teach.seminar
+        assert sem_teach.can_edit
+        assert sem_teach.accepted
         
         assert_selector('h2', "Edit #{@seminar.name}")
     end

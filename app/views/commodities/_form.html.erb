@@ -1,0 +1,28 @@
+<%= form_for(@commodity) do |f| %>
+  <% if @commodity.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@commodity.errors.count, "error") %> prohibited this commodity from being saved:</h2>
+
+      <ul>
+      <% @commodity.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  
+  <div class="field">
+    <%= f.label "add an image...." %>
+    <%= f.file_field :image %>
+  </div>
+  </br>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

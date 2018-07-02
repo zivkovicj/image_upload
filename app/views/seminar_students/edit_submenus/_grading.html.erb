@@ -1,5 +1,17 @@
-<div class="singleOption">
-    <h3>Total Stars Earned: <strong><%= @total_stars %></strong></h3>
+<div class="row">
+  <div class="singleOption col-sm-6">
+      <h3>Quiz Stars from This Term: <strong><%= @quiz_stars_this_term %></strong></h3>
+      <h3>Stars Bought This Term: <strong><%= @stars_used_toward_grade_this_term %></strong></h3>
+      <h3>Total Stars for This Term: <strong><%= @total_stars_this_term %></strong></h3>
+  </div>
+  
+  <div class="col-sm-1">
+  </div> 
+  
+  <div class="singleOption col-sm-5">
+    </br>
+    <h3>Quiz Stars from All Time: <strong><%= @quiz_stars_all_time %></strong></h3>
+  </div>
 </div>
 </br>
 

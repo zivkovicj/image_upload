@@ -10,7 +10,7 @@ module DeskConsultants
     def setup_prof_list()
         # The main array that is actually used is profList, which sorts students
         # by their total scores
-        @prof_list = @students.sort {|a,b| a.total_stars(@seminar) <=> b.total_stars(@seminar)}
+        @prof_list = @students.sort {|a,b| a.quiz_stars_all_time(@seminar) <=> b.quiz_stars_all_time(@seminar)}
     end
     
     # Rank students by their adjusted consultant points.
@@ -55,7 +55,7 @@ module DeskConsultants
         @rank_by_consulting.select{|x| need_placement(x)}
       end
     
-      def checkForFinalBreak
+      def check_for_final_break
         @consultancy.teams.count >= @consultantsNeeded
       end
       
@@ -79,7 +79,7 @@ module DeskConsultants
       
       # Then look at students in order of increasing consultant points
       consult_list_still_needed.each do |student|
-        return if checkForFinalBreak  # Needed in case some potential need to be skipped because they're not qualified
+        return if check_for_final_break  # Needed in case some potential need to be skipped because they're not qualified
         # See if student's consultant request will work.
         this_request = student.teach_request_in(@seminar)
         obj = Objective.find(this_request) if this_request
@@ -119,7 +119,7 @@ module DeskConsultants
     end
     
     def find_placement(student)
-      team = @consultancy.teams.detect{|x| x.has_room && student.score_on(x.objective) < @cThresh &&  student.check_if_ready(x.objective)}
+      team = @consultancy.teams.detect{|x| x.has_room && student.score_on(x.objective) < @cThresh && student.check_if_ready(x.objective)}
       team.users << student if team
       return team
     end

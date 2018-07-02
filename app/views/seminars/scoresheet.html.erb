@@ -27,7 +27,9 @@
     <table class="table-borderless scoreTable" id="scoreTable">
       <thead class="table-borderless">
         <th class="table-borderless">Student</th>
-        <th class="rotate table-borderless score_box"><div><span>Total Stars this Term</span></div></th>
+        <th class="rotate table-borderless score_box"><div><span>Quiz Stars</span></div></th>
+        <th class="rotate table-borderless score_box"><div><span>Stars Used Toward Grade</span></div></th>
+        <th class="rotate table-borderless score_box"><div><span>Total Stars</span></div></th>
         <% @objectives.each_with_index do |objective, index| %>
           <th class="rotate table-borderless score_box col_<%= index %>"><div><span>
             <%= link_to objective.short_name, edit_objective_path(objective) %>
@@ -36,9 +38,12 @@
       </thead>
       <tbody>
         <% @students.each_with_index do |student, indexx| %>
+          <% ss = student.seminar_students.find_by(:seminar => @seminar) %>
           <tr>
-            <td class="score_box row_<%= indexx %>"><h4><%= link_to student.last_name_first, edit_teaching_requests_student_url(student) %> </h4></td>
-            <td><%= student.stars_this_term(@seminar, @term) %></td>
+            <td class="score_box row_<%= indexx %>"><h4><%= link_to student.last_name_first, seminar_student_path(ss) %> </h4></td>
+            <td><%= quiz_stars = student.quiz_stars_this_term(@seminar, @term) %></td>
+            <td><%= bought_stars = student.stars_used_toward_grade_this_term(@seminar, @term) %></td>
+            <td><%= quiz_stars + bought_stars %></td>
             <% this_ss = student.seminar_students.find_by(:seminar_id => @seminar.id) %>
             <% @objectives.each_with_index do |objective, indexy| %>
               <% this_score = @scores.find_by(:objective => objective, :user => student) %>

@@ -9,7 +9,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         setup_seminars
         setup_objectives
         setup_questions
-        setup_scores
+        setup_scores_and_commodities
         setup_goals
         
         @test_os = @objective_10.objective_students.find_by(:user => @student_2)
@@ -28,6 +28,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     def try_quiz_twice(which_key)
+        @test_os.update(:teacher_granted_keys => 0, :pretest_keys => 0, :dc_keys => 0)
         @test_os.update(:"#{which_key}_keys" => 2)
         old_quiz_count = Quiz.count
         

@@ -1,0 +1,13 @@
+<% @commodities.each do |commode| %>
+      <tr>
+        <td><%#= render 'shared/delete_and_confirm', object: commode %></td>
+        <td><%= commode.name %></td>
+        <td><%= image_tag(commode.image_url(:thumb).to_s) %></td>
+        <td>
+          <%# if picture.user == current_user || current_user.type == "Admin" %>
+            <%= link_to 'Edit', edit_commodity_path(commode), :id => "edit_#{commode.id}" %>
+          <%# end %>
+        </td>
+        
+      </tr>
+    <% end %>

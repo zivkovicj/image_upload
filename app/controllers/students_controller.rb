@@ -22,10 +22,6 @@ class StudentsController < ApplicationController
         if @student.save
           one_saved = true
           @ss = @student.seminar_students.create(:seminar => @seminar)
-          #addToSeatingChart(@seminar, @student)
-          scores_for_new_student(@seminar, @student)
-          pretest_keys_for_new_student(@seminar, @student)
-          goals_for_new_student(@seminar, @student)
         end
       end
     end
@@ -69,7 +65,6 @@ class StudentsController < ApplicationController
     if current_user.type == "Teacher" && current_user.current_class
       @seminar = Seminar.find(current_user.current_class)
       @ss = SeminarStudent.find_by(:user => @student, :seminar => @seminar)
-      @new_ss = SeminarStudent.new
     end
   end
 

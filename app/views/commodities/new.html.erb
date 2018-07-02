@@ -1,0 +1,10 @@
+<% provide(:title, 'New Item') %>
+<% provide(:button_text, 'Create This Item') %>
+
+<% provide(:headerText, "New Item") %>
+<% provide(:headerPic, "picture.png") %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<%= render 'form', picture: @commodity %>

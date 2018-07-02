@@ -1,0 +1,7 @@
+<% if @this_teacher_can_edit %>
+    <%= @form.label "School Year" %>
+    <%= render 'shared/school_year_selection', :index => 1, :default_year => 8, :name => "seminar[school_year]" %>
+<% else %>
+    <h2>School Year</h2>
+    <h3><%= school_year_array[@seminar.school_year] %></h3>
+<% end %>

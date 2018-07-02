@@ -2,6 +2,7 @@ class School < ApplicationRecord
     belongs_to   :mentor,  :class_name => "Teacher"
     has_many  :teachers
     has_many  :students
+    has_many  :commodities
     
     include ModelMethods
     

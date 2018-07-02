@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180603155623) do
+ActiveRecord::Schema.define(version: 20180613160000) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -21,6 +21,33 @@ ActiveRecord::Schema.define(version: 20180603155623) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.integer  "sequence"
+  end
+
+  create_table "commodities", force: :cascade do |t|
+    t.string   "name"
+    t.string   "image"
+    t.integer  "school_id"
+    t.integer  "user_id"
+    t.integer  "production_rate"
+    t.integer  "current_price"
+    t.integer  "production_day"
+    t.integer  "quantity"
+    t.datetime "date_last_produced"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.index ["school_id"], name: "index_commodities_on_school_id"
+    t.index ["user_id"], name: "index_commodities_on_user_id"
+  end
+
+  create_table "commodity_students", force: :cascade do |t|
+    t.integer  "commodity_id"
+    t.integer  "user_id"
+    t.integer  "quantity"
+    t.integer  "avg_price_paid"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["commodity_id"], name: "index_commodity_students_on_commodity_id"
+    t.index ["user_id"], name: "index_commodity_students_on_user_id"
   end
 
   create_table "consultancies", force: :cascade do |t|
@@ -210,8 +237,11 @@ ActiveRecord::Schema.define(version: 20180603155623) do
     t.integer  "pref_request"
     t.boolean  "present"
     t.integer  "consulting_stars"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "bucks_owned"
+    t.integer  "gems_given_toward_reward"
+    t.text     "stars_used_toward_grade"
     t.index ["seminar_id", "user_id"], name: "index_seminar_students_on_seminar_id_and_user_id"
     t.index ["seminar_id"], name: "index_seminar_students_on_seminar_id"
     t.index ["user_id"], name: "index_seminar_students_on_user_id"
@@ -231,11 +261,14 @@ ActiveRecord::Schema.define(version: 20180603155623) do
     t.string   "name"
     t.integer  "user_id"
     t.integer  "consultantThreshold"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.integer  "which_checkpoint"
     t.text     "checkpoint_due_dates"
     t.integer  "school_year"
+    t.integer  "default_buck_increment"
+    t.string   "class_reward"
+    t.integer  "target_rate"
     t.index ["user_id"], name: "index_seminars_on_user_id"
   end
 

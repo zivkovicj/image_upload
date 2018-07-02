@@ -6,14 +6,20 @@ class SeminarsController < ApplicationController
     
     def new
         @seminar = Seminar.new
+        @this_teacher_can_edit = true
         update_current_class
     end
     
     def create
         @seminar = Seminar.new(seminar_params)
         if @seminar.save
-            flash[:success] = "Class Created"
+            @creating_teacher = Teacher.find(params[:seminar][:teacher_id])
+            @seminar.teachers << @creating_teacher
+            
+            edit_permission_for_creating_teacher
             update_current_class
+            
+            flash[:success] = "Class Created"
             redirect_to edit_seminar_path(@seminar)
         else
             render 'seminars/new'
@@ -97,12 +103,16 @@ class SeminarsController < ApplicationController
     
     private 
         def seminar_params
-            params.require(:seminar).permit(:name, :user_id, :consultantThreshold, objective_ids: [])
+            params.require(:seminar).permit(:name, :consultantThreshold, :default_buck_increment, :school_year, objective_ids: [], teacher_ids: [])
         end
         
         def correct_user
             @seminar = Seminar.find(params[:id])
             redirect_to(login_url) unless current_user && (current_user.type == "Admin" || current_user.can_edit_this_seminar(@seminar))
+        end
+        
+        def edit_permission_for_creating_teacher
+            @seminar.seminar_teachers.find_by(:user => @creating_teacher).update(:can_edit => true, :accepted => true) 
         end
         
         def set_checkpoint_due_dates

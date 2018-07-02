@@ -11,7 +11,7 @@ class Student < User
     has_secure_password :validations => false, :allow_nil => true
 
     
-    def stars_this_term(seminar, term)
+    def quiz_stars_this_term(seminar, term)
         temp_stars = 0
         self.objective_students.where(:objective => seminar.objectives).each do |obj_stud|
             this_score = obj_stud.current_scores[term]
@@ -20,7 +20,11 @@ class Student < User
         return temp_stars
     end
     
-    def total_stars(seminar)
+    def stars_used_toward_grade_this_term(seminar, term)
+        self.seminar_students.find_by(:seminar => seminar).stars_used_toward_grade[term]
+    end
+    
+    def quiz_stars_all_time(seminar)
         objective_students.where(:objective => seminar.objectives).sum(:points)
     end
     

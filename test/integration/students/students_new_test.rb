@@ -13,10 +13,12 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         should_score_record = [[nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil]]
         assert_equal 1, @teacher_1.verified
         assert_not_nil @teacher_1.school
+        assert @teacher_1.commodities.count > 0
+        assignment_count = @seminar.objectives.count
         old_ss_count = SeminarStudent.count
         old_score_count = ObjectiveStudent.count
         old_goal_student_count = @seminar.goal_students.count
-        assignment_count = @seminar.objectives.count
+        old_commidity_student_count = CommodityStudent.count
         
         go_to_create_student_view
         
@@ -26,7 +28,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         fill_in ("first_name_2"), :with => "Other_kid"
         fill_in ("last_name_2"), :with => "Burgaboot"
         fill_in ("user_number_2"), :with => "5"
-        select("7", :from => 'school_year_2') #Data value of 7 corresponds with 8th grade.
+        find("#school_year_2").select("7")
         
         fill_in ("first_name_3"), :with => "Ed"
         fill_in ("last_name_3"), :with => ""
@@ -34,7 +36,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         fill_in ("first_name_5"), :with => "Kid"
         fill_in ("last_name_5"), :with => "with Password"
         fill_in ("password_5"), :with => "Bean Sprouts"
-        select("P", :from => 'school_year_5')
+        find("#school_year_5").select("P")
         
         fill_in ("first_name_6"), :with => "Chick"
         fill_in ("last_name_6"), :with => "with Username"
@@ -50,6 +52,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_equal old_score_count + (assignment_count*5), ObjectiveStudent.count
         assert_equal old_ss_count + 5, SeminarStudent.count
         assert_equal old_goal_student_count + 20, @seminar.goal_students.count
+        assert_equal old_commidity_student_count + 5, CommodityStudent.count
         @gs = @seminar.goal_students.order(:created_at).last
         assert_equal 4, @gs.checkpoints.count
         
@@ -61,13 +64,15 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_equal "", first_new_student.email
         assert_equal first_new_student.created_at, first_new_student.last_login
         assert_equal @teacher_1.school, first_new_student.school
+        
         @new_ss = SeminarStudent.find_by(:seminar_id => @seminar.id, :user => first_new_student)
         assert_equal 1, @new_ss.pref_request
         assert_equal true, @new_ss.present
+        assert_equal [0,0,0,0], @new_ss.stars_used_toward_grade
+        
         @pretest_obj = @seminar.objective_seminars.where(:pretest => 1).last.objective
         assert_not_nil @pretest_obj
         @new_os = first_new_student.objective_students.find_by(:objective => @pretest_obj)
-        assert_equal 2, @new_os.pretest_keys
         newest_obj_stud = first_new_student.objective_students.last
         assert_equal [nil,nil,nil,nil], newest_obj_stud.current_scores
         assert_equal should_score_record, newest_obj_stud.score_record
