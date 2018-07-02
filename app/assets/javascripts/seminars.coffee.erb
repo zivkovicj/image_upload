@@ -62,7 +62,7 @@ ready = ->
                         req_id: req_id
                         
     if $('.add_bucks').length > 0
-        console.log("Beef")
+        alert("Beef")
         url = ""
         seminar_student_id = 0
         com_id = 0
@@ -107,9 +107,9 @@ ready = ->
                 amount = parseInt($(this).attr('amount'))
             new_cash = current_cash + amount
             $('#current_cash').text(new_cash)
-            console.log(url)
-            console.log(amount)
-            console.log(new_cash)
+            alert(url)
+            alert(amount)
+            alert(new_cash)
             
             $.ajax
                 type: "PUT",
