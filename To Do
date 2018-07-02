@@ -147,6 +147,8 @@ Migrate
 
 QUIZ FIXES
 
+Adding bucks isn't working in production
+In development, adding custom bucks seems to be doubling the display
 Printable version of goal report is showing (?) instead of target
 ce-ing a quiz is showing zero stars
 Going back to an unfinished quiz seemed to leave a riposte tally with a nil value. 

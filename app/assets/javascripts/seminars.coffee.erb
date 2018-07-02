@@ -83,10 +83,6 @@ ready = ->
             $('#quantity_'+com_id).text(new_items)
             
         button_displays = ->
-            console.log(new_cash)
-            console.log(price)
-            console.log(new_com_quant)
-            console.log(new_items)
             if new_cash >= price && new_com_quant > 0
                 $('#buy_button_'+com_id).removeClass('currently_hidden')
             else
@@ -109,6 +105,10 @@ ready = ->
                 amount = parseInt($(this).attr('amount'))
             new_cash = current_cash + amount
             $('#current_cash').text(new_cash)
+            console.log(url)
+            console.log(amount)
+            console.log(new_cash)
+            
             $.ajax
                 type: "PUT",
                 url: url,
