@@ -88,18 +88,17 @@ ready = ->
                         pref_request: req_id
                         
     if $('.add_bucks').length > 0
-        alert("Beefy!")
         $('.add_bucks').on "click", ->
             $('.teachReqOption').removeClass("highSingOpt").addClass("lowSingOpt")
-            current_stash = $('#current_stash').text()
+            current_cash = $('#current_cash').text()
             seminar_student_id = $(this).attr('seminar_student_id')
             if $(this).attr('amount') == "X"
                 amount = $('#buck_spinbox').val()
             else  
                 amount = $(this).attr('amount')
             url = '/seminar_students/'+seminar_student_id
-            new_stash = parseInt(current_stash) + parseInt(amount)
-            $('#current_stash').text(new_stash)
+            new_stash = parseInt(current_cash) + parseInt(amount)
+            $('#current_cash').text(new_stash)
             $.ajax
                 type: "PUT",
                 url: url,
