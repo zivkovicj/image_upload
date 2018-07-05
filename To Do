@@ -150,7 +150,7 @@ QUIZ FIXES
 Adding bucks isn't working in production
 In development, adding custom bucks seems to be doubling the display
 Printable version of goal report is showing (?) instead of target
-ce-ing a quiz is showing zero stars
+Ace-ing a quiz is showing zero stars
 Going back to an unfinished quiz seemed to leave a riposte tally with a nil value. 
 If student has scored 100, then end-of-quiz message reads, "You have scored 100% on this objective.  There is no need to take the quiz again."
 Test that it updates the points if the student improves.
