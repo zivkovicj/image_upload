@@ -5,7 +5,7 @@
 
 
 ready = ->
-    $('.chekkity').text($('.add_bucks').length)
+    $('.chekkity').text("Sprite")
     
     $("input:text").focus ->
         $(this).select()
@@ -90,10 +90,8 @@ ready = ->
                         pref_request: req_id
                         
     if $('.add_bucks').length > 0
-        
         $('.add_bucks').on "click", ->
             $('.check_2').text("pressed")
-            $('.teachReqOption').removeClass("highSingOpt").addClass("lowSingOpt")
             current_cash = $('#current_cash').text()
             seminar_student_id = $(this).attr('seminar_student_id')
             if $(this).attr('amount') == "X"
