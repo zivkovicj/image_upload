@@ -88,8 +88,9 @@ ready = ->
                         pref_request: req_id
                         
     if $('.add_bucks').length > 0
+        alert("Beef")
         $('.add_bucks').on "click", ->
-            console.log("add bucks")
+            alert("Bucks clicked")
             $('.teachReqOption').removeClass("highSingOpt").addClass("lowSingOpt")
             current_cash = $('#current_cash').text()
             seminar_student_id = $(this).attr('seminar_student_id')
@@ -258,8 +259,9 @@ ready = ->
    
    
     if $('.clickySeat').length > 0
+        alert("Whut")
         $('.clickySeat').on "click", ->
-            console.log("click seat")
+            alert("Seat Clicked")
             this_present_marking = $(this).find(".presentTag")
             seminar_student_id = $(this).attr('id').replace('attendance_div_','')
             url = '/seminar_students/'+seminar_student_id
