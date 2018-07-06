@@ -5,6 +5,10 @@
 
 
 ready = ->
+    set_sem_stud_url = (th) ->
+        seminar_student_id = $(th).attr('seminar_student_id')
+        url = '/seminar_students/'+seminar_student_id
+    
     $("input:text").focus ->
         $(this).select()
         
@@ -88,6 +92,39 @@ ready = ->
                         pref_request: req_id
                         
     if $('.add_bucks').length > 0
+        seminar_student_id = 0
+        com_id = 0
+        current_cash = 0
+        multiplier = 0
+        new_cash = 0
+        price = 0
+        new_com_quant = 0
+        new_items = 0
+        url = ""
+        
+        set_market_attributes = (th) ->
+            com_id = $(th).attr('commodity_student_id')
+            current_cash = parseInt($('#current_cash').text())
+            multiplier = parseInt($(th).attr('multiplier'))
+            
+        item_stash_display = (com_id, multiplier) ->
+            current_items = parseInt($('#quantity_'+com_id).text())
+            new_items = current_items + multiplier 
+            $('#quantity_'+com_id).text(new_items)
+            
+        button_displays = ->
+            if new_cash >= price && new_com_quant > 0
+                $('#buy_button_'+com_id).removeClass('currently_hidden')
+            else
+                $('#buy_button_'+com_id).addClass('currently_hidden')
+            
+            if new_items > 0
+                $('#sell_button_'+com_id).removeClass('currently_hidden')
+                $('#use_button_'+com_id).removeClass('currently_hidden')
+            else
+                $('#sell_button_'+com_id).addClass('currently_hidden')
+                $('#use_button_'+com_id).addClass('currently_hidden')
+    
         $('.add_bucks').on "click", ->
             $('.check_2').text("pressed")
             current_cash = $('#current_cash').text()
@@ -105,6 +142,46 @@ ready = ->
                 dataType: "json"
                 data:
                     bucks_to_add: amount
+                    
+        $('.buy_commode').on "click", ->
+            set_sem_stud_url($(this))
+            set_market_attributes($(this))
+            price = parseInt($('#price_'+com_id).text())
+            new_cash = current_cash - (price * multiplier)
+            $('#current_cash').text(new_cash)
+            
+            commodity_quantity = parseInt($('#commodity_quantity_'+com_id).text())
+            new_com_quant = commodity_quantity - multiplier
+            $('#commodity_quantity_'+com_id).text(new_com_quant)
+        
+            item_stash_display(com_id, multiplier)
+            button_displays()
+            
+            $.ajax
+                type: "PUT",
+                url: url,
+                dataType: "json"
+                data:
+                    commodity_student_id: com_id
+                    multiplier: multiplier
+                        
+        $('.use_commode').on "click", ->
+            set_sem_stud_url($(this))
+            set_market_attributes($(this))
+            item_stash_display(com_id, multiplier)
+            new_com_quant = 1
+            button_displays()
+            
+            used_so_far = parseInt($('#used_toward_grade').text())
+            $('#used_toward_grade').text(used_so_far + 1)
+            
+            $.ajax
+                type: "PUT",
+                url: url,
+                dataType: "json"
+                data:
+                    commodity_student_id: com_id
+                    use: 1
     
     if $('.achievement_change').length > 0
         $('.achievement_change').on "change", ->
