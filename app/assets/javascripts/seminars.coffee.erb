@@ -126,7 +126,6 @@ ready = ->
                 $('#use_button_'+com_id).addClass('currently_hidden')
     
         $('.add_bucks').on "click", ->
-            $('.check_2').text("pressed")
             current_cash = $('#current_cash').text()
             seminar_student_id = $(this).attr('seminar_student_id')
             if $(this).attr('amount') == "X"
