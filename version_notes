@@ -10,6 +10,96 @@ Between each update, manually test:
 
 
 
+
+
+2.64 STAR MARKET
+
+Commodity model
+    name
+    image
+    school
+    user
+    production_rate
+    current_price
+    production_day
+    quantity
+    date_last_produced
+CommodityStudent model
+    quantity (owned)
+    avg_price_paid
+CommoditySchool
+    production (will multiply by number of students)
+    current_price
+    production_day
+    created_this_week
+SeminarStudent (update)
+    bucks_owned
+    gems_given_toward_reward
+    stars_used_toward_grade (array with four spots for four terms)
+Seminar (update)
+    default_buck_increment
+    class_reward (name of the reward)
+    target_rate (gems per student)
+
+Teacher needs to be able to edit the class that she just created.
+Update teacher viewing student to resemble the student's own view
+    One of the submenus is star market
+    Edit/Move Student needs to be moved to this window
+    edit_teaching requests action and view can be deleted
+    Then I can probably move the teaching_requests and all_student_scores views out of shared and into the seminar_student folder
+    Test teacher updating all aspects of show page
+    Need to be able to get back to scoresheet
+Teacher can give bucks to students.  Increases bucks_owned in SeminarStudent
+Should be ajax, not a full http call
+Teacher can set default increment for each seminar.
+Students bucks increase by default increment.
+Also allow for custom amount
+Create new stars when weekday is past production day AND days since last production > 1
+OR if days since last production > 7
+    (Release the stars all at once, to make more interesting fluctuations)
+Teacher can "buy and keep" stars for student
+Submenu shows supply and current price
+And number that student currently owns
+Teacher can "buy and use" stars for student
+Total stars method includes stars that have been applied
+Don't show the buttons for adding bucks if student is viewing the page
+Don't show buy button if student doesn't have enough money
+Don't show sell button if student owns zero copies
+Don't show buy button if school supply is out
+Erase buy button if student cash goes below need
+    Or if school supply hits zero
+Erase sell button if student supply hits zero
+Buy button should appear if student gains enough money
+Sell button should appear if student gains a copy
+Prevent sell in back-end if commodity quantity runs out
+    Think about multiple students buying at the same time
+Include the image for each item
+Create stars commodity when new teachers are created
+Creating a new class needs to assign that class to the teacher
+Create commodity_students for new students
+Create one for transferred student if it doesn't already exist 
+Change the school_year of a seminar when creating
+    And when editing
+Scoresheet grade page shows quiz stars and total stars (including applied stars)
+Student star page shows quiz stars and total stars
+    Total quiz stars for all time includes pretest stars
+Student can see account values
+Dry up the javascript dealing with requests
+Dry up view for requests
+
+Migrate
+    SeminarStudents
+        bucks_owned to 0
+        gems_given_toward_reward to 0
+        stars_used_toward_grade to [0,0,0,0]
+    Seminar
+        default_buck_increment to 5
+        class_reward to "Not yet named"
+        target_rate to 5
+    Existing SeminarTeachers need edit permission
+
+
+
 2.63 TOTAL STARS FOR CURRENT TERM
 E-mail MaryAnn Moore?
 Students need a column to track their school year.

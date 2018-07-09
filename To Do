@@ -46,109 +46,16 @@ Tried to find out why some students are occasionally being left alone in a group
 Keep eyes open for that problem. 
 
 Manually test:
-    The appearance and disappearance of keys when teaher grants them.
+    The appearance and disappearance of keys when teacher grants them.
 
 
 
-2.64 STAR MARKET
+
+2.65 QUIZ FIXES
 
 Contact Teachers who have signed up
 
-Commodity model
-    name
-    image
-    school
-    user
-    production_rate
-    current_price
-    production_day
-    quantity
-    date_last_produced
-CommodityStudent model
-    quantity (owned)
-    avg_price_paid
-CommoditySchool
-    production (will multiply by number of students)
-    current_price
-    production_day
-    created_this_week
-SeminarStudent (update)
-    bucks_owned
-    gems_given_toward_reward
-    stars_used_toward_grade (array with four spots for four terms)
-Seminar (update)
-    default_buck_increment
-    class_reward (name of the reward)
-    target_rate (gems per student)
 
-V Teacher needs to be able to edit the class that she just created.
-V Update teacher viewing student to resemble the student's own view
-    V One of the submenus is star market
-    V Edit/Move Student needs to be moved to this window
-    V edit_teaching requests action and view can be deleted
-    V Then I can probably move the teaching_requests and all_student_scores views out of shared and into the seminar_student folder
-    V Test teacher updating all aspects of show page
-    V Need to be able to get back to scoresheet
-V Teacher can give bucks to students.  Increases bucks_owned in SeminarStudent
-V Should be ajax, not a full http call
-V Teacher can set default increment for each seminar.
-V Students bucks increase by default increment.
-V Also allow for custom amount
-
-V Create new stars when weekday is past production day AND days since last production > 1
-V OR if days since last production > 7
-    (Release the stars all at once, to make more interesting fluctuations)
-
-V Teacher can "buy and keep" stars for student
-V Submenu shows supply and current price
-V And number that student currently owns
-V Teacher can "buy and use" stars for student
-V Total stars method includes stars that have been applied
-V Don't show the buttons for adding bucks if student is viewing the page
-V Don't show buy button if student doesn't have enough money
-V Don't show sell button if student owns zero copies
-V Don't show buy button if school supply is out
-V Erase buy button if student cash goes below need
-    V Or if school supply hits zero
-V Erase sell button if student supply hits zero
-V Buy button should appear if student gains enough money
-V Sell button should appear if student gains a copy
-V Prevent sell in back-end if commodity quantity runs out
-    V Think about multiple students buying at the same time
-V Include the image for each item
-
-V Create stars commodity when new teachers are created
-V Creating a new class needs to assign that class to the teacher
-V Create commodity_students for new students
-V Create one for transferred student if it doesn't already exist 
-V Change the school_year of a seminar when creating
-    V And when editing
-V Scoresheet grade page shows quiz stars and total stars (including applied stars)
-V Student star page shows quiz stars and total stars
-    V Total quiz stars for all time includes pretest stars
-
-V Student can see account values
-V Dry up the javascript dealing with requests
-V Dry up view for requests
-
-
-Migrate
-    SeminarStudents
-        bucks_owned to 0
-        gems_given_toward_reward to 0
-        stars_used_toward_grade to [0,0,0,0]
-    Seminar
-        default_buck_increment to 5
-        class_reward to "Not yet named"
-        target_rate to 5
-    Existing SeminarTeachers need edit permission
-
-
-
-QUIZ FIXES
-
-Adding bucks isn't working in production
-In development, adding custom bucks seems to be doubling the display
 Printable version of goal report is showing (?) instead of target
 Ace-ing a quiz is showing zero stars
 Going back to an unfinished quiz seemed to leave a riposte tally with a nil value. 
@@ -185,6 +92,12 @@ Teachers have limited amount of currency to give
 Teacher can give bucks to whole class.
     Screen that allows unchecking boxes from certain students
     Custom controller action that loops through whole class
+
+
+
+MARKET JS BUGS
+Adding bucks sometimes adds double or even quad.
+Seems to stop doing that after a refresh
 
 TEACHER-GRADED QUESTIONS
 

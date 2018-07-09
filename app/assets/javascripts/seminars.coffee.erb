@@ -45,51 +45,21 @@ ready = ->
             if timesClicked == 4
                 $('#add-more-button').fadeOut()
             
-    if $('.teachReqOption').length > 0
-        $('.teachReqOption').on "click", ->
-            $('.teachReqOption').removeClass("highSingOpt").addClass("lowSingOpt")
+    if $('.req_option').length > 0
+        $('.req_option').on "click", ->
+            req_type = $(this).attr("req_type")
+            $('.req_option_'+req_type).removeClass("highSingOpt").addClass("lowSingOpt")
             $(this).addClass("highSingOpt")
             req_id = $(this).attr('req_id')
-            seminar_student_id = $(this).attr('seminar_student_id')
-            url = '/seminar_students/'+seminar_student_id
+            set_sem_stud_url($(this))
             $.ajax
                 type: "PUT",
                 url: url,
                 dataType: "json"
                 data:
                     seminar_student:
-                        teach_request: req_id
-                    
-    if $('.learnReqOption').length > 0
-        $('.learnReqOption').on "click", ->
-            $('.learnReqOption').removeClass("highSingOpt").addClass("lowSingOpt")
-            $(this).addClass("highSingOpt")
-            req_id = $(this).attr('req_id')
-            seminar_student_id = $(this).attr('seminar_student_id')
-            url = '/seminar_students/'+seminar_student_id
-            $.ajax
-                type: "PUT",
-                url: url,
-                dataType: "json"
-                data:
-                    seminar_student:
-                        learn_request: req_id
-                        
-                    
-    if $('.prefReqOption').length > 0
-        $('.prefReqOption').on "click", ->
-            $('.prefReqOption').removeClass("highSingOpt").addClass("lowSingOpt")
-            $(this).addClass("highSingOpt")
-            req_id = $(this).attr('req_id')
-            seminar_student_id = $(this).attr('seminar_student_id')
-            url = '/seminar_students/'+seminar_student_id
-            $.ajax
-                type: "PUT",
-                url: url,
-                dataType: "json"
-                data:
-                    seminar_student:
-                        pref_request: req_id
+                        req_type: req_type
+                        req_id: req_id     
                         
     if $('.add_bucks').length > 0
         seminar_student_id = 0
@@ -310,7 +280,6 @@ ready = ->
             out: (event, ui) ->
                 $(this).removeClass("my-placeholder")
             
-                
         $('.supernaut').droppable
             drop: (event, ui) ->
                 $("#dashOutline").hide()
@@ -330,7 +299,6 @@ ready = ->
             $('.to_unhide').fadeOut()
             $('.to_unhide').addClass("currently_hidden")
             $(this).text($(this).attr("second_text"))
-   
    
     if $('.clickySeat').length > 0
         alert("Whut")
