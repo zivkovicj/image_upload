@@ -64,46 +64,6 @@ V Quiz score display should show added stars for this term, along with highest s
 
 
 
-Unused parameters passed to Capybara::Queries::SelectorQuery : ["Edit Macho Taco Period"]
-ERROR["test_more_invites_to_decline", SeminarsInviteTeacherTest, 325.3422263627872]
- test_more_invites_to_decline#SeminarsInviteTeacherTest (325.34s)
-Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find visible css "h2" with text "Accept Invitations" but there were no matches
-            test/integration/seminars/seminars_invite_teacher_test.rb:109:in `block in <class:SeminarsInviteTeacherTest>'
-
-ERROR["test_more_invites_to_accept", SeminarsInviteTeacherTest, 329.38329700473696]
- test_more_invites_to_accept#SeminarsInviteTeacherTest (329.38s)
-Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find visible css "h2" with text "Accept Invitations" but there were no matches
-            test/integration/seminars/seminars_invite_teacher_test.rb:91:in `block in <class:SeminarsInviteTeacherTest>'
-
-Unused parameters passed to Capybara::Queries::SelectorQuery : ["invite_teacher_328962456"]
-Unused parameters passed to Capybara::Queries::SelectorQuery : ["stop_edit_privileges_328962456"]
-ERROR["test_delete_picture", PicturesIndexTest, 419.22041131788865]
- test_delete_picture#PicturesIndexTest (419.22s)
-Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
-        excon.error.response
-          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20190118T010444Z</RequestTime><ServerTime>2018-07-13T00:41:35Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>87D72926065CDAC5</RequestId><HostId>IJeagPLCt5zNFandRsJicswQNbj/o0CylGmB0N/j9KHj8RbeagMxP0yEaJFQ5MEID1+D2lYSYP4=</HostId></Error>"
-          :cookies       => [
-          ]
-          :headers       => {
-            "Content-Type"     => "application/xml"
-            "Date"             => "Fri, 13 Jul 2018 00:41:33 GMT"
-            "Server"           => "AmazonS3"
-            "x-amz-id-2"       => "IJeagPLCt5zNFandRsJicswQNbj/o0CylGmB0N/j9KHj8RbeagMxP0yEaJFQ5MEID1+D2lYSYP4="
-            "x-amz-request-id" => "87D72926065CDAC5"
-          }
-          :host          => "mrzschoolbucket.s3.amazonaws.com"
-          :local_address => "172.17.0.5"
-          :local_port    => 47200
-          :path          => "/uploads/picture/image/340665903/cheese_logo.jpg"
-          :port          => 443
-          :reason_phrase => "Forbidden"
-          :remote_ip     => "54.231.72.203"
-          :status        => 403
-          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
-        
-            app/controllers/pictures_controller.rb:59:in `destroy'
-            test/integration/pictures/pictures_index_test.rb:50:in `block in <class:PicturesIndexTest>'
-
 ERROR["test_cannot_visit_other_teacher_edit_page", TeachersEditTest, 429.9395553157665]
  test_cannot_visit_other_teacher_edit_page#TeachersEditTest (429.94s)
 Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find visible css "h2" with text "Log in" but there were no matches
