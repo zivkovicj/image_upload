@@ -3,12 +3,14 @@
 <div class="singleOption container">
     <div class="row">
         <div class="col-sm-4">
-            <h2>This Score: <%= @new_total %> %
-            </br><strong><%= pluralize(@these_stars, 'Star') %></stong></h2>
+            <h2>This Score: <%= @quiz.total_score %> %
+            </br><strong><%= pluralize(@quiz.stars_from_score, 'Star') %></stong></h2>
             
             </br>
-            <h5>Your previous score<br>
-            <%= pluralize(@old_stars, 'Star') %></h5>
+            <h5>Previous score this term<br>
+            <%= pluralize(@quiz.old_stars, 'Star') %></h5>
+            <h5>Highest score ever</h5>
+            <%= pluralize(@this_os.points, 'Star') %></h5>
         </div>
         
         <div class="col-sm-6">

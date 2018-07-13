@@ -46,7 +46,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         assert_equal "I will be kind (?) % of the time.", @check_3.action
         assert_equal "I will be kind 60 % of the time.", @check_3.statement
         
-        assert_selector('h1', :text => "Choose your Checkpoints")
+        assert_selector('h2', :text => "Choose your Checkpoints")
     
         select("Eat something kind", :from => "syl[#{@check_0.id}][action]")
         select("I will be kind 60 % of the time so far.", :from => "syl[#{@check_1.id}][action]")
@@ -70,7 +70,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         click_on("Edit This Goal")
         click_on("Save This Goal")
         
-        assert_selector('h1', :text => "Choose your Checkpoints")
+        assert_selector('h2', :text => "Choose your Checkpoints")
         @this_gs.reload
         assert_equal Goal.first, @this_gs.goal
     end

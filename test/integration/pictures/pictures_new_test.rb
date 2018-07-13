@@ -42,7 +42,7 @@ class PicturesNewTest < ActionDispatch::IntegrationTest
         assert @teacher_1, @new_pic.user
         #assert File.exists?(@new_pic.reload.image.file.path)
         
-        assert_no_selector('h1', :text => "New Picture")
+        assert_no_selector('h2', :text => "New Picture")
         assert_no_selector('div', :id => "error_explanation")
         assert_text("Teacher Since:")
     end
@@ -62,7 +62,7 @@ class PicturesNewTest < ActionDispatch::IntegrationTest
         fill_in "picture_name", with: "Apple"
         click_on ("Create Picture")
         
-        assert_selector('h1', :text => "New Picture")
+        assert_selector('h2', :text => "New Picture")
         assert_selector('div', :id => "error_explanation")
         assert_selector('li', :text => "Image can't be blank")
         assert_no_text("Teacher Since:")

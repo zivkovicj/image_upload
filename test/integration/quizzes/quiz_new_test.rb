@@ -38,10 +38,12 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         choose("choice_bubble_#{incorrect_answer}")
     end
     
-    
     test "setup quiz" do
         old_quiz_count = Quiz.count
         old_riposte_count = Riposte.count
+        score_box = [0,0,0,0]
+        score_box[@seminar.term_for_seminar] = 2
+        ObjectiveStudent.find_by(:user => @student_2, :objective => @objective_10).update(:current_scores => score_box)
         
         go_to_first_period
         begin_quiz
@@ -49,6 +51,8 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         assert_equal @new_quiz.user, @student_2
         assert_equal @new_quiz.objective, @objective_10
         assert_equal old_quiz_count + 1, Quiz.count
+        assert_equal 2, @new_quiz.old_stars
+        
         new_riposte_count = @new_quiz.ripostes.count
         assert new_riposte_count > 0
         assert_equal old_riposte_count + new_riposte_count, Riposte.count
@@ -107,7 +111,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         click_on "Next Question"
         
         @new_quiz = Quiz.last
-        assert_equal 6, @new_quiz.total_score
+        assert_equal 57, @new_quiz.total_score
         assert @student_2.quizzes.include?(@new_quiz)
     end
     
@@ -124,7 +128,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         end
         
         @new_quiz = Quiz.last
-        assert_equal 10, @new_quiz.total_score
+        assert_equal 100, @new_quiz.total_score
         @test_obj_stud.reload
         assert_equal 0, @test_obj_stud.teacher_granted_keys
         assert_equal 0, @test_obj_stud.dc_keys

@@ -43,7 +43,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     test "back button" do
         capybara_login(@teacher_1)
         click_on("All Questions")
-        assert_selector("h1", :text => "All Questions")
+        assert_selector("h2", :text => "All Questions")
         assert_not_on_teacher_page
         click_on("back_button")
         assert_on_teacher_page

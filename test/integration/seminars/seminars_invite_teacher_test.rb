@@ -44,7 +44,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         # Can't invite unverified teacher
         assert_no_selector('a', :id => "invite_teacher_#{@unverified_teacher.id}")
         
-        assert_selector('h1', :text => "Edit #{@seminar.name}")
+        assert_selector('h2', :text => "Edit #{@seminar.name}")
         
         assert_equal @old_st_count + 1, SeminarTeacher.count
         assert_not @st_2.can_edit
@@ -88,12 +88,12 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         click_on("accept_#{@st_2.id}")
         
         assert_no_text("Teacher Since:")
-        assert_selector("h1", :text => "Accept Invitations")
+        assert_selector("h2", :text => "Accept Invitations")
         
         click_on("accept_#{@st_3.id}")
         
         assert_text("Teacher Since:")
-        assert_no_selector("h1", :text => "Accept Invitations")
+        assert_no_selector("h2", :text => "Accept Invitations")
     end
     
     test "more invites to decline" do
@@ -106,12 +106,12 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         click_on("decline_#{@st_2.id}")
         
         assert_no_text("Teacher Since:")
-        assert_selector("h1", :text => "Accept Invitations")
+        assert_selector("h2", :text => "Accept Invitations")
         
         click_on("decline_#{@st_3.id}")
         
         assert_text("Teacher Since:")
-        assert_no_selector("h1", :text => "Accept Invitations")
+        assert_no_selector("h2", :text => "Accept Invitations")
     end
     
     test "cannot invite without edit privileges" do
@@ -136,7 +136,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         find("#navribbon_shared_teachers").click
         click_on("give_edit_privileges_#{@other_teacher.id}")
         
-        assert_selector('h1', :text => "Edit #{@seminar.name}")
+        assert_selector('h2', :text => "Edit #{@seminar.name}")
         
         @st_2.reload
         assert @st_2.can_edit
@@ -144,7 +144,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         find("#navribbon_shared_teachers").click
         click_on("stop_edit_privileges_#{@other_teacher.id}")
         
-        assert_selector('h1', :text => "Edit #{@seminar.name}")
+        assert_selector('h2', :text => "Edit #{@seminar.name}")
         
         @st_2.reload
         assert_not @st_2.can_edit

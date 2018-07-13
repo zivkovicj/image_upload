@@ -13,7 +13,7 @@ class SchoolsControllerTest < ActionDispatch::IntegrationTest
     
         visit(@school_url)
         
-        assert_selector('h1', :text => "Verify Teachers")
+        assert_selector('h2', :text => "Verify Teachers")
     end
     
     test "wrong teacher url to teacher verify" do
@@ -24,7 +24,7 @@ class SchoolsControllerTest < ActionDispatch::IntegrationTest
         
         visit(@school_url)
         
-        assert_no_selector('h1', :text => "Verify Teachers")
+        assert_no_selector('h2', :text => "Verify Teachers")
         assert_selector('strong', :text => "Teacher Since:")
     end
     
@@ -33,6 +33,6 @@ class SchoolsControllerTest < ActionDispatch::IntegrationTest
         
         visit(@school_url)
         
-        assert_selector('h1', :text => "Verify Teachers")
+        assert_selector('h2', :text => "Verify Teachers")
     end
 end

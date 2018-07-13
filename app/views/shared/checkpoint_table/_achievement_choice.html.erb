@@ -10,7 +10,7 @@
 <td class="<%= div_class %> center">
     <span  id="achievement_span_<%= @checkpoint.id %>">
         <strong>
-            <% if @edit_type_for_comment == "teacher" %>
+            <% if @edit_type_for_comment == "Teacher" %>
                 <%= best_in_place @checkpoint, :achievement, :as => :select, :collection => bip_percent_array, :place_holder => "Achievement" %>
             <% else %>
                 <%= @checkpoint.achievement %> %

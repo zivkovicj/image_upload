@@ -80,7 +80,7 @@ class SeminarsCheckpointDueDatesTest < ActionDispatch::IntegrationTest
         click_on("edit_seminar_#{second_seminar.id}")
         click_on("Copy Due Dates from #{first_seminar.name}")
         
-        assert_selector("h1", :text => "Edit #{second_seminar.name}")
+        assert_selector("h2", :text => "Edit #{second_seminar.name}")
         second_seminar.reload
         assert_equal @array_should_be, second_seminar.checkpoint_due_dates
     end

@@ -14,7 +14,7 @@ class StudentsIndexTest < ActionDispatch::IntegrationTest
   test "students back button" do
     capybara_login(@admin_user)
     click_on("Students Index")
-    assert_selector("h1", :text => "All Students")
+    assert_selector("h2", :text => "All Students")
     assert_not_on_admin_page
     click_on("back_button")
     assert_on_admin_page

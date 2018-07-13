@@ -53,7 +53,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
         # No name entered
         click_on("Create This Label")
         
-        assert_selector('h1', :text => "New Label")
+        assert_selector('h2', :text => "New Label")
         assert_selector('div', :id => "error_explanation")
         assert_selector('li', :text => "Name can't be blank")
     end

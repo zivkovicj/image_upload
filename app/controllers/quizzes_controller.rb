@@ -4,7 +4,9 @@ class QuizzesController < ApplicationController
         @objective = Objective.find(params[:objective_id])
         if @objective.questions.count > 0
             @origin = params[:origin]
-            @quiz = Quiz.create(:objective => @objective, :user => current_user, :progress => 1, :origin => @origin)
+            current_term = Seminar.find(current_user.current_class).term_for_seminar
+            old_stars = @objective.objective_students.find_by(:user => current_user).current_scores[current_term] || 0
+            @quiz = Quiz.create(:objective => @objective, :user => current_user, :progress => 1, :origin => @origin, :old_stars => old_stars)
             take_a_key
             check_if_six
             build_the_quiz
@@ -17,8 +19,8 @@ class QuizzesController < ApplicationController
     end
     
     def edit
-        @objective = Objective.find(params[:objective_id])
-        @quiz = current_user.quizzes.find_by(:objective => @objective)
+        @objective = Objective.find(params[:objective_id])     
+        @quiz = current_user.quizzes.where(:objective => @objective).order(:created_at).last
         current_question = @quiz.progress
         redirect_to edit_riposte_path(@quiz.ripostes[current_question])
     end

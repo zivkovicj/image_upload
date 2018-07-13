@@ -55,17 +55,63 @@ Manually test:
 
 Contact Teachers who have signed up
 
+V Printable version of goal report is showing (?) instead of target
+V Quiz results need to show the correct number of stars.  This feature was broken after moving quiz-finishing method to the riposte controller.
+V To prevent back-tracking and changing answers after the answers are revealed, re-route student to quiz show page if the quiz already has a total score
+    V This should also prevent charging the student an extra key if the student refreshes.
+V Attribute :old_stars is given a value upon beginning a new quiz
+V Quiz score display should show added stars for this term, along with highest score all-time
 
-Printable version of goal report is showing (?) instead of target
-Ace-ing a quiz is showing zero stars
-Going back to an unfinished quiz seemed to leave a riposte tally with a nil value. 
-If student has scored 100, then end-of-quiz message reads, "You have scored 100% on this objective.  There is no need to take the quiz again."
-Test that it updates the points if the student improves.
-But if student doesn't improve, it at least updates the updated_at column. (So the score can count on the student's current term grade)
-Can I re-name the "present" attribute of the seminar student?  That's already a ruby word.
-For the sake of performance, the method "set_pretests" should only be called when pretests are changed.  Right now, it is getting called when
-    anything about the seminar is changed.
-Tests to add
+
+
+Unused parameters passed to Capybara::Queries::SelectorQuery : ["Edit Macho Taco Period"]
+ERROR["test_more_invites_to_decline", SeminarsInviteTeacherTest, 325.3422263627872]
+ test_more_invites_to_decline#SeminarsInviteTeacherTest (325.34s)
+Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find visible css "h2" with text "Accept Invitations" but there were no matches
+            test/integration/seminars/seminars_invite_teacher_test.rb:109:in `block in <class:SeminarsInviteTeacherTest>'
+
+ERROR["test_more_invites_to_accept", SeminarsInviteTeacherTest, 329.38329700473696]
+ test_more_invites_to_accept#SeminarsInviteTeacherTest (329.38s)
+Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find visible css "h2" with text "Accept Invitations" but there were no matches
+            test/integration/seminars/seminars_invite_teacher_test.rb:91:in `block in <class:SeminarsInviteTeacherTest>'
+
+Unused parameters passed to Capybara::Queries::SelectorQuery : ["invite_teacher_328962456"]
+Unused parameters passed to Capybara::Queries::SelectorQuery : ["stop_edit_privileges_328962456"]
+ERROR["test_delete_picture", PicturesIndexTest, 419.22041131788865]
+ test_delete_picture#PicturesIndexTest (419.22s)
+Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
+        excon.error.response
+          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20190118T010444Z</RequestTime><ServerTime>2018-07-13T00:41:35Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>87D72926065CDAC5</RequestId><HostId>IJeagPLCt5zNFandRsJicswQNbj/o0CylGmB0N/j9KHj8RbeagMxP0yEaJFQ5MEID1+D2lYSYP4=</HostId></Error>"
+          :cookies       => [
+          ]
+          :headers       => {
+            "Content-Type"     => "application/xml"
+            "Date"             => "Fri, 13 Jul 2018 00:41:33 GMT"
+            "Server"           => "AmazonS3"
+            "x-amz-id-2"       => "IJeagPLCt5zNFandRsJicswQNbj/o0CylGmB0N/j9KHj8RbeagMxP0yEaJFQ5MEID1+D2lYSYP4="
+            "x-amz-request-id" => "87D72926065CDAC5"
+          }
+          :host          => "mrzschoolbucket.s3.amazonaws.com"
+          :local_address => "172.17.0.5"
+          :local_port    => 47200
+          :path          => "/uploads/picture/image/340665903/cheese_logo.jpg"
+          :port          => 443
+          :reason_phrase => "Forbidden"
+          :remote_ip     => "54.231.72.203"
+          :status        => 403
+          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
+        
+            app/controllers/pictures_controller.rb:59:in `destroy'
+            test/integration/pictures/pictures_index_test.rb:50:in `block in <class:PicturesIndexTest>'
+
+ERROR["test_cannot_visit_other_teacher_edit_page", TeachersEditTest, 429.9395553157665]
+ test_cannot_visit_other_teacher_edit_page#TeachersEditTest (429.94s)
+Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find visible css "h2" with text "Log in" but there were no matches
+            test/integration/teachers/teachers_edit_test.rb:63:in `block in <class:TeachersEditTest>'
+            
+            
+Migrate Old Stars to Quizzes
+
 
 
 
@@ -95,9 +141,33 @@ Teacher can give bucks to whole class.
 
 
 
-MARKET JS BUGS
+HOTFIXES
+Development app added six keys upon clicking the whole class button
+Can I re-name the "present" attribute of the seminar student?  That's already a ruby word.
+For the sake of performance, the method "set_pretests" should only be called when pretests are changed.  Right now, it is getting called when
+    anything about the seminar is changed.
+Tests to add
 Adding bucks sometimes adds double or even quad.
 Seems to stop doing that after a refresh
+
+QUIZ FINISHING
+
+Show the number of keys left in the quiz report
+If student has scored 100, then end-of-quiz message reads, "You have scored 100% on this objective.  There is no need to take the quiz again."
+
+
+
+SHOW ALL TYPES OF KEYS
+
+Key fields should show dc keys and pretest keys in a different color
+Check this in student quiz-finishing, student_seminar show page, teacher views student, and teacher views objective
+
+
+
+
+
+
+
 
 TEACHER-GRADED QUESTIONS
 

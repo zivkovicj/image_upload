@@ -53,7 +53,7 @@ class AdminsEditTest < ActionDispatch::IntegrationTest
         assert_equal old_email, @admin_user.email
         assert @admin_user.authenticate("password")
         
-        assert_selector('h1', :text => "Update Your Admin Profile")
+        assert_selector('h2', :text => "Update Your Admin Profile")
         assert_selector('div', :id => "error_explanation")
         assert_selector('li', :text => "Last name can't be blank")
     end

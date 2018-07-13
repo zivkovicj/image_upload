@@ -1,7 +1,0 @@
-
-<% if @checkpoint.student_comment %>
-    <small><strong>Me</strong>&emsp; <%= @checkpoint.student_comment %></small></br>
-<% end %>
-<% if @checkpoint.teacher_comment %>
-    <small><strong><%= @seminar.teachers.first.name_with_title %></strong>&emsp;<%= @checkpoint.teacher_comment %></small>
-<% end %>

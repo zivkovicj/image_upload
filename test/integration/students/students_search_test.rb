@@ -106,6 +106,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   
   test "cant find unverified student" do
     # The counterpart is in the "searching" test
+    @last_student = Student.last
     @last_student.update(:verified => 0)
     
     capybara_login(@teacher_1)
@@ -118,6 +119,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   end
   
   test "unverified teacher can only find sponsored students" do
+    @last_student = Student.last
     @last_student.update(:sponsor => @unverified_teacher)
     
     capybara_login(@unverified_teacher)

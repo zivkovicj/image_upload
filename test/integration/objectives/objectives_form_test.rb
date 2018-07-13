@@ -21,7 +21,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         assert_on_teacher_page
         click_on('Create a New Objective')
-        assert_selector('h1', :text => 'New Objective', :visible => true)
+        assert_selector('h2', :text => 'New Objective', :visible => true)
         assert_not_on_teacher_page
     end
     

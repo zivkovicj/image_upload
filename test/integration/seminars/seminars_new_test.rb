@@ -49,7 +49,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         click_on("Create This Class")
         
         assert_equal @old_seminar_count, Seminar.count
-        assert_selector('h1', :text => "New Class")
+        assert_selector('h2', :text => "New Class")
         assert_selector('div', :id => "error_explanation")
         assert_selector('li', :text => "Name can't be blank")
     end

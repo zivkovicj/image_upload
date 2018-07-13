@@ -76,7 +76,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         assert_equal @admin_l, @user_q.label
         assert_equal @user_q.picture, @user_p
         
-        assert_selector('h1', :text => "All Questions")
+        assert_selector('h2', :text => "All Questions")
     end
     
     test "default answer choice" do
@@ -122,7 +122,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         assert_equal old_label, @fill_q.label
         assert_equal "public", @fill_q.extent
         
-        assert_selector('h1', :text => "All Questions")
+        assert_selector('h2', :text => "All Questions")
     end
     
     test "invalid question edit" do
@@ -130,7 +130,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         fill_in "prompt_0", with: ""
         click_on("save_changes_2")
         
-        assert_selector('h1', :text => "Edit Question")
+        assert_selector('h2', :text => "Edit Question")
         assert_selector('div', :id => "error_explanation")
         assert_selector('li', :text => "Prompt can't be blank")
     end

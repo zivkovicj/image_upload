@@ -158,7 +158,7 @@ Student.all.each do |student|
             scooby = rand(6)
             doo = skillMatrix[skill][scooby]
             ss.update(pref_request: skill)
-            student.objective_students.create!(objective: obj, points: doo)
+            student.objective_students.create!(objective: obj, points: doo) if student.objective_students.find_by(:objective => obj) == nil
         end
     end
 end
