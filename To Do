@@ -51,64 +51,75 @@ Manually test:
 
 
 
-2.65 QUIZ FIXES
+2.66 SCHOOL-EDITING ACCESS
 
-Contact Teachers who have signed up
+User model
+    :school_admin :integer
+Mentor is an admin by default
+Admin can change other teachers to admin
+Only admin can edit the school
 
-V Printable version of goal report is showing (?) instead of target
-V Quiz results need to show the correct number of stars.  This feature was broken after moving quiz-finishing method to the riposte controller.
-V To prevent back-tracking and changing answers after the answers are revealed, re-route student to quiz show page if the quiz already has a total score
-    V This should also prevent charging the student an extra key if the student refreshes.
-V Attribute :old_stars is given a value upon beginning a new quiz
-V Quiz score display should show added stars for this term, along with highest score all-time
+Migrate
+Set admin status for existing teachers who are already mentors
 
-
-
-ERROR["test_cannot_visit_other_teacher_edit_page", TeachersEditTest, 429.9395553157665]
- test_cannot_visit_other_teacher_edit_page#TeachersEditTest (429.94s)
-Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find visible css "h2" with text "Log in" but there were no matches
-            test/integration/teachers/teachers_edit_test.rb:63:in `block in <class:TeachersEditTest>'
-            
-            
-Migrate Old Stars to Quizzes
-
+Check whether production mode still needs work on the javascript.
 
 
 
 SCHOOL-WIDE MARKET
 
-School's mentor can create commodities for school market
+Admin can create commodities for school market
+    Button is in the school admin screen
     Custom commodities cannot be named "star" or "gem"
-    Need to allow more people to do this, so that it isn't ME who does all that work at Bryant.
-    Maybe mentor needs to give other teachers access to edit the school.
-        I could use most of the same code as allowing other teachers access to a class
-    All of these admin teachers can create new students without placing them into a class
-    Only stars and gems will offer the use button
 Create a commodity student when new commodities are created
-    These should probably be saved for students who leave class and come back later
+    These should not be destroy:dependant.  In case students who leave class come back later
+
+
+STUDENTS CAN ACCESS ALL AVAILABLE COMMODITIES
+
+If student buys a custom commodity, relevant adults get a notice about the purchase.
+Can clear the notice when the item is delivered.
+    Who has access to see these notices?
+    And to clear them?
 Javascript for making the buy and sell buttons appear and disappear needs to iterate through all
     commodities and have different results for the different prices
 Teacher can open and close availability for certain commodities
-Teacher can allow and disallow the use of stars and gems in a specific class
-    But not purchasing them, if the school has allowed it
+
+
+TEACHER CAN CREATE COMMODITIES FOR A SINGLE SEMINAR
+
 Mentor teacher can create new teachers who are automatically verified
+All of these admin teachers can create new students without placing them into a class
+Only stars and gems will offer the use button
+Teacher can allow and disallow the use of stars and gems in a specific class
+
+
+
+Admin teachers can create new students without placing them into a class
+
 Teacher can make a comment while giving some currency
+
 Currency moves with student if student changes classes
+
 Teachers have limited amount of currency to give
+
 Teacher can give bucks to whole class.
     Screen that allows unchecking boxes from certain students
     Custom controller action that loops through whole class
+    
 
 
 
 HOTFIXES
-Development app added six keys upon clicking the whole class button
+Development app added six quiz keys upon clicking the whole class button
 Can I re-name the "present" attribute of the seminar student?  That's already a ruby word.
 For the sake of performance, the method "set_pretests" should only be called when pretests are changed.  Right now, it is getting called when
     anything about the seminar is changed.
 Tests to add
 Adding bucks sometimes adds double or even quad.
 Seems to stop doing that after a refresh
+
+
 
 QUIZ FINISHING
 
