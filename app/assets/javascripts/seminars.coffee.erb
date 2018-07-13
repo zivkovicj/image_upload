@@ -62,6 +62,8 @@ ready = ->
                         req_id: req_id     
                         
     if $('.add_bucks').length > 0
+        $('.add_bucks').unbind( "click" )
+    
         seminar_student_id = 0
         com_id = 0
         current_cash = 0
@@ -301,9 +303,7 @@ ready = ->
             $(this).text($(this).attr("second_text"))
    
     if $('.clickySeat').length > 0
-        alert("Whut")
         $('.clickySeat').on "click", ->
-            alert("Seat Clicked")
             this_present_marking = $(this).find(".presentTag")
             seminar_student_id = $(this).attr('id').replace('attendance_div_','')
             url = '/seminar_students/'+seminar_student_id
