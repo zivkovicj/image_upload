@@ -1,23 +1,25 @@
 
-<% start_end_label = ["Start Date", "End Date"] %>
+<% provide(:title, 'Edit School') %>
+<% provide(:headerText, "Edit #{@school.name}" ) %>
+<% provide(:headerPic, "square_fractal.png") %>
+
+<% @submenu_tabs = [["Name and City", "name_and_city", false], ["Admin Levels", "admin_levels", true], ["Term Dates", "term_dates", false]] %>
+<% @submenu_tabs << ["Verify Faculty", "verify_faculty", false] if @unverified_teachers && @unverified_teachers.count > 0 %>
+
+<%= render 'shared/navribbons/main_navribbon' %>
+<%= render 'shared/submenu_navribbon' %>
+<%= render 'shared/headline' %>
+</br>
 
 <%= form_for(@school) do |school| %>
-    <%= school.label :name %>
-    <%= school.text_field :name, class: 'form-control' %>
+    <% @form = school %>
+    <% @submenu_tabs.each do |sub_tab| %>
+        <div class="singleOption submenu_item submenu_<%= sub_tab[1] %> <%= "currently_hidden" unless sub_tab[2] %>">
+          <%= render :partial => "schools/edit_submenus/#{sub_tab[1]}" %>
+        </div>
+    <% end %>
     
-    <h3>Term Start and End Dates</h3>
-    <table>
-        <% 4.times do |j| %>
-            <tr>
-                <td>Term <%= j + 1 %></td>
-                <% 2.times do |k| %>
-                    <td><%= start_end_label[k] %>
-                    <input type="text" class="datepicker" name="school[term_dates][<%= j %>][<%= k %>]" 
-                        value="<%= @school.term_dates[j][k] if @school.term_dates %>"></td>
-                <% end %>
-            </tr>
-        <% end %>
-    </table>
+    
     </br>
     <%= school.submit "Save Changes", class: "btn btn-primary" %>
 <% end %>

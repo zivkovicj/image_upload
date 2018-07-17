@@ -19,6 +19,7 @@ class User < ApplicationRecord
     has_many    :goal_students, dependent: :destroy
     
     attribute :verified, :integer, default: 0
+    attribute :school_admin, :integer, default: 0
 
     validates :first_name, length: {maximum: 25},
             presence: true

@@ -10,7 +10,7 @@ class TeachersController < ApplicationController
   def create
     @teacher = Teacher.new(teacher_params)
     if @teacher.save
-      #@teacher.send_activation_email
+      @teacher.send_activation_email
       create_star_commodity
       log_in @teacher
       flash[:success] = "Welcome to Mr.Z School!"
@@ -27,10 +27,7 @@ class TeachersController < ApplicationController
     @school = @teacher.school
     check_if_term_needs_updated
     create_commodities
-    if @school.mentor == @teacher
-      @unverified_teachers = @school.unverified_teachers
-      @mentor = true
-    end
+    @unverified_teachers = @school.unverified_teachers if @teacher.school_admin > 0
     @unaccepted_classes = @teacher.unaccepted_classes
   end
   

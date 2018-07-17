@@ -64,6 +64,8 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_equal "", first_new_student.email
         assert_equal first_new_student.created_at, first_new_student.last_login
         assert_equal @teacher_1.school, first_new_student.school
+        assert_equal 0, first_new_student.school_admin
+
         
         @new_ss = SeminarStudent.find_by(:seminar_id => @seminar.id, :user => first_new_student)
         assert_equal 1, @new_ss.pref_request

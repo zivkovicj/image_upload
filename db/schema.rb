@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180709210304) do
+ActiveRecord::Schema.define(version: 20180713171737) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -222,7 +222,6 @@ ActiveRecord::Schema.define(version: 20180709210304) do
     t.string   "name"
     t.string   "city"
     t.string   "state"
-    t.integer  "mentor_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "term"
@@ -316,6 +315,7 @@ ActiveRecord::Schema.define(version: 20180709210304) do
     t.integer  "verified"
     t.integer  "sponsor_id"
     t.integer  "school_year"
+    t.integer  "school_admin"
   end
 
 end

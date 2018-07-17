@@ -59,10 +59,7 @@ Rails.application.routes.draw do
   resources :seminar_teachers do
     get 'accept_invitations', on: :collection
   end
-  resources :schools do
-    get 'verify', on: :member
-    post 'verify_update', on: :member
-  end
+  resources :schools
   resources :students do
     get 'edit_teaching_requests', on: :member
   end

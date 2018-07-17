@@ -85,7 +85,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     
     test "take fill in quiz" do
         fill_in_objective = Objective.find_by(:name => "Fill-in Questions Only")
-        fill_in_objective.objective_students.find_by(:user => @student_2).update(:teacher_granted_keys => 2)
+        fill_in_objective.objective_students.find_by(:user => @student_2).update(:teacher_granted_keys => 2, :points => 4)
         go_to_first_period
         
         find("#navribbon_quizzes").click

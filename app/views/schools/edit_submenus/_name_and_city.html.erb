@@ -1,0 +1,14 @@
+
+<% if current_user.school_admin > 1 %>
+    <%= @form.label :name %>
+    <%= @form.text_field :name, class: 'form-control', :id => "school_name_edit" %></br>
+    
+    <%= @form.label :city %>
+    <%= @form.text_field :city, class: 'form-control', :id => "school_city_edit" %>
+    
+    <%= @form.label :state %>
+    <%= @form.select :state, options_for_select(us_states), :id => "school_state" %>
+<% else %>
+    <%= @school.name %></br>
+    <%= @school.city %>, <%= @school.state %>
+<% end %>

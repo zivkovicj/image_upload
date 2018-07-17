@@ -7,7 +7,7 @@
 <% if @unverified_teachers.present? %>
   <div class="singleOption">
     <%= verify_waiting_teachers_message %>
-    <%= button_to "Verify your colleagues", verify_school_path(@school), 
+    <%= button_to "Verify your colleagues", edit_school_path(@school), 
         class: "btn btn-lg btn-primary", :method => :get, :id => "goto_verify" %>
   </div>
 <% end %>
@@ -107,7 +107,7 @@
 <%= button_to "All Items", commodities_path, class: "btn btn-lg btn-primary", :method => :get %>
 
 
-<% if @mentor %>
+<% if @teacher.school_admin > 0 %>
   <%= button_to "Edit #{@school.name}", edit_school_path(@school), class: "btn btn-lg btn-primary", :method => :get,
     :id => "edit_school_#{@school.id}" %>
 <% end %>

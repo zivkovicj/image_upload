@@ -1,0 +1,16 @@
+<h3>These teachers have asked to be included in your school. </br> Please verify whether these individuals are faculty at <%= @school.name %></h3>
+
+<table>
+    <tr>
+        <th>Approve</th>
+        <th>Decline</th>
+    </tr>
+    <% @unverified_teachers.each do |teacher| %>
+        <tr>
+            <td width="20%"><input type="radio" name="teacher[<%= teacher.id %>]" id="teacher_<%= teacher.id %>_approve" value="1"></td>
+            <td width="20%"><input type="radio" name="teacher[<%= teacher.id %>]" id="teacher_<%= teacher.id %>_decline" value="-1"></td>
+            <td><h4><%= teacher.name_with_title %></h4></td>
+        </tr>
+    <% end %>
+</table>
+

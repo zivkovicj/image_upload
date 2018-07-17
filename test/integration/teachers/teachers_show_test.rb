@@ -2,14 +2,11 @@ require 'test_helper'
 
 class TeachersShowTest < ActionDispatch::IntegrationTest
     
-    include UsersHelper
+    include TeachersHelper
     
     def setup
         setup_users
         setup_schools
-        @right_teacher = users(:user_2)
-        @wrong_teacher = users(:user_1)
-        @ignored_teacher = users(:user_3)
     end
     
     test "show" do
@@ -24,43 +21,17 @@ class TeachersShowTest < ActionDispatch::IntegrationTest
         end
     end
     
-    test "approve unverified teachers" do
-        assert_equal 0, @right_teacher.verified
-        assert_equal 0, @wrong_teacher.verified
-        assert_equal 0, @ignored_teacher.verified
-        @right_teacher_student = Student.all[55]
-        @wrong_teacher_student = Student.all[56]
-        @ignored_teacher_student = Student.all[57]
-        @right_teacher_student.update(:sponsor => @right_teacher, :verified => 0)
-        @wrong_teacher_student.update(:sponsor => @wrong_teacher, :verified => 0)
-        @ignored_teacher_student.update(:sponsor => @ignored_teacher, :verified => 0)
-        
-        capybara_login(@teacher_1)
-        assert_text(verify_waiting_teachers_message)
-        click_on("goto_verify")
-        
-        choose("teacher_#{@right_teacher.id}_approve")
-        choose("teacher_#{@wrong_teacher.id}_decline")
-        click_on("Submit these approvals")
-        
-        assert_equal 1, @right_teacher.reload.verified
-        assert_equal 0, @ignored_teacher.reload.verified
-        assert_equal (-1), @wrong_teacher.reload.verified
-        assert_equal 1, @right_teacher_student.reload.verified
-        assert_equal 0, @ignored_teacher_student.reload.verified
-        assert_equal 0, @wrong_teacher_student.reload.verified
-    end
-    
-    test "unverified message doesn't appear when useless" do
+    test "unverified message does not appear when useless" do
         @school.teachers.update_all(:verified => 1)
         capybara_login(@teacher_1)
         assert_no_text(verify_waiting_teachers_message)
     end
     
-    test "unverified message should not appear for non mentor teacher" do
+    test "unverified message should not appear for non admin teacher" do
+        @other_teacher.update(:school_admin => 0)
         assert @school.unverified_teachers
         
-        capybara_login(@wrong_teacher)
+        capybara_login(@other_teacher)
         
         assert_no_text(verify_waiting_teachers_message)
     end

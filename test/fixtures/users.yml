@@ -13,6 +13,7 @@ michael:
   verified: 1
   school: nil
   sponsor: nil
+  school_admin: 2
   
 archer:
   title: Mr.
@@ -27,6 +28,7 @@ archer:
   verified: 1
   school: school_1
   sponsor: nil
+  school_admin: 1
   
 zacky:
   title: Mr.
@@ -41,6 +43,7 @@ zacky:
   verified: 1
   school: school_1
   sponsor: nil
+  school_admin: 0
   
   
 <% 30.times do |n| %>
@@ -57,6 +60,7 @@ user_<%= n %>:
   verified: 0
   school: school_1
   sponsor: nil
+  school_admin: 0
 <% end %>
 
 

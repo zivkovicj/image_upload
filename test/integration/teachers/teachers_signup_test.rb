@@ -34,6 +34,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         @this_teacher.reload
         assert_equal @school, @this_teacher.school
         assert_equal 0, @this_teacher.verified
+        assert_equal 0, @this_teacher.school_admin
         
         click_on("Create a New Class")
         fill_in "seminar[name]", with: "Myname"
@@ -62,7 +63,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("goto_verify")
         choose("teacher_#{@this_teacher.id}_approve")
-        click_on("Submit these approvals")
+        click_on("Save Changes")
         
         @this_teacher.reload
         assert_equal 1, @this_teacher.verified
@@ -88,9 +89,9 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         assert_equal "UT", @new_school.state
         assert_equal @new_school, @this_teacher.school
         assert_equal @old_school_count + 1, School.count
-        assert_equal @this_teacher, @new_school.mentor
         assert_equal 0, @new_school.term
         assert_equal 1, @this_teacher.verified
+        assert_equal 2, @this_teacher.school_admin
     end
     
     test "invalid signup information" do

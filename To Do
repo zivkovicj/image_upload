@@ -51,40 +51,93 @@ Manually test:
 
 
 
-2.66 SCHOOL-EDITING ACCESS
+2.66 ADMIN ACCESS
 
-User model
-    :school_admin :integer
-Mentor is an admin by default
-Admin can change other teachers to admin
-Only admin can edit the school
+V User model
+    V :school_admin :integer
+V No longer need the mentor aspect.  Simply set each user's school_admin access
+V First teacher to create a school is an admin by default
+V Admin can adjust admin status for other teachers
+    V When editing school, list all the teachers
+    V Each gets a radio set to change the admin status
+    V Radio set can grant admin status matching current_user's admin status, not higher
+    V Can only turn admin status off if current_user's admin status is 2 or higher
+V Verifying other teachers should be moved to the school edit page
+V Only level 2 admin can edit the school's important info
+V Add field's to edit the schools's city and state
+V Check whether there are other admin level restrictions that I can code at this time.
+
+
+
+
+
+
+ERROR["test_edit_term_dates", SchoolsEditTest, 979.2762360549532]
+ test_edit_term_dates#SchoolsEditTest (979.28s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible field "school[term_dates][2][1]" that is not disabled
+            test/integration/schools/schools_edit_test.rb:26:in `block in <class:SchoolsEditTest>'
+            
+            
 
 Migrate
-Set admin status for existing teachers who are already mentors
+Set admin status for existing teachers who are already mentors.  Should be "2"
 
 Check whether production mode still needs work on the javascript.
 
 
 
-SCHOOL-WIDE MARKET
+COMMODITY-STUDENT CREATION UPON STUDENT BUYING
+App currently creates a commodity student every time a commodity is created.
+Instead, create the commodity student when a student buys something.
+    Unless one already exists.
+    View for class star market will load with commodity id instead of commodity student id
+    Back-end finds the com_stud id, or creates one
 
-Admin can create commodities for school market
-    Button is in the school admin screen
+
+CREATE ITEMS FOR SCHOOL
+
+Create commodities for school market
+    School edit submenus includes market
+        Market view includes button to "Create item for school"
+        Create item screen allows admin to change name, image, cost, and quantity
+        When saved, goes with school instead of teacher
     Custom commodities cannot be named "star" or "gem"
-Create a commodity student when new commodities are created
-    These should not be destroy:dependant.  In case students who leave class come back later
-
+    Only level 1 or level 2 admin can do it
+Change "Name and City" submenu tab to "School Info"
+Level 2 Admin can change the name of the school's currency and market in the "School Info" tab
+Student has option of "School Market" upon logging in
+When viewing school market, student can see all items that were created for the whole school
+    But not items that an individual teacher created
 
 STUDENTS CAN ACCESS ALL AVAILABLE COMMODITIES
 
-If student buys a custom commodity, relevant adults get a notice about the purchase.
-Can clear the notice when the item is delivered.
-    Who has access to see these notices?
-    And to clear them?
+Migrate
+    Commodity_Student
+        Quant_Delivered
+    Commodity
+        Deliverable
+When visiting school edit page, faculty can see all com_studs that have recently been updated
+These notices do not appear for items that aren't listed as deliverable
+Notices are sorted to put unfulfilled orders at the top
+Faculty can mark an item as delivered
+    Mark one delivered
+    Mark fewer delivered
+    Or mark all
 Javascript for making the buy and sell buttons appear and disappear needs to iterate through all
     commodities and have different results for the different prices
 Teacher can open and close availability for certain commodities
 
+
+
+OPTION TO PUT "RECENTLY MARKED DELIEVERED" AT TOP
+
+This will help office staff in case an item was marked as delivered when it shouldn't have been.
+
+
+
+ORGANIZE CONTENT CREATION BUTTONS
+
+Probably set up a "content creation" screen that organizes those buttons better.    
 
 TEACHER CAN CREATE COMMODITIES FOR A SINGLE SEMINAR
 
@@ -107,7 +160,11 @@ Teacher can give bucks to whole class.
     Screen that allows unchecking boxes from certain students
     Custom controller action that loops through whole class
     
-
+    
+    
+LEVEL 2 ADMIN CAN REMOVE A TEACHER FROM THE SCHOOL
+    
+    
 
 
 HOTFIXES

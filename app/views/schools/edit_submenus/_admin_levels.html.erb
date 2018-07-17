@@ -1,0 +1,56 @@
+
+
+<table>
+    <thead>
+        <tr>
+            <th rowspan="2"></th>
+            <th colspan="3">Admin Level</th>
+        </tr>
+        <tr>
+            <% 3.times do |n| %>
+                <th class="center"><%= n %></th>
+            <% end %>
+        </tr>
+    </thead>
+    
+    <% @school.teachers.each do |teacher| %>
+        <tr>
+            <td><%= teacher.full_name_with_title %></td>
+            <% 3.times do |z| %>
+                <td class="center">
+                    <% if admin_rank_compared(current_user, teacher, z) || teacher.school_admin == z %>
+                        <input type="radio" name="school_admin[<%= teacher.id %>]" value="<%= z %>" <%= "checked" if teacher.school_admin == z %> 
+                            id="admin_lv_<%= z %>_<%= teacher.id %>">
+                    <% end %>
+                </td>
+            <% end %>
+        </tr>
+    <% end %>
+</table>
+
+</br>
+
+<div class="row">
+    <div class="singleOption col-sm-5">
+        Faculty with Admin Level 1 May
+        <ul>
+            <li>Verify that other faculty are members of <%= @school.name %></li>
+            <li>Create and edit items for the school market</li>
+            <li>Mark student-purchased items as "Delivered"</li>
+            <li>Promote other faculty to admin level 1</li>
+        </ul>
+    </div>
+    
+    <div class="col-sm-2"></div>
+    
+    <div class="singleOption col-sm-5">
+        Faculty with Admin Level 2 May
+        <ul>
+            <li>Use all level 1 admin priviliges</li>
+            <li>Change school info (such as name and city)</li>
+            <li>Promote other faculty to admin level 2</li>
+            <li>Demote faculty to lower admin levels</li>
+            <li>Remove faculty from <%= @school.name %></li>
+        </ul>
+    </div>
+</div>

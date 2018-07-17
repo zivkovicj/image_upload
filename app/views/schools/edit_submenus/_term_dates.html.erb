@@ -1,0 +1,24 @@
+
+<% start_end_label = ["Start Date", "End Date"] %>
+
+<h3>Term Start and End Dates</h3>
+
+<% if @school.term_dates %>
+    <table>
+        <% 4.times do |j| %>
+            <tr>
+                <td>Term <%= j + 1 %></td>
+                <% 2.times do |k| %>
+                    <td>
+                    <%= start_end_label[k] %></br></br>
+                    <% if current_user.school_admin > 1 %>
+                        <input type="text" class="datepicker" name="school[term_dates][<%= j %>][<%= k %>]" 
+                            value="<%= @school.term_dates[j][k] %>"></td>
+                    <% else %>
+                        <%= @school.term_dates[j][k] %>
+                    <% end %>
+                <% end %>
+            </tr>
+        <% end %>
+    </table>
+<% end %>
