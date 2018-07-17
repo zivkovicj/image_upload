@@ -2,6 +2,8 @@
 Poltergeist Tests are working shitty.
 Between each update, manually test:
     Giving quiz keys
+    Taking quiz keys
+    The appearance and disappearance of keys when teacher grants them.
     Changing Student's Teaching Request, Learning Request, and Preference Request
     Giving a student bucks.  Buying, selling, using items.
     Buy, sell, and use buttons in star market
@@ -10,6 +12,23 @@ Between each update, manually test:
     Student cannot change quiz answers after the quiz is finished. 
 
 
+
+
+
+2.66 ADMIN ACCESS
+
+User model
+    :school_admin :integer
+No longer need the mentor aspect.  Simply set each user's school_admin access
+First teacher to create a school is an admin by default
+Admin can adjust admin status for other teachers
+    When editing school, list all the teachers
+    Each gets a radio set to change the admin status
+    Radio set can grant admin status matching current_user's admin status, not higher
+    Can only turn admin status off if current_user's admin status is 2 or higher
+Verifying other teachers should be moved to the school edit page
+Only level 2 admin can edit the school's important info
+Add field's to edit the schools's city and state
 
 
 2.65 QUIZ FIXES

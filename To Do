@@ -51,38 +51,9 @@ Manually test:
 
 
 
-2.66 ADMIN ACCESS
 
-V User model
-    V :school_admin :integer
-V No longer need the mentor aspect.  Simply set each user's school_admin access
-V First teacher to create a school is an admin by default
-V Admin can adjust admin status for other teachers
-    V When editing school, list all the teachers
-    V Each gets a radio set to change the admin status
-    V Radio set can grant admin status matching current_user's admin status, not higher
-    V Can only turn admin status off if current_user's admin status is 2 or higher
-V Verifying other teachers should be moved to the school edit page
-V Only level 2 admin can edit the school's important info
-V Add field's to edit the schools's city and state
-V Check whether there are other admin level restrictions that I can code at this time.
-
-
-
-
-
-
-ERROR["test_edit_term_dates", SchoolsEditTest, 979.2762360549532]
- test_edit_term_dates#SchoolsEditTest (979.28s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible field "school[term_dates][2][1]" that is not disabled
-            test/integration/schools/schools_edit_test.rb:26:in `block in <class:SchoolsEditTest>'
-            
             
 
-Migrate
-Set admin status for existing teachers who are already mentors.  Should be "2"
-
-Check whether production mode still needs work on the javascript.
 
 
 
@@ -92,6 +63,8 @@ Instead, create the commodity student when a student buys something.
     Unless one already exists.
     View for class star market will load with commodity id instead of commodity student id
     Back-end finds the com_stud id, or creates one
+
+
 
 
 CREATE ITEMS FOR SCHOOL
@@ -137,7 +110,8 @@ This will help office staff in case an item was marked as delivered when it shou
 
 ORGANIZE CONTENT CREATION BUTTONS
 
-Probably set up a "content creation" screen that organizes those buttons better.    
+Probably set up a "content creation" screen that organizes those buttons better.   
+
 
 TEACHER CAN CREATE COMMODITIES FOR A SINGLE SEMINAR
 
@@ -147,6 +121,8 @@ Only stars and gems will offer the use button
 Teacher can allow and disallow the use of stars and gems in a specific class
 
 
+
+TEACHER CAN TAKE CLASS CURRENCY (IN CASE OF A MISTAKE)
 
 Admin teachers can create new students without placing them into a class
 
