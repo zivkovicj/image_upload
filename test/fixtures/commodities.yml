@@ -1,7 +1,7 @@
 
 star:
     name: "Star"
-    user: archer
+    user_id: <%= User.find_by(:last_name => "Archer").id %>
     production_rate: 10
     current_price: 5
     production_day: 2

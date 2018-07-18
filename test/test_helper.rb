@@ -146,11 +146,6 @@ class ActiveSupport::TestCase
             student.objective_students.create(:objective => objective, :points => rand(11))
           end
         end
-        seminar.teachers.each do |teacher|
-          teacher.commodities.each do |commode|
-            commode.commodity_students.create(:user => student)
-          end
-        end
       end
     end
   end

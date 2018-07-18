@@ -11,7 +11,6 @@ class TeachersController < ApplicationController
     @teacher = Teacher.new(teacher_params)
     if @teacher.save
       @teacher.send_activation_email
-      create_star_commodity
       log_in @teacher
       flash[:success] = "Welcome to Mr.Z School!"
       redirect_to new_school_path(:teacher_id => @teacher.id)
@@ -68,17 +67,5 @@ class TeachersController < ApplicationController
     end
     
     ## Other methods
-    def create_star_commodity
-      new_star = @teacher.commodities.new
-      new_star.name = "Star"
-      new_star.quantity = 25
-      new_star.current_price = 5
-      new_star.date_last_produced = Date.today
-      new_star.production_rate = 10
-      new_star.production_day = 0
-      image_src = File.join(Rails.root, "app/assets/images/stars/filled_star.png")
-      src_file = File.new(image_src)
-      new_star.image = src_file
-      new_star.save
-    end
+
 end

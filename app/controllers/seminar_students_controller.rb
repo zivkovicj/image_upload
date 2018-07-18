@@ -61,13 +61,12 @@ class SeminarStudentsController < ApplicationController
   
   def update
     @ss = SeminarStudent.find(params[:id])
-    @this_com_stud = CommodityStudent.find_by(params[:commodity_student_id]) if params[:commodity_student_id]
     if params[:bucks_to_add]
       @ss.update(:bucks_owned => @ss.bucks_owned + params[:bucks_to_add].to_i)
     elsif params[:use]
-      use_commodity
-    elsif params[:commodity_student_id]
-      buy_commodity
+      commodity_use
+    elsif params[:multiplier]
+      commodity_buy
     else
       req_type = params[:seminar_student][:req_type]
       req_id = params[:seminar_student][:req_id]  
@@ -94,7 +93,12 @@ class SeminarStudentsController < ApplicationController
                                   :learn_request, :pref_request, :present)
       end
       
-      def buy_commodity
+      def set_or_create_com_stud
+        @this_com_stud = CommodityStudent.find_or_create_by(:user => @ss.user, :commodity => Commodity.find(params[:commodity_id]))
+      end
+      
+      def commodity_buy
+        set_or_create_com_stud
         multiplier = params[:multiplier].to_i
         commode = @this_com_stud.commodity
         
@@ -109,7 +113,8 @@ class SeminarStudentsController < ApplicationController
         end
       end
       
-      def use_commodity
+      def commodity_use
+        set_or_create_com_stud
         @this_com_stud.update(:quantity => @this_com_stud.quantity - 1)
         
         term = @ss.seminar.term_for_seminar

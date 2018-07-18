@@ -72,10 +72,13 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
     end
     
     test "new teacher new school" do
+        commodity_count = Commodity.count
+
         goto_signup_page
         teacher_form_stuff('Create My Account')
         @this_teacher = Teacher.last
         teacher_assertions(@this_teacher)
+        assert_equal commodity_count + 1, Commodity.count
         
         assert_nil @this_teacher.school
         fill_in "school_name", with: "Slunk Elementary"

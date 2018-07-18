@@ -48,8 +48,6 @@ class StudentsClassPageTest < ActionDispatch::IntegrationTest
         assert @seminar.students.include?(@student_2)
         assert_not @student_2.seminars.include?(sem_2)
         assert_not sem_2.students.include?(@student_2)
-        old_commodity_student_count = @student_2.commodity_students.count
-        assert old_commodity_student_count > 0
         
         capybara_login(@teacher_1)
         click_on("scoresheet_#{@seminar.id}")
@@ -80,26 +78,7 @@ class StudentsClassPageTest < ActionDispatch::IntegrationTest
         assert_nil new_gs_1.checkpoints.find_by(:sequence => 2).teacher_comment
         assert_nil new_gs_1.checkpoints.find_by(:sequence => 3).student_comment
         
-        assert_equal old_commodity_student_count, @student_2.commodity_students.count
-        
         assert_not_nil @student_2.objective_students.find_by(:objective => new_seminar_objective)
-    end
-    
-    test "move student and create commodity student" do
-        @other_teacher.commodities.create(:name => "Scooter")
-        sem_2 = @teacher_1.seminars.second
-        sem_2.teachers << @other_teacher
-        old_commodity_student_count = @student_2.commodity_students.count
-        assert old_commodity_student_count > 0
-        
-        capybara_login(@teacher_1)
-        click_on("scoresheet_#{@seminar.id}")
-        click_on(@student_2.last_name_first)
-        find("#navribbon_move_or_remove").click
-        click_on("Move to #{sem_2.name}")
-        
-        @student_2.reload
-        assert_equal old_commodity_student_count + 1, @student_2.commodity_students.count
     end
     
     test "remove student from class" do

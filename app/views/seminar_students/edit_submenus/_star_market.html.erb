@@ -31,14 +31,15 @@
     
     <% @teachers.each do |teacher| %>
         <% teacher.commodities.each do |commode| %>
-            <% com_stud = commode.commodity_students.find_by(:user => @student) %>
-            <% com_id = com_stud.id %>
+            <% student_quantity = 0 %>
+            <% student_quantity = commode.commodity_students.find_by(:user => @student)&.quantity || 0 %>
+            <% com_id = commode.id %>
             <% price = commode.current_price %>
             <tr>
                 <td><%= image_tag(commode.image_url(:thumb).to_s) %></td>
                 <td><%= commode.name.pluralize %></td>
                 <td>
-                    <h2><div class="singleOption" id="quantity_<%= com_id %>"><%= com_stud.quantity %></div></h2>
+                    <h2><div class="singleOption" id="quantity_<%= com_id %>"><%= student_quantity %></div></h2>
                 </td>
                 <td>&emsp;&emsp;</td>
                 <td> $ <span id="price_<%= com_id %>"><%= price %></span></td>
@@ -46,16 +47,16 @@
                 <!-- Buy Button -->
                 <% visible_class_buy = (@ss.bucks_owned >= price && commode.quantity > 0) ? "" : "currently_hidden" %>
                 <td>
-                    <div class="btn btn-small btn-primary buy_commode <%= visible_class_buy %>" seminar_student_id="<%= ss_id %>" commodity_student_id="<%= com_id %>" 
+                    <div class="btn btn-small btn-primary buy_commode <%= visible_class_buy %>" seminar_student_id="<%= ss_id %>" commodity_id="<%= com_id %>" 
                             multiplier="1" id="buy_button_<%= com_id %>">Buy</div>
                 </td>
                 
                 <!-- Sell Button and School Supply Display -->
-                <% visible_class_use_and_sell = com_stud.quantity > 0 ? "" : "currently_hidden" %>
+                <% visible_class_use_and_sell = student_quantity > 0 ? "" : "currently_hidden" %>
                 <td>
                     <small><span id="commodity_quantity_<%= com_id %>"><%= commode.quantity %></span> left</small> &nbsp;    
                     <div class="btn btn-small btn-primary buy_commode <%= visible_class_use_and_sell %>"
-                        seminar_student_id="<%= ss_id %>" commodity_student_id="<%= com_id %>" 
+                        seminar_student_id="<%= ss_id %>" commodity_id="<%= com_id %>" 
                         multiplier="-1" id="sell_button_<%= com_id %>">Sell</div>
                 </td>
                 
@@ -63,7 +64,7 @@
                 <td></td>
                 <td>
                     <div class="btn btn-small btn-primary use_commode <%= visible_class_use_and_sell %>"
-                        seminar_student_id="<%= ss_id %>" commodity_student_id="<%= com_id %>"
+                        seminar_student_id="<%= ss_id %>" commodity_id="<%= com_id %>"
                         multiplier="-1" id="use_button_<%= com_id %>">Use</div>
                     &emsp; <small><span id="used_toward_grade"><%= @ss.stars_used_toward_grade[@term] %></span> used this term</small>
                 </td>

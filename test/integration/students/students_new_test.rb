@@ -13,12 +13,10 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         should_score_record = [[nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil]]
         assert_equal 1, @teacher_1.verified
         assert_not_nil @teacher_1.school
-        assert @teacher_1.commodities.count > 0
         assignment_count = @seminar.objectives.count
         old_ss_count = SeminarStudent.count
         old_score_count = ObjectiveStudent.count
         old_goal_student_count = @seminar.goal_students.count
-        old_commidity_student_count = CommodityStudent.count
         
         go_to_create_student_view
         
@@ -52,7 +50,6 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_equal old_score_count + (assignment_count*5), ObjectiveStudent.count
         assert_equal old_ss_count + 5, SeminarStudent.count
         assert_equal old_goal_student_count + 20, @seminar.goal_students.count
-        assert_equal old_commidity_student_count + 5, CommodityStudent.count
         @gs = @seminar.goal_students.order(:created_at).last
         assert_equal 4, @gs.checkpoints.count
         

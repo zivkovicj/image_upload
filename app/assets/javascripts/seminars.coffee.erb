@@ -61,7 +61,7 @@ ready = ->
                         req_type: req_type
                         req_id: req_id     
                         
-    if $('.add_bucks').length > 0
+    if $('.add_bucks').length > 0 || $('.buy_commode').length > 0 || $('.use_commode').length > 0
         $('.add_bucks').unbind( "click" )
     
         seminar_student_id = 0
@@ -75,7 +75,7 @@ ready = ->
         url = ""
         
         set_market_attributes = (th) ->
-            com_id = $(th).attr('commodity_student_id')
+            com_id = $(th).attr('commodity_id')
             current_cash = parseInt($('#current_cash').text())
             multiplier = parseInt($(th).attr('multiplier'))
             
@@ -115,6 +115,7 @@ ready = ->
                     bucks_to_add: amount
                     
         $('.buy_commode').on "click", ->
+            console.log("clicked")
             set_sem_stud_url($(this))
             set_market_attributes($(this))
             price = parseInt($('#price_'+com_id).text())
@@ -133,7 +134,7 @@ ready = ->
                 url: url,
                 dataType: "json"
                 data:
-                    commodity_student_id: com_id
+                    commodity_id: com_id
                     multiplier: multiplier
                         
         $('.use_commode').on "click", ->
@@ -151,7 +152,7 @@ ready = ->
                 url: url,
                 dataType: "json"
                 data:
-                    commodity_student_id: com_id
+                    commodity_id: com_id
                     use: 1
     
     if $('.achievement_change').length > 0

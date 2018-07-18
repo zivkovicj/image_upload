@@ -18,18 +18,9 @@ class SeminarStudent < ApplicationRecord
     
     private
         def add_student_stuff
-            new_student_commodities
             new_student_goals
             new_student_scores
             new_student_pretest_keys
-        end
-        
-        def new_student_commodities
-            seminar.teachers.each do |teacher|
-                teacher.commodities.each do |commode|
-                    commode.commodity_students.create(:user => user) if commode.commodity_students.find_by(:user => user) == nil
-                end
-            end
         end
         
         def new_student_goals

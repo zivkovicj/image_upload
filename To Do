@@ -45,16 +45,6 @@ Private Repo on Github
 Tried to find out why some students are occasionally being left alone in a group as the consultant. From a close look at the code, I cannot see why that's happening.
 Keep eyes open for that problem. 
 
-Manually test:
-    The appearance and disappearance of keys when teacher grants them.
-
-
-
-
-
-            
-
-
 
 
 COMMODITY-STUDENT CREATION UPON STUDENT BUYING
@@ -65,6 +55,20 @@ Instead, create the commodity student when a student buys something.
     Back-end finds the com_stud id, or creates one
 
 
+
+
+ FAIL["test_create_new_students", StudentsNewTest, 463.68621570197865]
+ test_create_new_students#StudentsNewTest (463.69s)
+        Expected: 7
+          Actual: 2
+        test/integration/students/students_new_test.rb:55:in `block in <class:StudentsNewTest>'
+
+
+SECURITY VULNERABILITES
+    loofah
+    nokogiri
+    rails-html-sanitizer
+    sprockets 
 
 
 CREATE ITEMS FOR SCHOOL

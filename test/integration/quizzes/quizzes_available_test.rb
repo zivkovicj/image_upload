@@ -70,7 +70,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "quiz with questions" do
-        @test_os.update(:teacher_granted_keys => 2)
+        @test_os.update(:teacher_granted_keys => 2, :points => 4)
         ObjectiveStudent.find_by(:objective => @objective_10, :user => @student_2).update(:points => 2)
         
         go_to_first_period
