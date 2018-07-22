@@ -3,7 +3,7 @@
 <% provide(:headerText, "Edit #{@school.name}" ) %>
 <% provide(:headerPic, "square_fractal.png") %>
 
-<% @submenu_tabs = [["Name and City", "name_and_city", false], ["Admin Levels", "admin_levels", true], ["Term Dates", "term_dates", false]] %>
+<% @submenu_tabs = [["School Info", "school_info", false], ["Admin Levels", "admin_levels", false], ["Term Dates", "term_dates", false]] %>
 <% @submenu_tabs << ["Verify Faculty", "verify_faculty", false] if @unverified_teachers && @unverified_teachers.count > 0 %>
 
 <%= render 'shared/navribbons/main_navribbon' %>

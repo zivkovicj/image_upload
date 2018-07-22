@@ -1,6 +1,6 @@
 class SchoolsController < ApplicationController
     
-    before_action :is_school_admin, only: [:show, :edit, :update, :destroy]
+    before_action :is_school_admin, :except => [:new, :create]
 
     include TeachersHelper
 
@@ -13,6 +13,7 @@ class SchoolsController < ApplicationController
         if params[:school][:name].present?
             @school = School.new(school_params)
             if @school.save
+                @school.update(:market_name => "#{@school.name} Market", :school_currency_name => "#{@school.name} Bucks")
                 @teacher.update(:school => @school, :verified => 1, :school_admin => 2)
                 flash[:success] = "Welcome to Mr.Z School!"
                 redirect_to current_user
@@ -50,7 +51,7 @@ class SchoolsController < ApplicationController
     private
     
         def school_params
-          params.require(:school).permit(:name, :city, :state)
+          params.require(:school).permit(:name, :city, :state, :market_name, :school_currency_name)
         end
         
         def new_school_stuff
@@ -58,15 +59,6 @@ class SchoolsController < ApplicationController
             first_step = School.order(created_at: :desc)
             second_step = (params[:search].blank? ? first_step : first_step.search(params[:search], params[:whichParam]))
             @all_schools = second_step.limit(10)
-        end
-        
-        def is_school_admin
-            if current_user == nil
-                redirect_to login_url 
-                return
-            elsif current_user.school_admin == 0
-                redirect_to current_user
-            end
         end
         
         def verify_update

@@ -1,0 +1,5 @@
+<% if current_user.type == "Student" %>
+    <%= render 'shared/market_buttons/buy_button' %>
+<% else %>
+    <%= link_to 'Edit', edit_commodity_path(@commode), :id => "edit_#{@commode.id}" %>
+<% end %>

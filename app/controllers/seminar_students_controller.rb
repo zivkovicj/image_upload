@@ -32,6 +32,7 @@ class SeminarStudentsController < ApplicationController
     @seminar = @ss.seminar
     @term = @seminar.term_for_seminar
     @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
+    @bucks_owned = @ss.seminar_bucks_owned
     
     @this_checkpoint = @seminar.which_checkpoint
     @gs = @student.goal_students.find_by(:seminar => @seminar, :term => @term)
@@ -62,7 +63,7 @@ class SeminarStudentsController < ApplicationController
   def update
     @ss = SeminarStudent.find(params[:id])
     if params[:bucks_to_add]
-      @ss.update(:bucks_owned => @ss.bucks_owned + params[:bucks_to_add].to_i)
+      @ss.update(:seminar_bucks_owned => @ss.seminar_bucks_owned + params[:bucks_to_add].to_i)
     elsif params[:use]
       commodity_use
     elsif params[:multiplier]
@@ -102,13 +103,13 @@ class SeminarStudentsController < ApplicationController
         multiplier = params[:multiplier].to_i
         commode = @this_com_stud.commodity
         
-        buy_allowed = multiplier > 0 && @ss.bucks_owned > 0 && commode.quantity > 0
+        buy_allowed = multiplier > 0 && @ss.seminar_bucks_owned > 0 && commode.quantity > 0
         sell_allowed = multiplier < 0 && @this_com_stud.quantity > 0
         if buy_allowed || sell_allowed
           @this_com_stud.update(:quantity => @this_com_stud.quantity + multiplier)
           
           cost = (commode.current_price * multiplier)
-          @ss.update(:bucks_owned => @ss.bucks_owned - cost)
+          @ss.update(:seminar_bucks_owned => @ss.seminar_bucks_owned - cost)
           commode.update(:quantity => commode.quantity - 1)
         end
       end

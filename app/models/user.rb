@@ -5,6 +5,7 @@ class User < ApplicationRecord
     before_create       :create_activation_digest
     after_create        :update_last_login
     
+    has_many    :commodities
     has_many    :objectives
     has_many    :questions
     has_many    :labels
@@ -18,6 +19,7 @@ class User < ApplicationRecord
     
     attribute :verified, :integer, default: 0
     attribute :school_admin, :integer, default: 0
+    attribute :school_bucks_owned, :integer, default: 0
 
     validates :first_name, length: {maximum: 25},
             presence: true

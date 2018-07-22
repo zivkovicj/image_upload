@@ -39,6 +39,6 @@ class SchoolsControllerTest < ActionDispatch::IntegrationTest
     test "no login url to teacher edit" do
         visit(@school_url)
         assert_no_selector('h2', :text => "Edit #{@school.name}")
-        assert_selector('h1', "Log in")
+        assert_selector('h1', :text => "Log in")
     end
 end

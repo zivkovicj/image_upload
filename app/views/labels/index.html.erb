@@ -17,7 +17,7 @@
   <% if !@labels.empty? %>
   
     <div>
-      <%= will_paginate %>
+      <%= will_paginate @labels %>
         <table>
           <% @labels.each do |label| %>
             <tr class="users">

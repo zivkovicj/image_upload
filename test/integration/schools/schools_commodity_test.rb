@@ -5,6 +5,7 @@ class SchoolsTermTest < ActionDispatch::IntegrationTest
     def setup
         setup_users
         setup_schools
+        setup_commodities
     end 
 
     test "create new stars" do
@@ -13,6 +14,7 @@ class SchoolsTermTest < ActionDispatch::IntegrationTest
         
         @teacher_1_star.reload
         # Should add 81
+        
         assert_equal 466, @teacher_1_star.quantity
         assert_equal Date.today, @teacher_1_star.date_last_produced
     end

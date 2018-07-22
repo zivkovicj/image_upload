@@ -111,3 +111,8 @@
   <%= button_to "Edit #{@school.name}", edit_school_path(@school), class: "btn btn-lg btn-primary", :method => :get,
     :id => "edit_school_#{@school.id}" %>
 <% end %>
+
+<% if @teacher.school_admin > 0 %>
+  <%= link_to "Manage #{@school.name} Market", commodities_path(:school_id => @school.id), class: "btn btn-lg btn-primary", :method => :get,
+    :id => "manage_market" %>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180713171737) do
+ActiveRecord::Schema.define(version: 20180721222358) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20180713171737) do
     t.datetime "date_last_produced"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
+    t.boolean  "deliverable"
     t.index ["school_id"], name: "index_commodities_on_school_id"
     t.index ["user_id"], name: "index_commodities_on_user_id"
   end
@@ -44,8 +45,9 @@ ActiveRecord::Schema.define(version: 20180713171737) do
     t.integer  "user_id"
     t.integer  "quantity"
     t.integer  "avg_price_paid"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "quant_delivered"
     t.index ["commodity_id"], name: "index_commodity_students_on_commodity_id"
     t.index ["user_id"], name: "index_commodity_students_on_user_id"
   end
@@ -222,10 +224,12 @@ ActiveRecord::Schema.define(version: 20180713171737) do
     t.string   "name"
     t.string   "city"
     t.string   "state"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
     t.integer  "term"
     t.text     "term_dates"
+    t.string   "market_name"
+    t.string   "school_currency_name"
   end
 
   create_table "seminar_students", force: :cascade do |t|
@@ -238,7 +242,7 @@ ActiveRecord::Schema.define(version: 20180713171737) do
     t.integer  "consulting_stars"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
-    t.integer  "bucks_owned"
+    t.integer  "seminar_bucks_owned"
     t.integer  "gems_given_toward_reward"
     t.text     "stars_used_toward_grade"
     t.index ["seminar_id", "user_id"], name: "index_seminar_students_on_seminar_id_and_user_id"
@@ -309,13 +313,15 @@ ActiveRecord::Schema.define(version: 20180713171737) do
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
     t.datetime "last_login"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
     t.integer  "school_id"
     t.integer  "verified"
     t.integer  "sponsor_id"
     t.integer  "school_year"
     t.integer  "school_admin"
+    t.string   "teacher_currency_name"
+    t.integer  "school_bucks_owned"
   end
 
 end

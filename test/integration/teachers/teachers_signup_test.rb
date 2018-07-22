@@ -76,6 +76,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
 
         goto_signup_page
         teacher_form_stuff('Create My Account')
+        
         @this_teacher = Teacher.last
         teacher_assertions(@this_teacher)
         assert_equal commodity_count + 1, Commodity.count
@@ -90,6 +91,8 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         @new_school = School.find_by(:name => "Slunk Elementary")
         assert_equal "Bucketheadland", @new_school.city
         assert_equal "UT", @new_school.state
+        assert_equal "Slunk Elementary Market", @new_school.market_name
+        assert_equal "Slunk Elementary Bucks", @new_school.school_currency_name
         assert_equal @new_school, @this_teacher.school
         assert_equal @old_school_count + 1, School.count
         assert_equal 0, @new_school.term

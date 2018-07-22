@@ -1,9 +1,20 @@
 
 star:
     name: "Star"
-    user_id: <%= User.find_by(:last_name => "Archer").id %>
+    school_id: nil
+    user: archer
     production_rate: 10
     current_price: 5
     production_day: 2
     quantity: 400
+    date_last_produced: <%= Date.today %>
+    
+burger_salad:
+    name: "Burger Salad"
+    school: school_1
+    production_rate: 10
+    current_price: 5
+    production_day: 2
+    quantity: 400
+    date_last_produced: <%= Date.today %>
     

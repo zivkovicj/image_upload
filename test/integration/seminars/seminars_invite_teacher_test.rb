@@ -12,9 +12,12 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         @old_st_count = SeminarTeacher.count
     end
     
-    def send_the_invite
+    def go_to_invite_screen
         capybara_login(@teacher_1)
-        click_on("edit_seminar_#{@seminar.id}")
+        click_on("edit_seminar_#{@seminar.id}") 
+    end
+    
+    def send_the_invite
         find("#navribbon_shared_teachers").click
         find("#invite_teacher_#{@other_teacher.id}").click
          
@@ -31,16 +34,20 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     
     test "send invites" do
         assert @teacher_1.school.teachers.include?(@other_teacher)
+        assert @teacher_1.seminar_teachers.find_by(:seminar => @seminar).can_edit
         assert_not SeminarTeacher.find_by(:seminar => @seminar, :user => @other_teacher)
+        
+        go_to_invite_screen
+        
+        # This section makes sure that buttons don't appear for a teacher to invite herself or revoke her own editing privileges.
+        assert_selector('a', :id => "invite_teacher_#{@other_teacher.id}")
+        assert_no_selector('a', :id => "invite_teacher_#{@teacher_1.id}")
         
         send_the_invite
         
-        # This section makes sure that buttons don't appear for a teacher to invite herself or revoke her own editing privileges.
-        assert_selector('a', "invite_teacher_#{@other_teacher.id}")
-        assert_no_selector('a', :id => "invite_teacher_#{@teacher_1.id}")
-        assert_selector('a', "stop_edit_privileges_#{@other_teacher.id}")
-        assert_no_selector('a', :id => "stop_edit_privileges_#{@teacher_1.id}")
-        
+        assert_selector('a', :id => "give_edit_privileges_#{@other_teacher.id}")
+        assert_no_selector('a', :id => "give_edit_privileges_#{@teacher_1.id}")
+    
         # Can't invite unverified teacher
         assert_no_selector('a', :id => "invite_teacher_#{@unverified_teacher.id}")
         
@@ -52,6 +59,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     end
     
     test "invite and accept" do
+        go_to_invite_screen
         send_the_invite
         click_on("Log out")
         
@@ -67,6 +75,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     end
     
     test "invite and decline" do
+        go_to_invite_screen
         send_the_invite
         click_on("Log out")
         
@@ -79,6 +88,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     end
     
     test "more invites to accept" do
+        go_to_invite_screen
         send_the_invite
         send_another_invite
         click_on("Log out")
@@ -97,6 +107,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     end
     
     test "more invites to decline" do
+        go_to_invite_screen
         send_the_invite
         send_another_invite
         click_on("Log out")

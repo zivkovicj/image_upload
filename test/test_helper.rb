@@ -61,10 +61,6 @@ class ActiveSupport::TestCase
     Student.all[71..90].each do |student|
       student.update(:sponsor => @other_teacher)
     end
-    
-    @teacher_1_star = @teacher_1.commodities.find_by(:name => "Star")
-    @testing_date_last_produced = "Sat, 16 Jun 2018 00:00:00 UTC +00:00"
-    @teacher_1_star.update(:date_last_produced => @testing_date_last_produced)
   end
   
   def setup_schools
@@ -77,6 +73,13 @@ class ActiveSupport::TestCase
     @seminar_2 = seminars(:two)
     @seminar_3 = seminars(:three)
     @avcne_seminar = seminars(:archer_can_view_not_edit)
+  end
+  
+  def setup_commodities
+    @testing_date_last_produced = "Sat, 16 Jun 2018 00:00:00 UTC +00:00"
+    @teacher_1_star = @teacher_1.commodities.first
+    @teacher_1_star.update(:date_last_produced => @testing_date_last_produced)
+    @commodity_2 = Commodity.second
   end
   
   def setup_consultancies

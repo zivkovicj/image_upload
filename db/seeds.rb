@@ -340,7 +340,13 @@ school_array =
     ["Clark High School", "Las Vegas", "NV"]]
     
 school_array.each do |school|
-    School.create(:name => school[0], :city => school[1], :state => school[2])
+    School.create(:name => school[0], :city => school[1], :state => school[2], :market_name => "#{school[0]} Market", :school_currency_name => "#{school[0]} Bucks")
+end
+
+30.times do |n|
+    item = School.first.commodities.new(:name => "Item #{n}", :current_price => n, :quantity => 3*n)
+    item.image = Picture.all[rand(Picture.count)].image
+    item.save
 end
 
 goal_array = [

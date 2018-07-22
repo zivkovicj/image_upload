@@ -4,10 +4,10 @@
 <table class="table-borderless">
     <tr>
         <td class="check_2">Bucks in </br>Savings </td>
-        <td><h2><strong><div class="singleOption">$ <span id="current_cash"><%= @ss.bucks_owned %></span></div></strong></h2></td>
+        <td><h2><strong><div class="singleOption">$ <span id="current_cash"><%= @bucks_owned %></span></div></strong></h2></td>
         <% if current_user.type == "Teacher" %>
             <td>&emsp;&emsp;</td>
-            <td class="add_bucks" seminar_student_id="<%= ss_id %>" amount="<%= @seminar.default_buck_increment %>">
+            <td class="add_bucks" seminar_student_id="<%= @ss_id %>" amount="<%= @seminar.default_buck_increment %>">
                 <div class="btn btn-small btn-primary" id="add_buck_increment"><%= "+#{@seminar.default_buck_increment}" %></div>
             </td>
             <td>&emsp;</td>
@@ -15,7 +15,7 @@
                 <div class="singleOption">
                     </br>
                     <input id="buck_spinbox" TYPE="NUMBER" MIN="-10" MAX="10" STEP="1" VALUE="1" SIZE="6">
-                    <div class="add_bucks btn btn-small btn-primary" seminar_student_id="<%= ss_id %>" amount="X">
+                    <div class="add_bucks btn btn-small btn-primary" seminar_student_id="<%= @ss_id %>" amount="X">
                         Add
                     </td>
                     &nbsp;
@@ -31,44 +31,26 @@
     
     <% @teachers.each do |teacher| %>
         <% teacher.commodities.each do |commode| %>
-            <% student_quantity = 0 %>
-            <% student_quantity = commode.commodity_students.find_by(:user => @student)&.quantity || 0 %>
-            <% com_id = commode.id %>
-            <% price = commode.current_price %>
+            <% @com_id = commode.id %>
+            <% @com_quant = commode.quantity %>
+            <% @price = commode.current_price %>
+            <% @student_quantity = commode.commodity_students.find_by(:user => @student)&.quantity || 0 %>
+
             <tr>
                 <td><%= image_tag(commode.image_url(:thumb).to_s) %></td>
                 <td><%= commode.name.pluralize %></td>
                 <td>
-                    <h2><div class="singleOption" id="quantity_<%= com_id %>"><%= student_quantity %></div></h2>
+                    <h2><div class="singleOption" id="quantity_<%= @com_id %>"><%= @student_quantity %></div></h2>
                 </td>
                 <td>&emsp;&emsp;</td>
-                <td> $ <span id="price_<%= com_id %>"><%= price %></span></td>
+                <td> $ <span id="price_<%= @com_id %>"><%= @price %></span></td>
                 
-                <!-- Buy Button -->
-                <% visible_class_buy = (@ss.bucks_owned >= price && commode.quantity > 0) ? "" : "currently_hidden" %>
-                <td>
-                    <div class="btn btn-small btn-primary buy_commode <%= visible_class_buy %>" seminar_student_id="<%= ss_id %>" commodity_id="<%= com_id %>" 
-                            multiplier="1" id="buy_button_<%= com_id %>">Buy</div>
-                </td>
+                <%= render 'shared/market_buttons/buy_button' %>
                 
-                <!-- Sell Button and School Supply Display -->
-                <% visible_class_use_and_sell = student_quantity > 0 ? "" : "currently_hidden" %>
-                <td>
-                    <small><span id="commodity_quantity_<%= com_id %>"><%= commode.quantity %></span> left</small> &nbsp;    
-                    <div class="btn btn-small btn-primary buy_commode <%= visible_class_use_and_sell %>"
-                        seminar_student_id="<%= ss_id %>" commodity_id="<%= com_id %>" 
-                        multiplier="-1" id="sell_button_<%= com_id %>">Sell</div>
-                </td>
-                
-                <!-- Use Button and Use Record -->
+                <% @visible_class_use_and_sell = @student_quantity > 0 ? "" : "currently_hidden" %>
+                <%= render 'shared/market_buttons/sell_button' %>
                 <td></td>
-                <td>
-                    <div class="btn btn-small btn-primary use_commode <%= visible_class_use_and_sell %>"
-                        seminar_student_id="<%= ss_id %>" commodity_id="<%= com_id %>"
-                        multiplier="-1" id="use_button_<%= com_id %>">Use</div>
-                    &emsp; <small><span id="used_toward_grade"><%= @ss.stars_used_toward_grade[@term] %></span> used this term</small>
-                </td>
-            </td>
+                <%= render 'shared/market_buttons/use_button' %>
             </tr>
         <% end %>
     <% end %>

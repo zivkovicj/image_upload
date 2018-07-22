@@ -5,7 +5,7 @@ barebones: &minimal
   learn_request:
   pref_request:
   present: true
-  bucks_owned: 5
+  seminar_bucks_owned: 5
   stars_used_toward_grade: [0,0,0,0]
 
 <% (0..50).each do |n| %>

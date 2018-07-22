@@ -34,6 +34,15 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def is_school_admin
+    if current_user == nil
+        redirect_to login_url 
+        return
+    elsif current_user.school_admin == 0
+        redirect_to current_user
+    end
+  end
+  
   def friendly_date(input)
       Date.strptime(input, "%m/%d/%Y")
   end
@@ -56,7 +65,6 @@ class ApplicationController < ActionController::Base
     @teacher.commodities.each do |commode|
       today_weekday_num = Date.today.wday
       days_since_last = (Date.today - commode.date_last_produced.to_date).to_i
-      
       if (today_weekday_num >= commode.production_day && days_since_last > 1) || (days_since_last > 7)
         num_students = @teacher.students.count
         full_term_production = num_students * commode.production_rate

@@ -16,7 +16,7 @@
   <% if !@questions.empty? %>
   
     <div>
-      <%= will_paginate %>
+      <%= will_paginate @questions %>
         <% @questions.each do |question| %>
           <table>
             <% if current_user.type == "Admin" %>

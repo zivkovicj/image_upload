@@ -1,13 +1,29 @@
-<% @commodities.each do |commode| %>
-      <tr>
-        <td><%#= render 'shared/delete_and_confirm', object: commode %></td>
-        <td><%= commode.name %></td>
-        <td><%= image_tag(commode.image_url(:thumb).to_s) %></td>
-        <td>
-          <%# if picture.user == current_user || current_user.type == "Admin" %>
-            <%= link_to 'Edit', edit_commodity_path(commode), :id => "edit_#{commode.id}" %>
-          <%# end %>
-        </td>
-        
-      </tr>
-    <% end %>
+<% provide(:title, 'School Market') %>
+<% provide(:headerText, 'School Market') %>
+<% provide(:headerPic, 'objectives.png') %>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/headline' %>
+
+<%= will_paginate @commodities %>
+<table class="table-borderless">
+  <% @commodities.each do |commode| %>
+    <% @commode = commode %>
+    <% @price = commode.current_price %>
+    <% @com_quant = commode.quantity %>
+    <tr>
+      <td height="100"><%= image_tag(commode.image_url(:thumb).to_s) %></td>
+      <td><%= commode.name %></td>
+      <td class="center">$ <%= @price %></td>
+      <%= render 'edit_or_buy' %>
+      <%= render 'delete_if_faculty' %> <!-- Doesn't include the 'td' tag because the td itself shouldn't exist for students -->
+      <td class="small_spacer"></td>
+      <td class="center"><small><%= @com_quant %> in stock</small></td>
+      
+    </tr>
+  <% end %>
+</table>
+<%= will_paginate %>
+</br>
+
+<%= link_to new_item_button_text, new_commodity_path(:school_id => @school.id), :class => "btn btn-primary" %>

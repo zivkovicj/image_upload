@@ -1,16 +1,28 @@
 
 Poltergeist Tests are working shitty.
 Between each update, manually test:
-    Giving quiz keys
-    Taking quiz keys
-    The appearance and disappearance of keys when teacher grants them.
+    Giving quiz keys, student screen
+    Giving quiz keys, objective screen, single student
+    Giving quiz keys, objective screen, whole class
+    Taking quiz keys, student screen
+    Taking quiz keys, objective screen
     Changing Student's Teaching Request, Learning Request, and Preference Request
-    Giving a student bucks.  Buying, selling, using items.
     Buy, sell, and use buttons in star market
         Visible from beginning when needed
         Appearing and disappearing when needed
     Student cannot change quiz answers after the quiz is finished. 
 
+
+
+
+
+
+2.67 COMMODITY-STUDENT CREATION UPON STUDENT BUYING
+App currently creates a commodity student every time a commodity is created.
+Instead, create the commodity student when a student buys something.
+    Unless one already exists.
+    View for class star market will load with commodity id instead of commodity student id
+    Back-end finds the com_stud id, or creates one
 
 
 

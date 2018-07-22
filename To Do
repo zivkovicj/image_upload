@@ -47,46 +47,51 @@ Keep eyes open for that problem.
 
 
 
-COMMODITY-STUDENT CREATION UPON STUDENT BUYING
-App currently creates a commodity student every time a commodity is created.
-Instead, create the commodity student when a student buys something.
-    Unless one already exists.
-    View for class star market will load with commodity id instead of commodity student id
-    Back-end finds the com_stud id, or creates one
 
 
 
 
- FAIL["test_create_new_students", StudentsNewTest, 463.68621570197865]
- test_create_new_students#StudentsNewTest (463.69s)
-        Expected: 7
-          Actual: 2
-        test/integration/students/students_new_test.rb:55:in `block in <class:StudentsNewTest>'
 
 
-SECURITY VULNERABILITES
-    loofah
-    nokogiri
-    rails-html-sanitizer
-    sprockets 
+
+CREATE SCHOOL ITEMS
+
+V Create commodities for school market
+    V School edit submenus includes market
+        V Market view includes button to "Create item for school market"
+        V Create item screen allows admin to change name, image, cost, and quantity
+        V When saved, goes with school instead of teacher
+    V Custom commodities cannot be named "star" or "gem"
+    V Only level 1 or level 2 admin can do it
+V Index Commodities
+V Edit Commodities
+V Delete Commodities
+V Will probably need to paginate
+V Level 2 Admin can change the name of the school's currency and market in the "School Info" tab
+V Default values for currency name and market name
+V School Edit page needs to set the state to default to the school's state. 
+V Student has option of "School Market" upon logging in
+If student buys school item, buy button sends school param
+    Otherwise, it sends seminar param
+    Controller determines which bucks to subtract
+V But student cannot edit or delete.  Only buy.
+V When viewing school market, student can see all items that were created for the whole school
 
 
-CREATE ITEMS FOR SCHOOL
+Migrate
+    School market name
+    School currency name
+    Teacher currency name
+    School_bucks_owned
+    
+Two errors when checking live site.
+    One when making DC group.
+    I think the other was in creating an objective.
+    Adding keys for whole class
 
-Create commodities for school market
-    School edit submenus includes market
-        Market view includes button to "Create item for school"
-        Create item screen allows admin to change name, image, cost, and quantity
-        When saved, goes with school instead of teacher
-    Custom commodities cannot be named "star" or "gem"
-    Only level 1 or level 2 admin can do it
-Change "Name and City" submenu tab to "School Info"
-Level 2 Admin can change the name of the school's currency and market in the "School Info" tab
-Student has option of "School Market" upon logging in
-When viewing school market, student can see all items that were created for the whole school
-    But not items that an individual teacher created
 
-STUDENTS CAN ACCESS ALL AVAILABLE COMMODITIES
+
+STUDENTS CAN BUY SCHOOL COMMODITIES
 
 Migrate
     Commodity_Student
@@ -103,6 +108,8 @@ Faculty can mark an item as delivered
 Javascript for making the buy and sell buttons appear and disappear needs to iterate through all
     commodities and have different results for the different prices
 Teacher can open and close availability for certain commodities
+Student has a link to the school market from her class page
+Stars and gems are marked false by default in the deliverable column
 
 
 
@@ -123,7 +130,7 @@ Mentor teacher can create new teachers who are automatically verified
 All of these admin teachers can create new students without placing them into a class
 Only stars and gems will offer the use button
 Teacher can allow and disallow the use of stars and gems in a specific class
-
+Cannot delete star or gem commodity
 
 
 TEACHER CAN TAKE CLASS CURRENCY (IN CASE OF A MISTAKE)
@@ -155,6 +162,7 @@ For the sake of performance, the method "set_pretests" should only be called whe
 Tests to add
 Adding bucks sometimes adds double or even quad.
 Seems to stop doing that after a refresh
+Check pagination everywhere it occurs
 
 
 

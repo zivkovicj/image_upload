@@ -122,7 +122,8 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         assert_equal 3, @os_2.priority
         assert_equal 0, @os_3.priority
         
-        assert_selector('h2', "Edit #{@seminar.name}")
+        
+        assert_selector('h2', :text => "Edit #{@seminar.name}")
     end
     
     test "delete seminar" do

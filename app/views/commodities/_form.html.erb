@@ -11,6 +11,13 @@
     </div>
   <% end %>
 
+  <% if @commodity.school %>
+    <% default_school_id = @commodity.school_id %>
+  <% else %>
+    <% default_school_id = params[:school_id] %>
+  <% end %>
+  <%= f.hidden_field :school_id, :value => default_school_id %>
+
   <div class="field">
     <%= f.label :name %>
     <%= f.text_field :name %>
@@ -20,9 +27,21 @@
     <%= f.label "add an image...." %>
     <%= f.file_field :image %>
   </div>
+  
+  <div class="row">
+    <div class="field col-sm-2">
+      <%= f.label "Cost" %>
+      <%= f.number_field :current_price, :value => 5 %>
+    </div>
+    <div class="field col-sm-2">
+      <%= f.label "Quantity" %>
+      <%= f.number_field :quantity, :value => 10 %>
+    </div>
+  </div>
+  
   </br>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit yield(:button_text), class: "btn btn-primary" %>
   </div>
 <% end %>

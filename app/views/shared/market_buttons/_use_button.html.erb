@@ -1,0 +1,6 @@
+<td>
+    <div class="btn btn-small btn-primary use_commode <%= @visible_class_use_and_sell %>"
+        seminar_student_id="<%= @ss_id %>" commodity_id="<%= @com_id %>"
+        multiplier="-1" id="use_button_<%= @com_id %>">Use</div>
+    &emsp; <small><span id="used_toward_grade"><%= @ss.stars_used_toward_grade[@term] %></span> used this term</small>
+</td>

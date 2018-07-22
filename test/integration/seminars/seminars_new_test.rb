@@ -30,7 +30,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         assert sem_teach.can_edit
         assert sem_teach.accepted
         
-        assert_selector('h2', "Edit #{@seminar.name}")
+        assert_selector('h2', :text => "Edit #{@seminar.name}")
     end
     
     test "seminar back link" do

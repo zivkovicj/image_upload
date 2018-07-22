@@ -5,6 +5,7 @@
 <%= render 'shared/headline' %>
 <h1><%= @student.full_name %></h1>
 
+
 <div class="requestBox preferenceBox">
     <div class="singleOption lowSingOpt">
         <h3><strong>Your Classes</strong></h3>
@@ -16,5 +17,10 @@
                 <h4 class="linkHeader"><%= ss.seminar.name %></h4>
             </div>
         <% end %>
+    <% end %>
+    <%= link_to commodities_path(:school_id => @school.id) do %>
+        <div class="singleOption lowSingOpt linkDiv hoverHigh">
+            <h4 class="linkHeader"><%= @school.market_name %></h4>
+        </div>
     <% end %>
 </div>

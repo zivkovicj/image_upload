@@ -211,7 +211,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         @test_obj_stud.update(:teacher_granted_keys => 0, :pretest_keys => 2, :current_scores => [1,nil,nil,nil])
         @first_mainassign = @objective_10.mainassigns.first
         @mainassign_os = @student_2.objective_students.find_by(:objective => @first_mainassign)
-        @mainassign_os.update(:teacher_granted_keys => 0, :pretest_keys => 2)
+        @mainassign_os.update(:teacher_granted_keys => 0, :pretest_keys => 2, :points => 0)
         
         go_to_first_period
         find("#navribbon_quizzes").click
