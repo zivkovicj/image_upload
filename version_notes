@@ -15,6 +15,29 @@ Between each update, manually test:
 
 
 
+2.686 CREATE SCHOOL ITEMS
+
+Create commodities for school market
+    School edit submenus includes market
+        Market view includes button to "Create item for school market"
+        Create item screen allows admin to change name, image, cost, and quantity
+        When saved, goes with school instead of teacher
+    Custom commodities cannot be named "star" or "gem"
+    Only level 1 or level 2 admin can do it
+Index Commodities
+Edit Commodities
+Delete Commodities
+Will probably need to paginate
+Level 2 Admin can change the name of the school's currency and market in the "School Info" tab
+Default values for currency name and market name
+School Edit page needs to set the state to default to the school's state. 
+Student has option of "School Market" upon logging in
+If student buys school item, buy button sends school param
+    Otherwise, it sends seminar param
+    Controller determines which bucks to subtract
+But student cannot edit or delete.  Only buy.
+When viewing school market, student can see all items that were created for the whole school
+
 
 
 2.67 COMMODITY-STUDENT CREATION UPON STUDENT BUYING
