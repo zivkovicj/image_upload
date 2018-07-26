@@ -13,7 +13,6 @@ class SchoolsController < ApplicationController
         if params[:school][:name].present?
             @school = School.new(school_params)
             if @school.save
-                @school.update(:market_name => "#{@school.name} Market", :school_currency_name => "#{@school.name} Bucks")
                 @teacher.update(:school => @school, :verified => 1, :school_admin => 2)
                 flash[:success] = "Welcome to Mr.Z School!"
                 redirect_to current_user

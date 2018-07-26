@@ -33,6 +33,7 @@ class SeminarStudentsController < ApplicationController
     @term = @seminar.term_for_seminar
     @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
     @bucks_owned = @ss.seminar_bucks_owned
+    @school_or_seminar = "seminar"
     
     @this_checkpoint = @seminar.which_checkpoint
     @gs = @student.goal_students.find_by(:seminar => @seminar, :term => @term)
@@ -64,10 +65,8 @@ class SeminarStudentsController < ApplicationController
     @ss = SeminarStudent.find(params[:id])
     if params[:bucks_to_add]
       @ss.update(:seminar_bucks_owned => @ss.seminar_bucks_owned + params[:bucks_to_add].to_i)
-    elsif params[:use]
-      commodity_use
-    elsif params[:multiplier]
-      commodity_buy
+    elsif params[:present]
+      @ss.update(:present => params[:present])
     else
       req_type = params[:seminar_student][:req_type]
       req_id = params[:seminar_student][:req_id]  
@@ -92,36 +91,6 @@ class SeminarStudentsController < ApplicationController
       def ss_params
         params.require(:seminar_student).permit(:seminar_id, :user_id, :teach_request, 
                                   :learn_request, :pref_request, :present)
-      end
-      
-      def set_or_create_com_stud
-        @this_com_stud = CommodityStudent.find_or_create_by(:user => @ss.user, :commodity => Commodity.find(params[:commodity_id]))
-      end
-      
-      def commodity_buy
-        set_or_create_com_stud
-        multiplier = params[:multiplier].to_i
-        commode = @this_com_stud.commodity
-        
-        buy_allowed = multiplier > 0 && @ss.seminar_bucks_owned > 0 && commode.quantity > 0
-        sell_allowed = multiplier < 0 && @this_com_stud.quantity > 0
-        if buy_allowed || sell_allowed
-          @this_com_stud.update(:quantity => @this_com_stud.quantity + multiplier)
-          
-          cost = (commode.current_price * multiplier)
-          @ss.update(:seminar_bucks_owned => @ss.seminar_bucks_owned - cost)
-          commode.update(:quantity => commode.quantity - 1)
-        end
-      end
-      
-      def commodity_use
-        set_or_create_com_stud
-        @this_com_stud.update(:quantity => @this_com_stud.quantity - 1)
-        
-        term = @ss.seminar.term_for_seminar
-        old_stars = @ss.stars_used_toward_grade[term]
-        @ss.stars_used_toward_grade[term] = old_stars + 1
-        @ss.save
       end
       
       def correct_ss_user

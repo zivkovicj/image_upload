@@ -66,6 +66,9 @@ class ActiveSupport::TestCase
   def setup_schools
     @school = @teacher_1.school
     @school.update(:term_dates => School.default_terms, :term => 1)
+    School.all.each do |school|
+      school.set_market_and_currency_name
+    end
   end
   
   def setup_seminars

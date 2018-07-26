@@ -64,7 +64,6 @@ ready = ->
     if $('.add_bucks').length > 0 || $('.buy_commode').length > 0 || $('.use_commode').length > 0
         $('.add_bucks').unbind( "click" )
     
-        seminar_student_id = 0
         com_id = 0
         current_cash = 0
         multiplier = 0
@@ -73,22 +72,41 @@ ready = ->
         new_com_quant = 0
         new_items = 0
         url = ""
+        school_or_seminar = "school"
+        seminar_id = 0
+        student_id = 0
         
         set_market_attributes = (th) ->
             com_id = $(th).attr('commodity_id')
             current_cash = parseInt($('#current_cash').text())
             multiplier = parseInt($(th).attr('multiplier'))
+            school_or_seminar = $(th).attr('school_or_seminar')
+            seminar_id = $(th).attr('seminar_id')
+            student_id = $(th).attr('student_id')
             
         item_stash_display = (com_id, multiplier) ->
             current_items = parseInt($('#quantity_'+com_id).text())
             new_items = current_items + multiplier 
             $('#quantity_'+com_id).text(new_items)
+            $('.quantity_show_'+com_id).removeClass('currently_hidden')
             
         button_displays = ->
-            if new_cash >= price && new_com_quant > 0
-                $('#buy_button_'+com_id).removeClass('currently_hidden')
-            else
-                $('#buy_button_'+com_id).addClass('currently_hidden')
+            $('.price_display').each (index, element) =>
+                price_com_id = $(element).attr('com_id')
+                console.log($('#commodity_quantity_'+price_com_id).text())
+                
+                if $('#commodity_quantity_'+price_com_id).text() < 1
+                    $('#unstocked_'+price_com_id).removeClass('currently_hidden')
+                    $('#cannot_buy_'+price_com_id).addClass('currently_hidden')
+                    $('#buy_button_'+price_com_id).addClass('currently_hidden')
+                else if new_cash < $(element).text()
+                    $('#unstocked_'+price_com_id).addClass('currently_hidden')
+                    $('#cannot_buy_'+price_com_id).removeClass('currently_hidden')
+                    $('#buy_button_'+price_com_id).addClass('currently_hidden')
+                else
+                    $('#unstocked_'+price_com_id).addClass('currently_hidden')
+                    $('#cannot_buy_'+price_com_id).addClass('currently_hidden')
+                    $('#buy_button_'+price_com_id).removeClass('currently_hidden')
             
             if new_items > 0
                 $('#sell_button_'+com_id).removeClass('currently_hidden')
@@ -115,8 +133,6 @@ ready = ->
                     bucks_to_add: amount
                     
         $('.buy_commode').on "click", ->
-            console.log("clicked")
-            set_sem_stud_url($(this))
             set_market_attributes($(this))
             price = parseInt($('#price_'+com_id).text())
             new_cash = current_cash - (price * multiplier)
@@ -129,16 +145,20 @@ ready = ->
             item_stash_display(com_id, multiplier)
             button_displays()
             
+            url = '/commodities/'+com_id
+            
             $.ajax
                 type: "PUT",
                 url: url,
                 dataType: "json"
                 data:
+                    student_id: student_id
                     commodity_id: com_id
                     multiplier: multiplier
+                    school_or_seminar: school_or_seminar
+                    seminar_id: seminar_id
                         
         $('.use_commode').on "click", ->
-            set_sem_stud_url($(this))
             set_market_attributes($(this))
             item_stash_display(com_id, multiplier)
             new_com_quant = 1
@@ -146,7 +166,8 @@ ready = ->
             
             used_so_far = parseInt($('#used_toward_grade').text())
             $('#used_toward_grade').text(used_so_far + 1)
-            
+            url = '/commodities/'+com_id
+        
             $.ajax
                 type: "PUT",
                 url: url,
@@ -154,6 +175,8 @@ ready = ->
                 data:
                     commodity_id: com_id
                     use: 1
+                    student_id: student_id
+                    seminar_id: seminar_id
     
     if $('.achievement_change').length > 0
         $('.achievement_change').on "change", ->
@@ -321,8 +344,7 @@ ready = ->
                 url: url,
                 dataType: "json"
                 data:
-                    seminar_student:
-                        present: attendance
+                    present: attendance
     
     if $('#scoreTable').length > 0
         $(".r0c0").focus()

@@ -28,7 +28,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     def try_quiz_twice(which_key)
-        @test_os.update(:teacher_granted_keys => 0, :pretest_keys => 0, :dc_keys => 0)
+        @test_os.update(:teacher_granted_keys => 0, :pretest_keys => 0, :dc_keys => 0, :points => 0)
         @test_os.update(:"#{which_key}_keys" => 2)
         old_quiz_count = Quiz.count
         

@@ -1,5 +1,22 @@
-<% visible_class_buy = (@bucks_owned >= @price && @com_quant > 0) ? "" : "currently_hidden" %>
+
+<% visible_class_buy = "currently_hidden" %>
+<% visible_class_cannot = "currently_hidden" %>
+<% visible_class_unstocked = "currently_hidden" %>
+
+<% if @com_quant < 1 %>
+    <% visible_class_unstocked = "" %>
+<% elsif @bucks_owned < @price %>
+    <% visible_class_cannot = ""  %>
+<% else %>
+    <% visible_class_buy = ""  %>
+<% end %>
+
 <td>
-    <div class="btn btn-small btn-primary buy_commode <%= visible_class_buy %>" seminar_student_id="<%= @ss_id %>" commodity_id="<%= @com_id %>" 
-            multiplier="1" id="buy_button_<%= @com_id %>">Buy</div>
+    <div class="singleOption center <%= visible_class_unstocked %>" id="unstocked_<%= @com_id %>">None</br>left</div>
+    <div class="singleOption center <%= visible_class_cannot %>" id="cannot_buy_<%= @com_id %>">Can't</br>afford</div>
+    <div class="btn btn-small btn-primary buy_commode <%= visible_class_buy %>" student_id="<%= @student.id %>" commodity_id="<%= @com_id %>" 
+            seminar_id="<%= @seminar.present? ? @seminar.id : 0 %>"
+            multiplier="1" school_or_seminar="<%= @school_or_seminar %>" id="buy_button_<%= @com_id %>">Buy</div>
+    
+    
 </td>

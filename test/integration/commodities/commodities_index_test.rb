@@ -10,7 +10,7 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
     
     test "edit commodity" do
         capybara_login(@teacher_1)
-        click_on("Manage #{@school.name} Market")
+        click_on("Manage #{@school.market_name}")
         find("#edit_#{@commodity_2.id}").click
         
         fill_in("commodity[name]", :with => "New Pickle")
@@ -28,12 +28,12 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         assert_equal 55, @commodity_2.quantity
         assert_nil @commodity_2.user_id
         
-        assert_selector('h2', :text => "School Market")
+        assert_selector('h2', :text => @school.market_name)
     end
     
     test "cant edit commodity to blank name" do
         capybara_login(@teacher_1)
-        click_on("Manage #{@school.name} Market")
+        click_on("Manage #{@school.market_name}")
         find("#edit_#{@commodity_2.id}").click
         
         fill_in("commodity[name]", :with => "")
@@ -53,7 +53,7 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
     
     test "cant edit commodity to star name" do
         capybara_login(@teacher_1)
-        click_on("Manage #{@school.name} Market")
+        click_on("Manage #{@school.market_name}")
         find("#edit_#{@commodity_2.id}").click
         
         fill_in("commodity[name]", :with => "Star")
@@ -76,7 +76,7 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         assert old_school_commodity_count > 0
         
         capybara_login(@teacher_1)
-        click_on("Manage #{@school.name} Market")
+        click_on("Manage #{@school.market_name}")
         
         find("#delete_#{@commodity_2.id}").click
         click_on("confirm_#{@commodity_2.id}")
@@ -84,7 +84,9 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         @school.reload
         assert_equal old_school_commodity_count - 1, @school.commodities.count
         
-        assert_selector('h2', :text => "School Market")
+        assert_selector('h2', :text => @school.market_name)
     end
+    
+   
     
 end

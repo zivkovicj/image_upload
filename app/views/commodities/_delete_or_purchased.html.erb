@@ -1,0 +1,19 @@
+<% if current_user.school_admin > 0 %>
+    <td><%= render 'shared/delete_and_confirm', object: @commode %></td>
+<% elsif current_user.type == "Student" %>
+    <td>
+        <% this_com_stud = current_user.commodity_students.find_by(:commodity => @commode) %>
+        <% hide_class = "currently_hidden" %>
+        <% stud_quant = 0 %>
+        <% this_quant_delivered = 0 %>
+        <% if this_com_stud.present? %>
+            <% hide_class = "" %>
+            <% stud_quant = this_com_stud.quantity %>
+            <% this_quant_delivered = this_com_stud.quant_delivered %>
+        <% end %>
+        &emsp; <div class="singleOption center quantity_show_<%= @com_id %> <%= hide_class %>" id="quantity_<%= @com_id %>"><%= stud_quant %></div>
+        &emsp; <div class="quantity_show_<%= @com_id %> <%= hide_class %>" ><small><%= this_quant_delivered %> received</small></div>
+    </td>
+<% else %> 
+    <td></td>
+<% end %>

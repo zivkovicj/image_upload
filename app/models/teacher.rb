@@ -18,7 +18,6 @@ class Teacher < User
     end
     
     def create_star_commodity
-        debugger
       new_star = self.commodities.new(:name => "Star", :quantity => 25, :current_price => 5, :date_last_produced => Date.today, 
         :production_rate => 10, :production_day => 0)
       image_src = File.join(Rails.root, "app/assets/images/stars/filled_star.png")

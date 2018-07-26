@@ -112,7 +112,10 @@
     :id => "edit_school_#{@school.id}" %>
 <% end %>
 
+<% view_word = "View" %>
 <% if @teacher.school_admin > 0 %>
-  <%= link_to "Manage #{@school.name} Market", commodities_path(:school_id => @school.id), class: "btn btn-lg btn-primary", :method => :get,
-    :id => "manage_market" %>
+  <% view_word = "Manage" %>
 <% end %>
+
+<%= link_to "#{view_word} #{@school.market_name}", commodities_path(:school_id => @school.id), class: "btn btn-lg btn-primary", :method => :get,
+  :id => "manage_market" %>

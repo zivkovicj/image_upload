@@ -1,29 +1,41 @@
-<% provide(:title, 'School Market') %>
-<% provide(:headerText, 'School Market') %>
+<% provide(:title, "#{@school.market_name}") %>
+<% provide(:headerText, "#{@school.market_name}") %>
 <% provide(:headerPic, 'objectives.png') %>
 
-<%= render 'shared/back-link' %>
-<%= render 'shared/headline' %>
+<div class="row">
+  <div class="col-sm-6">
+    <%= render 'shared/headline' %>
+  </div>
+  <div class="col-sm-6">
+    <%= render 'shared/back-link' %>
+    <div class="singleOption">
+      <% buck_num = current_user.school_bucks_owned %>
+      <h3>You have <span class="singleOption" id="current_cash"><strong><%= buck_num %></strong></span> <%= @school.school_currency_name.pluralize(buck_num) %></h3>
+    </div>
+  </div>
+</div>
 
 <%= will_paginate @commodities %>
 <table class="table-borderless">
   <% @commodities.each do |commode| %>
     <% @commode = commode %>
+    <% @com_id = commode.id %>
     <% @price = commode.current_price %>
     <% @com_quant = commode.quantity %>
     <tr>
       <td height="100"><%= image_tag(commode.image_url(:thumb).to_s) %></td>
-      <td><%= commode.name %></td>
-      <td class="center">$ <%= @price %></td>
+      <td><%= @commode.name %></td>
+      <td class="center" >$ <span class="price_display" id="price_<%= @com_id %>" com_id="<%= @com_id %>"><%= @price %></span></td>
       <%= render 'edit_or_buy' %>
-      <%= render 'delete_if_faculty' %> <!-- Doesn't include the 'td' tag because the td itself shouldn't exist for students -->
+      <%= render 'delete_or_purchased' %> <!-- Doesn't include the 'td' tag because the td itself shouldn't exist for students -->
       <td class="small_spacer"></td>
-      <td class="center"><small><%= @com_quant %> in stock</small></td>
-      
+      <%= render 'quantity_display' %>
     </tr>
   <% end %>
 </table>
 <%= will_paginate %>
 </br>
 
-<%= link_to new_item_button_text, new_commodity_path(:school_id => @school.id), :class => "btn btn-primary" %>
+<% if current_user.school_admin > 0 %>
+  <%= link_to new_item_button_text, new_commodity_path(:school_id => @school.id), :class => "btn btn-primary" %>
+<% end %>

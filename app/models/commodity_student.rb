@@ -4,4 +4,5 @@ class CommodityStudent < ApplicationRecord
     
     attribute :quantity, :integer, default: 0
     attribute :avg_price_paid, :integer, default: 0
+    attribute :quant_delivered, :integer, default: 0
 end

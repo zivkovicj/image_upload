@@ -45,49 +45,12 @@ Private Repo on Github
 Tried to find out why some students are occasionally being left alone in a group as the consultant. From a close look at the code, I cannot see why that's happening.
 Keep eyes open for that problem. 
 
-
-
-
-
-
-
-
-
-
-CREATE SCHOOL ITEMS
-
-V Create commodities for school market
-    V School edit submenus includes market
-        V Market view includes button to "Create item for school market"
-        V Create item screen allows admin to change name, image, cost, and quantity
-        V When saved, goes with school instead of teacher
-    V Custom commodities cannot be named "star" or "gem"
-    V Only level 1 or level 2 admin can do it
-V Index Commodities
-V Edit Commodities
-V Delete Commodities
-V Will probably need to paginate
-V Level 2 Admin can change the name of the school's currency and market in the "School Info" tab
-V Default values for currency name and market name
-V School Edit page needs to set the state to default to the school's state. 
-V Student has option of "School Market" upon logging in
-If student buys school item, buy button sends school param
-    Otherwise, it sends seminar param
-    Controller determines which bucks to subtract
-V But student cannot edit or delete.  Only buy.
-V When viewing school market, student can see all items that were created for the whole school
-
-
-Migrate
-    School market name
-    School currency name
-    Teacher currency name
-    School_bucks_owned
-    
 Two errors when checking live site.
-    One when making DC group.
-    I think the other was in creating an objective.
-    Adding keys for whole class
+    One when making DC group.  Didn't reproduce.
+    I think the other was in creating an objective.  Didn't reproduce
+    Adding keys for whole class.  Visiting objective edit is throwing error.
+    Clicking absent squares not working until refresh.
+    Giving extra keys working incorreclty until refresh.
 
 
 
@@ -98,24 +61,59 @@ Migrate
         Quant_Delivered
     Commodity
         Deliverable
-When visiting school edit page, faculty can see all com_studs that have recently been updated
-These notices do not appear for items that aren't listed as deliverable
+V Market screen shows the student how many bucks she owns
+V And the amount of each quantity purchased
+V When student buys an item from the store, it increases his quantity
+V Jquery updating of school bucks and quantity
+V You are loading turbolink from a script element inside the body element
+V Javascript for making the buy and sell buttons appear and disappear needs to iterate through all
+    commodities and have different results for the different prices
+V Student has a link to the school market from her class page
+V Test that button to create a new item doesn't appear for school_admin 0
+V Show the name of the school market everywhere appropriate
+V Pluralize the display of currency
+V Remove "help" tab from navbar
+
+
+Looking at objectives gives an error when trying to come from index (so it's probably related to current_class)
+
+Check Quiz scores to give credit to student who passed adding integers and subtracting integers when they were sevvies
+
+Check Pre-Reqs for "Both-Side Equation" Objectives 
+
+DRY THE TWO DIFFERENT MARKET DISPLAYS INTO ONE
+Make sure the javascript is working in both markets.
+
+FACULTY CAN MARK SCHOOL COMMODITIES DELIEVERED
+
+When visiting market page, faculty can see all com_studs that have recently been updated
 Notices are sorted to put unfulfilled orders at the top
 Faculty can mark an item as delivered
     Mark one delivered
     Mark fewer delivered
     Or mark all
-Javascript for making the buy and sell buttons appear and disappear needs to iterate through all
-    commodities and have different results for the different prices
+
 Teacher can open and close availability for certain commodities
-Student has a link to the school market from her class page
 Stars and gems are marked false by default in the deliverable column
+
 
 
 
 OPTION TO PUT "RECENTLY MARKED DELIEVERED" AT TOP
 
 This will help office staff in case an item was marked as delivered when it shouldn't have been.
+
+
+GIVE SCHOOL BUCKS
+
+
+
+
+
+REMEMBER WHETHER TEACHER WANTS TO SHOW "ALL OBJECTIVES" OR CURRENTLY-USED OBJECTIVES
+
+
+
 
 
 
@@ -163,6 +161,7 @@ Tests to add
 Adding bucks sometimes adds double or even quad.
 Seems to stop doing that after a refresh
 Check pagination everywhere it occurs
+Don't block the "Desk Consultants" icon when it isn't availble. Instead, re-route to a screen that explains what is needed.
 
 
 

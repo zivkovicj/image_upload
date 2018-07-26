@@ -12,7 +12,7 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
     end
     
     def go_to_new_commodity_page
-        click_on("Manage #{@school.name} Market")
+        click_on("Manage #{@school.market_name}")
         click_on(new_item_button_text)
     end
     
@@ -27,7 +27,7 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         click_on("Create a New Item")
         
         assert_no_selector('h2', :text => "New Item")
-        assert_selector('h2', :text => "School Market")
+        assert_selector('h2', :text => @school.market_name)
         
         assert_equal @old_commodity_count + 1, Commodity.count
         
@@ -86,6 +86,14 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         
         assert_equal @old_commodity_count, Commodity.count
         assert_selector('h2', :text => "New Item")
+    end
+    
+    test "create item button does not appear for lower level admin" do
+        @other_teacher.update(:school_admin => 0)
+        capybara_login(@other_teacher)
+        click_on("View #{@school.market_name}")
+        
+        assert_no_text(new_item_button_text)
     end
     
     test "must be school admin to create commodity" do
