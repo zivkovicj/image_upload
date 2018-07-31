@@ -13,6 +13,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         setup_objectives
         setup_labels
         setup_questions
+        setup_scores
         
         @old_objective_count = Objective.count
     end
@@ -172,6 +173,9 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     end
     
     test "teacher edits public objective" do
+        
+        
+        assert @seminar.objectives.include?(@objective_20)
         capybara_login(@teacher_1)
         click_on('All Objectives')
         click_on(@objective_20.full_name)
@@ -329,7 +333,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_equal old_os_count + 4, ObjectiveSeminar.count
     end
    
-    test "mainassigns shouldnt appear" do
+    test "mainassigns shouldnt appear as option for pre-req" do
         capybara_login(@admin_user)
         click_on('All Objectives')
         click_on(@objective_40.full_name)
@@ -338,7 +342,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_selector('input', :id => "check_#{@objective_30.id}")
     end
     
-    test "but should appear for others" do
+    test "but should appear as option for other objectives" do
         capybara_login(@admin_user)
         click_on('All Objectives')
         click_on(@super_objective.full_name)

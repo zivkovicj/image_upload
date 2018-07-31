@@ -48,7 +48,7 @@ class ObjectivesController < ApplicationController
   def edit
     @objective = Objective.find(params[:id])
     @labels = labels_to_offer
-    @term = Seminar.find(current_user.current_class).term_for_seminar if current_user.current_class
+    @term = current_user.school.term if current_user.school
 
     set_permissions(@objective)
     @pre_req_list = build_pre_req_list(@objective)
