@@ -37,6 +37,7 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         assert_equal 6, @commodity.current_price
         assert_equal 95, @commodity.quantity
         assert_not @commodity.salable
+        assert_not @commodity.usable
         assert_nil @commodity.user_id
     end
     

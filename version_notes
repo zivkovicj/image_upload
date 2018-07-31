@@ -14,7 +14,24 @@ Between each update, manually test:
 
 
 
-STUDENTS CAN BUY SCHOOL COMMODITIES 2.69
+
+
+
+
+2.70 DRY THE TWO DIFFERENT MARKET DISPLAYS INTO ONE
+Make sure the javascript is working in both markets
+ Commodity needs attributes "salable" and "usable"
+     If it is salable then offer the sell button
+     If usable, offer usable button
+ Salable attribute can be edited
+     "Usable" only applies to stars and gems
+ Default salable and usable
+Migrate salable and usable
+
+
+
+
+2.69 STUDENTS CAN BUY SCHOOL COMMODITIES 2.69
 
 Migrate
     Commodity_Student
