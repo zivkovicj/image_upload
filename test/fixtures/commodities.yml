@@ -8,6 +8,32 @@ star:
     production_day: 2
     quantity: 400
     date_last_produced: <%= Date.today %>
+    salable: true
+    usable: true
+    
+game_time_ticket:
+    name: "Game Time Ticket"
+    school_id: nil
+    user: archer
+    production_rate: 10
+    current_price: 6
+    production_day: 3
+    quantity: 50
+    date_last_produced: <%= Date.today %>
+    salable: true
+    usable: false
+    
+fidget_spinner:
+    name: "Fidget Spinner"
+    school_id: nil
+    user: archer
+    production_rate: 10
+    current_price: 6
+    production_day: 3
+    quantity: 50
+    date_last_produced: <%= Date.today %>
+    salable: false
+    usable: false
     
 burger_salad:
     name: "Burger Salad"
@@ -17,4 +43,6 @@ burger_salad:
     production_day: 2
     quantity: 400
     date_last_produced: <%= Date.today %>
+    salable: false
+    usable: false
     

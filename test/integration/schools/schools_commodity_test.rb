@@ -20,6 +20,7 @@ class SchoolsTermTest < ActionDispatch::IntegrationTest
     end
     
     test "create if its been too long" do
+        setup_commodities
         travel_to Time.zone.local(2018, 06, 25, 01, 04, 44)
         assert_equal 1, Date.today.wday
         capybara_login(@teacher_1)
@@ -31,6 +32,7 @@ class SchoolsTermTest < ActionDispatch::IntegrationTest
     end
     
     test "dont create too early" do
+        setup_commodities
         travel_to Time.zone.local(2018, 06, 17, 01, 04, 44)
         assert_equal 0, Date.today.wday
         capybara_login(@teacher_1)

@@ -9,6 +9,8 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
     end
     
     test "edit commodity" do
+        assert_not @commodity_2.salable
+        
         capybara_login(@teacher_1)
         click_on("Manage #{@school.market_name}")
         find("#edit_#{@commodity_2.id}").click
@@ -16,6 +18,7 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         fill_in("commodity[name]", :with => "New Pickle")
         fill_in("commodity[current_price]", :with => 22)
         fill_in("commodity[quantity]", :with => 55)
+        choose("salable_true")
         
         click_on("Save Changes")
         
@@ -26,6 +29,7 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         assert_equal @school, @commodity_2.school
         assert_equal 22, @commodity_2.current_price
         assert_equal 55, @commodity_2.quantity
+        assert @commodity_2.salable
         assert_nil @commodity_2.user_id
         
         assert_selector('h2', :text => @school.market_name)
@@ -37,26 +41,6 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         find("#edit_#{@commodity_2.id}").click
         
         fill_in("commodity[name]", :with => "")
-        
-        click_on("Save Changes")
-        
-        @commodity_2.reload
-        assert_equal "Burger Salad", @commodity_2.name
-        assert_equal @school, @commodity_2.school
-        assert_equal 5, @commodity_2.current_price
-        assert_equal 400, @commodity_2.quantity
-        assert_nil @commodity_2.user_id
-        
-        assert_no_selector('h2', :text => "School Market")
-        assert_selector('h2', :text => "Edit Item")
-    end
-    
-    test "cant edit commodity to star name" do
-        capybara_login(@teacher_1)
-        click_on("Manage #{@school.market_name}")
-        find("#edit_#{@commodity_2.id}").click
-        
-        fill_in("commodity[name]", :with => "Star")
         
         click_on("Save Changes")
         

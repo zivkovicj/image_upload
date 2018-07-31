@@ -40,49 +40,58 @@ Upload videos and link to them on social media
 
 Private Repo on Github
 
-
-
 Tried to find out why some students are occasionally being left alone in a group as the consultant. From a close look at the code, I cannot see why that's happening.
 Keep eyes open for that problem. 
 
-Two errors when checking live site.
-    One when making DC group.  Didn't reproduce.
-    I think the other was in creating an objective.  Didn't reproduce
-    Adding keys for whole class.  Visiting objective edit is throwing error.
-    Clicking absent squares not working until refresh.
-    Giving extra keys working incorreclty until refresh.
 
 
 
-STUDENTS CAN BUY SCHOOL COMMODITIES
-
-Migrate
-    Commodity_Student
-        Quant_Delivered
-    Commodity
-        Deliverable
-V Market screen shows the student how many bucks she owns
-V And the amount of each quantity purchased
-V When student buys an item from the store, it increases his quantity
-V Jquery updating of school bucks and quantity
-V You are loading turbolink from a script element inside the body element
-V Javascript for making the buy and sell buttons appear and disappear needs to iterate through all
-    commodities and have different results for the different prices
-V Student has a link to the school market from her class page
-V Test that button to create a new item doesn't appear for school_admin 0
-V Show the name of the school market everywhere appropriate
-V Pluralize the display of currency
-V Remove "help" tab from navbar
-
-
-Looking at objectives gives an error when trying to come from index (so it's probably related to current_class)
 
 Check Quiz scores to give credit to student who passed adding integers and subtracting integers when they were sevvies
 
 Check Pre-Reqs for "Both-Side Equation" Objectives 
 
-DRY THE TWO DIFFERENT MARKET DISPLAYS INTO ONE
-Make sure the javascript is working in both markets.
+
+2.70 DRY THE TWO DIFFERENT MARKET DISPLAYS INTO ONE
+Make sure the javascript is working in both markets
+V Commodity needs attributes "salable" and "usable"
+    V If it is salable then offer the sell button
+    V If usable, offer usable button
+V Salable attribute can be edited
+    V "Usable" only applies to stars and gems
+V Default salable and usable
+
+
+
+
+ERROR["test_take_keys_for_perfect_score", SeminarsScoresheetTest, 614.3114860700443]
+ test_take_keys_for_perfect_score#SeminarsScoresheetTest (614.31s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible field "scores[980191044]" that is not disabled
+            test/integration/seminars/seminars_scoresheet_test.rb:52:in `block in <class:SeminarsScoresheetTest>'
+
+ERROR["test_update_points_and_current_scores", SeminarsScoresheetTest, 619.8582404693589]
+ test_update_points_and_current_scores#SeminarsScoresheetTest (619.86s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible field "scores[980191044]" that is not disabled
+            test/integration/seminars/seminars_scoresheet_test.rb:22:in `block in <class:SeminarsScoresheetTest>'
+
+ERROR["test_bad_score_data", SeminarsScoresheetTest, 625.3362613627687]
+ test_bad_score_data#SeminarsScoresheetTest (625.34s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible field "scores[980191044]" that is not disabled
+            test/integration/seminars/seminars_scoresheet_test.rb:68:in `block in <class:SeminarsScoresheetTest>'
+
+ERROR["test_teacher_can_make_score_lower", SeminarsScoresheetTest, 631.0882492633536]
+ test_teacher_can_make_score_lower#SeminarsScoresheetTest (631.09s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible field "scores[980191044]" that is not disabled
+            test/integration/seminars/seminars_scoresheet_test.rb:38:in `block in <class:SeminarsScoresheetTest>'
+
+Migrate salable and usable
+
+
+OBJECTIVE VIEW
+Looking at objectives gives an error when trying to come from index (so it's probably related to current_class)
+
+
+
 
 FACULTY CAN MARK SCHOOL COMMODITIES DELIEVERED
 
@@ -129,6 +138,7 @@ All of these admin teachers can create new students without placing them into a 
 Only stars and gems will offer the use button
 Teacher can allow and disallow the use of stars and gems in a specific class
 Cannot delete star or gem commodity
+Teacher can edit her individual commodities
 
 
 TEACHER CAN TAKE CLASS CURRENCY (IN CASE OF A MISTAKE)
@@ -418,6 +428,7 @@ The OBjectiveStudent model has a column for "teacher score" which doesn't affect
 Set_objectives_and_scores should be a model method so that it can be better tested
 Plan to update default term start and end dates each year
 Give mentor teacher a notice if the school's term dates haven't been set.
+Note that Mr. Z school recommends against naming a commodity "Star" or "Gem"
 
 
 SCORESHEET SCROLLVIEW HEADER

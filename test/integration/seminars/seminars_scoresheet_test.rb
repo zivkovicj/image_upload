@@ -7,7 +7,7 @@ class SeminarsScoresheetTest < ActionDispatch::IntegrationTest
         setup_schools
         setup_seminars
         setup_objectives
-        setup_scores_and_commodities
+        setup_scores
         
         @test_obj_stud = @objective_10.objective_students.find_by(:user => @student_2)
         School.all.update_all(:term => 1)

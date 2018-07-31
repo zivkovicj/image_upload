@@ -6,6 +6,7 @@ class Commodity < ApplicationRecord
     
     mount_uploader :image, ImageUploader
     
-    banned_words = %w(Star star STAR Stars stars STARS Gem gem GEM Gems gems GEMS)
-    validates  :name, :presence => true, :exclusion => { in: banned_words, message: "%{value} is reserved." }
+    attribute       :salable, :boolean, default: false
+    
+    validates       :name, :presence => true
 end

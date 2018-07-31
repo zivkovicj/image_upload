@@ -7,7 +7,8 @@ class StudentsClassPageTest < ActionDispatch::IntegrationTest
         setup_schools
         setup_seminars
         setup_goals
-        setup_scores_and_commodities
+        setup_scores
+        setup_commodities
     end
     
     test 'teacher updates seminar student' do
@@ -96,10 +97,25 @@ class StudentsClassPageTest < ActionDispatch::IntegrationTest
     end
     
     test "student views seminar student" do
+        game_time_ticket = Commodity.find_by(:name => "Game Time Ticket")
+        game_time_com_stud = CommodityStudent.find_or_create_by(:user => @student_2, :commodity => game_time_ticket)
+        game_time_com_stud.update(:quantity => 3)
+        
+        fidget_spinner = Commodity.find_by(:name => "Fidget Spinner")
+        fidget_com_stud = CommodityStudent.find_or_create_by(:user => @student_2, :commodity => fidget_spinner)
+        fidget_com_stud.update(:quantity => 3)
+        
+        CommodityStudent.where(:user => @student_2, :commodity => @teacher_1_star).update(:quantity => 3)
+        
         go_to_first_period
         
-        assert_no_selector('div', :id => "add_buck_increment")
-        # Counterpart is in "teacher updates seminar student"
+        assert_no_selector('div', :id => "add_buck_increment")  # Counterpart is in "teacher updates seminar student"
+        assert_selector('div', :id => "sell_button_#{@teacher_1_star.id}")
+        assert_selector('div', :id => "sell_button_#{game_time_ticket.id}")
+        assert_no_selector('div', :id => "sell_button_#{fidget_spinner.id}")
+        assert_selector('div', :id => "use_button_#{@teacher_1_star.id}")
+        assert_no_selector('div', :id => "use_button_#{game_time_ticket.id}")
+        assert_no_selector('div', :id => "use_button_#{fidget_spinner.id}")
     end
     
 end

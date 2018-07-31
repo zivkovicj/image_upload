@@ -26,7 +26,7 @@ class CommoditiesController < ApplicationController
         @school = School.find(params[:school_id])
         @student = current_user
         @seminar = nil
-        @commodities = @school.commodities.paginate(:per_page => 8, page: params[:page])
+        @commodities = @school.commodities.paginate(:per_page => 6, page: params[:page])
         @bucks_owned = current_user.school_bucks_owned
         @school_or_seminar = "school"
     end
@@ -61,7 +61,7 @@ class CommoditiesController < ApplicationController
     private
 
         def commodity_params
-          params.require(:commodity).permit(:name, :image, :school_id, :current_price, :quantity)
+          params.require(:commodity).permit(:name, :image, :school_id, :current_price, :quantity, :salable)
         end
         
         def set_or_create_com_stud
@@ -73,12 +73,12 @@ class CommoditiesController < ApplicationController
             if @buck_source == "school"
                 @source_model = @student
                 @bucks_to_use = @student.school_bucks_owned
-                sell_allowed = false
+                @sell_allowed = false
             else
                 @seminar = Seminar.find(params[:seminar_id])
                 @source_model = @student.seminar_students.find_by(:seminar => @seminar)
                 @bucks_to_use = @source_model.seminar_bucks_owned
-                sell_allowed = @multiplier < 0 && @this_com_stud.quantity > 0
+                @sell_allowed = @multiplier < 0 && @this_com_stud.quantity > 0
             end
         end
         
@@ -86,13 +86,14 @@ class CommoditiesController < ApplicationController
             set_or_create_com_stud
             
             buy_allowed = @multiplier > 0 && @bucks_to_use > 0 && @commodity.quantity > 0
-            if buy_allowed || sell_allowed
+            if buy_allowed || @sell_allowed
               @this_com_stud.update(:quantity => @this_com_stud.quantity + @multiplier)
               
               cost = (@commodity.current_price * @multiplier)
               old_bucks = @source_model.read_attribute(:"#{@buck_source}_bucks_owned")
               @source_model.update(:"#{@buck_source}_bucks_owned" => old_bucks - cost)
-              @commodity.update(:quantity => @commodity.quantity - 1, :validate => false)
+              old_quant = @commodity.quantity
+              @commodity.update(:quantity => old_quant - 1)
             end
         end
       

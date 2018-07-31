@@ -20,7 +20,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
    
     test "edit seminar" do
         setup_objectives
-        setup_scores_and_commodities
+        setup_scores
         obj_array = [@objective_30, @objective_40, @objective_50, @own_assign, @assign_to_add]
         @objective_zero_priority = objectives(:objective_zero_priority)
         @os_0 = @seminar.objective_seminars.find_by(:objective => @objective_30)
@@ -189,5 +189,28 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         
         @st_1.reload
         assert @st_1.can_edit
+    end
+    
+    test "copy due dates" do
+        first_seminar = @teacher_1.first_seminar
+        first_seminar.update(:checkpoint_due_dates => @array_should_be)
+        second_seminar = @teacher_1.seminars.second
+        assert_not_equal @array_should_be, second_seminar.checkpoint_due_dates
+        
+        capybara_login(@teacher_1)
+        click_on("edit_seminar_#{second_seminar.id}")
+        click_on("Copy Due Dates from #{first_seminar.name}")
+        
+        assert_selector("h2", :text => "Edit #{second_seminar.name}")
+        second_seminar.reload
+        assert_equal @array_should_be, second_seminar.checkpoint_due_dates
+    end
+    
+    test "no copy button for same class" do
+        first_seminar = @teacher_1.first_seminar
+        
+        capybara_login(@teacher_1)
+        click_on("edit_seminar_#{first_seminar.id}")
+        assert_no_text("Copy Due Dates from #{first_seminar.name}")
     end
 end

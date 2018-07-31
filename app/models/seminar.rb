@@ -28,6 +28,10 @@ class Seminar < ApplicationRecord
   
   include ModelMethods
   
+  def commodities_for_seminar
+    Commodity.where(:user => self.teachers)
+  end
+  
   def shouldShowConsultLink
     students.count > 1 and objectives.count > 0
   end

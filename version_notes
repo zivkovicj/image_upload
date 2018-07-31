@@ -14,8 +14,30 @@ Between each update, manually test:
 
 
 
+STUDENTS CAN BUY SCHOOL COMMODITIES 2.69
 
-2.686 CREATE SCHOOL ITEMS
+Migrate
+    Commodity_Student
+        Quant_Delivered
+    Commodity
+        Deliverable
+Market screen shows the student how many bucks she owns
+And the amount of each quantity purchased
+When student buys an item from the store, it increases his quantity
+Jquery updating of school bucks and quantity
+You are loading turbolink from a script element inside the body element
+Javascript for making the buy and sell buttons appear and disappear needs to iterate through all
+    commodities and have different results for the different prices
+Student has a link to the school market from her class page
+Test that button to create a new item doesn't appear for school_admin 0
+Show the name of the school market everywhere appropriate
+Pluralize the display of currency
+Remove "help" tab from navbar
+
+
+
+
+2.68 CREATE SCHOOL ITEMS
 
 Create commodities for school market
     School edit submenus includes market

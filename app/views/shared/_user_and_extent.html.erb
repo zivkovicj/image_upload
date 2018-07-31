@@ -8,9 +8,9 @@
 <% if @assign_permission != "other" %>
   <table class="table-borderless">
     <tr>
-      <td width="15%"><input type="radio" name="<%= class_name.downcase %>[extent]" id="public_<%= class_name.downcase %>" value="public" <%= "checked=checked" if object.extent=="public" %>" /></td>
+      <td width="15%"><input type="radio" name="<%= class_name.downcase %>[extent]" id="public_<%= class_name.downcase %>" value="public" <%= "checked=checked" if object.extent=="public" %> /></td>
       <td>Public <%= class_name %> &emsp;</td>
-      <td width="15%"><input type="radio" name="<%= class_name.downcase %>[extent]" id="private_<%= class_name.downcase %>" value="private" <%= "checked=checked" if object.extent=="private" %>"/></td>
+      <td width="15%"><input type="radio" name="<%= class_name.downcase %>[extent]" id="private_<%= class_name.downcase %>" value="private" <%= "checked=checked" if object.extent=="private" %> /></td>
       <td>Private <%= class_name %></td>
     </tr>
   </table>

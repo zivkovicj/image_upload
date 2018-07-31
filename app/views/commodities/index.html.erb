@@ -15,25 +15,7 @@
   </div>
 </div>
 
-<%= will_paginate @commodities %>
-<table class="table-borderless">
-  <% @commodities.each do |commode| %>
-    <% @commode = commode %>
-    <% @com_id = commode.id %>
-    <% @price = commode.current_price %>
-    <% @com_quant = commode.quantity %>
-    <tr>
-      <td height="100"><%= image_tag(commode.image_url(:thumb).to_s) %></td>
-      <td><%= @commode.name %></td>
-      <td class="center" >$ <span class="price_display" id="price_<%= @com_id %>" com_id="<%= @com_id %>"><%= @price %></span></td>
-      <%= render 'edit_or_buy' %>
-      <%= render 'delete_or_purchased' %> <!-- Doesn't include the 'td' tag because the td itself shouldn't exist for students -->
-      <td class="small_spacer"></td>
-      <%= render 'quantity_display' %>
-    </tr>
-  <% end %>
-</table>
-<%= will_paginate %>
+<%= render 'commodity_list' %>
 </br>
 
 <% if current_user.school_admin > 0 %>

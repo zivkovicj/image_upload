@@ -29,29 +29,5 @@
         <td colspan="20" class="center"><h2>Your Items</h2></td>
     </tr>
     
-    <% @teachers.each do |teacher| %>
-        <% teacher.commodities.each do |commode| %>
-            <% @com_id = commode.id %>
-            <% @com_quant = commode.quantity %>
-            <% @price = commode.current_price %>
-            <% @student_quantity = commode.commodity_students.find_by(:user => @student)&.quantity || 0 %>
-
-            <tr>
-                <td><%= image_tag(commode.image_url(:thumb).to_s) %></td>
-                <td><%= commode.name.pluralize %></td>
-                <td>
-                    <h2><div class="singleOption" id="quantity_<%= @com_id %>"><%= @student_quantity %></div></h2>
-                </td>
-                <td>&emsp;&emsp;</td>
-                <td> $ <span id="price_<%= @com_id %>"><%= @price %></span></td>
-                
-                <%= render 'shared/market_buttons/buy_button' %>
-                
-                <% @visible_class_use_and_sell = @student_quantity > 0 ? "" : "currently_hidden" %>
-                <%= render 'shared/market_buttons/sell_button' %>
-                <td></td>
-                <%= render 'shared/market_buttons/use_button' %>
-            </tr>
-        <% end %>
-    <% end %>
+    <%= render 'commodities/commodity_list' %>
 </table>

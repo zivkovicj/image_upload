@@ -1,0 +1,37 @@
+<%= will_paginate @commodities %>
+<table class="table-borderless">
+  <% @commodities.each do |commode| %>
+    <% @commode = commode %>
+    <% @com_id = commode.id %>
+    <% @price = commode.current_price %>
+    <% @com_quant = commode.quantity %>
+    <% @this_com_stud = current_user.commodity_students.find_by(:commodity => @commode) if current_user.type == "Student" %>
+    <% @hide_class = "currently_hidden" %>
+    <% @stud_quant = 0 %>
+    <% @this_quant_delivered = 0 %>
+    <% if @this_com_stud.present? %>
+        <% @hide_class = "" %>
+        <% @stud_quant = @this_com_stud.quantity %>
+        <% @this_quant_delivered = @this_com_stud.quant_delivered %>
+        <% @visible_class_use_and_sell = @stud_quant > 0 ? "" : "currently_hidden" %>
+    <% end %>
+    <tr>
+        <td height="100"><%= image_tag(commode.image_url(:thumb).to_s) %></td>
+        <td><%= @commode.name %></td>
+        <td class="center" >$ <span class="price_display" id="price_<%= @com_id %>" com_id="<%= @com_id %>"><%= @price %></span></td>
+        
+        <% if current_user.type == "Student" %>
+            <%= render 'commodities/market_buttons/buy_button' %>
+            <%= render 'commodities/purchased_info' %>
+        <% elsif current_user.school_admin > 0 %>
+            <td><%= link_to 'Edit', edit_commodity_path(@commode), :id => "edit_#{@commode.id}" %></td>
+            <td><%= render 'shared/delete_and_confirm', object: @commode %></td>
+        <% end %>
+        <td class="small_spacer"></td>
+        <%= render 'commodities/market_buttons/sell_button' if @commode.salable %>
+        <%= render 'commodities/market_buttons/use_button' if @commode.usable %>
+        <%= render 'commodities/quantity_display' %>
+    </tr>
+  <% end %>
+</table>
+<%= will_paginate @commodities %>

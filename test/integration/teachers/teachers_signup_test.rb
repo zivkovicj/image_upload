@@ -25,6 +25,10 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         assert_equal @old_teacher_count + 1, Teacher.count
         assert_in_delta @this_teacher.created_at, @this_teacher.last_login, 1.minute
         assert_equal commodity_count + 1, Commodity.count
+        @commodity = @this_teacher.commodities.first
+        assert_equal "Star", @commodity.name
+        assert @commodity.salable
+        assert @commodity.usable
         
         assert_nil @this_teacher.school
         fill_in "search_field", with: @school.name

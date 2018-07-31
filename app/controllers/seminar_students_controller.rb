@@ -47,6 +47,7 @@ class SeminarStudentsController < ApplicationController
     @total_stars_this_term = @quiz_stars_this_term + @stars_used_toward_grade_this_term
     @quiz_stars_all_time = @student.quiz_stars_all_time(@seminar)
     @teachers = @seminar.teachers
+    @commodities = @seminar.commodities_for_seminar.paginate(:per_page => 6, page: params[:page])
     
     @teach_options = @student.teach_options(@seminar, @seminar.rank_objectives_by_need)
     @learn_options = @student.learn_options(@seminar, @seminar.rank_objectives_by_need)

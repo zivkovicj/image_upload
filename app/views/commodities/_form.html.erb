@@ -23,6 +23,9 @@
     <%= f.text_field :name %>
   </div>
   
+ 
+  
+  
   <div class="field">
     <%= f.label "add an image...." %>
     <%= f.file_field :image %>
@@ -36,6 +39,19 @@
     <div class="field col-sm-2">
       <%= f.label "Quantity" %>
       <%= f.number_field :quantity, :value => 10 %>
+    </div>
+    <div class="field col-sm-2">
+    </div>
+    <div class="field col-sm-4">
+      <table class="table-borderless">
+        <tr>
+          <td>Students may sell this commodity?</td>
+          <td width="15%"><input type="radio" name="commodity[salable]" id="salable_true" value="true" <%= "checked=checked" if @commodity.salable %> /></td>
+          <td>Yes</td>
+          <td width="15%"><input type="radio" name="commodity[salable]" id="salable_false" value="false" <%= "checked=checked" if @commodity.salable == false %> /></td>
+          <td>No</td>
+        </tr>
+      </table>
     </div>
   </div>
   

@@ -7,7 +7,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         setup_schools
         setup_seminars
         setup_goals
-        setup_scores_and_commodities
+        setup_scores
     end
     
     test "student chooses goal" do
@@ -83,6 +83,30 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         click_on("Back to Viewing Your Class")
         
         assert_selector('h5', :text => @seminar.name)
+    end
+    
+    test "student cant edit old checkpoints" do
+        setup_scores
+        setup_goals
+        travel_to Time.zone.local(2018, 01, 20, 01, 04, 44)
+        @seminar.update(:term => 3) # To test for an error on the nil due date
+        
+        go_to_first_period
+        click_on("Edit This Goal")
+        select("#{Goal.second.name}", :from => 'goal_student_goal_id')
+        select("60%", :from => 'goal_student_target')
+        click_on("Save This Goal")
+        
+        assert_selector('h5', :id => "past_due_0")  # Past the due date
+        assert_no_selector('div', :id => "action_picker_0")
+        
+        assert_selector('h5', :id => "too_soon_1")
+        assert_no_selector('div', :id => "action_picker_1")  # Too close to due date
+        
+        assert_selector('div', :id => "action_picker_2")  # Should show
+        
+        assert_no_selector('div', :id => "action_picker_3")  # Doesn't show because there's only one choice.
+        assert_selector('h5', :id => "statement_3")
     end
 
         

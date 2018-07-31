@@ -81,8 +81,8 @@ class ActiveSupport::TestCase
   def setup_commodities
     @testing_date_last_produced = "Sat, 16 Jun 2018 00:00:00 UTC +00:00"
     @teacher_1_star = @teacher_1.commodities.first
-    @teacher_1_star.update(:date_last_produced => @testing_date_last_produced)
-    @commodity_2 = Commodity.second
+    @teacher_1_star.update_attribute(:date_last_produced,  @testing_date_last_produced)
+    @commodity_2 = Commodity.find_by(:name => "Burger Salad")
   end
   
   def setup_consultancies
@@ -144,7 +144,7 @@ class ActiveSupport::TestCase
     @other_p = pictures(:three)
   end
   
-  def setup_scores_and_commodities
+  def setup_scores
     Seminar.all.each do |seminar|
       seminar.students.each do |student|
         seminar.objectives.each do |objective|

@@ -36,6 +36,7 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         assert_equal @school, @commodity.school
         assert_equal 6, @commodity.current_price
         assert_equal 95, @commodity.quantity
+        assert_not @commodity.salable
         assert_nil @commodity.user_id
     end
     
@@ -64,24 +65,6 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         fill_in("commodity[current_price]", :with => 6)
         fill_in("commodity[quantity]", :with => 95)
         
-        click_on("Create a New Item")
-        
-        assert_equal @old_commodity_count, Commodity.count
-        assert_selector('h2', :text => "New Item")
-    end
-    
-    test "cannot name commodity star or gem" do
-        capybara_login(@teacher_1)
-        go_to_new_commodity_page
-        
-        fill_in("commodity[name]", :with => "Star")
-        
-        click_on("Create a New Item")
-        
-        assert_equal @old_commodity_count, Commodity.count
-        assert_selector('h2', :text => "New Item")
-        
-        fill_in("commodity[name]", :with => "gems")
         click_on("Create a New Item")
         
         assert_equal @old_commodity_count, Commodity.count

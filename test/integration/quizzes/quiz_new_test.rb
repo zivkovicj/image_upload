@@ -9,7 +9,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         setup_labels
         setup_objectives
         setup_questions
-        setup_scores_and_commodities
+        setup_scores
         setup_goals
         
         @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 2)

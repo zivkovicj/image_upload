@@ -9,7 +9,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         setup_users
         setup_schools
         setup_seminars
-        setup_scores_and_commodities
+        setup_scores
         setup_objectives
         
         @consultancy = @seminar.consultancies.create # Most tests rely on one consultancy already existing.

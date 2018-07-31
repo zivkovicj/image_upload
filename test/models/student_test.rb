@@ -11,7 +11,7 @@ class StudentTest < ActiveSupport::TestCase
     setup_users
     setup_objectives
     setup_seminars
-    setup_scores_and_commodities
+    setup_scores
     
     score_count = @seminar.objectives.count
     @student_2.objective_students.update_all(:current_scores => [1,2,3,10])
@@ -88,7 +88,7 @@ class StudentTest < ActiveSupport::TestCase
   test "advance to next school year" do
     setup_users
     setup_seminars
-    setup_scores_and_commodities
+    setup_scores
     
     @this_obj_stud = @student_2.objective_students.first
     @student_2.update(:school_year => 2)

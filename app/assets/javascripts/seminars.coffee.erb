@@ -91,21 +91,19 @@ ready = ->
             $('.quantity_show_'+com_id).removeClass('currently_hidden')
             
         button_displays = ->
-            $('.price_display').each (index, element) =>
+            if multiplier > 1
+                $('.price_display').each (index, element) =>
                 price_com_id = $(element).attr('com_id')
-                console.log($('#commodity_quantity_'+price_com_id).text())
+                
+                $('#unstocked_'+price_com_id).addClass('currently_hidden')
+                $('#cannot_buy_'+price_com_id).addClass('currently_hidden')
+                $('#buy_button_'+price_com_id).addClass('currently_hidden')
                 
                 if $('#commodity_quantity_'+price_com_id).text() < 1
                     $('#unstocked_'+price_com_id).removeClass('currently_hidden')
-                    $('#cannot_buy_'+price_com_id).addClass('currently_hidden')
-                    $('#buy_button_'+price_com_id).addClass('currently_hidden')
                 else if new_cash < $(element).text()
-                    $('#unstocked_'+price_com_id).addClass('currently_hidden')
                     $('#cannot_buy_'+price_com_id).removeClass('currently_hidden')
-                    $('#buy_button_'+price_com_id).addClass('currently_hidden')
                 else
-                    $('#unstocked_'+price_com_id).addClass('currently_hidden')
-                    $('#cannot_buy_'+price_com_id).addClass('currently_hidden')
                     $('#buy_button_'+price_com_id).removeClass('currently_hidden')
             
             if new_items > 0
