@@ -53,25 +53,16 @@ Check Pre-Reqs for "Both-Side Equation" Objectives
 
 
 
-
-
-OBJECTIVE VIEW
-Looking at objectives gives an error when trying to come from index (so it's probably related to current_class)
-Test for visiting an objective from the index.  It makes a big difference if the objective is one that will feature key buttons.
-
-
-
-
-FACULTY CAN MARK SCHOOL COMMODITIES DELIEVERED
+2.71 FACULTY CAN MARK SCHOOL COMMODITIES DELIEVERED
 
 When visiting market page, faculty can see all com_studs that have recently been updated
-Notices are sorted to put unfulfilled orders at the top
+    This is default page.  Managing the market is an option from this page.
+Notices are sorted to put unfulfilled orders at the top (delivered is less than quantity ordered)
 Faculty can mark an item as delivered
     Mark one delivered
     Mark fewer delivered
     Or mark all
 
-Teacher can open and close availability for certain commodities
 Stars and gems are marked false by default in the deliverable column
 
 
@@ -108,6 +99,7 @@ Only stars and gems will offer the use button
 Teacher can allow and disallow the use of stars and gems in a specific class
 Cannot delete star or gem commodity
 Teacher can edit her individual commodities
+Teacher can open and close availability for certain commodities
 
 
 TEACHER CAN TAKE CLASS CURRENCY (IN CASE OF A MISTAKE)

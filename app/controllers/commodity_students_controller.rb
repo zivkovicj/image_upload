@@ -1,0 +1,2 @@
+class CommodityStudentsController < ApplicationController
+end

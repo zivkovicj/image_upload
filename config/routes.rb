@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :account_activations, only: [:edit]
   resources :checkpoints
   resources :commodities
+  resources :commodity_students, only: [:index, :update]
   resources :consultancies, only: [:new, :create, :show, :index, :destroy]
   resources :goal_students do
     get  'checkpoints', on: :member
