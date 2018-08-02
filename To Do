@@ -45,245 +45,19 @@ Keep eyes open for that problem.
 
 
 
-
+Teacher commenting on goal is blank
 
 Check Quiz scores to give credit to student who passed adding integers and subtracting integers when they were sevvies
 
 Check Pre-Reqs for "Both-Side Equation" Objectives 
 
-
-
-2.71 FACULTY CAN MARK SCHOOL COMMODITIES DELIEVERED
-
-V Faculty can see all com_studs for unfulfilled purchases
-V Faculty can mark an item as delivered
-    V Mark one delivered
-V Button disappears when delivered equals quantity
-V Stars and gems are marked false by default in the deliverable column
-
 Error when deleting objective from index
-pre-requisistes typo    
-Teacher commenting on goal is blank
+    I bet that it has to do with destroying an objective with existing quizzes.
+    Couldn't replicate, even with an existing quiz.
 
 
 
-
-ERROR["test_username_already_taken", StudentsNewTest, 562.1276387320831]
- test_username_already_taken#StudentsNewTest (562.13s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            test/integration/students/students_new_test.rb:104:in `block in <class:StudentsNewTest>'
-
-ERROR["test_students_index_test_as_student", StudentsControllerTest, 575.2416057400405]
- test_students_index_test_as_student#StudentsControllerTest (575.24s)
-NoMethodError:         NoMethodError: undefined method `type' for nil:NilClass
-            app/controllers/application_controller.rb:51:in `redirect_for_students'
-            test/controllers/students_controller_test.rb:21:in `block in <class:StudentsControllerTest>'
-
-ERROR["test_create_item_button_does_not_appear_for_lower_level_admin", CommoditiesCreateTest, 579.353787346743]
- test_create_item_button_does_not_appear_for_lower_level_admin#CommoditiesCreateTest (579.35s)
-Capybara::Ambiguous:         Capybara::Ambiguous: Ambiguous match, found 2 elements matching visible link or button "View "
-            test/integration/commodities/commodities_create_test.rb:78:in `block in <class:CommoditiesCreateTest>'
-
-ERROR["test_place_apprentices_by_request", ConsultanciesShowTest, 592.116734216921]
- test_place_apprentices_by_request#ConsultanciesShowTest (592.12s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            app/controllers/concerns/desk_consultants.rb:41:in `establish_new_group'
-            app/controllers/concerns/desk_consultants.rb:73:in `block (2 levels) in choose_consultants'
-            app/controllers/concerns/desk_consultants.rb:72:in `each'
-            app/controllers/concerns/desk_consultants.rb:72:in `block in choose_consultants'
-            app/controllers/concerns/desk_consultants.rb:63:in `each'
-            app/controllers/concerns/desk_consultants.rb:63:in `choose_consultants'
-            test/integration/consultancies/consultancies_show_test.rb:426:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_destroy_if_date_already", ConsultanciesShowTest, 606.5081712268293]
- test_destroy_if_date_already#ConsultanciesShowTest (606.51s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            app/controllers/concerns/desk_consultants.rb:41:in `establish_new_group'
-            app/controllers/concerns/desk_consultants.rb:92:in `block in choose_consultants'
-            app/controllers/concerns/desk_consultants.rb:81:in `each'
-            app/controllers/concerns/desk_consultants.rb:81:in `choose_consultants'
-            app/controllers/consultancies_controller.rb:29:in `create'
-            test/integration/consultancies/consultancies_show_test.rb:669:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_place_apprentices_by_mastery", ConsultanciesShowTest, 627.2053137337789]
- test_place_apprentices_by_mastery#ConsultanciesShowTest (627.21s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            app/controllers/concerns/desk_consultants.rb:41:in `establish_new_group'
-            app/controllers/concerns/desk_consultants.rb:92:in `block in choose_consultants'
-            app/controllers/concerns/desk_consultants.rb:81:in `each'
-            app/controllers/concerns/desk_consultants.rb:81:in `choose_consultants'
-            test/integration/consultancies/consultancies_show_test.rb:492:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_what_if_some_scores_are_nil", ConsultanciesShowTest, 635.330320016481]
- test_what_if_some_scores_are_nil#ConsultanciesShowTest (635.33s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            app/controllers/concerns/desk_consultants.rb:41:in `establish_new_group'
-            app/controllers/concerns/desk_consultants.rb:92:in `block in choose_consultants'
-            app/controllers/concerns/desk_consultants.rb:81:in `each'
-            app/controllers/concerns/desk_consultants.rb:81:in `choose_consultants'
-            app/controllers/consultancies_controller.rb:29:in `create'
-            test/integration/consultancies/consultancies_show_test.rb:657:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_destroy_oldest_upon_tenth", ConsultanciesShowTest, 648.057290462777]
- test_destroy_oldest_upon_tenth#ConsultanciesShowTest (648.06s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            app/controllers/concerns/desk_consultants.rb:41:in `establish_new_group'
-            app/controllers/concerns/desk_consultants.rb:92:in `block in choose_consultants'
-            app/controllers/concerns/desk_consultants.rb:81:in `each'
-            app/controllers/concerns/desk_consultants.rb:81:in `choose_consultants'
-            app/controllers/consultancies_controller.rb:29:in `create'
-            test/integration/consultancies/consultancies_show_test.rb:689:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_choose_consultants", ConsultanciesShowTest, 652.9920293465257]
- test_choose_consultants#ConsultanciesShowTest (652.99s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            test/integration/consultancies/consultancies_show_test.rb:270:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_deprioritize_consultants_with_100_score", ConsultanciesShowTest, 660.9898675866425]
- test_deprioritize_consultants_with_100_score#ConsultanciesShowTest (660.99s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            app/controllers/concerns/desk_consultants.rb:41:in `establish_new_group'
-            app/controllers/concerns/desk_consultants.rb:92:in `block in choose_consultants'
-            app/controllers/concerns/desk_consultants.rb:81:in `each'
-            app/controllers/concerns/desk_consultants.rb:81:in `choose_consultants'
-            test/integration/consultancies/consultancies_show_test.rb:354:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_rank_by_consulting", ConsultanciesShowTest, 666.0378479575738]
- test_rank_by_consulting#ConsultanciesShowTest (666.04s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            test/integration/consultancies/consultancies_show_test.rb:178:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_check_for_lone_students", ConsultanciesShowTest, 678.9016737062484]
- test_check_for_lone_students#ConsultanciesShowTest (678.90s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            app/controllers/concerns/desk_consultants.rb:41:in `establish_new_group'
-            app/controllers/concerns/desk_consultants.rb:92:in `block in choose_consultants'
-            app/controllers/concerns/desk_consultants.rb:81:in `each'
-            app/controllers/concerns/desk_consultants.rb:81:in `choose_consultants'
-            test/integration/consultancies/consultancies_show_test.rb:528:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_team_has_room", ConsultanciesShowTest, 684.6982375150546]
- test_team_has_room#ConsultanciesShowTest (684.70s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken, Username has already been taken
-            test/integration/consultancies/consultancies_show_test.rb:381:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_deprioritize_consultants_who_already_have_keys", ConsultanciesShowTest, 698.4726114859805]
- test_deprioritize_consultants_who_already_have_keys#ConsultanciesShowTest (698.47s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            app/controllers/concerns/desk_consultants.rb:41:in `establish_new_group'
-            app/controllers/concerns/desk_consultants.rb:92:in `block in choose_consultants'
-            app/controllers/concerns/desk_consultants.rb:81:in `each'
-            app/controllers/concerns/desk_consultants.rb:81:in `choose_consultants'
-            test/integration/consultancies/consultancies_show_test.rb:333:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_simple_create_test", ConsultanciesShowTest, 719.3338327724487]
- test_simple_create_test#ConsultanciesShowTest (719.33s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            app/controllers/concerns/desk_consultants.rb:41:in `establish_new_group'
-            app/controllers/concerns/desk_consultants.rb:92:in `block in choose_consultants'
-            app/controllers/concerns/desk_consultants.rb:81:in `each'
-            app/controllers/concerns/desk_consultants.rb:81:in `choose_consultants'
-            app/controllers/consultancies_controller.rb:29:in `create'
-            test/integration/consultancies/consultancies_show_test.rb:148:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_are_some_unplaced", ConsultanciesShowTest, 747.2188723944128]
- test_are_some_unplaced#ConsultanciesShowTest (747.22s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            app/controllers/concerns/desk_consultants.rb:41:in `establish_new_group'
-            app/controllers/concerns/desk_consultants.rb:92:in `block in choose_consultants'
-            app/controllers/concerns/desk_consultants.rb:81:in `each'
-            app/controllers/concerns/desk_consultants.rb:81:in `choose_consultants'
-            test/integration/consultancies/consultancies_show_test.rb:608:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_give_dc_keys", ConsultanciesShowTest, 761.9689113898203]
- test_give_dc_keys#ConsultanciesShowTest (761.97s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken, Username has already been taken
-            app/controllers/concerns/desk_consultants.rb:123:in `find_placement'
-            app/controllers/concerns/desk_consultants.rb:117:in `block in place_apprentices_by_mastery'
-            app/controllers/concerns/desk_consultants.rb:116:in `each'
-            app/controllers/concerns/desk_consultants.rb:116:in `place_apprentices_by_mastery'
-            test/integration/consultancies/consultancies_show_test.rb:626:in `block in <class:ConsultanciesShowTest>'
-
-ERROR["test_admin_edits_student", StudentsEditTest, 879.0152799449861]
- test_admin_edits_student#StudentsEditTest (879.02s)
-Capybara::Ambiguous:         Capybara::Ambiguous: Ambiguous match, found 2 elements matching visible link or button "Vasquez, Daphnee"
-            test/integration/students/students_edit_test.rb:51:in `block in <class:StudentsEditTest>'
-
-ERROR["test_edit_username_to_already_taken", StudentsEditTest, 884.1442020609975]
- test_edit_username_to_already_taken#StudentsEditTest (884.14s)
-Capybara::Ambiguous:         Capybara::Ambiguous: Ambiguous match, found 2 elements matching visible link or button "Vasquez, Daphnee"
-            test/integration/students/students_edit_test.rb:66:in `block in <class:StudentsEditTest>'
-
- SKIP["test_student_edits_self", StudentsEditTest, 890.1250904295594]
- test_student_edits_self#StudentsEditTest (890.13s)
-        Skipped, no message given
-        test/integration/students/students_edit_test.rb:38:in `block in <class:StudentsEditTest>'
-
-ERROR["test_link_to_new_consultancy", ConsultanciesIndexTest, 896.5417112484574]
- test_link_to_new_consultancy#ConsultanciesIndexTest (896.54s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            test/test_helper.rb:92:in `setup_consultancies'
-            test/integration/consultancies/consultancies_index_test.rb:26:in `block in <class:ConsultanciesIndexTest>'
-
-ERROR["test_delete_consultancy", ConsultanciesIndexTest, 897.2690490847453]
- test_delete_consultancy#ConsultanciesIndexTest (897.27s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            test/test_helper.rb:92:in `setup_consultancies'
-            test/integration/consultancies/consultancies_index_test.rb:37:in `block in <class:ConsultanciesIndexTest>'
-
-ERROR["test_link_to_one", ConsultanciesIndexTest, 898.0034511238337]
- test_link_to_one#ConsultanciesIndexTest (898.00s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            test/test_helper.rb:92:in `setup_consultancies'
-            test/integration/consultancies/consultancies_index_test.rb:14:in `block in <class:ConsultanciesIndexTest>'
-
-ERROR["test_goal_edit_back_button", GoalStudentsEditTest, 957.870645115152]
- test_goal_edit_back_button#GoalStudentsEditTest (957.87s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "1st Period"
-            test/test_helper.rb:204:in `go_to_first_period'
-            test/integration/goals/goal_students_edit_test.rb:79:in `block in <class:GoalStudentsEditTest>'
-
-ERROR["test_student_cant_edit_old_checkpoints", GoalStudentsEditTest, 971.9920534016564]
- test_student_cant_edit_old_checkpoints#GoalStudentsEditTest (971.99s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "1st Period"
-            test/test_helper.rb:204:in `go_to_first_period'
-            test/integration/goals/goal_students_edit_test.rb:94:in `block in <class:GoalStudentsEditTest>'
-
-ERROR["test_default_goal_if_already_chosen", GoalStudentsEditTest, 980.9598558954895]
- test_default_goal_if_already_chosen#GoalStudentsEditTest (980.96s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "1st Period"
-            test/test_helper.rb:204:in `go_to_first_period'
-            test/integration/goals/goal_students_edit_test.rb:69:in `block in <class:GoalStudentsEditTest>'
-
-ERROR["test_student_chooses_goal", GoalStudentsEditTest, 990.4875620417297]
- test_student_chooses_goal#GoalStudentsEditTest (990.49s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "1st Period"
-            test/test_helper.rb:204:in `go_to_first_period'
-            test/integration/goals/goal_students_edit_test.rb:31:in `block in <class:GoalStudentsEditTest>'
-
- FAIL["test_approve_unverified_teachers", SchoolsEditTest, 1009.355306214653]
- test_approve_unverified_teachers#SchoolsEditTest (1009.36s)
-        Expected: 0
-          Actual: 1
-        test/integration/schools/schools_edit_test.rb:170:in `block in <class:SchoolsEditTest>'
-
-ERROR["test_seminar_navbar", SeminarsNavigateTest, 1027.538470336236]
- test_seminar_navbar#SeminarsNavigateTest (1027.54s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            test/test_helper.rb:92:in `setup_consultancies'
-            test/integration/seminars/seminars_navigate_test.rb:13:in `setup'
-
- FAIL["test_advance_to_next_school_year", StudentTest, 1045.785868071951]
- test_advance_to_next_school_year#StudentTest (1045.79s)
-        Expected: 3
-          Actual: 9
-        test/models/student_test.rb:104:in `block in <class:StudentTest>'
-
-ERROR["test_delete_seminar", SeminarsIndexTest, 1049.941716708243]
- test_delete_seminar#SeminarsIndexTest (1049.94s)
-ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation failed: Email has already been taken
-            test/test_helper.rb:92:in `setup_consultancies'
-            test/integration/seminars/seminars_index_test.rb:44:in `block in <class:SeminarsIndexTest>'
+   
 
 
 
@@ -291,17 +65,6 @@ ActiveRecord::RecordInvalid:         ActiveRecord::RecordInvalid: Validation fai
 
 
 
-FIGURE OUT HOW TO MAKE ALL LINKS STAY WHITE
-Look up whether I should be using "link" "button" or another option
-
-
-
-ICONS FOR NEWEST MODELS
-
-
-OPTION TO PUT "RECENTLY MARKED DELIEVERED" AT TOP
-
-This will help office staff in case an item was marked as delivered when it shouldn't have been.
 
 
 GIVE SCHOOL BUCKS
@@ -350,12 +113,23 @@ Teacher can give bucks to whole class.
     
     
 LEVEL 2 ADMIN CAN REMOVE A TEACHER FROM THE SCHOOL
+
+FIGURE OUT HOW TO MAKE ALL LINKS STAY WHITE
+Look up whether I should be using "link" "button" or another option
+
+
+
+ICONS FOR NEWEST MODELS
+
+
+OPTION TO PUT "RECENTLY MARKED DELIEVERED" AT TOP
+
+This will help office staff in case an item was marked as delivered when it shouldn't have been.
     
     
 
 
 HOTFIXES
-Development app added six quiz keys upon clicking the whole class button
 Can I re-name the "present" attribute of the seminar student?  That's already a ruby word.
 For the sake of performance, the method "set_pretests" should only be called when pretests are changed.  Right now, it is getting called when
     anything about the seminar is changed.

@@ -82,8 +82,8 @@ class ObjectivesController < ApplicationController
   def destroy
     @objective = Objective.find(params[:id])
     
-    ObjectiveStudent.where(:objective_id => @objective.id).each do |as|
-      as.destroy!
+    ObjectiveStudent.where(:objective_id => @objective.id).each do |os|
+      os.destroy!
     end
     Quiz.where(:objective => @objective).each do |quiz|
       quiz.destroy!

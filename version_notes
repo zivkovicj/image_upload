@@ -16,6 +16,15 @@ Between each update, manually test:
 
 
 
+2.71 FACULTY CAN MARK SCHOOL COMMODITIES DELIEVERED
+
+Faculty can see all com_studs for unfulfilled purchases
+Faculty can mark an item as delivered
+    Mark one delivered
+Button disappears when delivered equals quantity
+Stars and gems are marked false by default in the deliverable column
+Pre-requisistes typo 
+
 
 
 2.70 DRY THE TWO DIFFERENT MARKET DISPLAYS INTO ONE
