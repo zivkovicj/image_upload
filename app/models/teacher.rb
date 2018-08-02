@@ -19,7 +19,7 @@ class Teacher < User
     
     def create_star_commodity
       new_star = self.commodities.new(:name => "Star", :quantity => 25, :current_price => 5, :date_last_produced => Date.today, 
-        :production_rate => 10, :production_day => 0, :salable => true, :usable => true)
+        :production_rate => 10, :production_day => 0, :salable => true, :usable => true, :deliverable => false)
       image_src = File.join(Rails.root, "app/assets/images/stars/filled_star.png")
       src_file = File.new(image_src)
       new_star.image = src_file

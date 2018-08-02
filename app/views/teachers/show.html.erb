@@ -119,3 +119,6 @@
 
 <%= link_to "#{view_word} #{@school.market_name}", commodities_path(:school_id => @school.id), class: "btn btn-lg btn-primary", :method => :get,
   :id => "manage_market" %>
+  
+<%= link_to "Student Purchased Items", commodity_students_path(:school_id => @school.id), :class => "btn btn-lg btn-primary", :method => :get,
+  :id => "view_purchases" %>

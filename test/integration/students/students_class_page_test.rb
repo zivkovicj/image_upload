@@ -106,7 +106,6 @@ class StudentsClassPageTest < ActionDispatch::IntegrationTest
         fidget_com_stud.update(:quantity => 3)
         
         CommodityStudent.where(:user => @student_2, :commodity => @teacher_1_star).update(:quantity => 3)
-        
         go_to_first_period
         
         assert_no_selector('div', :id => "add_buck_increment")  # Counterpart is in "teacher updates seminar student"

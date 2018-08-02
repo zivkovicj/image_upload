@@ -33,4 +33,8 @@ class School < ApplicationRecord
     def set_market_and_currency_name
         self.update(:market_name => "#{self.name} Market", :school_currency_name => "#{self.name} Bucks")
     end
+    
+    def commodities_needing_delivered
+        CommodityStudent.where(:commodity => self.commodities.deliverable, :user => self.students).needs_delivered
+    end
 end

@@ -29,6 +29,7 @@ class TeachersSignupTest < ActionDispatch::IntegrationTest
         assert_equal "Star", @commodity.name
         assert @commodity.salable
         assert @commodity.usable
+        assert_equal false, @commodity.deliverable
         
         assert_nil @this_teacher.school
         fill_in "search_field", with: @school.name

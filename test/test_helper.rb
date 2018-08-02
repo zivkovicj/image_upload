@@ -43,41 +43,6 @@ class ActiveSupport::TestCase
     Question.where.not(:picture_id => nil).update_all(:picture_id => nil) 
   end
   
-  def setup_users
-    @admin_user = users(:michael)
-    @teacher_1 = users(:archer)
-    @other_teacher = users(:zacky)
-    @unverified_teacher = users(:user_1)
-    @teacher_3 = @teacher_1.school.teachers[3]
-    @student_1 = users(:student_1)
-    @student_2 = users(:student_2)
-    @student_3 = users(:student_3)
-    @other_school_student = Student.last
-    @other_school_student.update(:school => schools(:school_2))
-    @student_90 = users(:student_90)
-    Student.all[0..70].each do |student|
-      student.update(:sponsor => @teacher_1)
-    end
-    Student.all[71..90].each do |student|
-      student.update(:sponsor => @other_teacher)
-    end
-  end
-  
-  def setup_schools
-    @school = @teacher_1.school
-    @school.update(:term_dates => School.default_terms, :term => 1)
-    School.all.each do |school|
-      school.set_market_and_currency_name
-    end
-  end
-  
-  def setup_seminars
-    @seminar = seminars(:one)
-    @seminar_2 = seminars(:two)
-    @seminar_3 = seminars(:three)
-    @avcne_seminar = seminars(:archer_can_view_not_edit)
-  end
-  
   def setup_commodities
     @testing_date_last_produced = "Sat, 16 Jun 2018 00:00:00 UTC +00:00"
     @teacher_1_star = @teacher_1.commodities.first
@@ -102,6 +67,16 @@ class ActiveSupport::TestCase
     
     @consultancy_from_setup = Consultancy.all[-1]
     @other_consultancy = Consultancy.all[-2]
+  end
+  
+  def setup_goals
+    Seminar.all.each do |seminar|
+      seminar.students.each do |stud|
+        4.times do |n|
+          stud.goal_students.create(:seminar_id => seminar.id, :term => n)
+        end
+      end
+    end
   end
   
   def setup_objectives
@@ -131,6 +106,22 @@ class ActiveSupport::TestCase
     @fill_in_label = labels(:fill_in_label)
   end
   
+  def setup_schools
+    @school = @teacher_1.school
+    @school.update(:term_dates => School.default_terms, :term => 1)
+    @school_2 = schools(:school_2)
+    School.all.each do |school|
+      school.set_market_and_currency_name
+    end
+  end
+  
+  def setup_seminars
+    @seminar = seminars(:one)
+    @seminar_2 = seminars(:two)
+    @seminar_3 = seminars(:three)
+    @avcne_seminar = seminars(:archer_can_view_not_edit)
+  end
+  
   def setup_questions
     @admin_q = questions(:one)
     @user_q = questions(:two)
@@ -156,13 +147,23 @@ class ActiveSupport::TestCase
     end
   end
   
-  def setup_goals
-    Seminar.all.each do |seminar|
-      seminar.students.each do |stud|
-        4.times do |n|
-          stud.goal_students.create(:seminar_id => seminar.id, :term => n)
-        end
-      end
+  def setup_users
+    @admin_user = users(:michael)
+    @teacher_1 = users(:archer)
+    @other_teacher = users(:zacky)
+    @unverified_teacher = users(:user_1)
+    @teacher_3 = @teacher_1.school.teachers[3]
+    @student_1 = users(:student_1)
+    @student_2 = users(:student_2)
+    @student_3 = users(:student_3)
+    @other_school_student = Student.last
+    @other_school_student.update(:school => schools(:school_2))
+    @student_90 = users(:student_90)
+    Student.all[0..70].each do |student|
+      student.update(:sponsor => @teacher_1)
+    end
+    Student.all[71..90].each do |student|
+      student.update(:sponsor => @other_teacher)
     end
   end
   

@@ -5,4 +5,8 @@ class CommodityStudent < ApplicationRecord
     attribute :quantity, :integer, default: 0
     attribute :avg_price_paid, :integer, default: 0
     attribute :quant_delivered, :integer, default: 0
+    
+    def self.needs_delivered
+        where(arel_table[:quantity].gt(arel_table[:quant_delivered]))
+    end
 end

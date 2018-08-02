@@ -10,4 +10,7 @@ class Commodity < ApplicationRecord
     attribute       :usable, :boolean, default: false
     
     validates       :name, :presence => true
+    
+    scope :deliverable, -> { where(:deliverable => true) }
+    scope :non_deliverable, -> { where(:deliverable => false) }
 end

@@ -65,6 +65,7 @@ user_<%= n %>:
 
 
 # Students in First Seminar
+<% stud_num = 0 %>
 
 <% student_array = 
   [["Natalie", "Lim"],
@@ -161,13 +162,13 @@ user_<%= n %>:
 %>
 
 <% student_array.each_with_index do |student, index| %>
-student_<%= index %>:
+student_<%= stud_num %>:
   first_name: <%= student_array[index][0] %>
   last_name: <%= student_array[index][1] %>
   password_digest: <%= Student.digest('password') %>
   user_number: <%= index %>
   username: <%= "#{student_array[index][0][0].downcase}#{student_array[index][1][0].downcase}#{index}" %>
-  email: <%= "#{student_array[index][0]}@email.com" %>
+  email: <%= "#{student_array[index][0].downcase}@email.com" %>
   type: Student
   activated: true
   activated_at: <%= Time.zone.now %>
@@ -175,5 +176,32 @@ student_<%= index %>:
   verified: 1
   school: school_1
   school_year: 9
+  
+  <% stud_num = stud_num + 1 %>
 <% end %>
 
+<% student_array_2 =
+  [["Artur", "Stolf Brzozowski"],
+  ["Leo", "McCall"],
+  ["Victor", "Foster"]]
+%>
+
+
+<% student_array_2.each_with_index do |student, index| %>
+student_<%= stud_num %>:
+  first_name: <%= student_array_2[index][0] %>
+  last_name: <%= student_array_2[index][1] %>
+  password_digest: <%= Student.digest('password') %>
+  user_number: <%= index %>
+  username: <%= "#{student_array_2[index][0][0].downcase}#{student_array[index][1][0].downcase}#{index}" %>
+  email: <%= "#{student_array_2[index][0].downcase}@email.com" %>
+  type: Student
+  activated: true
+  activated_at: <%= Time.zone.now %>
+  last_login: Sun, 09 Apr 2017 23:56:14 UTC +00:00
+  verified: 1
+  school: school_2
+  school_year: 9
+  
+  <% stud_num = stud_num + 1 %>
+<% end %>

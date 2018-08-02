@@ -59,7 +59,30 @@ ready = ->
                 data:
                     seminar_student:
                         req_type: req_type
-                        req_id: req_id     
+                        req_id: req_id 
+    
+    if $('.mark_received').length > 0
+        $('.mark_received').on "click", ->
+            com_stud_id = $(this).attr('com_stud_id')
+            this_com_display = $('#delivered_display_'+com_stud_id)
+            this_total_amount = parseInt($('#total_display_'+com_stud_id).text())
+            old_amount = parseInt(this_com_display.text())
+            new_amount = old_amount + 1
+            this_com_display.text(new_amount)
+            
+            console.log(new_amount)
+            console.log(this_total_amount)
+            console.log(new_amount == this_total_amount)
+            if new_amount == this_total_amount
+                console.log($('#mark_received_'+com_stud_id))
+                $('#mark_received_'+com_stud_id).addClass('currently_hidden')
+            
+            url = '/commodity_students/'+com_stud_id
+        
+            $.ajax
+                type: "PUT"
+                url: url
+                dataType: "json"
                         
     if $('.add_bucks').length > 0 || $('.buy_commode').length > 0 || $('.use_commode').length > 0
         $('.add_bucks').unbind( "click" )
