@@ -26,13 +26,14 @@ class SeminarStudentsController < ApplicationController
   
   def show
     @ss = SeminarStudent.find(params[:id])
+    @ss_id = @ss.id
     @new_ss = SeminarStudent.new
     @student = @ss.user
     @school = @student.school
     @seminar = @ss.seminar
     @term = @seminar.term_for_seminar
     @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
-    @bucks_owned = @ss.seminar_bucks_owned
+    @bucks_current = @student.bucks_current(:seminar, @seminar)
     @school_or_seminar = "seminar"
     
     @this_checkpoint = @seminar.which_checkpoint
@@ -65,7 +66,7 @@ class SeminarStudentsController < ApplicationController
   def update
     @ss = SeminarStudent.find(params[:id])
     if params[:bucks_to_add]
-      @ss.update(:seminar_bucks_owned => @ss.seminar_bucks_owned + params[:bucks_to_add].to_i)
+      Currency.create(:seminar => @ss.seminar, :user => @ss.user, :giver => current_user, :value => params[:bucks_to_add])
     elsif params[:present]
       @ss.update(:present => params[:present])
     else

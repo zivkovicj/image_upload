@@ -104,5 +104,33 @@ class StudentTest < ActiveSupport::TestCase
     assert_equal 3, @student_2.school_year
   end
   
+  test "assets" do
+    setup_users
+    setup_seminars
+    setup_schools
+    
+    @student_2.currencies.create(:seminar => @seminar, :giver => @teacher, :value => 10)
+    @student_2.currencies.create(:seminar => @seminar, :giver => @teacher, :value => 11)
+    @student_2.currencies.create(:seminar => nil, :school => @school, :giver => @teacher, :value => 12)
+    @student_2.currencies.create(:seminar => nil, :school => @school, :giver => @teacher, :value => 13)
+    assert_equal 21, @student_2.bucks_earned(:seminar, @seminar)
+    assert_equal 25, @student_2.bucks_earned(:school, @school)
+    
+    @student_2.commodity_students.create(:seminar => @seminar, :commodity => Commodity.first, :price_paid => 1, :delivered => true)
+    @student_2.commodity_students.create(:seminar => @seminar, :commodity => Commodity.first, :price_paid => 2, :delivered => true)
+    @student_2.commodity_students.create(:seminar => @seminar, :commodity => Commodity.first, :price_paid => 3, :delivered => false)
+    @student_2.commodity_students.create(:seminar => @seminar, :commodity => Commodity.second, :price_paid => 4, :delivered => false)
+    @student_2.commodity_students.create(:seminar => @seminar, :commodity => Commodity.second, :price_paid => 5, :delivered => false)
+    @student_2.commodity_students.create(:school => @school, :commodity => @school.commodities.first, :price_paid => 3, :delivered => true)
+    @student_2.commodity_students.create(:school => @school, :commodity => @school.commodities.first, :price_paid => 4, :delivered => false)
+    
+    assert_equal 15, @student_2.bucks_spent(:seminar, @seminar)
+    assert_equal 7, @student_2.bucks_spent(:school, @school)
+    
+    assert_equal 6, @student_2.bucks_current(:seminar, @seminar)
+    assert_equal 18, @student_2.bucks_current(:school, @school)
+    assert_equal 3, @student_2.com_quant(Commodity.first)
+    assert_equal 2, @student_2.com_quant_delivered(Commodity.first)
+  end
 
 end

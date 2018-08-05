@@ -8,11 +8,11 @@
     <% @this_com_stud = current_user.commodity_students.find_by(:commodity => @commode) if current_user.type == "Student" %>
     <% @hide_class = "currently_hidden" %>
     <% @stud_quant = 0 %>
-    <% @this_quant_delivered = 0 %>
-    <% if @this_com_stud.present? %>
+    <% @stud_quant_delivered = 0 %>
+    <% if current_user.type == "Student" %>
         <% @hide_class = "" %>
-        <% @stud_quant = @this_com_stud.quantity %>
-        <% @this_quant_delivered = @this_com_stud.quant_delivered %>
+        <% @stud_quant = current_user.com_quant(@commode) %>
+        <% @stud_quant_delivered = current_user.com_quant_delivered(@commode) %>
         <% @visible_class_use_and_sell = @stud_quant > 0 ? "" : "currently_hidden" %>
     <% end %>
     <tr>

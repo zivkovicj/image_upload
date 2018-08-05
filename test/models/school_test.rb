@@ -20,10 +20,10 @@ class SchoolTest < ActiveSupport::TestCase
     com_stud_3 = CommodityStudent.find_or_create_by(:user => @school_2.students.first, :commodity => @school_2.commodities.first)
     com_stud_4 = CommodityStudent.find_or_create_by(:user => @school.students.first, :commodity => @school.commodities.non_deliverable.first)
     
-    com_stud_1.update(:quantity => 3, :quant_delivered => 2)
-    com_stud_2.update(:quantity => 3, :quant_delivered => 3)
-    com_stud_3.update(:quantity => 3, :quant_delivered => 2)
-    com_stud_4.update(:quantity => 3, :quant_delivered => 0)
+    com_stud_1.update(:quantity => 3, :delivered => false)
+    com_stud_2.update(:quantity => 3, :delivered => true)
+    com_stud_3.update(:quantity => 3, :delivered => false)
+    com_stud_4.update(:quantity => 3, :delivered => false)
     
     these_coms = @school.commodities_needing_delivered
     assert these_coms.include?(com_stud_1)

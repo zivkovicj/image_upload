@@ -10,7 +10,13 @@ Between each update, manually test:
     Buy, sell, and use buttons in star market
         Visible from beginning when needed
         Appearing and disappearing when needed
-    Student cannot change quiz answers after the quiz is finished. 
+        Properly updating inventory
+        
+        From Teacher Screen
+        From Student Screen
+    Give a student seminar bucks
+    Give a student school bucks
+    Student cannot change quiz answers after the quiz is finished 
 
 
 
@@ -150,7 +156,7 @@ CommoditySchool
     production_day
     created_this_week
 SeminarStudent (update)
-    bucks_owned
+    bucks_earned
     gems_given_toward_reward
     stars_used_toward_grade (array with four spots for four terms)
 Seminar (update)
@@ -166,7 +172,7 @@ Update teacher viewing student to resemble the student's own view
     Then I can probably move the teaching_requests and all_student_scores views out of shared and into the seminar_student folder
     Test teacher updating all aspects of show page
     Need to be able to get back to scoresheet
-Teacher can give bucks to students.  Increases bucks_owned in SeminarStudent
+Teacher can give bucks to students.  Increases bucks_earned in SeminarStudent
 Should be ajax, not a full http call
 Teacher can set default increment for each seminar.
 Students bucks increase by default increment.
@@ -206,7 +212,7 @@ Dry up view for requests
 
 Migrate
     SeminarStudents
-        bucks_owned to 0
+        bucks_earned to 0
         gems_given_toward_reward to 0
         stars_used_toward_grade to [0,0,0,0]
     Seminar

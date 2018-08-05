@@ -27,7 +27,7 @@ class CommoditiesController < ApplicationController
         @student = current_user
         @seminar = nil
         @commodities = @school.commodities.paginate(:per_page => 6, page: params[:page])
-        @bucks_owned = current_user.school_bucks_owned
+        @bucks_current = current_user.bucks_current(:school, @school) if current_user.type == "Student"
         @school_or_seminar = "school"
     end
     
@@ -64,46 +64,29 @@ class CommoditiesController < ApplicationController
           params.require(:commodity).permit(:name, :image, :school_id, :current_price, :quantity, :salable)
         end
         
-        def set_or_create_com_stud
+        def commodity_buy
             @multiplier = params[:multiplier].to_i
             @student = Student.find(params[:student_id])
-            @this_com_stud = CommodityStudent.find_or_create_by(:user => @student, :commodity => @commodity)
-            
-            @buck_source = params[:school_or_seminar]
-            if @buck_source == "school"
-                @source_model = @student
-                @bucks_to_use = @student.school_bucks_owned
-                @sell_allowed = false
+            if params[:school_or_seminar] == "seminar"
+                bucks_to_check = @student.bucks_current(:seminar_id, params[:seminar_id])
             else
-                @seminar = Seminar.find(params[:seminar_id])
-                @source_model = @student.seminar_students.find_by(:seminar => @seminar)
-                @bucks_to_use = @source_model.seminar_bucks_owned
-                @sell_allowed = @multiplier < 0 && @this_com_stud.quantity > 0
+                bucks_to_check = @student.bucks_current(:school, @student.school)
             end
-        end
-        
-        def commodity_buy
-            set_or_create_com_stud
             
-            buy_allowed = @multiplier > 0 && @bucks_to_use > 0 && @commodity.quantity > 0
-            if buy_allowed || @sell_allowed
-              @this_com_stud.update(:quantity => @this_com_stud.quantity + @multiplier)
+            sell_allowed = @multiplier < 0 && @student.com_quant(@commodity) > 0
+            buy_allowed = @multiplier > 0 && bucks_to_check > 0 && @commodity.quantity > 0
+            if buy_allowed || sell_allowed
+                price_paid = @commodity.current_price * @multiplier
+                @student.commodity_students.create(:commodity => @commodity, :quantity => @multiplier, 
+                    :price_paid => price_paid, :seminar_id => params[:seminar_id], :school_id => params[:school_id])
               
-              cost = (@commodity.current_price * @multiplier)
-              old_bucks = @source_model.read_attribute(:"#{@buck_source}_bucks_owned")
-              @source_model.update(:"#{@buck_source}_bucks_owned" => old_bucks - cost)
-              old_quant = @commodity.quantity
-              @commodity.update(:quantity => old_quant - 1)
+                old_quant = @commodity.quantity
+                @commodity.update(:quantity => old_quant - 1)
             end
         end
       
         def commodity_use
-            set_or_create_com_stud
-            @this_com_stud.update(:quantity => @this_com_stud.quantity - 1)
-            
-            term = @seminar.term_for_seminar
-            old_stars = @source_model.stars_used_toward_grade[term]
-            @source_model.stars_used_toward_grade[term] = old_stars + 1
-            @source_model.save
+            @student = Student.find(params[:student_id])
+            @student.commodity_students.create(:commodity => @commodity, :quantity => -1, :price_paid => 0)
         end
 end

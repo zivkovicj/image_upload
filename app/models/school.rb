@@ -35,6 +35,6 @@ class School < ApplicationRecord
     end
     
     def commodities_needing_delivered
-        CommodityStudent.where(:commodity => self.commodities.deliverable, :user => self.students).needs_delivered
+        CommodityStudent.where(:commodity => self.commodities.deliverable, :user => self.students, :delivered => false)
     end
 end

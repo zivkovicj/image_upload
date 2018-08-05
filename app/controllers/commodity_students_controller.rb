@@ -7,6 +7,6 @@ class CommodityStudentsController < ApplicationController
     
     def update
         @com_stud = CommodityStudent.find(params[:id])
-        @com_stud.update(:quant_delivered => @com_stud.quant_delivered + 1)
+        @com_stud.update(:delivered => true)
     end
 end

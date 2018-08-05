@@ -12,6 +12,8 @@ class User < ApplicationRecord
     has_many    :quizzes
     has_many    :pictures
     has_many    :goals
+    has_many    :currencies
+    has_many    :given_currencies, :class_name => "Currency", :as => :giver
     has_and_belongs_to_many  :teams
     belongs_to  :school
     belongs_to   :sponsor,  :class_name => "User"
@@ -19,7 +21,6 @@ class User < ApplicationRecord
     
     attribute :verified, :integer, default: 0
     attribute :school_admin, :integer, default: 0
-    attribute :school_bucks_owned, :integer, default: 0
 
     validates :first_name, length: {maximum: 25},
             presence: true

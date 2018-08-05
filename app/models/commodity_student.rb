@@ -1,12 +1,13 @@
 class CommodityStudent < ApplicationRecord
     belongs_to  :commodity
     belongs_to  :user
+    belongs_to  :seminar
+    belongs_to  :school
     
     attribute :quantity, :integer, default: 0
     attribute :avg_price_paid, :integer, default: 0
-    attribute :quant_delivered, :integer, default: 0
     
     def self.needs_delivered
-        where(arel_table[:quantity].gt(arel_table[:quant_delivered]))
+        where(:delivered => false)
     end
 end

@@ -57,32 +57,86 @@ Error when deleting objective from index
 
 
 
-   
+CHANGE SEMINAR BUCKS TO FIT THE SCHOOL BUCKS SYSTEM
+V Currency model
+    Student
+    Teacher
+    School
+    Type (School or seminar)
+    Value
+    Comment
+V Clicking the button creates a currency object
+V Don't need seminar_bucks_earned or school_bucks_earned anymore. Instead, we'll use the method of adding all receipts
+V Use the new bucks_earned method everywhere appropriate
+V Bucks actually need to keep track of the seminar, not the teacher.
+V Each individual com_stud needs to be marked delivered. Not a quant delivered
+V Buying an item needs to enter the cost column of the commodity_student
+V Bucks current should find bucks eanred then subtract all costs of purchased items
+V Purchasing a commodity must also update the seminar or school column
 
 
 
 
 
+Check School and Seminar for needed updates to existing CommodityStudents
+
+
+
+
+RUBIFY CURRENT SCORES
+First test performance by filling the db with many quizzes and scores
+Take note of how long the scoresheet currently takes to load
+First replace all calls to "points" with a "highest_points_all_time" or "highest_points_this_term"
+Should be able to simply scan by date instead of messing with the ugly array.
+That will eliminate the need to update scores each year.
+Before pushing, check loading time for scoresheet.
+Will still need to maintain a current_score and points column in case teacher updates score manually.
+    Or maybe if teacher updates score manually, it should create a quiz with that score?
 
 
 
 
 GIVE SCHOOL BUCKS
 
+Class page offers school bucks in the same window as star market
 
 
 
 
-REMEMBER WHETHER TEACHER WANTS TO SHOW "ALL OBJECTIVES" OR CURRENTLY-USED OBJECTIVES
 
 
+
+
+
+
+SCHOOL BUCKS TO NON-SEMINAR STUDENTS
+Teacher show page offers a link to student search
+Student search offers the panel to give school bucks
+
+
+
+
+FIX PROBLEMS WITH STUDENT SEARCHING
+
+
+DELETE COMMODITIES
+
+Still needs to maintain a record of the commodity_students purchased.  At least until database maintenance.
+
+STUDENT CAN SEE A REPORT OF ALL BUCKS RECEIVED
 
 
 
 
 ORGANIZE CONTENT CREATION BUTTONS
+Probably set up a "content creation" screen that organizes those buttons better.  
 
-Probably set up a "content creation" screen that organizes those buttons better.   
+
+TEACHER CAN SEE A REPORT OF ALL BUCKS GIVEN
+
+
+REMEMBER WHETHER TEACHER WANTS TO SHOW "ALL OBJECTIVES" OR CURRENTLY-USED OBJECTIVES
+
 
 
 TEACHER CAN CREATE COMMODITIES FOR A SINGLE SEMINAR
@@ -94,6 +148,19 @@ Teacher can allow and disallow the use of stars and gems in a specific class
 Cannot delete star or gem commodity
 Teacher can edit her individual commodities
 Teacher can open and close availability for certain commodities
+Don't allow teacher to delete stars
+
+
+USING STARS NEEDS TO BE UPDATED
+
+
+
+SHOULD I IMPROVE LOADING OF SUBMENU NAVRIBBON PAGES BY LOADING FEWER OBJECTS AT A TIME?
+Instead of loading the requests AND the market info AND total scores, etc., just load one of these objects at a time.
+Should be the more rails-y approach.
+
+
+
 
 
 TEACHER CAN TAKE CLASS CURRENCY (IN CASE OF A MISTAKE)
@@ -104,11 +171,19 @@ Teacher can make a comment while giving some currency
 
 Currency moves with student if student changes classes
 
-Teachers have limited amount of currency to give
-
 Teacher can give bucks to whole class.
     Screen that allows unchecking boxes from certain students
     Custom controller action that loops through whole class
+    
+    
+ADMIN CAN SEE CURRENCY REPORTS FOR STUDENTS AND TEACHERS
+    
+    
+LIMIT THE BUCKS THAT A TEACHER HAS
+
+
+
+LEVEL 2 ADMIN CAN GIVE TEACHERS MORE BUCKS
     
     
     

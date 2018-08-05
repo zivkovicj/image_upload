@@ -11,7 +11,6 @@ class SeminarStudent < ApplicationRecord
     
     attribute :pref_request, :integer, default: 1
     attribute :present, :boolean, default: true
-    attribute :seminar_bucks_owned, :integer, default: 0
     attribute :stars_used_toward_grade, :text, default: [0,0,0,0]
     
     include ModelMethods

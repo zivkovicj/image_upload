@@ -70,9 +70,6 @@ ready = ->
             new_amount = old_amount + 1
             this_com_display.text(new_amount)
             
-            console.log(new_amount)
-            console.log(this_total_amount)
-            console.log(new_amount == this_total_amount)
             if new_amount == this_total_amount
                 console.log($('#mark_received_'+com_stud_id))
                 $('#mark_received_'+com_stud_id).addClass('currently_hidden')
@@ -97,6 +94,7 @@ ready = ->
         url = ""
         school_or_seminar = "school"
         seminar_id = 0
+        school_id = 0
         student_id = 0
         
         set_market_attributes = (th) ->
@@ -105,6 +103,7 @@ ready = ->
             multiplier = parseInt($(th).attr('multiplier'))
             school_or_seminar = $(th).attr('school_or_seminar')
             seminar_id = $(th).attr('seminar_id')
+            school_id = $(th).attr('school_id')
             student_id = $(th).attr('student_id')
             
         item_stash_display = (com_id, multiplier) ->
@@ -143,6 +142,7 @@ ready = ->
                 amount = $('#buck_spinbox').val()
             else  
                 amount = $(this).attr('amount')
+                
             url = '/seminar_students/'+seminar_student_id
             new_stash = parseInt(current_cash) + parseInt(amount)
             $('#current_cash').text(new_stash)
@@ -178,6 +178,7 @@ ready = ->
                     multiplier: multiplier
                     school_or_seminar: school_or_seminar
                     seminar_id: seminar_id
+                    school_id: school_id
                         
         $('.use_commode').on "click", ->
             set_market_attributes($(this))
