@@ -16,7 +16,7 @@
           <div class="<%= high_class %> singleOption req_option req_option_<%= req_type %> center hoverHigh"
             req_id="<%= req_id %>" seminar_student_id="<%= @ss.id %>" req_type="<%= req_type %>" >
             <%= req_name %><br/>
-            <%= score.points if show_score %>
+            <%= score.points_all_time if show_score %>
           </div>
         <% end %>
       <% else %>

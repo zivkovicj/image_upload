@@ -106,6 +106,19 @@ class ActiveSupport::TestCase
     @fill_in_label = labels(:fill_in_label)
   end
   
+  def setup_questions
+    @admin_q = questions(:one)
+    @user_q = questions(:two)
+    @other_q_pub = questions(:three)
+    @other_q_priv = questions(:four)
+  end
+  
+  def setup_pictures
+    @admin_p = pictures(:cheese_logo)
+    @user_p = pictures(:two)
+    @other_p = pictures(:three)
+  end
+  
   def setup_schools
     @school = @teacher_1.school
     @school.update(:term_dates => School.default_terms, :term => 1)
@@ -120,19 +133,6 @@ class ActiveSupport::TestCase
     @seminar_2 = seminars(:two)
     @seminar_3 = seminars(:three)
     @avcne_seminar = seminars(:archer_can_view_not_edit)
-  end
-  
-  def setup_questions
-    @admin_q = questions(:one)
-    @user_q = questions(:two)
-    @other_q_pub = questions(:three)
-    @other_q_priv = questions(:four)
-  end
-  
-  def setup_pictures
-    @admin_p = pictures(:cheese_logo)
-    @user_p = pictures(:two)
-    @other_p = pictures(:three)
   end
   
   def setup_scores

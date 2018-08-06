@@ -132,5 +132,27 @@ class StudentTest < ActiveSupport::TestCase
     assert_equal 3, @student_2.com_quant(Commodity.first)
     assert_equal 2, @student_2.com_quant_delivered(Commodity.first)
   end
+  
+  test "points" do
+    setup_users
+    setup_objectives
+    setup_seminars
+    setup_schools
+    
+    term_1_start_date = Date.strptime(@school.term_dates[1][0], "%m/%d/%Y")
+    term_2_start_date = Date.strptime(@school.term_dates[2][0], "%m/%d/%Y")
+    
+    @student_2.quizzes.create(:total_score => 9, :updated_at => term_1_start_date - 5.days, :objective => @objective_10, :origin => "pretest")
+    @student_2.quizzes.create(:total_score => 8, :updated_at => term_1_start_date - 5.days, :objective => @objective_10, :origin => "teacher_granted")
+    @student_2.quizzes.create(:total_score => 3, :updated_at => term_2_start_date - 6.days, :objective => @objective_10, :origin => "teacher_granted")
+    @student_2.quizzes.create(:total_score => 10, :updated_at => term_2_start_date - 6.days, :objective => @objective_20, :origin => "teacher_granted")
+    @student_2.quizzes.create(:total_score => 4, :updated_at => term_2_start_date - 5.days, :objective => @objective_10, :origin => "teacher_granted")
+    @student_2.quizzes.create(:total_score => 5, :updated_at => term_2_start_date + 5.days, :objective => @objective_10, :origin => "teacher_granted")
+    
+    
+    assert_equal 4, @student_2.points_this_term(@objective_10, 1)
+    assert_equal 5, @student_2.points_this_term(@objective_10, 2)
+    assert_equal 8, @student_2.points_all_time(@objective_10)
+  end
 
 end

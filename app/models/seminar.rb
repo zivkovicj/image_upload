@@ -32,19 +32,12 @@ class Seminar < ApplicationRecord
     Commodity.where(:user => self.teachers)
   end
   
-  def shouldShowConsultLink
-    students.count > 1 and objectives.count > 0
+  def obj_studs_for_seminar
+    ObjectiveStudent.where(:objective => self.objectives, :user => self.students)
   end
   
-  def scoreTransfer(fromObj, toObj)
-    Objective.find(fromObj).objective_students.each do |oldScore|
-      newScore = ObjectiveStudent.find_by(:user_id => oldScore.user_id, :objective_id => toObj)
-      if newScore == nil
-        newScore = ObjectiveStudent.create(:user_id => oldScore.user_id, :objective_id => toObj)
-      end
-      
-      newScore.update(:points => oldScore.points)
-    end
+  def shouldShowConsultLink
+    students.count > 1 and objectives.count > 0
   end
   
   def rank_objectives_by_need

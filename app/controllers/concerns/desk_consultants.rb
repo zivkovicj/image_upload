@@ -24,8 +24,8 @@ module DeskConsultants
     # need_hash
     def setup_need_hash()
       become_need_hash = Hash.new
-      @seminar.objectives.each do |objective|
-        become_need_hash[objective.id] = objective.students_in_need(@seminar) / 3
+      @seminar.objective_seminars.each do |obj_sem|
+        become_need_hash[obj_sem.objective.id] = obj_sem.students_in_need / 3
       end
       return become_need_hash
     end

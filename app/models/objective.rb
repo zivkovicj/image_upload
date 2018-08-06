@@ -34,21 +34,4 @@ class Objective < ApplicationRecord
     def students_who_requested(seminar)
         seminar.seminar_students.where(:learn_request => self.id).count
     end
-    
-    def students_in_need(seminar)
-        students_in_need = 0
-        seminar.students.each do |student|
-            boog = student.objective_students.find_by(objective_id: id)
-            if boog and boog.points and boog.points < 6 and student.check_if_ready(self)
-                students_in_need += 1
-            end
-        end
-        return students_in_need
-    end
-    
-
-    
-    
-        
-
 end

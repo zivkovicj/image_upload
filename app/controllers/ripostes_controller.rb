@@ -51,8 +51,6 @@ class RipostesController < ApplicationController
     private
     
         def set_total_score
-            @old_stars = (@this_obj_stud == nil ? 0 : @this_obj_stud.points) 
-        
             poss = 0
             stud_score = 0
             @quiz.ripostes.each do |riposte|
@@ -66,7 +64,7 @@ class RipostesController < ApplicationController
         end
         
         def take_post_req_keys
-            if @this_obj_stud.points < 6 && @this_obj_stud.total_keys == 0
+            if @this_obj_stud.total_keys == 0 && !@this_obj_stud.passed
                 @objective.mainassigns.each do |mainassign|
                     this_mainassign = mainassign.objective_students.find_by(:user => @student)
                     this_mainassign.update(:pretest_keys => 0) if this_mainassign

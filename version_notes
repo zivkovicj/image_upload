@@ -22,6 +22,25 @@ Between each update, manually test:
 
 
 
+2.72 CHANGE SEMINAR BUCKS TO FIT THE SCHOOL BUCKS SYSTEM
+Currency model
+    Student
+    Teacher
+    School
+    Type (School or seminar)
+    Value
+    Comment
+Clicking the button creates a currency object
+Don't need seminar_bucks_earned or school_bucks_earned anymore. Instead, we'll use the method of adding all receipts
+Use the new bucks_earned method everywhere appropriate
+Bucks actually need to keep track of the seminar, not the teacher.
+Each individual com_stud needs to be marked delivered. Not a quant delivered
+Buying an item needs to enter the cost column of the commodity_student
+Bucks current should find bucks eanred then subtract all costs of purchased items
+Purchasing a commodity must also update the seminar or school column
+
+
+
 2.71 FACULTY CAN MARK SCHOOL COMMODITIES DELIEVERED
 
 Faculty can see all com_studs for unfulfilled purchases

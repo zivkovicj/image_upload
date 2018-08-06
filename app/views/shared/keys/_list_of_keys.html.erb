@@ -1,5 +1,5 @@
 
-<% if this_os.points == 10 %>
+<% if this_os.passed_with_100 %>
     Has scored 100% on this objective
 <% elsif this_os.user.check_if_ready(this_os.objective) %>
     <div class="key_area key_holder_<%= this_os.id %> sem_<%= this_sem.id %>" new_keys=-1 os_id=<%= this_os.id %> sem_id=<%= this_sem.id %>>

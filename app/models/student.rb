@@ -120,9 +120,4 @@ class Student < User
         end
         return true
     end
-    
-    
-    
-    
-
 end

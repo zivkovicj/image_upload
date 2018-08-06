@@ -57,23 +57,6 @@ Error when deleting objective from index
 
 
 
-CHANGE SEMINAR BUCKS TO FIT THE SCHOOL BUCKS SYSTEM
-V Currency model
-    Student
-    Teacher
-    School
-    Type (School or seminar)
-    Value
-    Comment
-V Clicking the button creates a currency object
-V Don't need seminar_bucks_earned or school_bucks_earned anymore. Instead, we'll use the method of adding all receipts
-V Use the new bucks_earned method everywhere appropriate
-V Bucks actually need to keep track of the seminar, not the teacher.
-V Each individual com_stud needs to be marked delivered. Not a quant delivered
-V Buying an item needs to enter the cost column of the commodity_student
-V Bucks current should find bucks eanred then subtract all costs of purchased items
-V Purchasing a commodity must also update the seminar or school column
-
 
 
 
@@ -83,15 +66,41 @@ Check School and Seminar for needed updates to existing CommodityStudents
 
 
 
-RUBIFY CURRENT SCORES
-First test performance by filling the db with many quizzes and scores
-Take note of how long the scoresheet currently takes to load
-First replace all calls to "points" with a "highest_points_all_time" or "highest_points_this_term"
-Should be able to simply scan by date instead of messing with the ugly array.
+2.73 RUBIFY CURRENT SCORES
+V Replace all calls to "points" with a "highest_points_all_time" or "highest_points_this_term"
+V Should be able to simply scan by date instead of messing with the ugly array.
+But refactor the points_this_term method so that it receives the date as input, rather than finding the dates every time it is called.
+
+Delete method score_on
+Delete calls to that method
+
 That will eliminate the need to update scores each year.
-Before pushing, check loading time for scoresheet.
-Will still need to maintain a current_score and points column in case teacher updates score manually.
-    Or maybe if teacher updates score manually, it should create a quiz with that score?
+If teacher updates score manually, it should create a quiz with that score.
+
+
+
+Migrate away the unneeded columns
+
+
+
+
+
+    def update_scores(latest_score, term, origin, override)
+        changed = false
+        if override || latest_score >= self.points
+            self.points = latest_score
+            changed = true
+        end
+        if origin == "pretest" && (self.pretest_score == nil || latest_score >= self.pretest_score)
+            self.pretest_score = latest_score
+            changed = true
+        end
+        if override || ((origin == "teacher_granted" || origin == "dc") && (self.current_scores[term] == nil || latest_score >= self.current_scores[term]))
+            self.current_scores[term] = latest_score
+            changed = true
+        end
+        self.save if changed
+    end
 
 
 

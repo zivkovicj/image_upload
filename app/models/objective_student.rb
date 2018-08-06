@@ -25,38 +25,40 @@ class ObjectiveStudent < ApplicationRecord
         end
     end
     
-    def update_scores(latest_score, term, origin, override)
-        changed = false
-        if override || latest_score >= self.points
-            self.points = latest_score
-            changed = true
-        end
-        if origin == "pretest" && (self.pretest_score == nil || latest_score >= self.pretest_score)
-            self.pretest_score = latest_score
-            changed = true
-        end
-        if override || ((origin == "teacher_granted" || origin == "dc") && (self.current_scores[term] == nil || latest_score >= self.current_scores[term]))
-            self.current_scores[term] = latest_score
-            changed = true
-        end
-        self.save if changed
+    def passed
+        self.points_all_time >= 6
+    end
+    
+    def passed_with_100
+        self.points_all_time == 10
+    end
+    
+    def points_all_time
+        self.user.quizzes.where(:objective => self.objective).where.not(:origin => "pretest").maximum(:total_score) || 0
+    end
+    
+    def points_this_term
+        school = user.school
+        start_date = Date.strptime(school.term_dates[term][0], "%m/%d/%Y")
+        end_date = Date.strptime(school.term_dates[term][1], "%m/%d/%Y")
+        return user.quizzes.where(:updated_at => start_date..end_date, :objective => self.objective).maximum(:total_score) || 0
     end
     
     def total_keys
         self.teacher_granted_keys + self.pretest_keys + self.dc_keys 
     end
     
-    def update_keys(which_key, new_keys)
-        old_keys = self.teacher_granted_keys
-        current_keys = old_keys + new_keys.to_i
-        self.update(:"#{which_key}_keys" => current_keys, :pretest_keys => 0)
-    end
-    
     def take_keys_when_scoring_100
-        if self.points == 10
+        if self.passed_with_100
             self.teacher_granted_keys = 0
             self.dc_keys = 0
             self.pretest_keys = 0
         end
+    end
+    
+    def update_keys(which_key, new_keys)
+        old_keys = self.teacher_granted_keys
+        current_keys = old_keys + new_keys.to_i
+        self.update(:"#{which_key}_keys" => current_keys, :pretest_keys => 0)
     end
 end

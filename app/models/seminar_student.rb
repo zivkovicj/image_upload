@@ -31,7 +31,7 @@ class SeminarStudent < ApplicationRecord
         def new_student_pretest_keys
             seminar.objective_seminars.where(:pretest => 1).each do |os|
                 this_obj_stud = user.objective_students.find_by(:objective => os.objective)
-                this_obj_stud.update(:pretest_keys => 2) unless this_obj_stud.points == 10
+                this_obj_stud.update(:pretest_keys => 2) unless this_obj_stud.passed_with_100
             end
         end
     

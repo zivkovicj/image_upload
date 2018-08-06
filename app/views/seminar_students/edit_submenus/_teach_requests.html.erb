@@ -17,7 +17,7 @@
           <% end %>
           <div class="<%= highClass %> singleOption teachReqOption center hoverHigh" id="<%= reqOption.name %>" req_id="<%= reqOption.id %>" seminar_student_id="<%= @ss.id %>" >
             <%= reqOption.name %><br/>
-            <%= score.points %>
+            <%= score.points_all_time %>
           </div>
         <% end %>
       <% else %>
@@ -43,7 +43,7 @@
           <% end %>
           <div class="<%= highClass %> singleOption learnReqOption center hoverHigh" req_id="<%= reqOption.id %>" seminar_student_id="<%= @ss.id %>" id="<%= reqOption.name %>">
             <%= reqOption.name %><br/>
-            <%= score.points %>
+            <%= score.points_all_time %>
           </div>
         <% end %>
       <% else %>

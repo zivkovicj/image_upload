@@ -7,6 +7,10 @@ class ObjectiveSeminar < ApplicationRecord
     
     before_create :createScores, :addPreReqs
     
+    def students_in_need
+        seminar.obj_studs_for_seminar.select{|x| x.passed == false}.count
+    end
+    
     private
         def createScores
             seminar.students.each do |student|
