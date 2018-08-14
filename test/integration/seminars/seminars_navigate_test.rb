@@ -8,6 +8,7 @@ class SeminarsNavigateTest < ActionDispatch::IntegrationTest
     def setup
         setup_users
         setup_schools
+        setup_scores
         setup_seminars 
         setup_goals
         setup_consultancies

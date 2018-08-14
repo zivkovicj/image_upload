@@ -69,40 +69,24 @@ Check School and Seminar for needed updates to existing CommodityStudents
 2.73 RUBIFY CURRENT SCORES
 V Replace all calls to "points" with a "highest_points_all_time" or "highest_points_this_term"
 V Should be able to simply scan by date instead of messing with the ugly array.
+V Points_this_term simply checks whether it's larger, then updates if so
+    V But always override for a manual quiz
+Migrate the renamed columns
+
+
+
+
+
+SET SCORE THIS TERM TO NIL WHEN TERM ENDS
+
+
+POINTS THIS TERM REFACTOR
 But refactor the points_this_term method so that it receives the date as input, rather than finding the dates every time it is called.
 
-Delete method score_on
-Delete calls to that method
 
-That will eliminate the need to update scores each year.
-If teacher updates score manually, it should create a quiz with that score.
+MOVE ONE_UNFINISHED CHECK TO OBJ_STUD
 
-
-
-Migrate away the unneeded columns
-
-
-
-
-
-    def update_scores(latest_score, term, origin, override)
-        changed = false
-        if override || latest_score >= self.points
-            self.points = latest_score
-            changed = true
-        end
-        if origin == "pretest" && (self.pretest_score == nil || latest_score >= self.pretest_score)
-            self.pretest_score = latest_score
-            changed = true
-        end
-        if override || ((origin == "teacher_granted" || origin == "dc") && (self.current_scores[term] == nil || latest_score >= self.current_scores[term]))
-            self.current_scores[term] = latest_score
-            changed = true
-        end
-        self.save if changed
-    end
-
-
+Then put that method back into user.quiz_collection
 
 
 GIVE SCHOOL BUCKS
@@ -116,6 +100,17 @@ Class page offers school bucks in the same window as star market
 
 
 
+
+UPDATE REQUESTS IF PRE-REQS CHANGE
+This only matter if pre-reqs change after the request is made.
+Highly corner case, but worth a small update.
+ took away the line in the desk consultants algorithm that checks whether an apprentice is ready for her
+request.  
+
+
+OFFER TO CHANGE REQUESTS WHEN A STUDENT PASSES THE REQUESTED OBJECTIVE
+
+DESK CONSULTANTS TESTS NEED TO ENSURE THAT NO REQUESTS GO WITH A STUDENT WHO ISN'T QUALIFIED FOR THAT REQUEST
 
 
 SCHOOL BUCKS TO NON-SEMINAR STUDENTS
@@ -169,6 +164,20 @@ Instead of loading the requests AND the market info AND total scores, etc., just
 Should be the more rails-y approach.
 
 
+
+
+LEARN OPTIONS REFACTOR
+Some parts might perform better if I set the seminar.consultantThreshold before calling the method
+Both of these methods no longer need assign_list
+Teach options needs to be refactored as well.
+Test that teach options doesn't include objectives where the student has scored 100
+Or less than 6
+Or where the student already has keys
+
+
+WATCH FOR DELETIONS THAT AFFECT OTHER USERS
+For example, if you try to delete an objective where other teachers' students have taken quizzes.
+Might need to have an alternative to deletion, such as archiving, or hiding.
 
 
 

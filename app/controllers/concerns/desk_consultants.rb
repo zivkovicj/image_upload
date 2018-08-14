@@ -59,11 +59,12 @@ module DeskConsultants
         @consultancy.teams.count >= @consultantsNeeded
       end
       
+      def still_needed(obj)
+        [(@consultantsNeeded - @consultancy.teams.count), @need_hash[obj.id]].min
+      end
+      
       # First look at the priority 5 objectives
       @seminar.objectives.select{|y| y.priority_in(@seminar) == 5}.each do |obj|
-        def still_needed(obj)
-          [(@consultantsNeeded - @consultancy.teams.count), @need_hash[obj.id]].min
-        end
         temp_consult_list = consult_list_still_needed.select{|x| x.score_on(obj) >= @cThresh}
         hp_consult_list = temp_consult_list.select{|x| x.score_on(obj) < 10 && x.student_has_keys(obj) == 0}
         hp_consult_list << temp_consult_list.select{|x| x.student_has_keys(obj) > 0}
@@ -80,15 +81,17 @@ module DeskConsultants
       # Then look at students in order of increasing consultant points
       consult_list_still_needed.each do |student|
         return if check_for_final_break  # Needed in case some potential need to be skipped because they're not qualified
+        
         # See if student's consultant request will work.
         this_request = student.teach_request_in(@seminar)
         obj = Objective.find(this_request) if this_request
-        if obj && @need_hash[this_request] && @need_hash[this_request] > 0 && student.score_on(obj) >= @cThresh && obj.priority_in(@seminar) > 0
+        if obj && @need_hash[this_request] && @need_hash[this_request] > 0 && obj.priority_in(@seminar) > 0
           establish_new_group(student, obj, true)
           next  # So that the requested topic isn't replaced with the teach_option topic
         end
+        
         # If the request didn't work out, look at the student's teach_options
-        obj = student.teach_options(@seminar, @rank_objectives_by_need).detect{|x| @need_hash[x.id] > 0 && student.score_on(x) < 10 && student.student_has_keys(x) == 0}
+        obj = student.teach_options(@seminar, @rank_objectives_by_need).detect{|x| @need_hash[x.id] > 0}
         establish_new_group(student, obj, true) if obj
       end
     end
@@ -103,8 +106,7 @@ module DeskConsultants
     def place_apprentices_by_requests
       prof_list_still_needed.each do |student|
         this_request = student.learn_request_in(@seminar)
-        obj = Objective.find(this_request) if this_request
-        if obj && student.score_on(obj) < 10 && student.check_if_ready(obj)
+        if this_request
           team = @consultancy.teams.detect{|x| x.objective.id == this_request && x.has_room}
           team.users << student if team
         end
@@ -119,34 +121,34 @@ module DeskConsultants
     end
     
     def find_placement(student)
-      team = @consultancy.teams.detect{|x| x.has_room && student.score_on(x.objective) < @cThresh && student.check_if_ready(x.objective)}
+      team = @consultancy.teams.detect{|x| x.has_room && student.objective_students.find_by(:objective => x.objective).obj_ready_and_willing?(@cThresh)}
       team.users << student if team
       return team
     end
     
-    def check_for_lone_students()
-      @consultancy.teams.each do |team|
-        @consultancy.teams.delete(team) if team.users.count == 1
-      end
+    def check_for_lone_students
+      @consultancy.teams.joins(:users).group('teams.id').having('count(users.id) < 2').destroy_all
     end
     
     def new_place_for_lone_students
       prof_list_still_needed.reverse.each do |student|
         # First, check whether lone student can be placed into an established group
         if find_placement(student) == nil
-          # If not, try establish a new group for that student. This function is smelly, but I'm doing it in this order so that other lone students
-          # might also join this group.
           
-          # Second, try the student's learn_request
+          # If not, try establishing a new group for that student. This function is smelly, but I'm doing it in this order so that other
+          # lone students might also join this group.
+          
+          # In establishing a new group, try the student's learn_request
           # This should happen if all goes normal.
           request_id = student.learn_request_in(@seminar)
           this_request = Objective.find(request_id) if request_id 
-          if this_request && student.score_on(this_request) < @cThresh && student.check_if_ready(this_request) && this_request.priority_in(@seminar) > 0
+          if this_request && this_request.priority_in(@seminar) > 0
             establish_new_group(student, this_request, false)
           else
             # Last resort is to start a new group with the student's first learn option
             # This is mostly for the case where the student doesn't have a learn_request
-            # This can also happen if something happened to the student's learn_request after it was made. For example, the teacher changed the priority to zero.
+            # This can also happen if something happened to the student's learn_request after it was made.
+            # For example, the teacher changed the priority to zero.
             obj = student.learn_options(@seminar, @rank_objectives_by_need)[0]
             establish_new_group(student, obj, false) if obj
           end
@@ -181,14 +183,8 @@ module DeskConsultants
     
     def give_dc_keys
       @consultancy.teams.each do |team|
-        team.users.each do |student|
-          this_obj_stud = student.objective_students.find_by(:objective => team.objective)
-          if this_obj_stud
-            current_score = this_obj_stud.current_scores[@seminar.term_for_seminar]
-            if current_score == nil || current_score < 10
-              this_obj_stud.update_keys("dc", 2)
-            end
-          end
+        ObjectiveStudent.where(:user_id => team.user_ids, :objective_id => team.objective_id).each do |obj_stud|
+          obj_stud.update_keys("dc", 2) unless obj_stud.points_this_term == 10
         end
       end
     end

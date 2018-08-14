@@ -31,13 +31,10 @@ class Student < User
         self.commodity_students.where(:commodity => commode, :delivered => true).count 
     end
     
-    def quiz_stars_this_term(seminar, term)
-        temp_stars = 0
-        self.objective_students.where(:objective => seminar.objectives).each do |obj_stud|
-            this_score = obj_stud.current_scores[term]
-            temp_stars = temp_stars + this_score if this_score
-        end
-        return temp_stars
+    def quiz_stars_this_term(seminar)
+        objective_students
+            .where(:objective => seminar.objectives).to_a
+            .sum{ |x| x.points_this_term.to_i }
     end
     
     def stars_used_toward_grade_this_term(seminar, term)
@@ -45,7 +42,7 @@ class Student < User
     end
     
     def quiz_stars_all_time(seminar)
-        objective_students.where(:objective => seminar.objectives).sum(:points)
+        objective_students.where(:objective => seminar.objectives).map(&:points_all_time).inject{|a,b| a.to_i + b.to_i}
     end
     
     # Returns first name with limit plus last initial
@@ -77,8 +74,7 @@ class Student < User
     end
     
     def score_on(objective)
-        this_os = self.objective_students.find_by(:objective => objective)
-        return this_os ? this_os.points : 0
+        objective_students.find_by(:objective => objective).points_all_time.to_i
     end
     
     def learn_request_in(seminar)
@@ -90,11 +86,16 @@ class Student < User
     end
     
     def teach_options(seminar, assign_list)
-        assign_list.select{|x| self.score_on(x) >= seminar.consultantThreshold && self.score_on(x) < 100}.take(10) 
+        objective_students.where(:objective_id => seminar.objs_above_zero_priority)
+            .where(:points_all_time => seminar.consultantThreshold..9)
+            .select{|x| x.total_keys == 0}
+            .take(10)
+            .map(&:objective)
+            .sort_by{|x| [-x.priority_in(seminar), -x.students_who_requested(seminar)] }
     end
     
     def learn_options(seminar, assign_list)
-        assign_list.select{|x| self.score_on(x) < seminar.consultantThreshold && self.check_if_ready(x)}.take(10) 
+        assign_list.select{|x| self.objective_students.find_by(:objective => x).obj_ready_and_willing?(seminar.consultantThreshold)}.take(10) 
     end
     
     def present_in(seminar)
@@ -102,22 +103,10 @@ class Student < User
     end
     
     def advance_to_next_school_year
-        self.objective_students.each do |obj_stud|
-            obj_stud.score_record[self.school_year] = obj_stud.current_scores
-            obj_stud.current_scores = [nil,nil,nil,nil]
-            obj_stud.save
-        end
         self.update(:school_year => self.school_year + 1)
     end
     
-    # Checks whether a student has met all pre-requisites for an objective
-    def check_if_ready(objective)
-        objective.preassigns.each do |preassign|
-            droog = objective_students.find_by(objective_id: preassign.id)
-            if droog and droog.points < 7
-              return false
-            end
-        end
-        return true
+    def student_has_keys(obj)
+        objective_students.find_by(:objective => obj).total_keys
     end
 end

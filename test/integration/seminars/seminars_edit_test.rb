@@ -38,14 +38,18 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         obj_stud_1_3 = ObjectiveStudent.find_by(:user => @student_1, :objective => @os_3.objective)
         obj_stud_2_3 = ObjectiveStudent.find_by(:user => @student_2, :objective => @os_3.objective)
         
-        obj_stud_1_0.update(:points => 8)
-        obj_stud_2_0.update(:points => 8)
-        obj_stud_1_1.update(:points => 8)
-        obj_stud_2_1.update(:points => 8)
-        obj_stud_1_2.update(:pretest_keys => 2, :points => 8)
-        obj_stud_2_2.update(:pretest_keys => 2, :points => 8)
-        obj_stud_1_3.update(:pretest_keys => 2, :points => 8)
-        obj_stud_2_3.update(:pretest_keys => 2, :points => 8)
+        set_specific_score(obj_stud_1_0.user, obj_stud_1_0.objective, 8)
+        set_specific_score(obj_stud_2_0.user, obj_stud_2_0.objective, 8)
+        set_specific_score(obj_stud_1_1.user, obj_stud_1_1.objective, 8)
+        set_specific_score(obj_stud_2_1.user, obj_stud_2_1.objective, 8)
+        obj_stud_1_2.update(:pretest_keys => 2)
+        obj_stud_2_2.update(:pretest_keys => 2)
+        obj_stud_1_3.update(:pretest_keys => 2)
+        obj_stud_2_3.update(:pretest_keys => 2)
+        set_specific_score(obj_stud_1_2.user, obj_stud_1_2.objective, 8)
+        set_specific_score(obj_stud_2_2.user, obj_stud_2_2.objective, 8)
+        set_specific_score(obj_stud_1_3.user, obj_stud_1_3.objective, 8)
+        set_specific_score(obj_stud_2_3.user, obj_stud_2_3.objective, 8)
         
         assert_equal 2, @os_2.priority
         assert_equal 2, @os_3.priority

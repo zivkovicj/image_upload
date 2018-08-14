@@ -12,7 +12,8 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         setup_scores
         setup_goals
         
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 2)
+        set_specific_score(@student_2, @objective_10, 2)
+        
         @test_obj_stud = @objective_10.objective_students.find_by(:user => @student_2)
         @test_obj_stud.update(:teacher_granted_keys => 2)
     end
@@ -39,11 +40,11 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "setup quiz" do
-        old_quiz_count = Quiz.count
         old_riposte_count = Riposte.count
-        score_box = [0,0,0,0]
-        score_box[@seminar.term_for_seminar] = 2
-        ObjectiveStudent.find_by(:user => @student_2, :objective => @objective_10).update(:current_scores => score_box)
+        current_term = @seminar.term_for_seminar
+        term_start_date = Date.strptime(@school.term_dates[current_term][0], "%m/%d/%Y")
+        @student_2.quizzes.create(:objective => @objective_10, :origin => "teacher_granted", :total_score => 2, :updated_at => term_start_date + 2.days)
+        old_quiz_count = Quiz.count
         
         go_to_first_period
         begin_quiz
@@ -85,7 +86,8 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     
     test "take fill in quiz" do
         fill_in_objective = Objective.find_by(:name => "Fill-in Questions Only")
-        fill_in_objective.objective_students.find_by(:user => @student_2).update(:teacher_granted_keys => 2, :points => 4)
+        set_specific_score(@student_2, fill_in_objective, 4)
+        fill_in_objective.objective_students.find_by(:user => @student_2).update(:teacher_granted_keys => 2)
         go_to_first_period
         
         find("#navribbon_quizzes").click
@@ -111,7 +113,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         click_on "Next Question"
         
         @new_quiz = Quiz.last
-        assert_equal 57, @new_quiz.total_score
+        assert_equal 6, @new_quiz.total_score
         assert @student_2.quizzes.include?(@new_quiz)
     end
     
@@ -128,14 +130,16 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         end
         
         @new_quiz = Quiz.last
-        assert_equal 100, @new_quiz.total_score
+        assert_equal 10, @new_quiz.total_score
         @test_obj_stud.reload
         assert_equal 0, @test_obj_stud.teacher_granted_keys
         assert_equal 0, @test_obj_stud.dc_keys
     end
     
-    test "current score" do
-        @test_obj_stud.update(:points => 1, :teacher_granted_keys => 2, :current_scores => [1,1,nil,nil])
+    test "improving points" do
+        
+        @test_obj_stud.update(:points_all_time => 1, :points_this_term => 1, :teacher_granted_keys => 2)
+        set_specific_score(@test_obj_stud.user, @test_obj_stud.objective, 1)
         
         # First try on quiz student scores 3 stars. An improvement of 2 stars.
         go_to_first_period
@@ -150,8 +154,8 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         end
         
         @test_obj_stud.reload
-        assert_equal 3, @test_obj_stud.points
-        assert_equal [1,3,nil,nil], @test_obj_stud.current_scores
+        assert_equal 3, @test_obj_stud.points_all_time
+        assert_equal 3, @test_obj_stud.points_this_term
         
         # Second try on quiz student scores 8 stars. An improvement of 5 stars.
         click_on("Try this quiz again")
@@ -165,12 +169,13 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         end
         
         @test_obj_stud.reload
-        assert_equal 8, @test_obj_stud.points
-        assert_equal [1,8,nil,nil], @test_obj_stud.current_scores
+        assert_equal 8, @test_obj_stud.points_all_time
+        assert_equal 8, @test_obj_stud.points_this_term
     end
     
     test "quizzed better last term" do
-        @test_obj_stud.update(:points => 8, :teacher_granted_keys => 2, :current_scores => [8,4,nil,nil])
+        Quiz.create(:user => @student_2, :objective => @objective_10, :origin => "teacher_granted", :total_score => 8)
+        @test_obj_stud.update(:teacher_granted_keys => 2, :points_this_term => nil, :points_all_time => 8)
         
         go_to_first_period
         begin_quiz
@@ -184,12 +189,14 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         end
         
         @test_obj_stud.reload
-        assert_equal 8, @test_obj_stud.points
-        assert_equal [8,5,nil,nil], @test_obj_stud.current_scores
+        assert_equal 8, @test_obj_stud.points_all_time
+        assert_equal 5, @test_obj_stud.points_this_term
     end
     
     test "quizzed better this term" do
-        @test_obj_stud.update(:points => 8, :teacher_granted_keys => 2, :current_scores => [8,7,nil,nil])
+        set_specific_score(@student_2, @objective_10, 8)
+        @test_obj_stud.update(:teacher_granted_keys => 2, :points_all_time => 8, :points_this_term => 8)
+        @student_2.quizzes.create(:objective => @objective_10, :total_score => 8, :origin => "teacher_granted")
         
         go_to_first_period
         begin_quiz
@@ -203,15 +210,15 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         end
         
         @test_obj_stud.reload
-        assert_equal 8, @test_obj_stud.points
-        assert_equal [8,7,nil,nil], @test_obj_stud.current_scores
+        assert_equal 8, @test_obj_stud.points_all_time
+        assert_equal 8, @test_obj_stud.points_this_term
     end
     
     test "pretest" do
-        @test_obj_stud.update(:teacher_granted_keys => 0, :pretest_keys => 2, :current_scores => [1,nil,nil,nil])
+        @test_obj_stud.update(:teacher_granted_keys => 0, :pretest_keys => 2, :points_all_time => nil, :points_this_term => nil)
         @first_mainassign = @objective_10.mainassigns.first
         @mainassign_os = @student_2.objective_students.find_by(:objective => @first_mainassign)
-        @mainassign_os.update(:teacher_granted_keys => 0, :pretest_keys => 2, :points => 0)
+        @mainassign_os.update(:teacher_granted_keys => 0, :pretest_keys => 2, :points_all_time => nil, :points_this_term => nil)
         
         go_to_first_period
         find("#navribbon_quizzes").click
@@ -229,9 +236,8 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         # Doesn't take the keys yet, because student still has another try
         @test_obj_stud.reload
         assert_equal 1, @test_obj_stud.pretest_keys
-        assert_equal 1, @test_obj_stud.pretest_score
-        assert_equal 2, @test_obj_stud.points  #Stays the same because it didn't increase from the previous score
-        assert_equal [1,nil,nil,nil], @test_obj_stud.current_scores  #Doesn't change
+        assert_equal 1, @test_obj_stud.points_all_time  #Stays the same because it didn't increase from the previous score
+        assert_nil @test_obj_stud.points_this_term
         assert_equal 2, @mainassign_os.reload.pretest_keys  
         
         click_on("Try this quiz again")
@@ -247,8 +253,8 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         # Now it takes the pretest keys for the post-requisites to spare the student the struggle of taking a pre-test that she is doomed to fail.
         @test_obj_stud.reload
         assert_equal 0, @test_obj_stud.pretest_keys
-        assert_equal 3, @test_obj_stud.pretest_score
-        assert_equal 3, @test_obj_stud.points
+        assert_equal 3, @test_obj_stud.points_all_time
+        assert_nil      @test_obj_stud.points_this_term
         assert_equal 0, @mainassign_os.reload.pretest_keys   
     end
     

@@ -39,8 +39,22 @@ class ActiveSupport::TestCase
     end
   end
   
+  def create_quiz(student, obj, score)
+    student.quizzes.create(:objective => obj, :total_score => score, :origin => "teacher_granted") 
+  end
+  
   def disable_images
     Question.where.not(:picture_id => nil).update_all(:picture_id => nil) 
+  end
+  
+  def set_specific_score(student, objective, score)
+    ObjectiveStudent.find_by(:user => student, :objective => objective)
+      .update(:points_all_time => score, :points_this_term => score)
+    #Quiz.where(:user => student, :objective => objective).last.update(:total_score => score)
+  end
+  
+  def set_all_scores(category, subject, score)
+    ObjectiveStudent.where(category => subject).update_all(:points_all_time => score)
   end
   
   def setup_commodities
@@ -139,9 +153,10 @@ class ActiveSupport::TestCase
     Seminar.all.each do |seminar|
       seminar.students.each do |student|
         seminar.objectives.each do |objective|
-          if student.objective_students.find_by(:objective => objective) == nil
-            student.objective_students.create(:objective => objective, :points => rand(11))
-          end
+          rand_score = rand(11)
+          student.objective_students.find_or_create_by(:objective => objective,
+            :points_all_time => rand_score,
+            :points_this_term => rand_score)
         end
       end
     end

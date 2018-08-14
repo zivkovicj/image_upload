@@ -115,7 +115,7 @@ class User < ApplicationRecord
     end
  
     def all_unfinished_quizzes(seminar)
-        seminar.objectives.select{|x| self.one_unfinished(x) } 
+        seminar.objectives.select{|x| self.one_unfinished(x)} 
     end
     
     def desk_consulted_objectives(seminar)
@@ -124,16 +124,12 @@ class User < ApplicationRecord
     end
     
     def quiz_collection(seminar, which_key)
-        return seminar.objectives.select{|x| x.objective_students.find_by(:user => self).read_attribute(:"#{which_key}_keys") > 0 && !self.one_unfinished(x) && self.check_if_ready(x)}
+        objective_students.select{|x| x.read_attribute(:"#{which_key}_keys") > 0 && x.obj_ready? && !one_unfinished(x.objective)}.map(&:objective)
     end
     
     def can_edit_this_seminar(seminar)
         this_st = self.seminar_teachers.find_by(:seminar => seminar)
         this_st && this_st.can_edit
-    end
-    
-    def student_has_keys(objective)
-        self.objective_students.find_by(:objective => objective).total_keys
     end
     
     private

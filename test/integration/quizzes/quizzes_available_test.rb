@@ -28,7 +28,9 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     def try_quiz_twice(which_key)
-        @test_os.update(:teacher_granted_keys => 0, :pretest_keys => 0, :dc_keys => 0, :points => 0)
+        @test_os.update(:teacher_granted_keys => 0, :pretest_keys => 0, :dc_keys => 0)
+        set_specific_score(@test_os.user, @test_os.objective, 0)
+        
         @test_os.update(:"#{which_key}_keys" => 2)
         old_quiz_count = Quiz.count
         
@@ -70,8 +72,9 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "quiz with questions" do
-        @test_os.update(:teacher_granted_keys => 2, :points => 4)
-        ObjectiveStudent.find_by(:objective => @objective_10, :user => @student_2).update(:points => 2)
+        @test_os.update(:teacher_granted_keys => 2)
+        set_specific_score(@test_os.user, @test_os.objective, 4)
+        set_specific_score(@student_2, @objective_10, 2)
         
         go_to_first_period
         begin_quiz("teacher_granted")
@@ -82,7 +85,8 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     test "unfinished quizzes" do
         @seminar.objective_seminars.update_all(:pretest => 0)
         @seminar.objective_seminars.find_by(:objective => @objective_10).update(:pretest => 1)
-        @student_2.objective_students.find_by(:objective => @objective_10).update(:points => 0, :pretest_keys => 2)
+        @student_2.objective_students.find_by(:objective => @objective_10).update(:pretest_keys => 2)
+        set_specific_score(@student_2, @objective_10, 0)
        
         go_to_first_period
         assert_no_text("Unfinished Quizzes")
@@ -113,7 +117,8 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "not ready for quiz" do
-        @test_os.update(:pretest_keys => 2, :points => 2)
+        @test_os.update(:pretest_keys => 2)
+        set_specific_score(@test_os.user, @test_os.objective, 2)
         main_assign_os = @objective_20.objective_students.find_by(:user => @student_2)
         main_assign_os.update(:pretest_keys => 2)
         
@@ -127,7 +132,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         main_assign_os = @objective_20.objective_students.find_by(:user => @student_2)
         main_assign_os.update(:pretest_keys => 2)
         @objective_20.preassigns.each do |obj|
-             obj.objective_students.find_by(:user => @student_2).update(:points => 8)
+            obj.objective_students.find_or_create_by(:user => @student_2).update(:points_all_time => 8)
         end
         
         go_to_first_period
@@ -137,7 +142,8 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "erase oldest quiz if student has 6" do
-        @test_os.update(:points => 8, :teacher_granted_keys => 6)
+        @test_os.update(:teacher_granted_keys => 6)
+        set_specific_score(@test_os.user, @test_os.objective, 8)
         go_to_first_period
         begin_quiz("teacher_granted")
         

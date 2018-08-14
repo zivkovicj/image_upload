@@ -45,7 +45,7 @@
       <% this_student = team.users[num] %>
       <% if this_student %>
         <%= this_student.first_plus_init %>
-        <% this_score = this_student.objective_students.find_by(:objective => team.objective) %>
+        <% this_score = this_student.objective_students.find_or_create_by(:objective => team.objective) %>
         <% if this_score.passed_with_100 %>
           <br/><small>(100%)</small>
         <% end %>

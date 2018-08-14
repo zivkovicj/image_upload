@@ -43,7 +43,7 @@
     <% @seminars.order(:name).each do |sem| %>
       <tr>
         <td><h4><%= link_to sem.name, edit_seminar_path(sem) %></h4></td>
-        <td><%= link_to image_tag("scoresheet.png"), scoresheet_seminar_url(:id => sem, :term => current_term), :id => "scoresheet_#{sem.id}" %></td>
+        <td><%= link_to image_tag("scoresheet.png"), scoresheet_seminar_url(:id => sem, :term => current_term, :show_all => true), :id => "scoresheet_#{sem.id}" %></td>
         <td>
           <% if sem.shouldShowConsultLink %>
             <%= link_to image_tag("desk_consult.png"), consultancy_path(:seminar => sem.id), :id => "desk_consult_#{sem.id}" %>

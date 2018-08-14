@@ -33,11 +33,15 @@ class Seminar < ApplicationRecord
   end
   
   def obj_studs_for_seminar
-    ObjectiveStudent.where(:objective => self.objectives, :user => self.students)
+    ObjectiveStudent.where(:objective => objectives, :user => students)
   end
   
   def shouldShowConsultLink
     students.count > 1 and objectives.count > 0
+  end
+  
+  def objs_above_zero_priority
+    objective_seminars.where("priority > ?", 0).map(&:objective)
   end
   
   def rank_objectives_by_need

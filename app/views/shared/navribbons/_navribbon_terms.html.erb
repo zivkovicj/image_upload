@@ -16,18 +16,7 @@
                     </h2>
                 </td>
             <% end %>
-            <% if @which_path == "seminar_scoresheet" %>
-                <td class="spacer"></td>
-                <td>
-                    <% if @show_all == "true" %>
-                        <%= link_to "Show only scores from this term", 
-                            scoresheet_seminar_path(:seminar => @seminar, :term => @this_term, :show_all => false) %>
-                    <% else %>
-                        <%= link_to "Show all objectives", 
-                            scoresheet_seminar_path(:seminar => @seminar, :term => @this_term, :show_all => true) %>
-                    <% end %>
-                </td>
-            <% end %>
+
         </tr>
         
     </table>

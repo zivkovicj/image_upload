@@ -73,24 +73,42 @@ class SeminarsController < ApplicationController
     def scoresheet
         @seminar = Seminar.find(params[:id])
         @teacher = current_user
+        @school = @teacher.school
         @students = @seminar.students.order(:last_name)
         @term = params[:term].to_i
         @show_all = params[:show_all]
         gather_objectives_and_scores
+        @scores = @seminar.obj_studs_for_seminar
+            .pluck(:user_id, :objective_id, :points_this_term)
+            .reduce({}) do |result, (student, obj, points)|
+                result[student] ||= {}
+                result[student][obj] = points
+                result
+            end
+        
         update_current_class
     end
     
     def update_scoresheet
         @seminar = Seminar.find(params[:id])
-        this_term = params[:term].to_i
-        params[:scores].each do |key, value|
-            this_val = Integer(value) rescue nil
-            if this_val
-                @this_obj_stud = ObjectiveStudent.find(key)
-                @this_obj_stud.update_scores(this_val, this_term, "teacher_granted", true) unless @this_obj_stud.current_scores[this_term] == this_val
+        this_term = @seminar.term_for_seminar
+        buncha_scores = params[:scores]
+        old_scores = eval(params[:old_scores])
+        buncha_scores.each do |key_x|
+            stud_id = key_x.to_i
+            buncha_scores[key_x].each do |key_y, value|
+                obj_id = key_y.to_i
+                this_val = Integer(value) rescue nil
+                if this_val && this_val != old_scores[stud_id][obj_id]
+                    this_quiz = Quiz.find_or_create_by(:user_id => stud_id,
+                        :objective_id => obj_id,
+                        :origin => "manual")
+                    this_quiz.update(:total_score => this_val,
+                        :seminar => @seminar)
+                end
             end
         end
-        redirect_to scoresheet_seminar_path(@seminar, :term => this_term)
+        redirect_to scoresheet_seminar_path(@seminar, :show_all => true)
     end
     
     def copy_due_dates
@@ -129,16 +147,12 @@ class SeminarsController < ApplicationController
         end
         
         def gather_objectives_and_scores
-            pre_objectives = @seminar.objectives.order(:name)
-            @scores = ObjectiveStudent.where(:objective => pre_objectives, :user => @seminar.students)
-            if @show_all == "true"
-                @objectives = pre_objectives
+            if @show_all == "false"
+                pre_objectives = @seminar.obj_studs_for_seminar.where("points_this_term > ?", 0).map(&:objective).uniq
             else
-                @objectives = []
-                pre_objectives.each do |obj|
-                    @objectives << obj if @scores.select{|x| x.current_scores[@term]}.count > 0
-                end
+                pre_objectives = @seminar.objectives
             end
+            @objectives = pre_objectives.sort_by(&:name)
         end
         
         def set_priorities

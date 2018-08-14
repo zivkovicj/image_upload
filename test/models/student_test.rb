@@ -7,20 +7,6 @@ class StudentTest < ActiveSupport::TestCase
           password: "foobar", password_confirmation: "foobar")
   end
   
-  test "quiz stars this term" do
-    setup_users
-    setup_objectives
-    setup_seminars
-    setup_scores
-    
-    score_count = @seminar.objectives.count
-    @student_2.objective_students.update_all(:current_scores => [1,2,3,10])
-    @student_2.objective_students.last.update(:current_scores => [nil,nil,nil,nil])
-    
-    #assert_equal score_count - 1, @student_2.stars_this_term(@seminar, 0)
-    assert_equal ((score_count - 1) * 2), @student_2.quiz_stars_this_term(@seminar, 1)
-  end
-  
   test "should be valid" do
     assert @student.valid?
   end
@@ -92,15 +78,11 @@ class StudentTest < ActiveSupport::TestCase
     
     @this_obj_stud = @student_2.objective_students.first
     @student_2.update(:school_year => 2)
-    @this_obj_stud.update(:current_scores => [4,5,6,7])
     
     @student_2.advance_to_next_school_year
     
     @student_2.reload
     @this_obj_stud.reload
-    should_array = [[nil, nil, nil, nil], [nil, nil, nil, nil], [4, 5, 6, 7], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil]]
-    assert_equal should_array, @this_obj_stud.score_record
-    assert_equal [nil,nil,nil,nil], @this_obj_stud.current_scores
     assert_equal 3, @student_2.school_year
   end
   
@@ -131,28 +113,6 @@ class StudentTest < ActiveSupport::TestCase
     assert_equal 18, @student_2.bucks_current(:school, @school)
     assert_equal 3, @student_2.com_quant(Commodity.first)
     assert_equal 2, @student_2.com_quant_delivered(Commodity.first)
-  end
-  
-  test "points" do
-    setup_users
-    setup_objectives
-    setup_seminars
-    setup_schools
-    
-    term_1_start_date = Date.strptime(@school.term_dates[1][0], "%m/%d/%Y")
-    term_2_start_date = Date.strptime(@school.term_dates[2][0], "%m/%d/%Y")
-    
-    @student_2.quizzes.create(:total_score => 9, :updated_at => term_1_start_date - 5.days, :objective => @objective_10, :origin => "pretest")
-    @student_2.quizzes.create(:total_score => 8, :updated_at => term_1_start_date - 5.days, :objective => @objective_10, :origin => "teacher_granted")
-    @student_2.quizzes.create(:total_score => 3, :updated_at => term_2_start_date - 6.days, :objective => @objective_10, :origin => "teacher_granted")
-    @student_2.quizzes.create(:total_score => 10, :updated_at => term_2_start_date - 6.days, :objective => @objective_20, :origin => "teacher_granted")
-    @student_2.quizzes.create(:total_score => 4, :updated_at => term_2_start_date - 5.days, :objective => @objective_10, :origin => "teacher_granted")
-    @student_2.quizzes.create(:total_score => 5, :updated_at => term_2_start_date + 5.days, :objective => @objective_10, :origin => "teacher_granted")
-    
-    
-    assert_equal 4, @student_2.points_this_term(@objective_10, 1)
-    assert_equal 5, @student_2.points_this_term(@objective_10, 2)
-    assert_equal 8, @student_2.points_all_time(@objective_10)
   end
 
 end

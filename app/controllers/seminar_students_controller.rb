@@ -43,7 +43,7 @@ class SeminarStudentsController < ApplicationController
     objective_ids = @objectives.map(&:id)
     @student_scores = @student.objective_students.where(:objective_id => objective_ids)
     
-    @quiz_stars_this_term = @student.quiz_stars_this_term(@seminar, @seminar.term_for_seminar)
+    @quiz_stars_this_term = @student.quiz_stars_this_term(@seminar)
     @stars_used_toward_grade_this_term = @student.stars_used_toward_grade_this_term(@seminar, @seminar.term_for_seminar)
     @total_stars_this_term = @quiz_stars_this_term + @stars_used_toward_grade_this_term
     @quiz_stars_all_time = @student.quiz_stars_all_time(@seminar)

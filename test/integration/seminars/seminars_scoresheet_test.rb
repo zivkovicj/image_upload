@@ -13,64 +13,79 @@ class SeminarsScoresheetTest < ActionDispatch::IntegrationTest
         School.all.update_all(:term => 1)
     end
     
-    test "update points and current scores" do
-        @test_obj_stud.update(:points => 2, :teacher_granted_keys => 2, :dc_keys => 2, :current_scores => [2,0,nil,nil])
+    test "teacher manual score" do
+        @test_obj_stud.update(:teacher_granted_keys => 2, :dc_keys => 2)
+        set_specific_score(@test_obj_stud.user, @test_obj_stud.objective, 2)
         
         capybara_login(@teacher_1)
         click_on("scoresheet_#{@seminar.id}")
         
-        fill_in "scores[#{@test_obj_stud.id}]", with: 8
+        fill_in "scores[#{@student_2.id}][#{@objective_10.id}]", with: 8
         find("#save_scores_top").click
         
         @test_obj_stud.reload
-        assert_equal [2,8,nil,nil], @test_obj_stud.current_scores
-        assert_equal 8, @test_obj_stud.points
-        assert_equal 2, @test_obj_stud.teacher_granted_keys
+        assert_equal 8, @test_obj_stud.points_all_time
+        assert_equal 2, @test_obj_stud.teacher_granted_keys  #Counterpart to the tests that take keys away.
         assert_equal 2, @test_obj_stud.dc_keys
     end
     
-    test "teacher can make score lower" do  # But quizzes cannot lower scores.  They can only raise them.
-        @test_obj_stud.update(:points => 6, :teacher_granted_keys => 2, :dc_keys => 2, :current_scores => [6,5,nil,nil])
+    test "lower previous teacher score" do  # But quizzes cannot lower scores.  They can only raise them.
+        Quiz.create(:user => @student_2, :objective => @objective_10, :origin => "pretest", :total_score => 10)
+        Quiz.create(:user => @student_2, :objective => @objective_10, :origin => "manual", :total_score => 6)
+        @test_obj_stud.update(:teacher_granted_keys => 2, :dc_keys => 2, :points_all_time => 10, :points_this_term => 6)
         
         capybara_login(@teacher_1)
         click_on("scoresheet_#{@seminar.id}")
         
-        fill_in "scores[#{@test_obj_stud.id}]", with: 4
+        fill_in "scores[#{@student_2.id}][#{@objective_10.id}]", with: 4
         find("#save_scores_top").click
         
         @test_obj_stud.reload
-        assert_equal [6,4,nil,nil], @test_obj_stud.current_scores
-        assert_equal 4, @test_obj_stud.points
+        assert_equal 10, @test_obj_stud.points_all_time
+        assert_equal 4, @test_obj_stud.points_this_term
+    end
+    
+    test "lower not previous student quiz" do
+        @test_obj_stud.update(:teacher_granted_keys => 2, :dc_keys => 2, :points_all_time => 6)
+        Quiz.find_or_create_by(:user => @student_2, :objective => @objective_10, :origin => "teacher_granted").update(:total_score => 6)
+        
+        capybara_login(@teacher_1)
+        click_on("scoresheet_#{@seminar.id}")
+        
+        fill_in "scores[#{@student_2.id}][#{@objective_10.id}]", with: 4
+        find("#save_scores_top").click
+        
+        @test_obj_stud.reload
+        assert_equal 6, @test_obj_stud.points_all_time
     end
     
     test "take keys for perfect score" do
-        @test_obj_stud.update(:points => 2, :teacher_granted_keys => 2, :dc_keys => 2, :current_scores => [nil,2,nil,nil])
-        Student.where.not(:id => @student_2.id).destroy_all
+        @test_obj_stud.update(:teacher_granted_keys => 2, :dc_keys => 2)
+        set_specific_score(@test_obj_stud.user, @test_obj_stud.objective, 8)
         
         capybara_login(@teacher_1)
         click_on("scoresheet_#{@seminar.id}")
-        fill_in "scores[#{@test_obj_stud.id}]", with: 10
+        fill_in "scores[#{@student_2.id}][#{@objective_10.id}]", with: 10
         find("#save_scores_top").click
         
         @test_obj_stud.reload
-        assert_equal [nil,10,nil,nil], @test_obj_stud.current_scores
-        assert_equal 10, @test_obj_stud.points
+        assert_equal 10, @test_obj_stud.points_all_time
         assert_equal 0, @test_obj_stud.teacher_granted_keys
         assert_equal 0, @test_obj_stud.dc_keys
     end
     
     test "bad score data" do
-        @test_obj_stud.update(:points => 2, :teacher_granted_keys => 2, :dc_keys => 2, :current_scores => [2,2,nil,nil])
+        @test_obj_stud.update(:teacher_granted_keys => 2, :dc_keys => 2)
+        set_specific_score(@test_obj_stud.user, @test_obj_stud.objective, 8)
         
         capybara_login(@teacher_1)
         click_on("scoresheet_#{@seminar.id}")
         
-        fill_in "scores[#{@test_obj_stud.id}]", with: "a"
+        fill_in "scores[#{@student_2.id}][#{@objective_10.id}]", with: "a"
         find("#save_scores_top").click
         
         @test_obj_stud.reload
-        assert_equal [2,2,nil,nil], @test_obj_stud.current_scores
-        assert_equal 2, @test_obj_stud.points
+        assert_equal 8, @test_obj_stud.points_all_time
         assert_equal 2, @test_obj_stud.teacher_granted_keys
         assert_equal 2, @test_obj_stud.dc_keys
     end

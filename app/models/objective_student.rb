@@ -2,58 +2,56 @@ class ObjectiveStudent < ApplicationRecord
     belongs_to :user
     belongs_to :objective
     
-    before_create  :establish_score_record
-    before_save  :take_keys_when_scoring_100
-    
-    validates :points, numericality: { only_integer: true, :greater_than_or_equal_to => 0 }
     validates :teacher_granted_keys, numericality: { :less_than_or_equal_to => 6, :greater_than_or_equal_to => 0 }
     validates_uniqueness_of :user, :scope => :objective
     
-    attribute :points, :integer, default: 0
     attribute :pretest_keys, :integer, default: 0
     attribute :dc_keys, :integer, default: 0
     attribute :teacher_granted_keys, :integer, default: 0
     
-    serialize :current_scores
-    serialize :score_record
+    # Checks whether a student has met all pre-requisites for an objective
+    def obj_ready?
+        user.objective_students.where(:objective => objective.preassigns).all? {|obj_stud| obj_stud.points_all_time.to_i >= 6 }
+    end
     
-    def establish_score_record
-        self.current_scores = [nil, nil, nil, nil]
-        self.score_record = []
-        20.times do |n|
-            score_record[n] = [nil, nil, nil, nil]
-        end
+    def obj_willing?(max)
+        points_all_time.to_i < max
+    end
+    
+    def obj_ready_and_willing?(max)
+        obj_ready? && obj_willing?(max)
     end
     
     def passed
-        self.points_all_time >= 6
+        self.points_all_time.to_i >= 6
     end
     
     def passed_with_100
-        self.points_all_time == 10
+        self.points_all_time.to_i == 10
     end
     
-    def points_all_time
-        self.user.quizzes.where(:objective => self.objective).where.not(:origin => "pretest").maximum(:total_score) || 0
+    def set_points(origin, this_score)
+        new_score_all_time = Quiz.where(:user_id => user_id, :objective_id => objective_id).maximum(:total_score)
+            
+        new_score_this_term = nil
+        if origin == "pretest"
+            new_score_this_term = points_this_term
+        elsif origin == "manual"
+            new_score_this_term = this_score
+        else
+            new_score_this_term = [points_this_term.to_i, this_score].max
+        end
+        
+        self.update(:points_all_time => new_score_all_time, :points_this_term => new_score_this_term)
+        self.take_all_keys if new_score_all_time == 10
     end
     
-    def points_this_term
-        school = user.school
-        start_date = Date.strptime(school.term_dates[term][0], "%m/%d/%Y")
-        end_date = Date.strptime(school.term_dates[term][1], "%m/%d/%Y")
-        return user.quizzes.where(:updated_at => start_date..end_date, :objective => self.objective).maximum(:total_score) || 0
+    def take_all_keys
+        self.update(:teacher_granted_keys => 0, :dc_keys => 0, :pretest_keys => 0)
     end
     
     def total_keys
         self.teacher_granted_keys + self.pretest_keys + self.dc_keys 
-    end
-    
-    def take_keys_when_scoring_100
-        if self.passed_with_100
-            self.teacher_granted_keys = 0
-            self.dc_keys = 0
-            self.pretest_keys = 0
-        end
     end
     
     def update_keys(which_key, new_keys)

@@ -42,9 +42,7 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
   
   test "delete objective" do
     first_private_objective = Objective.find_by(:extent => "private")
-    Quiz.create(:objective => first_private_objective, :user => Student.first)
-    old_quiz_count = Quiz.count
-    
+  
     old_obj_count = Objective.count
     first_lab = @objective_40.labels.first
     assert_not_nil first_lab
@@ -59,6 +57,9 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     old_os_count = ObjectiveSeminar.count
     setup_seminars
     studentCount = @seminar.students.count
+    Quiz.create(:objective => first_private_objective, :user => Student.first)
+    old_quiz_count = Quiz.count
+    studs_with_this_quiz = Quiz.where(:objective => @objective_40).count
     
     @ss = @seminar.seminar_students.first
     obj_id = @objective_40.id
@@ -84,6 +85,7 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     assert_equal mainassign_precount - 1, mainassign.preassigns.count
     assert_equal oldScoreCount - studentCount, ObjectiveStudent.count
     assert_equal old_os_count - 1, ObjectiveSeminar.count
+    assert_equal old_quiz_count - studs_with_this_quiz, Quiz.count
   
     @ss.reload
     @second_ss.reload
@@ -93,6 +95,6 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     find("#delete_#{first_private_objective.id}").click
     click_on("confirm_#{first_private_objective.id}")
     assert_equal old_obj_count - 2, Objective.count
-    assert_equal old_quiz_count - 1 , Quiz.count
+    
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180803143836) do
+ActiveRecord::Schema.define(version: 20180813170315) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -153,17 +153,17 @@ ActiveRecord::Schema.define(version: 20180803143836) do
   create_table "objective_students", force: :cascade do |t|
     t.integer  "objective_id"
     t.integer  "user_id"
-    t.integer  "points"
+    t.integer  "points_all_time"
     t.integer  "unlocked"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
     t.integer  "pretest_keys"
     t.integer  "dc_keys"
     t.integer  "teacher_granted_keys"
-    t.text     "current_scores"
     t.text     "score_record"
     t.integer  "pretest_score"
     t.integer  "teacher_manual_score"
+    t.integer  "points_this_term"
     t.index ["objective_id", "user_id"], name: "index_objective_students_on_objective_id_and_user_id"
     t.index ["objective_id"], name: "index_objective_students_on_objective_id"
     t.index ["user_id"], name: "index_objective_students_on_user_id"
@@ -224,7 +224,9 @@ ActiveRecord::Schema.define(version: 20180803143836) do
     t.integer  "progress"
     t.string   "origin"
     t.integer  "old_stars"
+    t.integer  "seminar_id"
     t.index ["objective_id"], name: "index_quizzes_on_objective_id"
+    t.index ["seminar_id"], name: "index_quizzes_on_seminar_id"
     t.index ["user_id"], name: "index_quizzes_on_user_id"
   end
 
@@ -292,6 +294,10 @@ ActiveRecord::Schema.define(version: 20180803143836) do
     t.integer  "default_buck_increment"
     t.string   "class_reward"
     t.integer  "target_rate"
+    t.integer  "school_id"
+    t.datetime "term_start_date"
+    t.datetime "term_end_date"
+    t.index ["school_id"], name: "index_seminars_on_school_id"
     t.index ["user_id"], name: "index_seminars_on_user_id"
   end
 

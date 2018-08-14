@@ -2,25 +2,31 @@ class QuizzesController < ApplicationController
     
     def new
         @objective = Objective.find(params[:objective_id])
+        @quiz_taker_id = current_user.id
+        seminar_id = current_user.current_class
         if @objective.questions.count > 0
             @origin = params[:origin]
-            current_term = Seminar.find(current_user.current_class).term_for_seminar
-            old_stars = @objective.objective_students.find_by(:user => current_user).current_scores[current_term] || 0
-            @quiz = Quiz.create(:objective => @objective, :user => current_user, :progress => 1, :origin => @origin, :old_stars => old_stars)
+            old_stars = @objective.objective_students.find_by(:user_id => @quiz_taker_id).points_this_term || 0
+            @quiz = Quiz.create(:objective => @objective, 
+                :user_id => @quiz_taker_id,
+                :progress => 1,
+                :origin => @origin,
+                :old_stars => old_stars,
+                :seminar_id => seminar_id)
             take_a_key
             check_if_six
             build_the_quiz
             redirect_to edit_riposte_path(@quiz.ripostes.first)
         else
             flash[:danger] = "This quiz doesn't have any questions. Please alert your teacher that you cannot take this quiz until some questions are added."
-            @ss = SeminarStudent.find_by(:user => current_user, :seminar => current_user.current_class)
+            @ss = SeminarStudent.find_by(:user_id => @quiz_taker_id, :seminar_id => seminar_id)
             redirect_to seminar_student_path(@ss)
         end
     end
     
     def edit
         @objective = Objective.find(params[:objective_id])     
-        @quiz = current_user.quizzes.where(:objective => @objective).order(:created_at).last
+        @quiz = Quiz.where(:user => current_user, :objective => @objective).order(:created_at).last
         current_question = @quiz.progress
         redirect_to edit_riposte_path(@quiz.ripostes[current_question])
     end
@@ -37,14 +43,14 @@ class QuizzesController < ApplicationController
     private
     
         def take_a_key
-            this_os = @objective.objective_students.find_by(:user => current_user)
+            this_os = ObjectiveStudent.find_by(:user_id => @quiz_taker_id, :objective_id => @objective.id)
             old_keys = this_os.read_attribute(:"#{@origin}_keys")
             new_keys = old_keys - 1
             this_os.update(:"#{@origin}_keys" => new_keys)
         end
         
         def check_if_six
-            quizzes_with_same_objective = current_user.quizzes.where(:objective => @objective).order(:created_at)
+            quizzes_with_same_objective = Quiz.where(:user_id => @quiz_taker_id, :objective => @objective).order(:created_at)
             if quizzes_with_same_objective.count > 5
                quizzes_with_same_objective.first.destroy
             end

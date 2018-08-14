@@ -82,23 +82,11 @@ class ObjectivesController < ApplicationController
   def destroy
     @objective = Objective.find(params[:id])
     
-    ObjectiveStudent.where(:objective_id => @objective.id).each do |os|
-      os.destroy!
-    end
-    Quiz.where(:objective => @objective).each do |quiz|
-      quiz.destroy!
-    end
     oldAssignId = @objective.id
+    SeminarStudent.where(:teach_request => oldAssignId).update_all(:teach_request => nil)
+    SeminarStudent.where(:learn_request => oldAssignId).update_all(:learn_request => nil)
+    
     @objective.destroy
-    SeminarStudent.all.each do |ss|
-      if ss.teach_request == oldAssignId
-        ss.update(:teach_request => nil)
-      end
-      
-      if ss.learn_request == oldAssignId
-        ss.update(:learn_request => nil)
-      end
-    end
     flash[:success] = "Objective Deleted"
     
     redirect_to objectives_path

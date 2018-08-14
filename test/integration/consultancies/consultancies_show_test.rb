@@ -47,12 +47,11 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @ss_8.update(:created_at => set_date_4)
         
         # Scores
-        @student_5.objective_students.update_all(:points => 10)
-        @student_10.objective_students.update_all(:points => 10)
-        @student_8.objective_students.update_all(:points => 2)
-        
-        @student_9.objective_students.find_by(:objective => @objective_10).update(:points => 2)
-        @student_9.objective_students.find_by(:objective => @objective_20).update(:points => 2)
+        set_all_scores(:user, @student_10, 10)
+        set_all_scores(:user, @student_5, 10)
+        set_all_scores(:user, @student_8, 2)
+        set_specific_score(@student_9, @objective_10, 2)
+        set_specific_score(@student_9, @objective_20, 2)
             
         # Requests
         @ss_5.update(:pref_request => 0)
@@ -98,6 +97,13 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @c_stud_8 = Student.create(:first_name => "O", :last_name => "P")
         @c_stud_9 = Student.create(:first_name => "Q", :last_name => "R")
         @c_stud_10 = Student.create(:first_name => "S", :last_name => "T")
+        
+        Student.all.each do |student|
+            Objective.all.each do |objective|
+                student.objective_students.find_or_create_by(:objective => objective)
+                student.quizzes.create(:objective => objective, :total_score => 2, :origin => "teacher_granted")
+            end
+        end
         @seminar.students << @c_stud_1
         @seminar.students << @c_stud_2
         @seminar.students << @c_stud_3
@@ -189,16 +195,16 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         @ss_1.update(:pref_request => 2)
         @ss_5.update(:pref_request => 0)
-        @student_4 = @seminar.students.create(:first_name => "Marko", :last_name => "Zivkovic", :type => "Student", :password_digest => "password")
+        @student_41 = @seminar.students.create(:first_name => "Marko", :last_name => "Zivkovic", :type => "Student", :password_digest => "password")
         
         assert_equal 13.2, @student_1.consultant_days(@seminar)
-        assert_equal 0, @student_4.consultant_days(@seminar)
+        assert_equal 0, @student_41.consultant_days(@seminar)
         assert_equal 63, @student_5.consultant_days(@seminar)
         
         @students = setup_present_students
         @rank_by_consulting = setup_rank_by_consulting
 
-        assert_equal @student_4, @rank_by_consulting[-1]
+        assert_equal @student_41, @rank_by_consulting[-1]
         assert_equal @student_1, @rank_by_consulting[-2]
         assert_equal @student_5, @rank_by_consulting[-3]
     end
@@ -221,22 +227,25 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_not @rank_objectives_by_need.include?(@objective_50)
     end
     
-    test "check_if_ready test" do
-        mainAssign = objectives(:objective_60)
-        preAssign1 = objectives(:objective_50)
-        preAssign2 = objectives(:objective_40)
+    test "check if ready" do
+        main_assign = objectives(:objective_60)
+        pre_assign_1 = objectives(:objective_50)
+        pre_assign_2 = objectives(:objective_40)
         
-        @student_1.objective_students.find_by(:objective_id => preAssign1.id).update(:points => 0)
-        @student_1.objective_students.find_by(:objective_id => preAssign2.id).update(:points => 0)
-        assert_not @student_1.check_if_ready(mainAssign)
+        set_specific_score(@student_1, pre_assign_1, 0)
+        set_specific_score(@student_1, pre_assign_2, 0)
+        this_obj_stud = @student_1.objective_students.find_by(:objective => main_assign)
+        assert_not this_obj_stud.obj_ready?
         
-        @student_2.objective_students.find_by(:objective_id => preAssign1.id).update(:points => 10)
-        @student_2.objective_students.find_by(:objective_id => preAssign2.id).update(:points => 10)
-        assert @student_2.check_if_ready(mainAssign)
+        set_specific_score(@student_2, pre_assign_1, 10)
+        set_specific_score(@student_2, pre_assign_2, 10)
+        this_obj_stud = @student_2.objective_students.find_by(:objective => main_assign)
+        assert this_obj_stud.obj_ready?
         
-        @student_3.objective_students.find_by(:objective_id => preAssign1.id).update(:points => 0)
-        @student_3.objective_students.find_by(:objective_id => preAssign2.id).update(:points => 10)
-        assert_not @student_3.check_if_ready(mainAssign)
+        set_specific_score(@student_3, pre_assign_1, 0)
+        set_specific_score(@student_3, pre_assign_2, 10)
+        this_obj_stud = @student_3.objective_students.find_by(:objective => main_assign)
+        assert_not this_obj_stud.obj_ready?
     end
     
     test "prof list" do
@@ -250,21 +259,25 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
     test "choose consultants" do
         @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
-        @objective_40.objective_students.update_all(:points => 0)
+        ObjectiveStudent.where(:objective => @objective_40).update_all(:points_all_time => 0)
         @objective_50.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
-        @objective_50.objective_students.update_all(:points => 0)
-        @objective_20.objective_students.limit(12).update_all(:points => 3)
+        ObjectiveStudent.where(:objective => @objective_50).update_all(:points_all_time => 0)
+        these_obj_studs = @seminar.obj_studs_for_seminar
+        12.times do |n|
+            these_obj_studs[n].update(:points_all_time => 3)
+        end
         @student_4.seminar_students.find_by(:seminar => @seminar).update(:pref_request => 2)
-        @student_4.objective_students.find_by(:objective => @objective_40).update(:points => 7)
-        @student_9.objective_students.find_by(:objective => @objective_50).update(:points => 7)
-        @student_7.objective_students.find_by(:objective => @objective_20).update(:points => 8) 
-        @student_7.objective_students.find_by(:objective => @objective_40).update(:points => 5) 
-        @student_46.objective_students.find_by(:objective => @objective_20).update(:points => 7) 
-        @student_1.objective_students.find_by(:objective => @objective_20).update(:points => 3)
-        @student_2.objective_students.find_by(:objective => @objective_20).update(:points => 3)
-        @student_6.objective_students.find_by(:objective => @objective_20).update(:points => 7)  # To ensure that he's qualified to consult at least one topic.
-        @student_7.objective_students.find_by(:objective => @objective_50).update(:points => 5)  # So she doesn't get taken because of the priority of the objectives
+        set_specific_score(@student_4, @objective_40, 7)
+        set_specific_score(@student_9, @objective_50, 7)
+        set_specific_score(@student_7, @objective_20, 8)
+        set_specific_score(@student_7, @objective_40, 5)
+        set_specific_score(@student_46, @objective_20, 7)
+        set_specific_score(@student_1, @objective_20, 3)
+        set_specific_score(@student_2, @objective_20, 3)
+        set_specific_score(@student_6, @objective_20, 7)  # To ensure that he's qualified to consult at least one topic.
+        set_specific_score(@student_7, @objective_50, 5)  # So she doesn't get taken because of the priority of the objectives
         set_date_1 = Date.yesterday
+        
         c1 = Consultancy.create(:seminar => @seminar, :created_at => set_date_1, :updated_at => set_date_1)
         t1 = c1.teams.create(:consultant => @student_4, :created_at => set_date_1, :updated_at => set_date_1)
         t1.users << @student_2
@@ -288,7 +301,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
             assert_equal stud, stud.teams.find_by(:consultancy => @consultancy).consultant
         end
         
-        # Priority #3 assignments are included first
+        # Priority #5 assignments are included first
         # Even takes @student_4, despite her request
         assert @consultancy.users.include?(@student_4)
         assert_equal @student_4, @rank_by_consulting.last
@@ -325,10 +338,11 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         top_choice_consultant.seminar_students.find_by(:seminar => @seminar).update(:teach_request => nil)
         @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
         other_students.each do |stud|
-            stud.objective_students.find_by(:objective => @objective_40).update(:points => 0)
+            set_specific_score(stud, @objective_40, 0)
         end
-        @objective_40.objective_students.find_by(:user => top_choice_consultant).update(:points => 8, :pretest_keys => 2)
-        @objective_40.objective_students.find_by(:user => second_choice_consultant).update(:points => 8)
+        set_specific_score(top_choice_consultant, @objective_40, 8)
+        @objective_40.objective_students.find_by(:user => top_choice_consultant).update(:pretest_keys => 2)
+        set_specific_score(second_choice_consultant, @objective_40, 8)
         
         choose_consultants
         
@@ -343,13 +357,13 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
         @rank_by_consulting[2..4].each do |stud|
-            stud.objective_students.find_by(:objective => @objective_40).update(:points => 0) 
+            set_specific_score(stud, @objective_40, 0)
         end
         @rank_by_consulting[5..@rank_by_consulting.count].each do |stud|
-            stud.objective_students.find_by(:objective => @objective_40).update(:points => 7) 
+            set_specific_score(stud, @objective_40, 7)
         end
-        @objective_40.objective_students.find_by(:user => top_choice_consultant).update(:points => 10)
-        @objective_40.objective_students.find_by(:user => second_choice_consultant).update(:points => 8)
+        set_specific_score(top_choice_consultant, @objective_40, 10)
+        set_specific_score(second_choice_consultant, @objective_40, 8)
         
         choose_consultants
         
@@ -364,10 +378,10 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
         @rank_by_consulting[2..@rank_by_consulting.count].each do |stud|
-            stud.objective_students.find_by(:objective => @objective_40).update(:points => 0) 
+            set_specific_score(stud, @objective_40, 0)
         end
-        @objective_40.objective_students.find_by(:user => top_choice_consultant).update(:points => 10)
-        @objective_40.objective_students.find_by(:user => second_choice_consultant).update(:points => 8)
+        set_specific_score(top_choice_consultant, @objective_40, 10)
+        set_specific_score(second_choice_consultant, @objective_40, 8)
         
         choose_consultants
         
@@ -417,14 +431,15 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
     test "place apprentices by request" do
         @objective_20.objective_seminars.find_by(:seminar => @seminar).update(:priority => 5)
-        @student_1.objective_students.find_by(:objective => @objective_20).update(:points => 8)
+        set_specific_score(@student_1, @objective_20, 8)
+        
         request_obj = Objective.find(@ss_6.learn_request)
         request_obj.objective_seminars.find_by(:seminar => @seminar).update(:priority => 5)
-        @student_2.objective_students.find_by(:objective => request_obj).update(:points => 8)
+        set_specific_score(@student_2, request_obj, 8)
         
         method_setup
-        choose_consultants  # This is tested earlier, but I also wanted to test consultants with a less-contrived setup.
-        test_all_consultants
+        choose_consultants  
+        test_all_consultants  # This is tested earlier, but I also wanted to test consultants with a less-contrived setup.
         place_apprentices_by_requests
         test_all_apprentices
         
@@ -434,27 +449,24 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         # Student not placed if she doesn't meet all pre-requisites for her request
         # (This could happen if the pre-reqs were changed after the request was made)
         assert @student_9.seminar_students.find_by(:seminar => @seminar).learn_request == @objective_20.id
-        assert_not @student_9.check_if_ready(@objective_20)
+        assert_not @student_9.objective_students.find_by(:objective => @objective_20).obj_ready?
         assert @consultancy.teams.where(:objective => @objective_20).count > 0
-        if @consultancy.users.include?(@student_9)
-            assert @student_9.teams.find_by(:consultancy => @consultancy).consultant == @student_9
-        end
     end
     
     test "find placement" do
         contrived_setup
         
-        @c_stud_4.objective_students.find_by(:objective => @c_obj_1).update(:points => 9)
-        @c_stud_4.objective_students.find_by(:objective => @c_obj_2).update(:points => 2)
-        @c_stud_4.objective_students.find_by(:objective => @c_obj_3).update(:points => 2)
+        set_specific_score(@c_stud_4, @c_obj_1, 9)
+        set_specific_score(@c_stud_4, @c_obj_2, 2)
+        set_specific_score(@c_stud_4, @c_obj_3, 2)
         
-        @c_stud_9.objective_students.find_by(:objective => @c_obj_1).update(:points => 2)
-        @c_stud_9.objective_students.find_by(:objective => @c_obj_2).update(:points => 2)
-        @c_stud_9.objective_students.find_by(:objective => @c_obj_3).update(:points => 2)
+        set_specific_score(@c_stud_9, @c_obj_1, 2)
+        set_specific_score(@c_stud_9, @c_obj_2, 2)
+        set_specific_score(@c_stud_9, @c_obj_3, 2)
         
-        @c_stud_10.objective_students.find_by(:objective => @c_obj_1).update(:points => 9)
-        @c_stud_10.objective_students.find_by(:objective => @c_obj_2).update(:points => 9)
-        @c_stud_10.objective_students.find_by(:objective => @c_obj_3).update(:points => 2)
+        set_specific_score(@c_stud_10, @c_obj_1, 9)
+        set_specific_score(@c_stud_10, @c_obj_2, 9)
+        set_specific_score(@c_stud_10, @c_obj_3, 2)
         
         t1 = @consultancy.teams.create(:consultant => @c_stud_1, :objective => @c_obj_1) # Student_4 scored too high on this objective
         t1.users << @c_stud_1
@@ -490,12 +502,12 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     test "place apprentices by mastery" do
         method_setup
         choose_consultants
-        place_apprentices_by_requests
+        #place_apprentices_by_requests
         
-        # The method places most students
-        assert_not @consultancy.users.count > (@students.count / 2)
+        # The method places some students
+        old_count = @consultancy.users.count
         place_apprentices_by_mastery
-        assert @consultancy.users.count > (@students.count / 2)
+        assert @consultancy.users.count > old_count
         
         # Unplaced students are proficent everywhere there's room
         unplaced_so_far = @students.select{|x| need_placement(x)}
@@ -504,15 +516,15 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         teams_with_room = @consultancy.teams.select{|x| x.has_room}
         unplaced_so_far.each do |stud|
             teams_with_room.each do |team|
-                assert stud.score_on(team.objective) >= @cThresh || stud.check_if_ready(team.objective) == false
+                obj_stud = stud.objective_students.find_by(:objective => team.objective)
+                assert !obj_stud.obj_ready? || !obj_stud.obj_willing?(@cThresh)
             end
         end
         
         # All apprentices are non-proficient, but ready for the team's objective
         @consultancy.teams.each do |team|
             team.users.reject{|x| x == team.consultant}.each do |stud|
-                assert stud.score_on(team.objective) < @cThresh
-                assert stud.check_if_ready(team.objective)
+                assert stud.objective_students.find_by(:objective => team.objective).obj_ready_and_willing?(@cThresh)
             end
         end
         
@@ -524,51 +536,50 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     test "check for lone students" do
-        method_setup
-        choose_consultants
-        place_apprentices_by_requests
-        place_apprentices_by_mastery
+        contrived_setup
         
-        # Algorithm shouldn't end with many singleton teams
-        assert @consultancy.teams.select{|x| x.users.count == 1}.count < 4
-        
-        2.times do
-            singleton_teams = @consultancy.teams.select{|x| x.users.count > 1}
-            this_team = singleton_teams[rand(singleton_teams.count)]
-            this_team.users.reject{|x| x == this_team.consultant}.each do |stud|
-                this_team.users.delete(stud)
-            end
-        end
+        t1 = @consultancy.teams.create(:consultant => @c_stud_1, :objective => @c_obj_1)  # Home for the first student, who is placed in an existing group
+        t1.users << @c_stud_1
+        t1.users << @c_stud_4
+        t2 = @consultancy.teams.create(:consultant => @c_stud_2, :objective => @c_obj_1)  # Home for the second student, who starts a new group with her learn_request
+        t2.users << @c_stud_2
+        t3 = @consultancy.teams.create(:consultant => @c_stud_3, :objective => @c_obj_2)  # Home for the fourth student, who starts a new group with her first learn_option
+        t3.users << @c_stud_3
         
         # Singleton teams are deleted
-        assert @consultancy.teams.select{|x| x.users.count == 1}.count > 1
+        assert Team.all.select{|x| x.users.count == 1}.count > 1
         check_for_lone_students
-        assert_equal 0, @consultancy.teams.select{|x| x.users.count == 1}.count
+        assert_equal 0, Team.all.select{|x| x.users.count == 1}.count
         test_all_apprentices
     end
     
     test "new place for lone students" do
         contrived_setup
         
-        @c_stud_10.objective_students.find_by(:objective => @c_obj_1).update(:points => 2)
-        @c_stud_9.objective_students.find_by(:objective => @c_obj_1).update(:points => 9)
-        @c_stud_9.objective_students.find_by(:objective => @c_obj_2).update(:points => 9)
-        @c_stud_9.objective_students.find_by(:objective => @c_obj_3).update(:points => 9)
-        @c_stud_9.objective_students.find_by(:objective => @c_obj_4).update(:points => 6)
-        @c_stud_9.objective_students.find_by(:objective => @c_obj_5).update(:points => 5)
+        set_specific_score(@c_stud_10, @c_obj_1, 2)
+        
+        set_specific_score(@c_stud_9, @c_obj_1, 9)
+        set_specific_score(@c_stud_9, @c_obj_2, 9)
+        set_specific_score(@c_stud_9, @c_obj_3, 9)
+        set_specific_score(@c_stud_9, @c_obj_4, 6)
+        set_specific_score(@c_stud_9, @c_obj_5, 5)
+        
         @c_stud_9.seminar_students.find_by(:seminar => @seminar).update(:learn_request => @c_obj_4.id)
-        @c_stud_8.objective_students.find_by(:objective => @c_obj_1).update(:points => 9)
-        @c_stud_8.objective_students.find_by(:objective => @c_obj_2).update(:points => 9)
-        @c_stud_7.objective_students.find_by(:objective => @c_obj_1).update(:points => 7)
-        @c_stud_7.objective_students.find_by(:objective => @c_obj_2).update(:points => 7)
-        @c_stud_7.objective_students.find_by(:objective => @c_obj_3).update(:points => 7)
-        @c_stud_7.objective_students.find_by(:objective => @c_obj_4).update(:points => 7)
-        @c_stud_7.objective_students.find_by(:objective => @c_obj_5).update(:points => 0)
-        @c_stud_6.objective_students.find_by(:objective => @c_obj_1).update(:points => 7)
-        @c_stud_6.objective_students.find_by(:objective => @c_obj_2).update(:points => 7)
-        @c_stud_6.objective_students.find_by(:objective => @c_obj_3).update(:points => 7)
-        @c_stud_6.objective_students.find_by(:objective => @c_obj_4).update(:points => 7)
-        @c_stud_6.objective_students.find_by(:objective => @c_obj_5).update(:points => 7)
+        
+        set_specific_score(@c_stud_8, @c_obj_1, 9)
+        set_specific_score(@c_stud_8, @c_obj_2, 9)
+        
+        set_specific_score(@c_stud_7, @c_obj_1, 7)
+        set_specific_score(@c_stud_7, @c_obj_2, 7)
+        set_specific_score(@c_stud_7, @c_obj_3, 7)
+        set_specific_score(@c_stud_7, @c_obj_4, 7)
+        set_specific_score(@c_stud_7, @c_obj_5, 0)
+        
+        set_specific_score(@c_stud_6, @c_obj_1, 7)
+        set_specific_score(@c_stud_6, @c_obj_2, 7)
+        set_specific_score(@c_stud_6, @c_obj_3, 7)
+        set_specific_score(@c_stud_6, @c_obj_4, 7)
+        set_specific_score(@c_stud_6, @c_obj_5, 7)
         
         method_setup
         
@@ -604,6 +615,8 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
 
     test "are some unplaced" do
+        @student_10.seminar_students.find_by(:seminar => @seminar).update(:learn_request => nil)
+        
         method_setup
         choose_consultants
         place_apprentices_by_requests
@@ -631,11 +644,11 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         this_team = @consultancy.teams.select{|x| x.users.count > 1}.first
         test_stud = this_team.users.select{|x| x != this_team.consultant}.last
         test_obj_stud = test_stud.objective_students.find_by(:objective => this_team.objective)
-        test_obj_stud.update(:pretest_keys => 2)
+        test_obj_stud.update(:pretest_keys => 2, :points_this_term => nil)
         
         this_consultant = @consultancy.teams.first.consultant
         consultant_obj_stud = this_consultant.objective_students.find_by(:objective => this_team.objective)
-        consultant_obj_stud.update(:current_scores => [10,10,nil,nil], :dc_keys => 0)
+        consultant_obj_stud.update(:dc_keys => 0, :points_this_term => 10)
         
         give_dc_keys
         
@@ -645,16 +658,6 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         consultant_obj_stud.reload
         assert_equal 0, consultant_obj_stud.dc_keys
-    end
-    
-    test "what if some scores are nil" do
-        @seminar.students[7].objective_students[3].destroy
-        @seminar.students[8].objective_students[2].update(:points => nil)
-        
-        capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
-        click_on("#{new_consultancy_button_text}")
-        click_on("Create Desk Consultants Groups")
     end
     
     test "destroy if date already" do

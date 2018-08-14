@@ -37,7 +37,7 @@ class SeminarStudent < ApplicationRecord
     
         def new_student_scores
             seminar.objectives.each do |obj|
-                obj.objective_students.create!(:user => user, :points => 0) if obj.objective_students.find_by(:user => user) == nil
+                obj.objective_students.find_or_create_by(:user => user)
             end
         end
 end

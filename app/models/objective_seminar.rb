@@ -8,15 +8,13 @@ class ObjectiveSeminar < ApplicationRecord
     before_create :createScores, :addPreReqs
     
     def students_in_need
-        seminar.obj_studs_for_seminar.select{|x| x.passed == false}.count
+        objective.objective_students.where(:user => seminar.students).select{|x| !x.passed}.count
     end
     
     private
         def createScores
             seminar.students.each do |student|
-                if student.objective_students.find_by(:objective_id => objective.id) == nil
-                    student.objective_students.create(:objective_id => objective.id, :points => 0)
-                end
+                student.objective_students.find_or_create_by(:objective_id => objective.id)
             end
         end
         

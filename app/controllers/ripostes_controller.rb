@@ -51,16 +51,11 @@ class RipostesController < ApplicationController
     private
     
         def set_total_score
-            poss = 0
-            stud_score = 0
-            @quiz.ripostes.each do |riposte|
-                poss += riposte.poss
-                stud_score += (riposte.tally)
-            end
+            total_poss = @quiz.ripostes.sum(:poss)
+            summed_score = @quiz.ripostes.sum(:tally)
             
-            new_percentage = ((stud_score * 100)/poss.to_f).round
-            @quiz.update(:total_score => new_percentage)
-            @this_obj_stud.update_scores(@quiz.stars_from_score, Seminar.find(current_user.current_class).term_for_seminar, @quiz.origin, false)
+            @new_percentage = ((summed_score * 10)/total_poss.to_f).round
+            @quiz.update(:total_score => @new_percentage)
         end
         
         def take_post_req_keys
