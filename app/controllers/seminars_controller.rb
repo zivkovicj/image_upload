@@ -85,13 +85,16 @@ class SeminarsController < ApplicationController
                 result[student][obj] = points
                 result
             end
-        
+        if @scores.empty?
+            @seminar.students.each do |stud|
+                @scores[stud.id] = {}
+            end
+        end
         update_current_class
     end
     
     def update_scoresheet
         @seminar = Seminar.find(params[:id])
-        this_term = @seminar.term_for_seminar
         buncha_scores = params[:scores]
         old_scores = eval(params[:old_scores])
         buncha_scores.each do |key_x|

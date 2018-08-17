@@ -31,6 +31,20 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         assert sem_teach.accepted
         
         assert_selector('h2', :text => "Edit #{@seminar.name}")
+        
+        # This section creates students for a new class, and then make sure those students show up
+        # That feature wasn't working properly on 8/17
+        
+        click_on("Create New Students")
+        
+        fill_in ("first_name_1"), :with => "New Guy"
+        fill_in ("last_name_1"), :with => "for Seminar Test"
+        
+        click_on("Create these student accounts")
+        
+        assert_selector('h2', :text => "#{@seminar.name} Scoresheet")
+        
+        assert_selector('a', :text => "New Guy")
     end
     
     test "seminar back link" do
