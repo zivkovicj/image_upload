@@ -21,6 +21,20 @@ Between each update, manually test:
 
 
 
+2.73 RUBIFY CURRENT SCORES
+Replace all calls to "points" with a "highest_points_all_time" or "highest_points_this_term"
+Should be able to simply scan by date instead of messing with the ugly array.
+Points_this_term simply checks whether it's larger, then updates if so
+    But always override for a manual quiz
+Migrate the renamed columns
+
+
+
+
+
+
+
+
 
 2.72 CHANGE SEMINAR BUCKS TO FIT THE SCHOOL BUCKS SYSTEM
 Currency model

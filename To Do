@@ -57,48 +57,17 @@ Error when deleting objective from index
 
 
 
-
-
-
-
 Check School and Seminar for needed updates to existing CommodityStudents
 
 
 
 
-2.73 RUBIFY CURRENT SCORES
-V Replace all calls to "points" with a "highest_points_all_time" or "highest_points_this_term"
-V Should be able to simply scan by date instead of messing with the ugly array.
-V Points_this_term simply checks whether it's larger, then updates if so
-    V But always override for a manual quiz
-Migrate the renamed columns
 
-
-
-
-
-SET SCORE THIS TERM TO NIL WHEN TERM ENDS
-
-
-POINTS THIS TERM REFACTOR
-But refactor the points_this_term method so that it receives the date as input, rather than finding the dates every time it is called.
-
-
-MOVE ONE_UNFINISHED CHECK TO OBJ_STUD
-
-Then put that method back into user.quiz_collection
 
 
 GIVE SCHOOL BUCKS
 
 Class page offers school bucks in the same window as star market
-
-
-
-
-
-
-
 
 
 UPDATE REQUESTS IF PRE-REQS CHANGE
@@ -121,6 +90,13 @@ Student search offers the panel to give school bucks
 
 
 FIX PROBLEMS WITH STUDENT SEARCHING
+
+
+SET SCORE THIS TERM TO NIL WHEN TERM ENDS
+
+MOVE ONE_UNFINISHED CHECK TO OBJ_STUD
+
+Then put that method back into user.quiz_collection
 
 
 DELETE COMMODITIES
@@ -362,6 +338,11 @@ In the same view, also give teacher the option to erase keys
     
 
 
+
+
+
+
+
 I TOOK OUT THIS PART FROM THE GOAL_STUDENTS NAVRIBBON.
 BUT THERE SHOULD BE A PART THAT CHANGES CHECKPOINT SOMEWHERE
     <tr>
@@ -432,6 +413,16 @@ Should I enforce that term start and end dates are sequential?  I think I should
 
 
 
+
+ALLOW QUESTIONS TO HAVE MULTIPLE LABELS
+Quia had that aspect right.  I should be able to edit a quiz to have
+    Name the coordinate with two non-zero values
+    Name the coordinate where the x-value equals zero
+    Name a point given the coordinate with two non-zero values
+    Name a point given the coordinate where the x-value equals zero
+    
+    If I allowed for multiple labels on question, I could meet all of these ideals
+        without having to author four different labels
 
 
 INCLUDE PARENT E-MAIL FOR STUDENTS
