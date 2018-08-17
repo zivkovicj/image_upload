@@ -1,7 +1,7 @@
 class RemoveBucksOwned < ActiveRecord::Migration[5.0]
   def change
     #remove_column   :seminar_students, :seminar_bucks_earned, :integer
-    remove_column   :users, :school_bucks_earned, :integer
+    #remove_column   :users, :school_bucks_earned, :integer
     remove_column   :commodity_students, :quant_delivered, :integer
     rename_column   :commodity_students, :avg_price_paid, :price_paid
     add_column      :commodity_students, :delivered, :boolean
