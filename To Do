@@ -41,9 +41,12 @@ Upload videos and link to them on social media
 Private Repo on Github
 
 
-STUDENT REQUESTS ARE NOT UPDATING WITH AJAX
 
 
+
+Student requests are not updating with ajax.
+    This seems to be caused by having too many different forms in the seminar_student view
+    Sometimes it routes to the wrong controller
 
 Teacher commenting on goal is blank
 
@@ -51,16 +54,12 @@ Check Quiz scores to give credit to student who passed adding integers and subtr
 
 Check Pre-Reqs for "Both-Side Equation" Objectives 
 
-Error when deleting objective from index
-    I bet that it has to do with destroying an objective with existing quizzes.
-    Couldn't replicate, even with an existing quiz.
-
-
-
 Check School and Seminar for needed updates to existing CommodityStudents
 
 
 
+
+PAGE TO PRINT STUDENT USERNAMES
 
 
 
@@ -169,7 +168,13 @@ Teacher can give bucks to whole class.
     Screen that allows unchecking boxes from certain students
     Custom controller action that loops through whole class
     
-    
+
+MAKE A SOLID PLAN FOR TEACHERS WHO WANT TO USE PUBLIC OBJECTIVES
+But maybe they don't want to use other teacher's questions.
+Also, look into what happens with a public objective that uses private labels.
+    Maybe don't allow public objectives to use private labels
+    Likewise, public labels shouldn't use private questions
+  
 ADMIN CAN SEE CURRENCY REPORTS FOR STUDENTS AND TEACHERS
     
     

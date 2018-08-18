@@ -8,6 +8,7 @@ ready = ->
     set_sem_stud_url = (th) ->
         seminar_student_id = $(th).attr('seminar_student_id')
         url = '/seminar_students/'+seminar_student_id
+        console.log(url)
     
     $("input:text").focus ->
         $(this).select()
