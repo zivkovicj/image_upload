@@ -72,6 +72,15 @@ V Leads to printable screen, similar to goal checkpoint scree
 
 ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
 
+Add a "student_password" column to user.
+This credential can be used to log in for students.  It can be seen and edited by the teacher.
+Student also has a regular password that follows all the same rules.
+    Login method checks for authenticate on regular password, then for a match on student password
+Will need to link teacher to edit passwords from student edit page
+
+Would be nice if first page leads teachers to the printable version, but that page also has a link to edit all usernames and passwords at once
+    
+
  FAIL["test_deprioritize_consultants_who_already_have_keys", Minitest::Result, 273.8431487280177]
  test_deprioritize_consultants_who_already_have_keys#Minitest::Result (273.84s)
         Expected: 0
