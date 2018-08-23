@@ -1,8 +1,9 @@
 class GoalStudentsController < ApplicationController
     
     def index
-       @seminar = Seminar.find(params[:seminar])
-       goals_stuff
+        this_param = params[:seminar] || params[:format]
+        @seminar = Seminar.find(this_param)
+        goals_stuff
     end
     
     def print

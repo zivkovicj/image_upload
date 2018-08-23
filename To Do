@@ -59,7 +59,36 @@ Check School and Seminar for needed updates to existing CommodityStudents
 
 
 
-PAGE TO PRINT STUDENT USERNAMES
+PRINT STUDENT USERNAMES
+V Option in seminar ribbon
+V Leads to printable screen, similar to goal checkpoint scree
+
+
+
+
+
+
+
+
+ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
+
+ FAIL["test_deprioritize_consultants_who_already_have_keys", Minitest::Result, 273.8431487280177]
+ test_deprioritize_consultants_who_already_have_keys#Minitest::Result (273.84s)
+        Expected: 0
+          Actual: 1
+        test/integration/consultancies/consultancies_show_test.rb:349:in `block in <class:ConsultanciesShowTest>'
+
+
+
+PASSWORD CHECKS
+Make sure that default password is equal to username.
+Make sure that teacher can change password.
+    Or maybe just reset it.
+    
+Footer message should be random like the header message.
+    
+I took away references to seminar.shouldShowConsultLink.
+add some info to explain to teachers that it is needed to use DeskConsultants
 
 
 

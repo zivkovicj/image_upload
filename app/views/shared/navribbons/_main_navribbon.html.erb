@@ -9,24 +9,24 @@
         <table class="table-borderless">
             <tr>
                 <td class="spacer"></td>
-                <% current_user.seminars.order(:name).limit(10).each do |seminar| %>
-                    <td class="<%= 'highlighted' if (@seminar && @seminar==seminar) %>">
-                        <h5>
-                            <% if action_name == 'scoresheet' %>
-                                <%= link_to seminar.name[0], scoresheet_seminar_url(seminar), :id => "other_class_scoresheet_#{seminar.id}" %>
-                            <% elsif action_name == 'edit' && controller_name == 'seminars' %>
-                                <%= link_to seminar.name[0], edit_seminar_path(seminar), :id => "other_class_edit_#{seminar.id}" %>
-                            <% elsif controller_name == 'consultancies' %>
-                                <%= link_to seminar.name[0], consultancy_path(:id => Consultancy.first.id, :seminar => seminar.id), :id => "other_class_desk_consult_#{seminar.id}" %>
-                            <% elsif controller_name == 'goal_students' %>
-                                <%= link_to seminar.name[0], goal_students_path(:seminar => seminar), :id => "other_class_student_goals_#{seminar.id}" %>
-                            <% else %>
-                                <%= link_to seminar.name[0], seminar_path(seminar) %>
-                            <% end %>
-                            &nbsp;
-                        </h5>
-                    </td>
-                    <td class="small_spacer"></td>
+                
+                <% teacher_show_links.each do |z| %>
+                    <% if (action_name == z[3] && controller_name == z[4]) %>
+                        <% @this_path = "#{z[2]}_url"  %>
+                        <% break %>
+                    <% end %>
+                <% end %>
+                
+                <% if @this_path %>
+                    <% current_user.seminars.order(:name).limit(10).each do |seminar| %>
+                        <td class="<%= 'highlighted' if (@seminar && @seminar==seminar) %>">
+                            <h5>
+                                <%= link_to seminar.name[0], send(@this_path, seminar, :seminar_id => seminar.id), :id => "other_class_#{seminar.id}" %>
+                                &nbsp;
+                            </h5>
+                        </td>
+                        <td class="small_spacer"></td>
+                    <% end %>
                 <% end %>
             </tr>
         </table>
@@ -38,37 +38,26 @@
                 <td class="spacer"></td>
                 
                 <% if @seminar %>
-                    <td class="<%= 'highlighted' if action_name == 'scoresheet' %>"><%= link_to image_tag("scoresheet.png"), scoresheet_seminar_url(@seminar), :id => "same_class_scoresheet_#{@seminar.id}" %></td>
-                    <td class="<%= 'highlighted' if controller_name == "consultancies" %>">
-                        <% if @seminar.shouldShowConsultLink %>
-                            <%= link_to image_tag("desk_consult.png"), consultancy_path(:id => Consultancy.first, :seminar => @seminar), :id => "same_class_desk_consult_#{@seminar.id}" %>
-                        <% end %>
-                    </td>
-                    <td class="<%= 'highlighted' if controller_name == 'goal_students' %>">
-                        <%= link_to image_tag("apple.jpg"), goal_students_path(:seminar => @seminar), :id => "same_class_student_goals_#{@seminar.id}" %>
-                    </td>
-                    <td class="<%= 'highlighted' if controller_name == 'seminars' && action_name == 'edit' %>">
-                        <%= link_to image_tag("E.png"), edit_seminar_path(@seminar), :id => "same_class_edit_#{@seminar.id}" %>
-                    </td>
+                    <% teacher_show_links.each do |z| %>
+                        <td class=" center <%= 'highlighted' if (action_name == z[3] && controller_name == z[4]) %>">
+                            <%= link_to image_tag(z[1]), send("#{z[2]}_url", @seminar, :seminar_id => @seminar.id), :id => "#{z[2]}_#{@seminar.id}" %>
+                        </td>
+                    <% end %>
                 <% end %>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td class="small_spacer"></td>
+                
                 <% if @seminar %>
-                    <td class="<%= 'highlighted' if action_name == 'scoresheet' %> center"><b>Scoresheet</b></td>
-                    
-                    <% if @seminar.shouldShowConsultLink %>
-                        <td class="<%= 'highlighted' if controller_name == "consultancies" %> center">
-                            <b>Desk Consultants</b>
+                    <% teacher_show_links.each do |z| %>
+                        <td class="<%= 'highlighted' if (action_name == z[3] && controller_name == z[4]) %> center">
+                            <b><%= link_to z[0], send("#{z[2]}_url", @seminar, :seminar_id => @seminar.id) %></b>
                         </td>
-                    <% else %>
-                        <td></td>
                     <% end %>
-                    <td class="<%= 'highlighted' if controller_name == 'goal_students' %> center"><b>Goalkeeper</b></td>
-                    <td class="<%= 'highlighted' if controller_name == 'seminars' && action_name == 'edit' %> center"><b>Edit</b></td>
                 <% end %>
+                
             </tr>
         </table>
     </div>

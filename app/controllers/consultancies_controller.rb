@@ -39,13 +39,13 @@ class ConsultanciesController < ApplicationController
     end
     
     def show
-        if params[:seminar].present?
-            @seminar = Seminar.find(params[:seminar])
+        if params[:consultancy_id].present?
+            @consultancy = Consultancy.find(params[:consultancy_id])
+            @seminar = @consultancy.seminar
+        else
+            @seminar = Seminar.find(params[:id])
             @consultancy = @seminar.consultancies.order(:created_at).last
             redirect_to new_consultancy_path(:seminar => @seminar.id) if @consultancy.blank?
-        else
-            @consultancy = Consultancy.find(params[:id])
-            @seminar = @consultancy.seminar
         end
     end
     

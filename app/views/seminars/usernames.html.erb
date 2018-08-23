@@ -1,0 +1,26 @@
+
+<% provide(:title, 'Usernames') %>
+<% provide(:button_text, '') %>
+
+<% provide(:headerText, "Usernames for #{@seminar.name}" ) %>
+<% provide(:headerPic, "usernames.png") %>
+
+<div class="no_print">
+    <%= render 'shared/navribbons/main_navribbon' %>
+    <%= render 'shared/headline' %>
+</div>
+
+<% @students.in_groups_of(3, false).each do |group| %>
+    <% group.each do |stud| %>
+        <div class="singleOption">
+            <h1><%= stud.last_name_first %></h1>
+            <h2>Welcome to Mr. Z School</h2>
+            </br>
+            <h2>Your username is <strong><%= stud.username %></strong></h2>
+            </br>
+        </div>
+        </br>
+        </br>
+    <% end %>
+    <div class="break_here"></div>
+<% end %>

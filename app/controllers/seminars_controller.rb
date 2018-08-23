@@ -114,6 +114,11 @@ class SeminarsController < ApplicationController
         redirect_to scoresheet_seminar_path(@seminar, :show_all => true)
     end
     
+    def usernames
+        @seminar = Seminar.find(params[:id])
+        @students = @seminar.students
+    end
+    
     def copy_due_dates
         @seminar = Seminar.find(params[:id])
         first_seminar = current_user.first_seminar

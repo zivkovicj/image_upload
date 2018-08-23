@@ -11,7 +11,9 @@
         <% @consultancies.each do |consultancy| %>
             <tr>
                 <td><%= render 'shared/delete_and_confirm', object: consultancy %> </td>
-                <td><%= link_to consultancy.display_date, consultancy_url(consultancy), :id => "consultancy_#{consultancy.id}" %></td>
+                <%#= link_to "Accept", seminar_teacher_path(@st, :seminar_teacher => {:accepted => true}, :came_from_accepting_invites => true), 
+                            :method => :put,  class: "btn btn-small btn-primary", :id => "accept_#{@st.id}" %>
+                <td><%= link_to consultancy.display_date, consultancy_path(consultancy, :consultancy_id => consultancy.id), :id => "consultancy_#{consultancy.id}" %></td>
             </tr>
             </br>
         <% end %>
@@ -24,5 +26,5 @@
 
 <h3>
     <%= new_consultancy_button_text %>: &emsp;
-    <%= link_to image_tag("desk_consult.png"), new_consultancy_path(:seminar => @seminar.id), :id => "desk_consult_#{@seminar.id}" %>
+    <%= link_to image_tag("desk_consult.png"), new_consultancy_path(:seminar => @seminar.id), :id => "new_consultancy" %>
 </h3>

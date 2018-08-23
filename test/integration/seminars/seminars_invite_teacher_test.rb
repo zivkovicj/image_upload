@@ -25,7 +25,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     end
     
     def send_another_invite
-        click_on("other_class_edit_#{@seminar_2.id}")
+        click_on("other_class_#{@seminar_2.id}")
         find("#navribbon_shared_teachers").click
         find("#invite_teacher_#{@other_teacher.id}").click
         
@@ -133,7 +133,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         find("#navribbon_shared_teachers").click
         assert_no_selector('a', :id => "invite_teacher_#{@teacher_3.id}")
         
-        click_on("other_class_edit_#{@seminar.id}")
+        click_on("other_class_#{@seminar.id}")
         find("#navribbon_shared_teachers").click
         assert_selector('a', :id => "invite_teacher_#{@teacher_3.id}")
     end

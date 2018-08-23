@@ -221,12 +221,12 @@ class ActiveSupport::TestCase
   
   def go_to_create_student_view
     capybara_login(@teacher_1)
-    click_on("scoresheet_#{@seminar.id}")
+    click_on("scoresheet_seminar_#{@seminar.id}")
     click_on('Create New Students')
   end
   
   def go_to_goals
-    click_on("#{@seminar.id}_student_goals")
+    click_on("goal_students_#{@seminar.id}")
   end
   
   def teacher_form_stuff(button_text)

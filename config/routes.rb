@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     get 'objectives', on: :member
     get 'due_dates', on: :member
     get 'copy_due_dates', on: :member
+    get 'usernames', on: :member
   end
   resources :seminar_students do
     get 'removeFromClass', on: :member

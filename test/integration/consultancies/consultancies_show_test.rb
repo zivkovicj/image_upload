@@ -134,7 +134,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
     test "show consultancy" do
         capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
+        click_on("consultancy_#{@seminar.id}")
         @consultancy = @seminar.consultancies.order(:created_at).last
         assert_text(show_consultancy_headline(@consultancy))
     end
@@ -142,13 +142,13 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     test "show first consultancy" do
         @seminar.consultancies.destroy_all
         capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
+        click_on("consultancy_#{@seminar.id}")
         assert_text("Mark Attendance Before Creating Desk-Consultants Groups")
     end
     
-    test "simple create test" do
+    test "simple create" do
         capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
+        click_on("consultancy_#{@seminar.id}")
         click_on("#{new_consultancy_button_text}")
         assert_text("Mark Attendance Before Creating Desk-Consultants Groups")
         click_on("Create Desk Consultants Groups")
@@ -160,7 +160,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         old_consultancy_count = Consultancy.count
         
         capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
+        click_on("consultancy_#{@seminar.id}")
         find("#delete_#{@consultancy.id}").click
         click_on("confirm_#{@consultancy.id}")
         
@@ -667,7 +667,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_equal consult_count + 1, Consultancy.count
         
         capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
+        click_on("consultancy_#{@seminar.id}")
         click_on("#{new_consultancy_button_text}")
         click_on("Create Desk Consultants Groups")
         assert_equal consult_count + 1, Consultancy.count
@@ -687,7 +687,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_equal 10, @seminar.consultancies.count
         
         capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
+        click_on("consultancy_#{@seminar.id}")
         click_on("#{new_consultancy_button_text}")
         click_on("Create Desk Consultants Groups")
         

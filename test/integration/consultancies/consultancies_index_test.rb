@@ -14,7 +14,7 @@ class ConsultanciesIndexTest < ActionDispatch::IntegrationTest
         setup_consultancies
         
         capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
+        click_on("consultancy_#{@seminar.id}")
         click_on("List All Arrangements")
         
         click_on("consultancy_#{@consultancy_from_setup.id}")
@@ -26,10 +26,10 @@ class ConsultanciesIndexTest < ActionDispatch::IntegrationTest
         setup_consultancies
         
         capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
+        click_on("consultancy_#{@seminar.id}")
         click_on("List All Arrangements")
         
-        click_on("desk_consult_#{@seminar.id}")
+        click_on("new_consultancy")
         assert_text(new_consultancy_headline)
     end
     
@@ -38,7 +38,7 @@ class ConsultanciesIndexTest < ActionDispatch::IntegrationTest
         old_consultancy_count = Consultancy.count
         
         capybara_login(@teacher_1)
-        click_on("desk_consult_#{@seminar.id}")
+        click_on("consultancy_#{@seminar.id}")
         click_on("List All Arrangements")
         
         find("#delete_#{@consultancy_from_setup.id}").click

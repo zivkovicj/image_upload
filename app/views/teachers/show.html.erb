@@ -28,29 +28,26 @@
   <% end %>
 </p>
 
-
 <div>
   <h3> <%= pluralize(@teacher.seminars.count, "Class") %> </h3>
   <table>
     <thead>
       <th></th>
-      <th>Scoresheet</th>
-      <th>Desk Consultants</th>
-      <th>Goalkeeper</th>
-      <th>Edit</th>
+      <% teacher_show_links.each do |z| %>
+        <th class="center">&nbsp;<%= z[0] %> &nbsp;</th>
+      <% end %>
     </thead>
     <% current_term = @teacher.school.term %>
     <% @seminars.order(:name).each do |sem| %>
       <tr>
         <td><h4><%= link_to sem.name, edit_seminar_path(sem) %></h4></td>
-        <td><%= link_to image_tag("scoresheet.png"), scoresheet_seminar_url(:id => sem, :term => current_term, :show_all => true), :id => "scoresheet_#{sem.id}" %></td>
-        <td>
-          <% if sem.shouldShowConsultLink %>
-            <%= link_to image_tag("desk_consult.png"), consultancy_path(:seminar => sem.id), :id => "desk_consult_#{sem.id}" %>
-          <% end %>
-        </td>
-        <td><%= link_to image_tag("apple.jpg"), goal_students_path(:seminar => sem), :id => "#{sem.id}_student_goals" %></td>
-        <td><%= link_to image_tag("E.png"), edit_seminar_path(sem), :id => "edit_seminar_#{sem.id}" %></td>
+        
+        <% teacher_show_links.each do |z| %>
+          <td>
+            <%= link_to image_tag(z[1]), send("#{z[2]}_url", sem), :id => "#{z[2]}_#{sem.id}" %>
+          </td>
+        <% end %>
+        
       </tr>
     <% end %>
   </table>

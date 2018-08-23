@@ -16,7 +16,7 @@ class StudentsClassPageTest < ActionDispatch::IntegrationTest
         assert_nil this_gs.goal_id
         
         capybara_login(@teacher_1)
-        click_on("scoresheet_#{@seminar.id}")
+        click_on("scoresheet_seminar_#{@seminar.id}")
         click_on(@student_2.last_name_first)
         
         assert_selector('div', :id => "add_buck_increment")
@@ -51,7 +51,7 @@ class StudentsClassPageTest < ActionDispatch::IntegrationTest
         assert_not sem_2.students.include?(@student_2)
         
         capybara_login(@teacher_1)
-        click_on("scoresheet_#{@seminar.id}")
+        click_on("scoresheet_seminar_#{@seminar.id}")
         click_on(@student_2.last_name_first)
         find("#navribbon_move_or_remove").click
         click_on("Move to #{sem_2.name}")
@@ -84,7 +84,7 @@ class StudentsClassPageTest < ActionDispatch::IntegrationTest
     
     test "remove student from class" do
         capybara_login(@teacher_1)
-        click_on("scoresheet_#{@seminar.id}")
+        click_on("scoresheet_seminar_#{@seminar.id}")
         click_on(@student_2.last_name_first)
         find("#navribbon_move_or_remove").click
         find("#delete_#{@seminar.id}").click
