@@ -56,6 +56,12 @@ Check Pre-Reqs for "Both-Side Equation" Objectives
 
 Check School and Seminar for needed updates to existing CommodityStudents
 
+Right now assets compile is set to true.  This was a solution to images not appearing in heroku.
+But the article mentioned that this causes a performance slowdown.  So keep looking for better solutions.
+
+
+
+DESK CONSULTANTS FEATURE ISN'T WORKING!!
 
 
 
@@ -66,8 +72,10 @@ V Leads to printable screen, similar to goal checkpoint scree
 Don't compile assets true on production. that makes production slow. Instead create 
 config/initializers/assets.rb, 
 and add these to it, so that rails production recognizes vendor and lib precompiled assets. 
-Rails.application.config.assets.precompile << /\.(?:png|jpg|jpeg|gif)\z/ 
-Rails.application.config.assets.precompile << /\.(?:svg|eot|woff|ttf)\z/ 
+
+
+
+
 
 
 
