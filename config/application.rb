@@ -24,3 +24,5 @@ module Workspace
     config.active_record.raise_in_transactional_callbacks = true
   end
 end
+
+config.assets.precompile += %w( .svg .eot .woff .ttf .png .jpg .gif)
