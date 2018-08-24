@@ -63,7 +63,11 @@ PRINT STUDENT USERNAMES
 V Option in seminar ribbon
 V Leads to printable screen, similar to goal checkpoint scree
 
-
+Don't compile assets true on production. that makes production slow. Instead create 
+config/initializers/assets.rb, 
+and add these to it, so that rails production recognizes vendor and lib precompiled assets. 
+Rails.application.config.assets.precompile << /\.(?:png|jpg|jpeg|gif)\z/ 
+Rails.application.config.assets.precompile << /\.(?:svg|eot|woff|ttf)\z/ 
 
 
 
