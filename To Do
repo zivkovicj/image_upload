@@ -61,32 +61,22 @@ But the article mentioned that this causes a performance slowdown.  So keep look
 
 
 
-DESK CONSULTANTS FEATURE ISN'T WORKING!!
 
 
 
-PRINT STUDENT USERNAMES
-V Option in seminar ribbon
-V Leads to printable screen, similar to goal checkpoint scree
+QUIZ RESULTS ARE USING STAR COUNT TO FIND STAR COUNT
 
-Don't compile assets true on production. that makes production slow. Instead create 
-config/initializers/assets.rb, 
-and add these to it, so that rails production recognizes vendor and lib precompiled assets. 
+SCORE IS NOT SHOWING FROM QUIZ RESULTS
+That's because it's a pre-test.  How do I make that clear to other teachers? 
 
 
 
 
-
-
-
-
-
-
-ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
+2.75 ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
 
 Add a "student_password" column to user.
 This credential can be used to log in for students.  It can be seen and edited by the teacher.
-Student also has a regular password that follows all the same rules.
+
     Login method checks for authenticate on regular password, then for a match on student password
 Will need to link teacher to edit passwords from student edit page
 
@@ -751,6 +741,9 @@ ALLOW FIVE LEVELS OF PRIORITY
 Instead of 3
 
 
+STUDENT ALSO HAS A REGULAR PASSWORD
+In the future, students will also be able to have a regular password when they turn 18.
+    This password cannot be seen or changed by the teacher.  
 
 VIEW A SINGLE GOAL
 Also needs to be able to zoom in on one specific goal_student, for conferencing with that student

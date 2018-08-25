@@ -3,8 +3,8 @@
 <div class="singleOption container">
     <div class="row">
         <div class="col-sm-4">
-            <h2>This Score: <%= @quiz.total_score %> %
-            </br><strong><%= pluralize(@quiz.stars_from_score, 'Star') %></stong></h2>
+            <h2>This Score:
+            </br><strong><%= pluralize(@quiz.total_score, 'Star') %></stong></h2>
             
             </br>
             <h5>Previous score this term<br>
@@ -13,16 +13,22 @@
             <%= pluralize(@this_os.points_all_time, 'Star') %></h5>
         </div>
         
+        <% label_to_use = "New Stars" %>
+        <% star_amount_to_use = @quiz.added_stars %>
+        <% if @quiz.origin == "pretest" %>
+            <% label_to_use = "Stars" %>
+            <% star_amount_to_use = @quiz.total_score %>
+        <% end %>
+        
         <div class="col-sm-6">
-            <h1>New Stars</h1>
+            <h1><%= label_to_use %></h1>
             <% 10.times do |x| %>
-                <% pic = @quiz.added_stars > x ? "stars/filled_star.png" : "stars/empty_star.png" %>
+                <% pic = star_amount_to_use > x ? "stars/filled_star.png" : "stars/empty_star.png" %>
                 <%= image_tag (pic) %>
             <% end %>
             </br>
-            
-            
-            <h2><%= pluralize(@quiz.added_stars, 'Star') %></h2>
+        
+            <h2><%= pluralize(star_amount_to_use, 'Star') %></h2>
         </div>
     </div>
 </div>

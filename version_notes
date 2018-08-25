@@ -19,6 +19,12 @@ Between each update, manually test:
 
 
 
+2.74  PRINT STUDENT USERNAMES
+Option in seminar ribbon
+Leads to printable screen, similar to goal checkpoint scree
+
+
+
 
 2.73 RUBIFY CURRENT SCORES
 Replace all calls to "points" with a "highest_points_all_time" or "highest_points_this_term"
