@@ -15,15 +15,23 @@ class RipostesController < ApplicationController
             perc = 0
             case @question.style
             when "multiple-choice"
-                n = params[:whichIsCorrect][:whichIsCorrect].to_i
-                stud_answer = @question.read_attribute(:"choice_#{n}")
-                perc = @riposte.poss if @question.correct_answers.include?(stud_answer)
+                if params[:whichIsCorrect]
+                    n = params[:whichIsCorrect][:whichIsCorrect].to_i
+                    stud_answer = @question.read_attribute(:"choice_#{n}")
+                    perc = @riposte.poss if @question.correct_answers.include?(stud_answer)
+                else
+                    stud_answer = "blank"
+                end
             when "fill-in"
                 stud_answer = params[:stud_answer]
-                @question.correct_answers.each do |correct_answer|
-                    if stud_answer.downcase.gsub(/\s+/, "") == correct_answer.downcase.gsub(/\s+/, "")
-                        perc = @riposte.poss
-                        break
+                if stud_answer.blank?
+                    stud_answer = "blank"
+                else
+                    @question.correct_answers.each do |correct_answer|
+                        if stud_answer.downcase.gsub(/\s+/, "") == correct_answer.downcase.gsub(/\s+/, "")
+                            perc = @riposte.poss
+                            break
+                        end
                     end
                 end
             end

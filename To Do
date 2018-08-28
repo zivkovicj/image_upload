@@ -59,17 +59,55 @@ Check School and Seminar for needed updates to existing CommodityStudents
 Right now assets compile is set to true.  This was a solution to images not appearing in heroku.
 But the article mentioned that this causes a performance slowdown.  So keep looking for better solutions.
 
+If an objective is a pretest, then its pre-reqs also need to be pretests
+
+Doesn't seem to be taking away pretest keys when the student scores 100%
+    Rayshon had a key box that read "Has scored 100% on this objective"
+    
+Show different propoganda messages for students  
+
+
+SCHOOL YEAR FIX
+
+School year isn't updating
+    Actually, I think the school year IS updating, but it's displaying wrong in the default selection
+    
+    Default choice is always "7" in the display.
+    
 
 
 
 
 
-QUIZ RESULTS ARE USING STAR COUNT TO FIND STAR COUNT
+Undefined method 'order' when searching for objective
+
+Error upon admin saving new objective
+
+Updating question quantities should give a flash message
+
+Pictures Index needs pagination
+
+Confirm removing <Seminar 1073514> from your classes
+
+
+I thought that when I set an objective to be a pre-test, that pre-test keys would be granted.
+
+Objectives can be marked as a "non-standard" assessment.
+If so, it will skip those objectives when assessing readiness during a pre-test
+It will still consider those objectives for readiness for the rest of the school year
+
+I think it does take away pretest keys if a class is set to no longer be a pretest.
+    But does it do the same if the objective is removed from the class entirely?
+    Giving pretest keys should be based on whether the student already has a pretest score.
+        To prevent weird things from happening if a student is enrolled in two different classes and the teacher takes away a pretest.
+        Or if any teacher takes a pretest then gives it back, we don't want to give those students new keys to complete.
 
 SCORE IS NOT SHOWING FROM QUIZ RESULTS
 That's because it's a pre-test.  How do I make that clear to other teachers? 
 
-
+Need a test to check the correct amounts displayed for quiz results
+    Correct label for stars for pre-test and normal
+    Correct amount of stars for pre-test, normal, and second try
 
 
 2.75 ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS

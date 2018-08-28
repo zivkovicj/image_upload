@@ -39,6 +39,12 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         choose("choice_bubble_#{incorrect_answer}")
     end
     
+    def prepare_fill_in
+        @fill_in_objective = Objective.find_by(:name => "Fill-in Questions Only")
+        set_specific_score(@student_2, @fill_in_objective, 4)
+        @fill_in_objective.objective_students.find_by(:user => @student_2).update(:teacher_granted_keys => 2)
+    end
+    
     test "setup quiz" do
         old_riposte_count = Riposte.count
         current_term = @seminar.term_for_seminar
@@ -57,6 +63,42 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         new_riposte_count = @new_quiz.ripostes.count
         assert new_riposte_count > 0
         assert_equal old_riposte_count + new_riposte_count, Riposte.count
+    end
+    
+    test "blank mc" do
+        go_to_first_period
+        begin_quiz
+        
+        @quiz = Quiz.last
+        @riposte = @quiz.ripostes[0]
+        assert_equal 1, @quiz.progress
+        
+        click_on "Next Question"
+        
+        assert_text "Question: 2"
+        
+        @riposte.reload
+        assert_equal 0, @riposte.tally
+        assert_equal "blank", @riposte.stud_answer
+    end
+    
+    test "blank fill in" do
+        prepare_fill_in
+    
+        go_to_first_period
+        
+        find("#navribbon_quizzes").click
+        find("#teacher_granted_#{@fill_in_objective.id}").click
+        
+        @quiz = Quiz.last
+        @riposte = @quiz.ripostes[0]
+        
+        # Skip entering an answer
+        click_on "Next Question"
+        
+        @riposte.reload
+        assert_equal 0, @riposte.tally
+        assert_equal "blank", @riposte.stud_answer
     end
     
     test "take multiple-choice quiz" do
@@ -85,13 +127,12 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "take fill in quiz" do
-        fill_in_objective = Objective.find_by(:name => "Fill-in Questions Only")
-        set_specific_score(@student_2, fill_in_objective, 4)
-        fill_in_objective.objective_students.find_by(:user => @student_2).update(:teacher_granted_keys => 2)
+        prepare_fill_in
+        
         go_to_first_period
         
         find("#navribbon_quizzes").click
-        find("#teacher_granted_#{fill_in_objective.id}").click
+        find("#teacher_granted_#{@fill_in_objective.id}").click
         @quiz = Quiz.last
         fill_in "stud_answer", with: "Yes"
         click_on "Next Question"
