@@ -64,16 +64,34 @@ If an objective is a pretest, then its pre-reqs also need to be pretests
 Doesn't seem to be taking away pretest keys when the student scores 100%
     Rayshon had a key box that read "Has scored 100% on this objective"
     
+Teachers need to be able to update scores for students questions and quizzes
+
+And edit multiple questions at once
+
+Show the number for the question so that it can be searched more quickly when there's a small error in one question
+    
 Show different propoganda messages for students  
 
+Page to update pretests for a class should list those objectives in order
 
-SCHOOL YEAR FIX
+Teachers might also need to update pretest scores.
+    Currently, entering pretest scores in the scoresheet will affect the student's grade.
+    
+Something is causing an objective to be added several times.
+    Make sure that doesn't happen.
+    It's probably from other objectives adding them as pre-reqs.
 
-School year isn't updating
-    Actually, I think the school year IS updating, but it's displaying wrong in the default selection
-    
-    Default choice is always "7" in the display.
-    
+
+ FAIL["test_new_teacher_new_school", Minitest::Result, 628.7371072919341]
+ test_new_teacher_new_school#Minitest::Result (628.74s)
+        Expected: 0
+          Actual: 1
+        test/integration/teachers/teachers_signup_test.rb:103:in `block in <class:TeachersSignupTest>'
+
+ERROR["test_visit_printing_page", Minitest::Result, 667.0173063479597]
+ test_visit_printing_page#Minitest::Result (667.02s)
+Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find text "Printable Goals for Term 2, Checkpoint 3"
+
 
 
 
