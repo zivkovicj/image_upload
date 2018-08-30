@@ -178,7 +178,6 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     end
     
     test "improving points" do
-        
         @test_obj_stud.update(:points_all_time => 1, :points_this_term => 1, :teacher_granted_keys => 2)
         set_specific_score(@test_obj_stud.user, @test_obj_stud.objective, 1)
         
@@ -197,6 +196,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         @test_obj_stud.reload
         assert_equal 3, @test_obj_stud.points_all_time
         assert_equal 3, @test_obj_stud.points_this_term
+        assert_nil @test_obj_stud.pretest_score
         
         # Second try on quiz student scores 8 stars. An improvement of 5 stars.
         click_on("Try this quiz again")
@@ -277,6 +277,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         # Doesn't take the keys yet, because student still has another try
         @test_obj_stud.reload
         assert_equal 1, @test_obj_stud.pretest_keys
+        assert_equal 1, @test_obj_stud.pretest_score
         assert_equal 1, @test_obj_stud.points_all_time  #Stays the same because it didn't increase from the previous score
         assert_nil @test_obj_stud.points_this_term
         assert_equal 2, @mainassign_os.reload.pretest_keys  
@@ -294,6 +295,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         # Now it takes the pretest keys for the post-requisites to spare the student the struggle of taking a pre-test that she is doomed to fail.
         @test_obj_stud.reload
         assert_equal 0, @test_obj_stud.pretest_keys
+        assert_equal 3, @test_obj_stud.pretest_score
         assert_equal 3, @test_obj_stud.points_all_time
         assert_nil      @test_obj_stud.points_this_term
         assert_equal 0, @mainassign_os.reload.pretest_keys   

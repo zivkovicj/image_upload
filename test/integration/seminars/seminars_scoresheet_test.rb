@@ -89,4 +89,24 @@ class SeminarsScoresheetTest < ActionDispatch::IntegrationTest
         assert_equal 2, @test_obj_stud.teacher_granted_keys
         assert_equal 2, @test_obj_stud.dc_keys
     end
+    
+    test "view pretests" do
+        @test_obj_stud.update(:pretest_score => 5, :points_this_term => 7)
+        
+        capybara_login(@teacher_1)
+        click_on("scoresheet_seminar_#{@seminar.id}")
+        
+        # Some day try to check for the correctly displayed value in the input box
+        
+        assert_no_selector('span',
+            :id => "scores[#{@student_2.id}][#{@objective_10.id}]",
+            :text => "5")
+        
+        click_on("switch_to_pretests")
+        
+        assert_selector('span',
+            :id => "scores[#{@student_2.id}][#{@objective_10.id}]",
+            :text => "5")
+        
+    end
 end

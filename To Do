@@ -80,6 +80,8 @@ Teachers might also need to update pretest scores.
 Something is causing an objective to be added several times.
     Make sure that doesn't happen.
     It's probably from other objectives adding them as pre-reqs.
+    
+Move Xavier to 4th
 
 
  FAIL["test_new_teacher_new_school", Minitest::Result, 628.7371072919341]

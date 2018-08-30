@@ -32,18 +32,18 @@ class ObjectiveStudent < ApplicationRecord
     
     def set_points(origin, this_score)
         new_score_all_time = Quiz.where(:user_id => user_id, :objective_id => objective_id).maximum(:total_score)
-            
-        new_score_this_term = nil
+        self.points_all_time = new_score_all_time
+        
         if origin == "pretest"
-            new_score_this_term = points_this_term
+            self.pretest_score = this_score if this_score > self.pretest_score.to_i
         elsif origin == "manual"
-            new_score_this_term = this_score
+            self.points_this_term = this_score
         else
-            new_score_this_term = [points_this_term.to_i, this_score].max
+            self.points_this_term = [points_this_term.to_i, this_score].max
         end
         
-        self.update(:points_all_time => new_score_all_time, :points_this_term => new_score_this_term)
-        self.take_all_keys if new_score_all_time == 10
+        self.save
+        self.take_all_keys if points_all_time == 10
     end
     
     def take_all_keys

@@ -77,9 +77,16 @@ class SeminarsController < ApplicationController
         @students = @seminar.students.order(:last_name)
         @term = params[:term].to_i
         @show_all = params[:show_all]
+        @pretests = params[:pretests].to_s
+        
+        col_to_use = :points_this_term
+        if @pretests == "true"
+            col_to_use = :pretest_score
+        end
+        
         gather_objectives_and_scores
         @scores = @seminar.obj_studs_for_seminar
-            .pluck(:user_id, :objective_id, :points_this_term)
+            .pluck(:user_id, :objective_id, col_to_use)
             .reduce({}) do |result, (student, obj, points)|
                 result[student] ||= {}
                 result[student][obj] = points

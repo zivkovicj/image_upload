@@ -18,6 +18,16 @@
     <%= link_to "Show all objectives", 
         scoresheet_seminar_path(:seminar => @seminar, :show_all => true) %>
 <% end %>
+
+&emsp;
+<% if @pretests == "true" %>
+  <%= link_to "Show scores for current term",
+      scoresheet_seminar_path(:seminar => @seminar, :pretests => false) %>
+<% else %>
+  <%= link_to "Show pretests",
+      scoresheet_seminar_path(:seminar => @seminar, :pretests => true),
+      :id => "switch_to_pretests" %>
+<% end %>
   
 
 
@@ -57,10 +67,16 @@
               <% obj_id = objective.id %>
               <% this_points = @scores[stud_id][obj_id] %>
               <td class="themScores to_unhide score_box row_<%= indexx %> col_<%= indexy %>">
+                  <% if @pretests == "true" %>
+                    <span id="scores[<%= stud_id %>][<%= obj_id %>]">
+                      <%= this_points %>
+                    </span>
+                  <% end %>
                   <input type="text" name="scores[<%= stud_id %>][<%= obj_id %>]" 
                     class="score_cell r<%= indexx %>c<%= indexy %>" 
                     value="<%= this_points %>" 
-                    cell_row="<%= indexx %>" cell_col="<%= indexy %>" >
+                    cell_row="<%= indexx %>" cell_col="<%= indexy %>"
+                    id="scores[<%= stud_id %>][<%= obj_id %>]">
               </td>
             <% end %>
           </tr>
