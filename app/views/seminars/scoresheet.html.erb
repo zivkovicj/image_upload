@@ -71,12 +71,13 @@
                     <span id="scores[<%= stud_id %>][<%= obj_id %>]">
                       <%= this_points %>
                     </span>
+                  <% else %>
+                    <input type="text" name="scores[<%= stud_id %>][<%= obj_id %>]" 
+                      class="score_cell r<%= indexx %>c<%= indexy %>" 
+                      value="<%= this_points %>" 
+                      cell_row="<%= indexx %>" cell_col="<%= indexy %>"
+                      id="scores[<%= stud_id %>][<%= obj_id %>]">
                   <% end %>
-                  <input type="text" name="scores[<%= stud_id %>][<%= obj_id %>]" 
-                    class="score_cell r<%= indexx %>c<%= indexy %>" 
-                    value="<%= this_points %>" 
-                    cell_row="<%= indexx %>" cell_col="<%= indexy %>"
-                    id="scores[<%= stud_id %>][<%= obj_id %>]">
               </td>
             <% end %>
           </tr>
