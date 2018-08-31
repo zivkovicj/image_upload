@@ -21,11 +21,9 @@ class ObjectiveSeminar < ApplicationRecord
         def addPreReqs
             objective.preassigns.each do |preassign|
                 if seminar.objectives.include?(preassign) == false
-                    ObjectiveSeminar.create(:objective_id => preassign.id, :seminar_id => seminar.id)
+                    ObjectiveSeminar.find_or_create_by(:objective_id => preassign.id, :seminar_id => seminar.id)
                     seminar.students.each do |student|
-                        if student.objective_students.find_by(:objective_id => preassign.id) == nil
-                            ObjectiveStudent.create(:user_id => student.id, :objective_id => preassign.id)
-                        end
+                        ObjectiveStudent.find_or_create_by(:user_id => student.id, :objective_id => preassign.id)
                     end
                 end
             end
