@@ -46,6 +46,10 @@ SEE AND EDIT PRETEST SCORES
 Don't forget to set all pretest scores for already-taken quizzes
 
 
+Check test for quiz progress
+Make test for duplicate preassigns
+
+Can't seem to take an objective away from a seminar
 
 Student requests are not updating with ajax.
     This seems to be caused by having too many different forms in the seminar_student view

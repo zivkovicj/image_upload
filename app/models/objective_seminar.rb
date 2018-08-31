@@ -2,6 +2,8 @@ class ObjectiveSeminar < ApplicationRecord
     belongs_to :seminar
     belongs_to :objective
     
+    validates_uniqueness_of :seminar_id, :scope => :objective_id
+    
     attribute :priority, :integer, default: 2
     attribute :pretest, :integer, default: 0
     
