@@ -45,17 +45,9 @@ Private Repo on Github
 SEMINAR MARKET
 Offer option of making teacher items usable
 
-
-DEPRECATED: Use assert_nil if expecting nil from test/integration/students/students_new_test.rb:77. This will fail in Minitest 6.
- FAIL["test_take_fill_in_quiz", Minitest::Result, 612.9678017259575]
- test_take_fill_in_quiz#Minitest::Result (612.97s)
-        Expected: 6
-          Actual: 7
-        test/integration/quizzes/quiz_new_test.rb:152:in `block in <class:NewQuizTest>
-            
-            
-
 Do the currently-existing teachers have a star item?
+
+Blank out the school market for now
 
 Finish controller permissions to ensure authorized access to commodities
     And they should probably be dried as well.
