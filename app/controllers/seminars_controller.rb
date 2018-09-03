@@ -1,8 +1,8 @@
 class SeminarsController < ApplicationController
+    
     before_action :logged_in_user, only: [:create]
     before_action :redirect_for_non_admin,    only: [:index]
-    before_action :correct_user, only: [:destroy]
-    
+    before_action :correct_seminar_user, only: [:destroy]
     
     def new
         @seminar = Seminar.new
@@ -53,10 +53,12 @@ class SeminarsController < ApplicationController
 
     def update
         @seminar = Seminar.find(params[:id])
+        @old_objectives = @seminar.objective_ids
         set_checkpoint_due_dates
         set_priorities
         set_pretests
         @seminar.update_attributes(seminar_params)
+        add_pre_reqs_to_seminar
         flash[:success] = "Class Updated"
         redirect_to edit_seminar_path(@seminar)
     end
@@ -139,7 +141,15 @@ class SeminarsController < ApplicationController
             params.require(:seminar).permit(:name, :consultantThreshold, :default_buck_increment, :school_year, objective_ids: [], teacher_ids: [])
         end
         
-        def correct_user
+        def add_pre_reqs_to_seminar
+            if @seminar.objective_ids != @old_objectives
+                @seminar.objective_seminars.each do |os|
+                    os.addPreReqs
+                end
+            end
+        end
+        
+        def correct_seminar_user
             @seminar = Seminar.find(params[:id])
             redirect_to(login_url) unless current_user && (current_user.type == "Admin" || current_user.can_edit_this_seminar(@seminar))
         end

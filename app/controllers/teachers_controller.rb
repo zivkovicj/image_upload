@@ -25,7 +25,7 @@ class TeachersController < ApplicationController
     current_user.update(:current_class => nil)
     @school = @teacher.school
     check_if_term_needs_updated
-    create_commodities
+    #create_commodities
     @unverified_teachers = @school.unverified_teachers if @teacher.school_admin > 0
     @unaccepted_classes = @teacher.unaccepted_classes
   end

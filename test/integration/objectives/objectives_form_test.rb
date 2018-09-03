@@ -310,12 +310,11 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     end
     
     test "add prereq and class at once" do
-        @otherClass = seminars(:two)
+        @other_class = seminars(:two)
         
-        assert_not @otherClass.objectives.include?(@main_objective)
-        assert_not @otherClass.objectives.include?(@preassign_to_add)
-        assert_not @otherClass.objectives.include?(@sub_preassign)
-        assert_not @otherClass.objectives.include?(@already_preassign_to_main)
+        assert_not @other_class.objectives.include?(@main_objective)
+        assert_not @other_class.objectives.include?(@preassign_to_add)
+        assert_not @other_class.objectives.include?(@already_preassign_to_main)
         old_os_count = ObjectiveSeminar.count
         
         capybara_login(@teacher_1)
@@ -323,14 +322,14 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         click_on(@main_objective.full_name)
         
         check("check_#{@preassign_to_add.id}")
-        check(@otherClass.name)
+        check(@other_class.name)
         click_button("Save Changes")
         
-        assert @otherClass.objectives.include?(@main_objective)
-        assert @otherClass.objectives.include?(@preassign_to_add)
-        assert @otherClass.objectives.include?(@sub_preassign)
-        assert @otherClass.objectives.include?(@already_preassign_to_main)
-        assert_equal old_os_count + 4, ObjectiveSeminar.count
+        @other_class.reload
+        assert @other_class.objectives.include?(@main_objective)
+        assert @other_class.objectives.include?(@preassign_to_add)
+        assert @other_class.objectives.include?(@already_preassign_to_main)
+        assert_equal old_os_count + 3, ObjectiveSeminar.count
     end
    
     test "mainassigns shouldnt appear as option for pre-req" do

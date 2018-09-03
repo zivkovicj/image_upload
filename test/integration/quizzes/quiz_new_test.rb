@@ -137,7 +137,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         fill_in "stud_answer", with: "Yes"
         click_on "Next Question"
         @quiz.reload
-        assert_equal 1, @quiz.progress
+        assert_equal 2, @quiz.progress
         fill_in "stud_answer", with: "No"
         click_on "Next Question"
         fill_in "stud_answer", with: "yes"
@@ -149,7 +149,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         fill_in "stud_answer", with: "ofco urse"
         click_on "Next Question"
         @quiz.reload
-        assert_equal 6, @quiz.progress
+        assert_equal 7, @quiz.progress
         fill_in "stud_answer", with: "course of"
         click_on "Next Question"
         

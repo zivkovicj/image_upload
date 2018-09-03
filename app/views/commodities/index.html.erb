@@ -1,5 +1,5 @@
-<% provide(:title, "#{@school.market_name}") %>
-<% provide(:headerText, "#{@school.market_name}") %>
+<% provide(:title, "#{@market_name}") %>
+<% provide(:headerText, "#{@market_name}") %>
 <% provide(:headerPic, 'objectives.png') %>
 
 <div class="row">
@@ -19,6 +19,6 @@
 <%= render 'commodity_list' %>
 </br>
 
-<% if current_user.school_admin > 0 %>
-  <%= link_to new_item_button_text, new_commodity_path(:school_id => @school.id), :class => "btn btn-primary" %>
+<% if @edit_commodity_permission %>
+  <%= link_to "Create a New Item", new_commodity_path(:"#{@source_type}_id" => @source.id), :class => "btn btn-primary" %>
 <% end %>

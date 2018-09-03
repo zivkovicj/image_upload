@@ -105,7 +105,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         assert_text("Unfinished Quizzes")
         assert_no_text("Pretest Objectives")
         click_link("#{@objective_10.name}", match: :first) # This time the first link should go to the unfinished quiz
-        assert_text("Question: 4")                           # A little redundant with the next line, but this assertion is the most important one
+        assert_text("Question: 4")                      # A little redundant with the next line, but this assertion is the most important one
        
         7.times do |n|
             assert_text("Question: #{n+4}")

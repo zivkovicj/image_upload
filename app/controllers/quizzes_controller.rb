@@ -36,7 +36,6 @@ class QuizzesController < ApplicationController
         @objective = @quiz.objective
         @student = @quiz.user
         @this_os = @objective.objective_students.find_by(:user => @student) 
-        
         establish_offer_next_try
     end
     

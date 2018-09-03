@@ -38,7 +38,7 @@ class RipostesController < ApplicationController
             
             @riposte.update(:stud_answer => stud_answer)
             @riposte.update(:tally => perc)
-            @quiz.update(:progress => @riposte.position)
+            @quiz.update(:progress => next_riposte_num)
             
             if @riposte == @quiz.ripostes.last
                 @student = @quiz.user

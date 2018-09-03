@@ -1,3 +1,5 @@
+
+
 <%= form_for(@commodity) do |f| %>
   <% if @commodity.errors.any? %>
     <div id="error_explanation">
@@ -10,21 +12,17 @@
       </ul>
     </div>
   <% end %>
-
-  <% if @commodity.school %>
-    <% default_school_id = @commodity.school_id %>
-  <% else %>
-    <% default_school_id = params[:school_id] %>
-  <% end %>
-  <%= f.hidden_field :school_id, :value => default_school_id %>
-
+  
+  <% this_school_id = @commodity.school_id || @school_id %>
+  <% this_user_id = @commodity.user_id || @user_id %>
+  
+  <%= f.hidden_field :school_id, :value => this_school_id %>
+  <%= f.hidden_field :user_id, :value => this_user_id %>
+  
   <div class="field">
     <%= f.label :name %>
     <%= f.text_field :name %>
   </div>
-  
- 
-  
   
   <div class="field">
     <%= f.label "add an image...." %>
@@ -42,16 +40,30 @@
     </div>
     <div class="field col-sm-2">
     </div>
-    <div class="field col-sm-4">
-      <table class="table-borderless">
-        <tr>
-          <td>Students may sell this commodity?</td>
-          <td width="15%"><input type="radio" name="commodity[salable]" id="salable_true" value="true" <%= "checked=checked" if @commodity.salable %> /></td>
-          <td>Yes</td>
-          <td width="15%"><input type="radio" name="commodity[salable]" id="salable_false" value="false" <%= "checked=checked" if @commodity.salable == false %> /></td>
-          <td>No</td>
-        </tr>
-      </table>
+    <div class="col-sm-4">
+      <div class="singleOption">
+        <table class="table-borderless">
+          <tr>
+            <td>Students may sell this commodity?</td>
+            <td width="15%"><input type="radio" name="commodity[salable]" id="salable_true" value="true" <%= "checked=checked" if @commodity.salable %> /></td>
+            <td>Yes</td>
+            <td width="15%"><input type="radio" name="commodity[salable]" id="salable_false" value="false" <%= "checked=checked" if @commodity.salable == false %> /></td>
+            <td>No</td>
+          </tr>
+        </table>
+      </div>
+      
+      <div class="singleOption">  
+        <table class="table-borderless singleOption">
+          <tr>
+            <td>Students may use this commodity?</td>
+            <td width="15%"><input type="radio" name="commodity[usable]" id="usable_true" value="true" <%= "checked=checked" if @commodity.usable %> /></td>
+            <td>Yes</td>
+            <td width="15%"><input type="radio" name="commodity[usable]" id="usable_false" value="false" <%= "checked=checked" if @commodity.usable == false %> /></td>
+            <td>No</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
   

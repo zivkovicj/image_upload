@@ -57,6 +57,7 @@ class ObjectivesController < ApplicationController
   def update
     name_protect
     @objective = Objective.find(params[:id])
+    @old_seminars = @objective.seminar_ids
     if current_user == @objective.user || current_user.type == "Admin" 
       this_redirect_path = quantities_objective_path(@objective)
       params_to_use = objective_params
@@ -65,6 +66,7 @@ class ObjectivesController < ApplicationController
       params_to_use = limited_objective_params
     end
     if @objective.update_attributes(params_to_use)
+      add_pre_reqs_to_objective
       flash[:success] = "Objective Updated"
       redirect_to this_redirect_path
     else
@@ -104,6 +106,14 @@ class ObjectivesController < ApplicationController
   private
     def objective_params
         params.require(:objective).permit(:name, :extent, :user_id, preassign_ids: [], seminar_ids: [], label_ids: [])
+    end
+    
+    def add_pre_reqs_to_objective
+      if @objective.seminar_ids != @old_seminars
+        @objective.objective_seminars.each do |os|
+          os.addPreReqs
+        end
+      end
     end
     
     def limited_objective_params

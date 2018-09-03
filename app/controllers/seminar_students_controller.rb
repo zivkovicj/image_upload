@@ -31,6 +31,7 @@ class SeminarStudentsController < ApplicationController
     @student = @ss.user
     @school = @student.school
     @seminar = @ss.seminar
+    @seminar_id = @seminar.id
     @term = @seminar.term_for_seminar
     @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
     @bucks_current = @student.bucks_current(:seminar, @seminar)

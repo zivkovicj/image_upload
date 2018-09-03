@@ -12,11 +12,11 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
     end
     
     def go_to_new_commodity_page
-        click_on("Manage #{@school.market_name}")
-        click_on(new_item_button_text)
+        click_on("manage_school_market")
+        click_on("Create a New Item")
     end
     
-    test "create new commodity" do
+    test "create school commodity" do
         capybara_login(@teacher_1)
         go_to_new_commodity_page
         
@@ -34,11 +34,37 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         @commodity = Commodity.last
         assert_equal "Burger Salad", @commodity.name
         assert_equal @school, @commodity.school
+        assert_nil  @commodity.user_id
         assert_equal 6, @commodity.current_price
         assert_equal 95, @commodity.quantity
         assert_not @commodity.salable
         assert_not @commodity.usable
-        assert_nil @commodity.user_id
+    end
+    
+    test "create teacher commodity" do
+        capybara_login(@teacher_1)
+        click_on("manage_teacher_market")
+        click_on("Create a New Item")
+        
+        fill_in("commodity[name]", :with => "Teacher Salad")
+        fill_in("commodity[current_price]", :with => 7)
+        fill_in("commodity[quantity]", :with => 99)
+        
+        click_on("Create a New Item")
+        
+        assert_no_selector('h2', :text => "New Item")
+        assert_selector('h2', :text => "Star Market")
+        
+        assert_equal @old_commodity_count + 1, Commodity.count
+        
+        @commodity = Commodity.last
+        assert_equal "Teacher Salad", @commodity.name
+        assert_nil @commodity.school_id
+        assert_equal @teacher_1, @commodity.user
+        assert_equal 7, @commodity.current_price
+        assert_equal 99, @commodity.quantity
+        assert_not @commodity.salable
+        assert_not @commodity.usable
     end
     
     test "default commodity values" do
@@ -72,15 +98,15 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         assert_selector('h2', :text => "New Item")
     end
     
-    test "create item button does not appear for lower level admin" do
+    test "no new item button for low admin" do
         @other_teacher.update(:school_admin => 0)
         capybara_login(@other_teacher)
         click_on("View #{@school.market_name}")
         
-        assert_no_text(new_item_button_text)
+        assert_no_text("Create a New Item")
     end
     
-    test "must be school admin to create commodity" do
+    test "no item screen for non admin" do
         @teacher_1.update(:school_admin => 0)
         
         capybara_login(@teacher_1)

@@ -1,34 +1,34 @@
 class CommoditiesController < ApplicationController
     
-    before_action :is_school_admin, :except => [:index, :update]
+    # before_action   :commodity_permission, :except => [:index]
     
     def new
         @commodity = Commodity.new
         @school_id = params[:school_id]
+        @user_id = params[:user_id]
+        redirect_to login_url if !@school_id && !@user_id
+        if @user_id
+            @teacher = Teacher.find(@user_id)
+            redirect_to login_url unless current_user == @teacher
+        end
     end
     
     def create
         @commodity = Commodity.new(commodity_params)
         if @commodity.save
-            @school = @commodity.school
-            if @school
-                flash[:success] = "New Item Created for #{@school.market_name}"
-                redirect_to commodities_path(:school_id => @school.id)
-            else
-                redirect_to login_url 
-            end
+            set_commode_variables
+            flash[:success] = "New Item Created for #{@market_name}"
+            redirect_to commodities_path(:"#{@source_type}_id" => @source.id)
         else
             render 'new'
         end
     end
 
     def index
-        @school = School.find(params[:school_id])
         @student = current_user
-        @seminar = nil
-        @commodities = @school.commodities.paginate(:per_page => 6, page: params[:page])
-        @bucks_current = current_user.bucks_current(:school, @school) if current_user.type == "Student"
-        @school_or_seminar = "school"
+        
+        set_commode_variables
+        @commodities = @source.commodities.paginate(:per_page => 6, page: params[:page])
     end
     
     def edit
@@ -61,7 +61,19 @@ class CommoditiesController < ApplicationController
     private
 
         def commodity_params
-          params.require(:commodity).permit(:name, :image, :school_id, :current_price, :quantity, :salable)
+            params.require(:commodity).permit(:name, :image, :school_id, :user_id,
+                :current_price, :quantity, :salable, :usable)
+        end
+        
+        def add_stars_to_grade
+            if @commodity.name == "Star"
+                @seminar = Seminar.find(params[:seminar_id]) 
+                @ss = SeminarStudent.find_by(:seminar => @seminar, :user => @student)
+                @term = @seminar.term_for_seminar
+                old_stars_used = @ss.stars_used_toward_grade[@term]
+                @ss.stars_used_toward_grade[@term] = old_stars_used + 1
+                @ss.save
+            end
         end
         
         def commodity_buy
@@ -88,5 +100,38 @@ class CommoditiesController < ApplicationController
         def commodity_use
             @student = Student.find(params[:student_id])
             @student.commodity_students.create(:commodity => @commodity, :quantity => -1, :price_paid => 0)
+            add_stars_to_grade
+        end
+        
+        def set_commode_variables
+            @seminar_id = nil
+            @edit_commodity_permission = false
+            if params[:school_id] || @commodity&.school.present?
+                @school_or_seminar = "school"
+                if params[:school_id]
+                    @source = School.find(params[:school_id])
+                else
+                    @source = @commodity.school
+                end
+                @source_type = "school"
+                @bucks_current = current_user.bucks_current(:school, @school) if current_user.type == "Student"
+                @market_name = @source.market_name
+                @edit_commodity_permission = true if current_user.school_admin > 0
+            elsif params[:user_id] || @commodity&.user.present?
+                @school_or_seminar = "seminar"
+                if params[:user_id]
+                    @source = Teacher.find(params[:user_id])
+                else
+                    @source = @commodity.user
+                end 
+                @source_type = "user"
+                @bucks_current = current_user.bucks_current(:seminar, @seminar) if current_user.type == "Student"
+                if params[:seminar_id]
+                    @seminar = Seminar.find(params[:seminar_id]) 
+                    @seminar_id = @seminar.id
+                end
+                @market_name = "Star Market"
+                @edit_commodity_permission = true if current_user = @source
+            end
         end
 end

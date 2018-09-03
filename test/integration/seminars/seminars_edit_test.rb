@@ -17,11 +17,31 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
          ["06/05/2019","06/05/2019","06/05/2019","06/05/2019"],
          ["06/05/2019","06/05/2019","06/05/2019","06/05/2019"]]
     end
+    
+    test "add obj and preassign at once" do
+        setup_objectives
+        setup_scores
+        
+        @this_preassign = @assign_to_add.preassigns.first
+        
+        capybara_login(@teacher_1)
+        click_on("edit_seminar_#{@seminar.id}")
+        
+        check("check_#{@assign_to_add.id}")
+        check("check_#{@this_preassign.id}")
+        
+        click_on("Update This Class")
+        
+        @seminar.reload
+        assert_equal 1, @seminar.objective_seminars.where(:objective => @assign_to_add).count
+        assert_equal 1, @seminar.objective_seminars.where(:objective => @this_preassign).count
+    end
    
     test "edit seminar" do
         setup_objectives
         setup_scores
         obj_array = [@objective_30, @objective_40, @objective_50, @own_assign, @assign_to_add]
+        @this_preassign = @assign_to_add.preassigns.first
         @objective_zero_priority = objectives(:objective_zero_priority)
         @os_0 = @seminar.objective_seminars.find_by(:objective => @objective_30)
         @os_1 = @seminar.objective_seminars.find_by(:objective => @objective_40)
@@ -75,6 +95,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         end
         assert_not @seminar.objectives.include?(@objective_zero_priority)
         assert @seminar.objectives.include?(@assign_to_add)
+        assert_equal 1, @seminar.objective_seminars.where(:objective => @this_preassign).count
         assert @seminar.objectives.include?(@assign_to_add.preassigns.first)  
         @seminar.students.each do |student|
             assert_not_nil student.objective_students.find_by(:objective_id => @assign_to_add.id)
