@@ -45,13 +45,17 @@ Private Repo on Github
 SEMINAR MARKET
 Offer option of making teacher items usable
 
-Do the currently-existing teachers have a star item?
+Buying commodity only seems to work for Star
 
-Blank out the school market for now
+
+
+
+
 
 Finish controller permissions to ensure authorized access to commodities
     And they should probably be dried as well.
 
+Editing a commodity is broken
 
 
 
