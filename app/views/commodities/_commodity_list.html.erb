@@ -5,14 +5,13 @@
     <% @com_id = commode.id %>
     <% @price = commode.current_price %>
     <% @com_quant = commode.quantity %>
-    <% @this_com_stud = current_user.commodity_students.find_by(:commodity => @commode) if current_user.type == "Student" %>
     <% @hide_class = "currently_hidden" %>
     <% @stud_quant = 0 %>
     <% @stud_quant_delivered = 0 %>
-    <% if current_user.type == "Student" %>
+    <% if controller_name == "seminar_students" %>
         <% @hide_class = "" %>
-        <% @stud_quant = current_user.com_quant(@commode) %>
-        <% @stud_quant_delivered = current_user.com_quant_delivered(@commode) %>
+        <% @stud_quant = @student.com_quant(@commode) %>
+        <% @stud_quant_delivered = @student.com_quant_delivered(@commode) %>
         <% @visible_class_use_and_sell = @stud_quant > 0 ? "" : "currently_hidden" %>
     <% end %>
     <tr>
@@ -20,16 +19,18 @@
         <td><%= @commode.name %></td>
         <td class="center" >$ <span class="price_display" id="price_<%= @com_id %>" com_id="<%= @com_id %>"><%= @price %></span></td>
         
-        <% if current_user.type == "Student" %>
+        <% if controller_name == "seminar_students" %>
             <%= render 'commodities/market_buttons/buy_button' %>
             <%= render 'commodities/purchased_info' %>
+            <%= render 'commodities/market_buttons/sell_button' if @commode.salable %>
+            <%= render 'commodities/market_buttons/use_button' if @commode.usable %>
         <% elsif current_user.school_admin > 0 %>
-            <td><%= link_to 'Edit', edit_commodity_path(@commode), :id => "edit_#{@commode.id}" %></td>
+            <td><%= link_to 'Edit', edit_commodity_path(@commode), 
+                        :class => "btn btn-small btn-primary",
+                        :id => "edit_#{@commode.id}" %></td>
             <td><%= render 'shared/delete_and_confirm', object: @commode %></td>
         <% end %>
         <td class="small_spacer"></td>
-        <%= render 'commodities/market_buttons/sell_button' if @commode.salable %>
-        <%= render 'commodities/market_buttons/use_button' if @commode.usable %>
         <%= render 'commodities/quantity_display' %>
     </tr>
   <% end %>
