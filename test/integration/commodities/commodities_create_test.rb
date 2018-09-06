@@ -17,9 +17,9 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
     end
     
     test "create school commodity" do
-        skip
         capybara_login(@teacher_1)
-        go_to_new_commodity_page
+        click_on("manage_school_market")
+        click_on("Create a New Item")
         
         fill_in("commodity[name]", :with => "Burger Salad")
         fill_in("commodity[current_price]", :with => 6)
@@ -28,7 +28,7 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         click_on("Create a New Item")
         
         assert_no_selector('h2', :text => "New Item")
-        assert_selector('h2', :text => "Star Market")
+        assert_selector('h2', :text => "#{@school.market_name}")
         
         assert_equal @old_commodity_count + 1, Commodity.count
         
@@ -100,7 +100,6 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
     end
     
     test "no new item button for low admin" do
-        skip
         @other_teacher.update(:school_admin => 0)
         capybara_login(@other_teacher)
         click_on("View #{@school.market_name}")

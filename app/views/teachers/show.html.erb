@@ -113,7 +113,7 @@
 <% if @teacher.school_admin > 0 %>
   <% view_word = "Manage" %>
 <% end %>
-<%#
+
 <%= link_to "#{view_word} #{@school.market_name}",
   commodities_path(:school_id => @school.id),
   :class => "btn btn-lg btn-primary",

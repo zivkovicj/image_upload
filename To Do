@@ -40,46 +40,33 @@ Upload videos and link to them on social media
 
 Private Repo on Github
 
+Check Pre-Reqs for "Both-Side Equation" Objectives
 
-
-SEMINAR MARKET
-Offer option of making teacher items usable
-
-Buying commodity only seems to work for Star
-
+2.75 SEMINAR MARKET
+V Teachers can make custom items for their own market
+V Offer option of making teacher items usable
 Tests for appearance of market buttons 
-
-Make sure that "New Item Button" is only blocked in the school market, not in the individual teacher market
-
-
-ERROR["test_delete_commodity", Minitest::Result, 1181.8038590259384]
- test_delete_commodity#Minitest::Result (1181.80s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Manage Burglecut Elementary Market"
-            test/integration/commodities/commodities_index_test.rb:63:in `block in <class:CommoditiesIndexTest>'
-
-ERROR["test_edit_commodity", Minitest::Result, 1183.1791617809795]
- test_edit_commodity#Minitest::Result (1183.18s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Manage Burglecut Elementary Market"
-            test/integration/commodities/commodities_index_test.rb:15:in `block in <class:CommoditiesIndexTest>'
-
-ERROR["test_cant_edit_commodity_to_blank_name", Minitest::Result, 1184.4191184039228]
- test_cant_edit_commodity_to_blank_name#Minitest::Result (1184.42s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find visible link or button "Manage Burglecut Elementary Market"
-            test/integration/commodities/commodities_index_test.rb:40:in `block in <class:CommoditiesIndexTest>'
-
-
-
-
+"New Item Button" should only be blocked in the school market, not in the individual teacher market
 Finish controller permissions to ensure authorized access to commodities
     And they should probably be dried as well.
 
-Editing a commodity is broken
+Editing a commodity seems to be broken in production
 
 
 
+2.76 ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
+
+Add a "student_password" column to user.
+This credential can be used to log in for students.  It can be seen and edited by the teacher.
+
+    Login method checks for authenticate on regular password, then for a match on student password
+Will need to link teacher to edit passwords from student edit page
+
+Would be nice if first page leads teachers to the printable version, but that page also has a link to edit all usernames and passwords at once
+    
 
 
-Can't seem to take an objective away from a seminar
+IMPORTANT FIXES
 
 Student requests are not updating with ajax.
     This seems to be caused by having too many different forms in the seminar_student view
@@ -87,54 +74,15 @@ Student requests are not updating with ajax.
 
 Teacher commenting on goal is blank
 
-Check Quiz scores to give credit to student who passed adding integers and subtracting integers when they were sevvies
-
-Check Pre-Reqs for "Both-Side Equation" Objectives 
-
-Check School and Seminar for needed updates to existing CommodityStudents
-
 Right now assets compile is set to true.  This was a solution to images not appearing in heroku.
 But the article mentioned that this causes a performance slowdown.  So keep looking for better solutions.
 
-If an objective is a pretest, then its pre-reqs also need to be pretests
-
-Doesn't seem to be taking away pretest keys when the student scores 100%
+Doesn't seem to be always taking away pretest keys when the student scores 100%
     Rayshon had a key box that read "Has scored 100% on this objective"
-    
-Teachers need to be able to update scores for students questions and quizzes
-
-And edit multiple questions at once
-
-Show the number for the question so that it can be searched more quickly when there's a small error in one question
-    
-Show different propoganda messages for students  
 
 Page to update pretests for a class should list those objectives in order
 
-Teachers might also need to update pretest scores.
-    Currently, entering pretest scores in the scoresheet will affect the student's grade.
-    
-Something is causing an objective to be added several times.
-    Make sure that doesn't happen.
-    It's probably from other objectives adding them as pre-reqs.
-    
-Move Xavier to 4th
-
-
- FAIL["test_new_teacher_new_school", Minitest::Result, 628.7371072919341]
- test_new_teacher_new_school#Minitest::Result (628.74s)
-        Expected: 0
-          Actual: 1
-        test/integration/teachers/teachers_signup_test.rb:103:in `block in <class:TeachersSignupTest>'
-
-ERROR["test_visit_printing_page", Minitest::Result, 667.0173063479597]
- test_visit_printing_page#Minitest::Result (667.02s)
-Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find text "Printable Goals for Term 2, Checkpoint 3"
-
-
-
-
-
+Can't seem to take an objective away from a seminar
 
 Undefined method 'order' when searching for objective
 
@@ -147,7 +95,61 @@ Pictures Index needs pagination
 Confirm removing <Seminar 1073514> from your classes
 
 
-I thought that when I set an objective to be a pre-test, that pre-test keys would be granted.
+
+TEACHERS UPDATE QUIZ SCORES
+
+Teachers need to be able to update scores for students questions and quizzes
+Would be really cool to offer the option to add the student's answer to the list of acceptable answers
+
+
+
+
+CONNECT FILES WITH OBJECTIVES
+Student can access the study guide of other files for an upcoming objective.
+Teachers can browse all study guides
+
+
+
+EDIT QUESTIONS
+Edit multiple questions at once
+Show more of the question prompt in the index
+And less space between questions
+Show the number for the question so that it can be searched more quickly when there's a small error in one question
+ 
+
+
+RE-WORK OFFERING OF LABELS
+The current method of choosing labels is sloppy and cumbersome
+    Current idea is to bring up a section when the user pushes "Choose Label"
+    The pop-up offers all the labels, better organized
+    Ideally, the window would be a pop-up.  But not until I get better at testing javascript
+    
+
+
+
+
+PRE-REQS OF PRETESTS
+
+If an objective is a pretest, then its pre-reqs also need to be pretests
+
+
+    
+
+
+   
+    
+    
+Show different propaganda messages for students  
+
+
+Teachers might also need to update pretest scores.
+    Currently, entering pretest scores in the scoresheet will affect the student's grade.
+    
+Something is causing an objective to be added several times.
+    Make sure that doesn't happen.
+    It's probably from other objectives adding them as pre-reqs.
+
+
 
 Objectives can be marked as a "non-standard" assessment.
 If so, it will skip those objectives when assessing readiness during a pre-test
@@ -162,27 +164,13 @@ I think it does take away pretest keys if a class is set to no longer be a prete
 SCORE IS NOT SHOWING FROM QUIZ RESULTS
 That's because it's a pre-test.  How do I make that clear to other teachers? 
 
+
+
 Need a test to check the correct amounts displayed for quiz results
     Correct label for stars for pre-test and normal
     Correct amount of stars for pre-test, normal, and second try
 
 
-2.75 ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
-
-Add a "student_password" column to user.
-This credential can be used to log in for students.  It can be seen and edited by the teacher.
-
-    Login method checks for authenticate on regular password, then for a match on student password
-Will need to link teacher to edit passwords from student edit page
-
-Would be nice if first page leads teachers to the printable version, but that page also has a link to edit all usernames and passwords at once
-    
-
- FAIL["test_deprioritize_consultants_who_already_have_keys", Minitest::Result, 273.8431487280177]
- test_deprioritize_consultants_who_already_have_keys#Minitest::Result (273.84s)
-        Expected: 0
-          Actual: 1
-        test/integration/consultancies/consultancies_show_test.rb:349:in `block in <class:ConsultanciesShowTest>'
 
 
 
