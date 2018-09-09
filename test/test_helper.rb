@@ -62,6 +62,10 @@ class ActiveSupport::TestCase
     @teacher_1_star = @teacher_1.commodities.first
     @teacher_1_star.update_attribute(:date_last_produced,  @testing_date_last_produced)
     @commodity_2 = Commodity.find_by(:name => "Burger Salad")
+    
+    @game_time_ticket = commodities(:game_time_ticket)
+    @fidget_spinner = Commodity.find_by(:name => "Fidget Spinner")
+    @piece_of_candy = Commodity.find_by(:name => "Piece of Candy")
   end
   
   def setup_consultancies

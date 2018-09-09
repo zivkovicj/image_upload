@@ -37,6 +37,19 @@ fidget_spinner:
     usable: false
     deliverable: true
     
+piece_of_candy:
+    name: "Piece of Candy"
+    school_id: nil
+    user: archer
+    production_rate: 10
+    current_price: 6
+    production_day: 3
+    quantity: 50
+    date_last_produced: <%= Date.today %>
+    salable: true
+    usable: true
+    deliverable: true
+    
 burger_salad:
     name: "Burger Salad"
     school: school_1
@@ -57,8 +70,8 @@ bobcat_points:
     production_day: 2
     quantity: 400
     date_last_produced: <%= Date.today %>
-    salable: false
-    usable: false
+    salable: true
+    usable: true
     deliverable: false
     
 burger_struedel:

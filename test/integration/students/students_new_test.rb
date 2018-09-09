@@ -74,7 +74,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_not_nil @pretest_obj
         @new_os = first_new_student.objective_students.find_by(:objective => @pretest_obj)
         newest_obj_stud = first_new_student.objective_students.last
-        assert_equal nil, newest_obj_stud.points_this_term
+        assert_nil, newest_obj_stud.points_this_term
         assert_equal 9, first_new_student.school_year  #Chosen as 9 by default
         assert_equal 1, first_new_student.verified
         

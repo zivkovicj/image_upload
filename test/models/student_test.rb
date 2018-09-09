@@ -86,7 +86,7 @@ class StudentTest < ActiveSupport::TestCase
     assert_equal 3, @student_2.school_year
   end
   
-  test "assets" do
+  test "student bucks and items" do
     setup_users
     setup_seminars
     setup_schools
@@ -98,21 +98,33 @@ class StudentTest < ActiveSupport::TestCase
     assert_equal 21, @student_2.bucks_earned(:seminar, @seminar)
     assert_equal 25, @student_2.bucks_earned(:school, @school)
     
-    @student_2.commodity_students.create(:seminar => @seminar, :commodity => Commodity.first, :price_paid => 1, :delivered => true)
-    @student_2.commodity_students.create(:seminar => @seminar, :commodity => Commodity.first, :price_paid => 2, :delivered => true)
-    @student_2.commodity_students.create(:seminar => @seminar, :commodity => Commodity.first, :price_paid => 3, :delivered => false)
-    @student_2.commodity_students.create(:seminar => @seminar, :commodity => Commodity.second, :price_paid => 4, :delivered => false)
-    @student_2.commodity_students.create(:seminar => @seminar, :commodity => Commodity.second, :price_paid => 5, :delivered => false)
-    @student_2.commodity_students.create(:school => @school, :commodity => @school.commodities.first, :price_paid => 3, :delivered => true)
-    @student_2.commodity_students.create(:school => @school, :commodity => @school.commodities.first, :price_paid => 4, :delivered => false)
+    @student_2.commodity_students.create(:commodity => Commodity.first, :seminar => @seminar, 
+      :quantity => 1, :price_paid => 1, :delivered => true)
+    @student_2.commodity_students.create(:commodity => Commodity.first, :seminar => @seminar, 
+      :quantity => 1, :price_paid => 1, :delivered => true)
+    @student_2.commodity_students.create( :commodity => Commodity.first, :seminar => @seminar, 
+      :quantity => 1, :price_paid => 1, :delivered => false)
+    @student_2.commodity_students.create(:commodity => Commodity.second, :seminar => @seminar, 
+      :quantity => 1, :price_paid => 5, :delivered => false)
+    @student_2.commodity_students.create(:commodity => @school.commodities.first, :school => @school,
+      :quantity => 1, :price_paid => 3, :delivered => true)
+    @student_2.commodity_students.create(:commodity => @school.commodities.first, :school => @school,
+      :quantity => 1, :price_paid => 4, :delivered => false)
     
-    assert_equal 15, @student_2.bucks_spent(:seminar, @seminar)
+    assert_equal 8, @student_2.bucks_spent(:seminar, @seminar)
     assert_equal 7, @student_2.bucks_spent(:school, @school)
     
-    assert_equal 6, @student_2.bucks_current(:seminar, @seminar)
+    assert_equal 13, @student_2.bucks_current(:seminar, @seminar)
     assert_equal 18, @student_2.bucks_current(:school, @school)
     assert_equal 3, @student_2.com_quant(Commodity.first)
     assert_equal 2, @student_2.com_quant_delivered(Commodity.first)
+    
+    @student_2.commodity_students.create(:commodity => Commodity.first, :seminar => @seminar, 
+      :quantity => -1, :price_paid => -1, :delivered => true)
+      
+    assert_equal 2, @student_2.com_quant(Commodity.first)
+    assert_equal 7, @student_2.bucks_spent(:seminar, @seminar)
+    assert_equal 14, @student_2.bucks_current(:seminar, @seminar)
   end
 
 end

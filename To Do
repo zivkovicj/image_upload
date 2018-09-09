@@ -42,19 +42,50 @@ Private Repo on Github
 
 Check Pre-Reqs for "Both-Side Equation" Objectives
 
-2.75 SEMINAR MARKET
-V Teachers can make custom items for their own market
-V Offer option of making teacher items usable
-Tests for appearance of market buttons 
-"New Item Button" should only be blocked in the school market, not in the individual teacher market
-Finish controller permissions to ensure authorized access to commodities
-    And they should probably be dried as well.
 
+2.76 TESTS FOR SEMINAR MARKET
+Tests for appearance of market buttons
+    V Sell button shouldn't appear if student has zero items
+    V Use button shouldn't appear if student has zero items
+    V Buy button shouldn't appear if student has no funds
+    V Buy button shouldn't appear if class is out of stock
+V "New Item Button" should only be blocked in the school market, not in the individual teacher market
+V Students may use this commodity.  Should say item.
+
+Check that student selling give correct quantity when teacher views after selling
+
+
+DEPRECATED: Use assert_nil if expecting nil from test/integration/students/students_new_test.rb:77. This will fail in Minitest 6.                      ] 8% Time: 00:00:36,  ETA: 00:06:19
+ 
+
+
+EDIT COMMODITY FIXING
 Editing a commodity seems to be broken in production
+Default price needs to come up when editing commodity
+    And quantity
+Finish controller permissions to ensure authorized access to commodities
+    And they should probably be dried as well
+    
+
+CHECK ON COMMODITY DELIVERY 
+
+
+SEPARATE ACTIONS FOR MARKET, ETC.
+Going to second page in market view resets to student profile
+
+I'm hoping this will also fix the bug with objective requests 
 
 
 
-2.76 ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
+
+
+
+    
+When editing objectives, etc reroute to objectives index instead of profile
+
+
+
+2.77 ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
 
 Add a "student_password" column to user.
 This credential can be used to log in for students.  It can be seen and edited by the teacher.
@@ -93,6 +124,10 @@ Updating question quantities should give a flash message
 Pictures Index needs pagination
 
 Confirm removing <Seminar 1073514> from your classes
+
+
+
+LINKS ARE HARD TO SEE AFTER USED
 
 
 

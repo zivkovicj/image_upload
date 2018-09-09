@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StudentsClassPageTest < ActionDispatch::IntegrationTest
+class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
     
     def setup
         setup_users
@@ -9,6 +9,48 @@ class StudentsClassPageTest < ActionDispatch::IntegrationTest
         setup_goals
         setup_scores
         setup_commodities
+    end
+    
+    def button_not_present(id)
+        assert_no_selector('div', :id => id) 
+    end
+    
+    def element_present_and_showing(id)
+        assert_selector('div', :id => id)
+        assert_no_selector('div', :id => id, :class => "currently_hidden") 
+    end
+    
+    def element_present_and_hidden(id)
+        assert_selector('div', :id => id)
+        assert_selector('div', :id => id, :class => "currently_hidden") 
+    end
+    
+    def check_visibility_use_and_sell_buttons
+        # Sell Buttons
+        element_present_and_showing("sell_button_#{@teacher_1_star.id}")
+        element_present_and_showing("sell_button_#{@game_time_ticket.id}")
+        button_not_present("sell_button_#{@fidget_spinner.id}")  # Fidget Spinner is not salable
+        element_present_and_hidden("sell_button_#{@piece_of_candy.id}")
+        
+        # Use Buttons
+        element_present_and_showing("use_button_#{@teacher_1_star.id}")
+        button_not_present("use_button_#{@game_time_ticket.id}")  # Game ticket is salable, but not usable
+        button_not_present("use_button_#{@fidget_spinner.id}")      # Fidget spinner not salable or usable
+        element_present_and_hidden("use_button_#{@piece_of_candy.id}")
+    end
+    
+    def give_student(commode)
+        @game_time_com_stud = CommodityStudent
+            .create(:user => @student_2, :commodity => commode, :quantity => 1)
+    end
+    
+    def give_student_100_bucks
+        @student_2.currencies.create(:seminar => @seminar, :value => 100)
+    end
+    
+    def give_student_ticket_and_star
+        give_student(@game_time_ticket)
+        give_student(@teacher_1_star)
     end
     
     test 'teacher updates seminar student' do
@@ -96,25 +138,67 @@ class StudentsClassPageTest < ActionDispatch::IntegrationTest
         assert_not @student_2.seminars.include?(@seminar)
     end
     
-    test "student views seminar student" do
-        game_time_ticket = Commodity.find_by(:name => "Game Time Ticket")
-        game_time_com_stud = CommodityStudent.find_or_create_by(:user => @student_2, :commodity => game_time_ticket)
-        game_time_com_stud.update(:quantity => 3)
+    test "market for student with bucks" do
+        give_student_ticket_and_star
+        give_student_100_bucks
         
-        fidget_spinner = Commodity.find_by(:name => "Fidget Spinner")
-        fidget_com_stud = CommodityStudent.find_or_create_by(:user => @student_2, :commodity => fidget_spinner)
-        fidget_com_stud.update(:quantity => 3)
-        
-        CommodityStudent.where(:user => @student_2, :commodity => @teacher_1_star).update(:quantity => 3)
         go_to_first_period
         
-        assert_no_selector('div', :id => "add_buck_increment")  # Counterpart is in "teacher updates seminar student"
-        assert_selector('div', :id => "sell_button_#{@teacher_1_star.id}")
-        assert_selector('div', :id => "sell_button_#{game_time_ticket.id}")
-        assert_no_selector('div', :id => "sell_button_#{fidget_spinner.id}")
-        assert_selector('div', :id => "use_button_#{@teacher_1_star.id}")
-        assert_no_selector('div', :id => "use_button_#{game_time_ticket.id}")
-        assert_no_selector('div', :id => "use_button_#{fidget_spinner.id}")
+        button_not_present("add_buck_increment")
+        
+        # Buy button showing.  Others are not.
+        element_present_and_showing("buy_button_#{@game_time_ticket.id}")
+        element_present_and_hidden("cannot_buy_#{@game_time_ticket.id}")
+        element_present_and_hidden("unstocked_#{@game_time_ticket.id}")
+        
+        check_visibility_use_and_sell_buttons
+    end
+    
+    test "market for student without bucks" do
+        give_student_ticket_and_star
+        
+        # Don't give student any currency
+        
+        go_to_first_period
+        
+        button_not_present("add_buck_increment")
+        
+        # Can't afford showing.
+        element_present_and_hidden("buy_button_#{@game_time_ticket.id}")
+        element_present_and_showing("cannot_buy_#{@game_time_ticket.id}")
+        element_present_and_hidden("unstocked_#{@game_time_ticket.id}")
+        
+        check_visibility_use_and_sell_buttons
+    end
+    
+    test "market if tickets unstocked" do
+        give_student_ticket_and_star
+        give_student_100_bucks
+        
+        # Set stock of game tickets to zero
+        @game_time_ticket.update(:quantity => 0)
+        
+        go_to_first_period
+        
+        # Buy button showing.  Others are not.
+        element_present_and_hidden("buy_button_#{@game_time_ticket.id}")
+        element_present_and_hidden("cannot_buy_#{@game_time_ticket.id}")
+        element_present_and_showing("unstocked_#{@game_time_ticket.id}")
+        
+        check_visibility_use_and_sell_buttons
+    end
+    
+    test "market for teacher" do
+        give_student_ticket_and_star
+        
+        capybara_login(@teacher_1)
+        click_on("scoresheet_seminar_#{@seminar.id}")
+        click_on(@student_2.last_name_first)
+        
+        # Button to Add Bucks DOES Show for Teacher
+        element_present_and_showing("add_buck_increment")
+        
+        check_visibility_use_and_sell_buttons
     end
     
 end

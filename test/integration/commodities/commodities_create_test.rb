@@ -99,12 +99,21 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         assert_selector('h2', :text => "New Item")
     end
     
-    test "no new item button for low admin" do
+    test "new item button hidden for low admin school market" do
         @other_teacher.update(:school_admin => 0)
         capybara_login(@other_teacher)
         click_on("View #{@school.market_name}")
         
         assert_no_text("Create a New Item")
+    end
+    
+    test "new item button showing for personal market" do
+        @other_teacher.update(:school_admin => 0)
+        capybara_login(@other_teacher)
+        
+        click_on("Manage #{@other_teacher.name_with_title} Market")
+        
+        assert_text("Create a New Item")
     end
     
     test "no item screen for non admin" do

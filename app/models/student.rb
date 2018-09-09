@@ -24,7 +24,7 @@ class Student < User
     end
     
     def com_quant(commode)
-        self.commodity_students.where(:commodity => commode).count
+        self.commodity_students.where(:commodity => commode).sum(:quantity)
     end
     
     def com_quant_delivered(commode)
