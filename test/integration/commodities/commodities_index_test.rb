@@ -8,7 +8,7 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         setup_commodities
     end
     
-    test "edit commodity" do
+    test "edit school commodity" do
         assert_not @commodity_2.salable
         
         capybara_login(@teacher_1)
@@ -27,12 +27,60 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         @commodity_2.reload
         assert_equal "New Pickle", @commodity_2.name
         assert_equal @school, @commodity_2.school
+        assert_nil @commodity_2.user_id
         assert_equal 22, @commodity_2.current_price
         assert_equal 55, @commodity_2.quantity
         assert @commodity_2.salable
-        assert_nil @commodity_2.user_id
+        
         
         assert_selector('h2', :text => @school.market_name)
+    end
+    
+    test "edit teacher commodity" do
+        assert_equal 6, @game_time_ticket.current_price
+        
+        capybara_login(@teacher_1)
+        click_on("Manage #{@teacher_1.name_with_title} Market")
+        find("#edit_#{@game_time_ticket.id}").click
+        
+        fill_in("commodity[name]", :with => "Game Slime Slicket")
+        fill_in("commodity[current_price]", :with => 33)
+        fill_in("commodity[quantity]", :with => 66)
+        choose("salable_true")
+        
+        click_on("Save Changes")
+        
+        assert_no_selector('h2', :text => "Edit Item")
+        
+        @game_time_ticket.reload
+        assert_equal "Game Slime Slicket", @game_time_ticket.name
+        assert_equal @teacher_1, @game_time_ticket.user
+        assert_nil @game_time_ticket.school_id
+        assert_equal 33, @game_time_ticket.current_price
+        assert_equal 66, @game_time_ticket.quantity
+        assert @game_time_ticket.salable
+        
+        assert_selector('h2', :text => "#{@teacher_1.name_with_title} Market")
+    end
+    
+    test "edit teacher commodity default info" do
+        capybara_login(@teacher_1)
+        click_on("Manage #{@teacher_1.name_with_title} Market")
+        find("#edit_#{@game_time_ticket.id}").click
+        
+        click_on("Save Changes")
+        
+        assert_no_selector('h2', :text => "Edit Item")
+        
+        @game_time_ticket.reload
+        assert_equal "Game Time Ticket", @game_time_ticket.name
+        assert_equal @teacher_1, @game_time_ticket.user
+        assert_nil @game_time_ticket.school_id
+        assert_equal 6, @game_time_ticket.current_price
+        assert_equal 50, @game_time_ticket.quantity
+        assert @game_time_ticket.salable
+        
+        assert_selector('h2', :text => "#{@teacher_1.name_with_title} Market")
     end
     
     test "cant edit commodity to blank name" do

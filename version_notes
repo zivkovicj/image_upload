@@ -19,6 +19,26 @@ Between each update, manually test:
 
 
 
+2.77 EDIT COMMODITY FIXING
+The commodity_update action needs to send the user_id
+    (This was previously throwing an error)
+Default price needs to come up when editing commodity
+    And quantity
+    
+    
+
+2.76 TESTS FOR SEMINAR MARKET
+Tests for appearance of market buttons
+    Sell button shouldn't appear if student has zero items
+    Use button shouldn't appear if student has zero items
+    Buy button shouldn't appear if student has no funds
+    Buy button shouldn't appear if class is out of stock
+"New Item Button" should only be blocked in the school market, not in the individual teacher market
+Students may use this commodity.  Should say item.
+
+Check that student selling give correct quantity when teacher views after selling
+
+
 
 2.75 SEMINAR MARKET
 Teachers can make custom items for their own market

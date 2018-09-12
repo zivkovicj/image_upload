@@ -43,7 +43,13 @@ class CommoditiesController < ApplicationController
             commodity_buy
         elsif @commodity.update(commodity_params)
             flash[:success] = "Item Updated"
-            redirect_to commodities_path(:school_id => @commodity.school_id)
+            if @commodity.school_id
+                redirect_to commodities_path(:school_id => @commodity.school_id)
+            elsif @commodity.user_id
+                redirect_to commodities_path(:user_id => @commodity.user_id)
+            else
+                redirect_to login_path
+            end
         else
           render 'edit'
         end
@@ -130,7 +136,7 @@ class CommoditiesController < ApplicationController
                     @seminar = Seminar.find(params[:seminar_id]) 
                     @seminar_id = @seminar.id
                 end
-                @market_name = "Star Market"
+                @market_name = "#{@source.name_with_title} Market"
                 @edit_commodity_permission = true if current_user = @source
             end
         end

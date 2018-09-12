@@ -54,7 +54,7 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         click_on("Create a New Item")
         
         assert_no_selector('h2', :text => "New Item")
-        assert_selector('h2', :text => "Star Market")
+        assert_selector('h2', :text => "#{@teacher_1.name_with_title} Market")
         
         assert_equal @old_commodity_count + 1, Commodity.count
         
@@ -81,7 +81,7 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         @commodity = Commodity.last
         assert_equal "Burger Salad", @commodity.name
         assert_nil @commodity.school
-        assert_equal 5, @commodity.current_price
+        assert_equal 1, @commodity.current_price
         assert_equal 10, @commodity.quantity
         assert_equal @teacher_1, @commodity.user
     end

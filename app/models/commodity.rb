@@ -6,8 +6,10 @@ class Commodity < ApplicationRecord
     
     mount_uploader :image, ImageUploader
     
-    attribute       :salable, :boolean, default: false
-    attribute       :usable, :boolean, default: false
+    attribute   :current_price, :integer, default: 1
+    attribute   :quantity, :integer, default: 10
+    attribute   :salable, :boolean, default: false
+    attribute   :usable, :boolean, default: false
     
     validates       :name, :presence => true
     

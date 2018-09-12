@@ -13,7 +13,6 @@ star:
     
 game_time_ticket:
     name: "Game Time Ticket"
-    school_id: nil
     user: archer
     production_rate: 10
     current_price: 6
