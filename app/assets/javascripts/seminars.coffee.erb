@@ -37,7 +37,7 @@ ready = ->
         $('#btn-info2').on "click", ->
             $("#dialog2").dialog("open")    
             
-            
+    
     if $('#add-more-button').length > 0
         timesClicked = 1
         $('#add-more-button').on "click", ->
@@ -65,15 +65,8 @@ ready = ->
     if $('.mark_received').length > 0
         $('.mark_received').on "click", ->
             com_stud_id = $(this).attr('com_stud_id')
-            this_com_display = $('#delivered_display_'+com_stud_id)
-            this_total_amount = parseInt($('#total_display_'+com_stud_id).text())
-            old_amount = parseInt(this_com_display.text())
-            new_amount = old_amount + 1
-            this_com_display.text(new_amount)
-            
-            if new_amount == this_total_amount
-                console.log($('#mark_received_'+com_stud_id))
-                $('#mark_received_'+com_stud_id).addClass('currently_hidden')
+            $(this).addClass('currently_hidden')
+            $('#received_bubble_'+com_stud_id).removeClass('currently_hidden')
             
             url = '/commodity_students/'+com_stud_id
         
@@ -114,20 +107,20 @@ ready = ->
             $('.quantity_show_'+com_id).removeClass('currently_hidden')
             
         button_displays = ->
-            if multiplier > 1
+            if multiplier > 0
                 $('.price_display').each (index, element) =>
-                price_com_id = $(element).attr('com_id')
-                
-                $('#unstocked_'+price_com_id).addClass('currently_hidden')
-                $('#cannot_buy_'+price_com_id).addClass('currently_hidden')
-                $('#buy_button_'+price_com_id).addClass('currently_hidden')
-                
-                if $('#commodity_quantity_'+price_com_id).text() < 1
-                    $('#unstocked_'+price_com_id).removeClass('currently_hidden')
-                else if new_cash < $(element).text()
-                    $('#cannot_buy_'+price_com_id).removeClass('currently_hidden')
-                else
-                    $('#buy_button_'+price_com_id).removeClass('currently_hidden')
+                    price_com_id = $(element).attr('com_id')
+                    
+                    $('#unstocked_'+price_com_id).addClass('currently_hidden')
+                    $('#cannot_buy_'+price_com_id).addClass('currently_hidden')
+                    $('#buy_button_'+price_com_id).addClass('currently_hidden')
+                    
+                    if $('#commodity_quantity_'+price_com_id).text() < 1
+                        $('#unstocked_'+price_com_id).removeClass('currently_hidden')
+                    else if new_cash < $(element).text()
+                        $('#cannot_buy_'+price_com_id).removeClass('currently_hidden')
+                    else
+                        $('#buy_button_'+price_com_id).removeClass('currently_hidden')
             
             if new_items > 0
                 $('#sell_button_'+com_id).removeClass('currently_hidden')
@@ -282,7 +275,14 @@ ready = ->
                 data:
                     sem_id: sem_id
                     new_keys: new_keys
-                    
+    
+    if $('#deliverable_true').length > 0
+        $('#deliverable_true').on "click", ->
+            $("#salable_false").prop("checked", true)
+            
+        $('#salable_true').on "click", ->
+            $("#deliverable_false").prop("checked", true)
+          
     if $('.tyrion').length > 0
         $('.seatButt').prop("disabled",true)
         currSeating = $('.tyrion').val().split(" ")

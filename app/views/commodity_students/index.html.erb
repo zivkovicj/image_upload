@@ -1,4 +1,4 @@
-<% provide(:title, "#{@school.market_name}") %>
+<% provide(:title, "#{@market_name}") %>
 <% provide(:headerText, "Purchased Items") %>
 <% provide(:headerPic, 'objectives.png') %>
 
@@ -24,6 +24,10 @@
                     com_stud_id="<%= com_stud.id %>"
                     id="mark_received_<%= com_stud.id %>">
                         Mark Received
+                </div>
+                <div class="singleOption currently_hidden" 
+                    id="received_bubble_<%= com_stud.id %>">
+                        Received
                 </div>
             </td>
         </tr>

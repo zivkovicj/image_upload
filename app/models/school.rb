@@ -6,6 +6,7 @@ class School < ApplicationRecord
     has_many  :commodities
     
     include ModelMethods
+    include NeedDelivered
     
     validates :name, presence: true
     validates :city, presence: true
@@ -32,9 +33,5 @@ class School < ApplicationRecord
     
     def set_market_and_currency_name
         self.update(:market_name => "#{self.name} Market", :school_currency_name => "#{self.name} Bucks")
-    end
-    
-    def commodities_needing_delivered
-        CommodityStudent.where(:commodity => self.commodities.deliverable, :user => self.students, :delivered => false)
     end
 end

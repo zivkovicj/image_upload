@@ -1,6 +1,7 @@
 
 Poltergeist Tests are working shitty.
 Between each update, manually test:
+    JQuery needs to make a visual indicator when items are marked
     Giving quiz keys, student screen
     Giving quiz keys, objective screen, single student
     Giving quiz keys, objective screen, whole class
@@ -24,7 +25,6 @@ The commodity_update action needs to send the user_id
     (This was previously throwing an error)
 Default price needs to come up when editing commodity
     And quantity
-    
     
 
 2.76 TESTS FOR SEMINAR MARKET

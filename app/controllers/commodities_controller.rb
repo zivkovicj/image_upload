@@ -68,7 +68,7 @@ class CommoditiesController < ApplicationController
 
         def commodity_params
             params.require(:commodity).permit(:name, :image, :school_id, :user_id,
-                :current_price, :quantity, :salable, :usable)
+                :current_price, :quantity, :salable, :usable, :deliverable)
         end
         
         def add_stars_to_grade
@@ -91,9 +91,9 @@ class CommoditiesController < ApplicationController
                 bucks_to_check = @student.bucks_current(:school, @student.school)
             end
             
-            sell_allowed = @multiplier < 0 && @student.com_quant(@commodity) > 0
-            buy_allowed = @multiplier > 0 && bucks_to_check > 0 && @commodity.quantity > 0
-            if buy_allowed || sell_allowed
+            sell_allowed = @student.com_quant(@commodity) > 0
+            buy_allowed = bucks_to_check > 0 && @commodity.quantity > 0
+            if (@multiplier > 0 && buy_allowed) || (@multiplier < 0 && sell_allowed)
                 price_paid = @commodity.current_price * @multiplier
                 @student.commodity_students.create(:commodity => @commodity, :quantity => @multiplier, 
                     :price_paid => price_paid, :seminar_id => params[:seminar_id], :school_id => params[:school_id])

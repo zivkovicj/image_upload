@@ -11,6 +11,11 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         @old_commodity_count = Commodity.count
     end
     
+    def assert_returned_to_market
+        assert_no_selector('h2', :text => "New Item")
+        assert_selector('h2', :text => "#{@teacher_1.name_with_title} Market")
+    end
+    
     def go_to_new_commodity_page
         click_on("manage_teacher_market")
         click_on("Create a New Item")
@@ -24,6 +29,8 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         fill_in("commodity[name]", :with => "Burger Salad")
         fill_in("commodity[current_price]", :with => 6)
         fill_in("commodity[quantity]", :with => 95)
+        choose("salable_false")
+        choose("deliverable_true")
         
         click_on("Create a New Item")
         
@@ -38,23 +45,24 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         assert_nil  @commodity.user_id
         assert_equal 6, @commodity.current_price
         assert_equal 95, @commodity.quantity
-        assert_not @commodity.salable
+        assert @commodity.deliverable
+        assert_not @commodity.salable  
         assert_not @commodity.usable
     end
     
     test "create teacher commodity" do
         capybara_login(@teacher_1)
-        click_on("manage_teacher_market")
-        click_on("Create a New Item")
+        go_to_new_commodity_page
         
         fill_in("commodity[name]", :with => "Teacher Salad")
         fill_in("commodity[current_price]", :with => 7)
         fill_in("commodity[quantity]", :with => 99)
+        choose("salable_true")
+        choose("deliverable_false")
         
         click_on("Create a New Item")
         
-        assert_no_selector('h2', :text => "New Item")
-        assert_selector('h2', :text => "#{@teacher_1.name_with_title} Market")
+        assert_returned_to_market
         
         assert_equal @old_commodity_count + 1, Commodity.count
         
@@ -64,8 +72,26 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         assert_equal @teacher_1, @commodity.user
         assert_equal 7, @commodity.current_price
         assert_equal 99, @commodity.quantity
-        assert_not @commodity.salable
+        assert_not @commodity.deliverable
+        assert @commodity.salable
         assert_not @commodity.usable
+    end
+    
+    test "deliverable not salable on create" do
+        capybara_login(@teacher_1)
+        go_to_new_commodity_page
+        
+        fill_in("commodity[name]", :with => "Deliverable but not salable item")
+        choose("salable_true")
+        choose("deliverable_true")
+        
+        click_on("Create a New Item")
+        
+        assert_returned_to_market
+        
+        @commodity = Commodity.last
+        assert @commodity.deliverable
+        assert_not @commodity.salable
     end
     
     test "default commodity values" do

@@ -14,7 +14,7 @@ class SchoolTest < ActiveSupport::TestCase
     assert_not @unverified_teachers.include?(@teacher_1)
   end
   
-  test "commodities needing delivered" do
+  test "school commodities needing delivered" do
     com_stud_1 = CommodityStudent.find_or_create_by(:user => @school.students.first, :commodity => @school.commodities.deliverable.first)
     com_stud_2 = CommodityStudent.find_or_create_by(:user => @school.students.second, :commodity => @school.commodities.deliverable.first)
     com_stud_3 = CommodityStudent.find_or_create_by(:user => @school_2.students.first, :commodity => @school_2.commodities.first)

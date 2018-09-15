@@ -36,6 +36,8 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false },
                     unless: Proc.new { |a| a.type == "Student" && a.email.blank? }
     
+    include NeedDelivered
+    
     class << self
         # Returns the hash digest of the given string.
         def digest(string)

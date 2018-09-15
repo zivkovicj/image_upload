@@ -21,7 +21,7 @@ game_time_ticket:
     date_last_produced: <%= Date.today %>
     salable: true
     usable: false
-    deliverable: true
+    deliverable: false
     
 fidget_spinner:
     name: "Fidget Spinner"

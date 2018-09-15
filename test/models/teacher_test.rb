@@ -7,6 +7,8 @@ class TeacherTest < ActiveSupport::TestCase
           password: "foobar", password_confirmation: "foobar")
   end
   
+  
+  
   test "should be valid" do
     assert @teacher.valid?
   end
@@ -86,5 +88,29 @@ class TeacherTest < ActiveSupport::TestCase
     assert_difference 'Seminar.count', -1 do
       @teacher.destroy
     end
+  end
+  
+  test "teacher commodities needing delivered" do
+    setup_users
+    setup_schools
+    
+    teacher_first_commodity = @teacher_1.commodities.deliverable.first
+    teacher_non_deliverable = @teacher_1.commodities.non_deliverable.first
+    school_commodity = @teacher_1.school.commodities.deliverable.first
+    first_student = @teacher_1.students.first
+    second_student = @teacher_1.students.second
+    
+    com_stud_1 = CommodityStudent.find_or_create_by(:user => first_student, :commodity => teacher_first_commodity, :delivered => false)
+    com_stud_2 = CommodityStudent.find_or_create_by(:user => first_student, :commodity => teacher_first_commodity, :delivered => true)
+    com_stud_3 = CommodityStudent.find_or_create_by(:user => second_student, :commodity => teacher_first_commodity, :delivered => false)
+    com_stud_4 = CommodityStudent.find_or_create_by(:user => first_student, :commodity => school_commodity, :delivered => false)
+    com_stud_5 = CommodityStudent.find_or_create_by(:user => first_student, :commodity => teacher_non_deliverable, :delivered => false)
+    
+    these_coms = @teacher_1.commodities_needing_delivered
+    assert these_coms.include?(com_stud_1)
+    assert_not these_coms.include?(com_stud_2)
+    assert these_coms.include?(com_stud_3)
+    assert_not these_coms.include?(com_stud_4)
+    assert_not these_coms.include?(com_stud_5)
   end
 end

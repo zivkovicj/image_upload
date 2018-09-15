@@ -47,53 +47,43 @@ Check Pre-Reqs for "Both-Side Equation" Objectives
 
 
 
-EDIT COMMODITY FIXING
-V The commodity_update action needs to send the user_id
-    (This was previously throwing an error)
-V Default price needs to come up when editing commodity
-    V And quantity
 
 
- SKIP["test_create_new_stars", Minitest::Result, 635.2116908556782]
- test_create_new_stars#Minitest::Result (635.21s)
-        Skipped, no message given
-        test/integration/schools/schools_commodity_test.rb:11:in `block in <class:SchoolsTermTest>'
 
- SKIP["test_create_if_its_been_too_long", Minitest::Result, 637.2038492979482]
- test_create_if_its_been_too_long#Minitest::Result (637.20s)
-        Skipped, no message given
-        test/integration/schools/schools_commodity_test.rb:24:in `block in <class:SchoolsTermTest>'
+2.78 COMMODITY DELIVERY
 
- SKIP["test_dont_create_too_early", Minitest::Result, 637.8530609658919]
- test_dont_create_too_early#Minitest::Result (637.85s)
-        Skipped, no message given
-        test/integration/schools/schools_commodity_test.rb:37:in `block in <class:SchoolsTermTest>'
+VTeachers can mark a purchased item as delivered. 
+V JQuery needs to make a visual indicator when items are marked
+V Default for delivered needs to be false
+When a teacher is viewing a seminar, they can mark "Buy and Mark Received" for deliverable items.
 
- FAIL["test_default_commodity_values", Minitest::Result, 639.6908616889268]
- test_default_commodity_values#Minitest::Result (639.69s)
-        Expected: 5
-          Actual: 1
-        test/integration/commodities/commodities_create_test.rb:84:in `block in <class:CommoditiesCreateTest>'
-
-ERROR["test_create_teacher_commodity", Minitest::Result, 642.8059474588372]
- test_create_teacher_commodity#Minitest::Result (642.81s)
-Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find visible css "h2" with text "Star Market" but there were no matches. Also found "Mr. Archer Market", which matched the selector but not all filters.
-            test/integration/commodities/commodities_create_test.rb:57:in `block in <class:CommoditiesCreateTest>'
-
-
-CHECK ON COMMODITY DELIVERY 
-Don't allow items to be set to usable, except for stars and gems.
-Set existing non-star items to :usable => false
-But allow them to be set to deliverable
-Deliverable items cannot be salable
+V Remove "usable" choice from commodity form
+    V Usable only applies to items that the app manages, such as stars and gems
+V But allow them to be set to deliverable
+V Deliverable items cannot be salable
     This would cause a problem with students selling the item, but it still 
         appearing in their delivery section
-    Test
-Enforce this with existing items
+        
+V Enforce deliverable not salable with jquery
+
+V Ensure that buy button disappears when students funds get too low.
+V And that sell button disappears if student runs out of supply.
+
+Enforce deliverable not salable with existing items
+Set existing non-star items to :usable => false
 Turn off automatic term-moving
+
+
+COMMODITY CONTROLLER PERMISSIONS
 
 Finish controller permissions to ensure authorized access to commodities
     And they should probably be dried as well
+    
+Unfinished Quiz Error: Obj 348, Efren Armas
+    
+STUDENT PURCHASED ITEMS FOR SCHOOL
+Visually separate the buttons in the teacher view
+
 
 SEPARATE ACTIONS FOR MARKET, ETC.
 Going to second page in market view resets to student profile
@@ -150,9 +140,21 @@ Pictures Index needs pagination
 
 Confirm removing <Seminar 1073514> from your classes
 
+Fill-in Questions need at least 8 answer choices
+
+Reinstate javascript testing
+
+
 
 
 LINKS ARE HARD TO SEE AFTER USED
+
+
+OBJECTIVES NEED OFFICIAL NAMES AND CATCHY NAMES
+Display the official name on a pre-test
+And in the Objective index
+    Option to change in objective index
+Display the catchy name in desk-consultants and teacher-granted quizzes
 
 
 
@@ -162,6 +164,8 @@ Teachers need to be able to update scores for students questions and quizzes
 Would be really cool to offer the option to add the student's answer to the list of acceptable answers
 
 
+SHOW NEW STARS MORE CLEARLY
+Students are confused when a quiz shows a low score for new stars.
 
 
 CONNECT FILES WITH OBJECTIVES

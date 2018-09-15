@@ -1,8 +1,9 @@
 class CommodityStudentsController < ApplicationController
     
     def index
-        @school = School.find(params[:school_id])
-        @com_studs = @school.commodities_needing_delivered.paginate(:per_page => 6, page: params[:page])
+        @teacher = User.find(params[:user_id])
+        @com_studs = @teacher.commodities_needing_delivered.paginate(:per_page => 10, page: params[:page])
+        @market_name = "#{@teacher.name_with_title} Market"
     end
     
     def update

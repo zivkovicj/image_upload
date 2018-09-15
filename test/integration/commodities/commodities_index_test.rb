@@ -8,6 +8,24 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         setup_commodities
     end
     
+    def go_to_edit_game_ticket
+        click_on("Manage #{@teacher_1.name_with_title} Market")
+        find("#edit_#{@game_time_ticket.id}").click
+    end
+    
+    test "deliverable not salable on edit" do
+        capybara_login(@teacher_1)
+        go_to_edit_game_ticket
+        
+        choose("salable_true")
+        choose("deliverable_true")
+        click_on("Save Changes")
+        
+        @game_time_ticket.reload
+        assert @game_time_ticket.deliverable
+        assert_not @game_time_ticket.salable
+    end
+    
     test "edit school commodity" do
         assert_not @commodity_2.salable
         
@@ -19,6 +37,7 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         fill_in("commodity[current_price]", :with => 22)
         fill_in("commodity[quantity]", :with => 55)
         choose("salable_true")
+        choose("deliverable_false")
         
         click_on("Save Changes")
         
@@ -31,8 +50,7 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         assert_equal 22, @commodity_2.current_price
         assert_equal 55, @commodity_2.quantity
         assert @commodity_2.salable
-        
-        
+    
         assert_selector('h2', :text => @school.market_name)
     end
     
@@ -40,13 +58,13 @@ class CommoditiesIndexTest < ActionDispatch::IntegrationTest
         assert_equal 6, @game_time_ticket.current_price
         
         capybara_login(@teacher_1)
-        click_on("Manage #{@teacher_1.name_with_title} Market")
-        find("#edit_#{@game_time_ticket.id}").click
+        go_to_edit_game_ticket
         
         fill_in("commodity[name]", :with => "Game Slime Slicket")
         fill_in("commodity[current_price]", :with => 33)
         fill_in("commodity[quantity]", :with => 66)
         choose("salable_true")
+        choose("deliverable_false")
         
         click_on("Save Changes")
         
