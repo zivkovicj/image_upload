@@ -70,16 +70,16 @@ V Ensure that buy button disappears when students funds get too low.
 V And that sell button disappears if student runs out of supply.
 
 Enforce deliverable not salable with existing items
-Set existing non-star items to :usable => false
 Turn off automatic term-moving
 
+Unfinished Quiz Error: Obj 348, Efren Armas
 
 COMMODITY CONTROLLER PERMISSIONS
 
 Finish controller permissions to ensure authorized access to commodities
     And they should probably be dried as well
     
-Unfinished Quiz Error: Obj 348, Efren Armas
+
     
 STUDENT PURCHASED ITEMS FOR SCHOOL
 Visually separate the buttons in the teacher view
