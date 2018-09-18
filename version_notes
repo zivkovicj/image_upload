@@ -19,6 +19,27 @@ Between each update, manually test:
     Student cannot change quiz answers after the quiz is finished 
 
 
+2.78 COMMODITY DELIVERY
+
+Teachers can mark a purchased item as delivered. 
+JQuery needs to make a visual indicator when items are marked
+Default for delivered needs to be false
+When a teacher is viewing a seminar, they can mark "Buy and Mark Received" for deliverable items.
+
+Remove "usable" choice from commodity form
+    Usable only applies to items that the app manages, such as stars and gems
+But allow them to be set to deliverable
+Deliverable items cannot be salable
+    This would cause a problem with students selling the item, but it still 
+        appearing in their delivery section
+        
+Enforce deliverable not salable with jquery
+
+Ensure that buy button disappears when students funds get too low.
+And that sell button disappears if student runs out of supply.
+
+Enforce deliverable not salable with existing items
+
 
 2.77 EDIT COMMODITY FIXING
 The commodity_update action needs to send the user_id

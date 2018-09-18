@@ -19,10 +19,8 @@ gem 'best_in_place', '~> 3.1'
 gem 'responders', '~> 2.2'
 gem 'carrierwave', '0.11.2'
 gem 'mini_magick', '~> 4.3'
-gem 'capybara'
 gem 'figaro'
 gem 'fog-aws', '0.12.0'
-gem 'poltergeist', '~> 1.10'
 
 group :development, :test do
   gem 'sqlite3', '1.3.11'
@@ -34,6 +32,7 @@ group :development do
   gem 'listen',                '3.0.8'
   gem 'spring',                '1.7.1'
   gem 'spring-watcher-listen', '2.0.0'
+  gem 'derailed_benchmarks'
 end
 
 group :test do
@@ -41,6 +40,8 @@ group :test do
   gem 'minitest-reporters',       '1.1.9'
   gem 'guard',                    '2.13.0'
   gem 'guard-minitest',           '2.4.4'
+  gem 'capybara'
+  gem 'poltergeist', '~> 1.10'
   gem 'database_cleaner'
 end
 

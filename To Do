@@ -45,34 +45,44 @@ Check Pre-Reqs for "Both-Side Equation" Objectives
 
 
 
+APPLICATION ERRORS
+
+Probably try out this benchmark stuff first.
+    At least, as much as I can figure out.
+    
+    https://github.com/schneems/derailed_benchmarks#dynamic-app-benchmarking
+    
+I'm installing the derailed_benchmarks gem into the development group.
+Shouldn't it be in the production group?  Keep that in mind. for future tries.
+
+Can I try putting capybara and poltergeist into the dev/test group?
+
+Do I need the faker gem anymore?  I could use the same list of names from my test fixtures
+ 
+Keep reading at 
+    https://devcenter.heroku.com/articles/ruby-memory-use#why-memory-errors-matter
+
+Look for gems that I can eliminate
+I think it might help to delete some of the unused images
 
 
 
 
 
-2.78 COMMODITY DELIVERY
 
-VTeachers can mark a purchased item as delivered. 
-V JQuery needs to make a visual indicator when items are marked
-V Default for delivered needs to be false
-When a teacher is viewing a seminar, they can mark "Buy and Mark Received" for deliverable items.
 
-V Remove "usable" choice from commodity form
-    V Usable only applies to items that the app manages, such as stars and gems
-V But allow them to be set to deliverable
-V Deliverable items cannot be salable
-    This would cause a problem with students selling the item, but it still 
-        appearing in their delivery section
-        
-V Enforce deliverable not salable with jquery
-
-V Ensure that buy button disappears when students funds get too low.
-V And that sell button disappears if student runs out of supply.
-
-Enforce deliverable not salable with existing items
 Turn off automatic term-moving
 
+I think the live site is missing some migrations.
+Migrate on a day when I can test everything out and update the existing records.
+
+Don't give consultant keys until the teacher pushes the button to do this.
+
 Unfinished Quiz Error: Obj 348, Efren Armas
+
+Something is working really goofy with a new teacher joining a school
+
+Main teacher needs to be able to remove other teachers from a class
 
 COMMODITY CONTROLLER PERMISSIONS
 
