@@ -126,7 +126,10 @@ class User < ApplicationRecord
     end
     
     def quiz_collection(seminar, which_key)
-        objective_students.select{|x| x.read_attribute(:"#{which_key}_keys") > 0 && x.obj_ready? && !one_unfinished(x.objective)}.map(&:objective)
+        objective_students
+            .select{|x| x.read_attribute(:"#{which_key}_keys") > 0 && x.obj_ready? && !one_unfinished(x.objective)}
+            .map(&:objective)
+            .sort_by{|e| e[:name]}
     end
     
     def can_edit_this_seminar(seminar)

@@ -58,18 +58,104 @@ Shouldn't it be in the production group?  Keep that in mind. for future tries.
 Can I try putting capybara and poltergeist into the dev/test group?
 
 Do I need the faker gem anymore?  I could use the same list of names from my test fixtures
+
+The application errors seem to be happening most when students visit the class page.  I think that loading
+    fewer database rows could help
  
 Keep reading at 
     https://devcenter.heroku.com/articles/ruby-memory-use#why-memory-errors-matter
 
 Look for gems that I can eliminate
-I think it might help to delete some of the unused images
+V I think it might help to delete some of the unused images
 
 
+ERROR["test_default_goal_if_already_chosen", Minitest::Result, 353.7886522016488]
+ test_default_goal_if_already_chosen#Minitest::Result (353.79s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Edit This Goal"
+            test/integration/goals/goal_students_edit_test.rb:71:in `block in <class:GoalStudentsEditTest>'
 
+ SKIP["test_goal_edit_back_button", Minitest::Result, 362.7694927039556]
+ test_goal_edit_back_button#Minitest::Result (362.77s)
+        Skipped, no message given
+        test/integration/goals/goal_students_edit_test.rb:80:in `block in <class:GoalStudentsEditTest>'
 
+ SKIP["test_student_cant_edit_old_checkpoints", Minitest::Result, 372.05267367186025]
+ test_student_cant_edit_old_checkpoints#Minitest::Result (372.05s)
+        Skipped, no message given
+        test/integration/goals/goal_students_edit_test.rb:91:in `block in <class:GoalStudentsEditTest>'
 
+ SKIP["test_student_chooses_goal", Minitest::Result, 381.32128553278744]
+ test_student_chooses_goal#Minitest::Result (381.32s)
+        Skipped, no message given
+        test/integration/goals/goal_students_edit_test.rb:14:in `block in <class:GoalStudentsEditTest>'
 
+ SKIP["test_student_edits_self", Minitest::Result, 728.2142158336937]
+ test_student_edits_self#Minitest::Result (728.21s)
+        Skipped, no message given
+        test/integration/students/students_edit_test.rb:38:in `block in <class:StudentsEditTest>'
+
+ SKIP["test_create_if_its_been_too_long", Minitest::Result, 1115.4622845696285]
+ test_create_if_its_been_too_long#Minitest::Result (1115.46s)
+        Skipped, no message given
+        test/integration/schools/schools_commodity_test.rb:24:in `block in <class:SchoolsTermTest>'
+
+ SKIP["test_create_new_stars", Minitest::Result, 1117.9013361958787]
+ test_create_new_stars#Minitest::Result (1117.90s)
+        Skipped, no message given
+        test/integration/schools/schools_commodity_test.rb:11:in `block in <class:SchoolsTermTest>'
+
+ SKIP["test_dont_create_too_early", Minitest::Result, 1120.678729432635]
+ test_dont_create_too_early#Minitest::Result (1120.68s)
+        Skipped, no message given
+        test/integration/schools/schools_commodity_test.rb:37:in `block in <class:SchoolsTermTest>'
+
+ERROR["test_delete_picture", Minitest::Result, 1138.113151194062]
+ test_delete_picture#Minitest::Result (1138.11s)
+Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
+        excon.error.response
+          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20190120T010444Z</RequestTime><ServerTime>2018-09-20T13:00:17Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>DD24CE2DAF565206</RequestId><HostId>l9u16Bp5IQOgU86PZADuTdyT5p1i5ub8iRIpmb7pHyCTg4yMGe5FDiNZH8IqOrh74W1zvUawt4A=</HostId></Error>"
+          :cookies       => [
+          ]
+          :headers       => {
+            "Content-Type"     => "application/xml"
+            "Date"             => "Thu, 20 Sep 2018 13:00:15 GMT"
+            "Server"           => "AmazonS3"
+            "x-amz-id-2"       => "l9u16Bp5IQOgU86PZADuTdyT5p1i5ub8iRIpmb7pHyCTg4yMGe5FDiNZH8IqOrh74W1zvUawt4A="
+            "x-amz-request-id" => "DD24CE2DAF565206"
+          }
+          :host          => "mrzschoolbucket.s3.amazonaws.com"
+          :local_address => "172.17.0.28"
+          :local_port    => 59668
+          :path          => "/uploads/picture/image/340665903/cheese_logo.jpg"
+          :port          => 443
+          :reason_phrase => "Forbidden"
+          :remote_ip     => "52.216.169.203"
+          :status        => 403
+          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
+        
+            app/controllers/pictures_controller.rb:59:in `destroy'
+            test/integration/pictures/pictures_index_test.rb:50:in `block in <class:PicturesIndexTest>'
+
+ SKIP["test_remove_student_from_class", Minitest::Result, 1164.0619862386957]
+ test_remove_student_from_class#Minitest::Result (1164.06s)
+        Skipped, no message given
+        test/integration/seminar_students/seminar_student_show_test.rb:130:in `block in <class:SeminarStudentsShowTest>'
+
+ SKIP["test_move_student_to_different_class", Minitest::Result, 1178.180711414665]
+ test_move_student_to_different_class#Minitest::Result (1178.18s)
+        Skipped, no message given
+        test/integration/seminar_students/seminar_student_show_test.rb:78:in `block in <class:SeminarStudentsShowTest>'
+
+ERROR["test_market_for_teacher", Minitest::Result, 1232.0949046309106]
+ test_market_for_teacher#Minitest::Result (1232.09s)
+Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find css "div" with id add_buck_increment but there were no matches
+            test/integration/seminar_students/seminar_student_show_test.rb:19:in `element_present_and_showing'
+            test/integration/seminar_students/seminar_student_show_test.rb:206:in `block in <class:SeminarStudentsShowTest>'
+
+ERROR["test_teacher_updates_seminar_student", Minitest::Result, 1248.1092041968368]
+ test_teacher_updates_seminar_student#Minitest::Result (1248.11s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Edit This Goal"
+            test/integration/seminar_students/seminar_student_show_test.rb:67:in `block in <class:SeminarStudentsShowTest>'
 
 Turn off automatic term-moving
 

@@ -16,13 +16,13 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     def begin_quiz(which_key)
-        find("#navribbon_quizzes").click
+        click_on("Quizzes")
         find("##{which_key}_#{@objective_10.id}").click
     end
     
     test "has no keys" do
         go_to_first_period
-        find("#navribbon_quizzes").click
+        click_on("Quizzes")
         
         assert_no_selector('a', :id => "teacher_granted_#{@objective_10.id}")
     end
@@ -66,6 +66,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         @bad_objective.objective_students.find_by(:user => @student_2).update(:teacher_granted_keys => 2)
         
         go_to_first_period
+        click_on("Quizzes")
         click_on(@bad_objective.name)
         
         assert_no_text("Question: 1")
@@ -89,9 +90,10 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         set_specific_score(@student_2, @objective_10, 0)
        
         go_to_first_period
+        click_on("Quizzes")
         assert_no_text("Unfinished Quizzes")
         assert_text("Pretest Objectives")
-        begin_quiz("pretest")
+        find("#pretest_#{@objective_10.id}").click
        
         3.times do |n|
             assert_text("Question: #{n+1}")
@@ -102,6 +104,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         click_on("Log out")
        
         go_to_first_period
+        click_on("Quizzes")
         assert_text("Unfinished Quizzes")
         assert_no_text("Pretest Objectives")
         click_link("#{@objective_10.name}", match: :first) # This time the first link should go to the unfinished quiz
@@ -123,7 +126,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         main_assign_os.update(:pretest_keys => 2)
         
         go_to_first_period
-        find("#navribbon_quizzes").click
+        click_on("Quizzes")
         
         assert_no_selector('a', :id => "pretest_#{@objective_20.id}")
     end
@@ -136,7 +139,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         end
         
         go_to_first_period
-        find("#navribbon_quizzes").click
+        click_on("Quizzes")
         
         assert_selector('a', :id => "pretest_#{@objective_20.id}")
     end

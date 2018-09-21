@@ -1,0 +1,19 @@
+
+
+<h2>Move <%= @student.first_name %> to a different class</h2>
+<% @classes_without_student_list.each do |seminar| %>
+    <%= form_for(@new_ss) do |a| %>
+      <%= a.hidden_field :seminar_id, :value => seminar.id %>
+      <%= a.hidden_field :user_id, :value => @student.id %>
+      <%= a.hidden_field :is_move, :value => @ss_id %>
+      <%= a.submit "Move to #{seminar.name}", class: "btn btn-lg btn-primary" %>
+    <% end %>
+<% end %>
+
+</br>
+<h2>Remove <%= @student.first_name %> from this class</h2>
+<% @classes_with_student_list.each do |sem_to_cut| %>
+    <% this_ss = sem_to_cut.seminar_students.find_by(:user => @student) %>
+    <p class="btn btn-lg btn-primary remove_btn" id="delete_<%= sem_to_cut.id %>">Remove <%= @student.first_name %> from <%= sem_to_cut.name %></p>
+    <%= button_to "Confirm", this_ss, :method => :delete, :id => "confirm_#{sem_to_cut.id}", class: "btn btn-lg btn-primary confirm_button" %><br/>
+<% end %>

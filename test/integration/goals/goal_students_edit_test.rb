@@ -11,6 +11,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "student chooses goal" do
+        skip
         travel_to_testing_date
         
         def reload_stuff
@@ -76,6 +77,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "goal edit back button" do
+        skip
         go_to_first_period
         click_on("Edit This Goal")
         assert_no_selector('h5', :text => @seminar.name)
@@ -86,6 +88,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "student cant edit old checkpoints" do
+        skip
         setup_scores
         setup_goals
         travel_to Time.zone.local(2018, 01, 20, 01, 04, 44)

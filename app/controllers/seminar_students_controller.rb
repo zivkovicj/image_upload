@@ -25,42 +25,34 @@ class SeminarStudentsController < ApplicationController
   end
   
   def show
-    @ss = SeminarStudent.find(params[:id])
-    @ss_id = @ss.id
-    @new_ss = SeminarStudent.new
-    @student = @ss.user
-    @school = @student.school
-    @seminar = @ss.seminar
-    @seminar_id = @seminar.id
-    @term = @seminar.term_for_seminar
-    @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
-    @bucks_current = @student.bucks_current(:seminar, @seminar)
-    @school_or_seminar = "seminar"
+    setup_ss_vars
     
-    @this_checkpoint = @seminar.which_checkpoint
-    @gs = @student.goal_students.find_by(:seminar => @seminar, :term => @term)
+    #@ss_id = @ss.id
     
-    @objectives = @seminar.objectives.order(:name)
-    objective_ids = @objectives.map(&:id)
-    @student_scores = @student.objective_students.where(:objective_id => objective_ids)
     
-    @quiz_stars_this_term = @student.quiz_stars_this_term(@seminar)
-    @stars_used_toward_grade_this_term = @student.stars_used_toward_grade_this_term(@seminar, @seminar.term_for_seminar)
-    @total_stars_this_term = @quiz_stars_this_term + @stars_used_toward_grade_this_term
-    @quiz_stars_all_time = @student.quiz_stars_all_time(@seminar)
-    @teachers = @seminar.teachers
-    @commodities = @seminar.commodities_for_seminar.paginate(:per_page => 6, page: params[:page])
+    #@school = @student.school
     
-    @teach_options = @student.teach_options(@seminar, @seminar.rank_objectives_by_need)
-    @learn_options = @student.learn_options(@seminar, @seminar.rank_objectives_by_need)
+    #@seminar_id = @seminar.id
+    #@term = @seminar.term_for_seminar
+    #@oss = @seminar.objective_seminars.includes(:objective).order(:priority)
+    #@bucks_current = @student.bucks_current(:seminar, @seminar)
+    #@school_or_seminar = "seminar"
     
-    @unfinished_quizzes = @student.all_unfinished_quizzes(@seminar)
-    @desk_consulted_objectives = @student.quiz_collection(@seminar, "dc")
-    @pretest_objectives = @student.quiz_collection(@seminar, "pretest")
-    @teacher_granted_quizzes = @student.quiz_collection(@seminar, "teacher_granted")
+    #@this_checkpoint = @seminar.which_checkpoint
+    #@gs = @student.goal_students.find_by(:seminar => @seminar, :term => @term)
     
-    @show_quizzes = @desk_consulted_objectives.present? || @pretest_objectives.present? || @unfinished_quizzes.present? || @teacher_granted_quizzes.present?
+    #@objectives = @seminar.objectives.order(:name)
+    #objective_ids = @objectives.map(&:id)
+    #@student_scores = @student.objective_students.where(:objective_id => objective_ids)
     
+    #@quiz_stars_this_term = @student.quiz_stars_this_term(@seminar)
+    #@stars_used_toward_grade_this_term = @student.stars_used_toward_grade_this_term(@seminar, @seminar.term_for_seminar)
+    #@total_stars_this_term = @quiz_stars_this_term + @stars_used_toward_grade_this_term
+    #@quiz_stars_all_time = @student.quiz_stars_all_time(@seminar)
+    
+    #@teach_options = @student.teach_options(@seminar, @seminar.rank_objectives_by_need)
+    #@learn_options = @student.learn_options(@seminar, @seminar.rank_objectives_by_need)
+  
     update_current_class
   end
   
@@ -89,6 +81,44 @@ class SeminarStudentsController < ApplicationController
     flash[:success] = "Student removed from class period"
     redirect_to scoresheet_seminar_url(@seminar)
   end
+  
+  
+  ## Views for submenus
+  
+  def give_keys
+    setup_ss_vars
+    
+    @objectives = @seminar.objectives.order(:name)
+  end
+  
+  def move_or_remove
+    setup_ss_vars
+    
+    @new_ss = SeminarStudent.new
+    @classes_without_student_list = current_user.seminars.select{|x| !x.students.include?(@student) }
+    @classes_with_student_list = current_user.seminars.select{|x| x.students.include?(@student) }
+  end
+  
+  def star_market
+    setup_ss_vars
+    
+    @bucks_current = @student.bucks_current(:seminar, @seminar)
+    @dbi = @seminar.default_buck_increment
+    @commodities = @seminar.commodities_for_seminar.paginate(:per_page => 6, page: params[:page])
+    @term = @seminar.term_for_seminar
+    @school_or_seminar = "seminar"
+  end
+  
+  def quizzes
+    setup_ss_vars
+    
+    @unfinished_quizzes = @student.all_unfinished_quizzes(@seminar)
+    @desk_consulted_objectives = @student.quiz_collection(@seminar, "dc")
+    @pretest_objectives = @student.quiz_collection(@seminar, "pretest")
+    @teacher_granted_quizzes = @student.quiz_collection(@seminar, "teacher_granted")
+    
+    @show_quizzes = @desk_consulted_objectives.present? || @pretest_objectives.present? || @unfinished_quizzes.present? || @teacher_granted_quizzes.present?
+  end
 
   private
       def ss_params
@@ -100,6 +130,14 @@ class SeminarStudentsController < ApplicationController
         @ss = SeminarStudent.find(params[:id])
         @seminar = Seminar.find(@ss.seminar_id)
         redirect_to login_url unless (current_user && (@ss.user == current_user || current_user.seminars.include?(@seminar))) || user_is_an_admin
+      end
+      
+      def setup_ss_vars
+        @ss = SeminarStudent.find(params[:id])
+        @ss_id = @ss.id
+        @student = @ss.user
+        @seminar = @ss.seminar
+        @teachers = @seminar.teachers
       end
       
       def update_goal_students_for_new_class_to_match_old_class

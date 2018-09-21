@@ -1,0 +1,51 @@
+<% provide(:scores_label, 'Your Scores in All Objectives') %>
+<% provide(:button_text, 'Change Your Requests') %>
+
+
+<% @submenu_tabs = [["Goalkeeper", "goal", true], ["Star Market", "star_market", false], ["Quizzes", "quizzes", false], 
+    ["Requests", "requests", false], ["Grading", "grading", false]] %>
+<% if current_user.type == "Teacher" %>
+    <% @submenu_tabs = [["Goalkeeper", "goal", true],
+        ["#{@teachers.first.name_with_title} Market", "star_market", false],
+        ["Give Keys", "give_keys", false], 
+        ["Requests", "requests", false],
+        ["Grading", "grading", false],
+        ["Move or Remove", "move_or_remove", false]] %>
+    <%= render 'shared/back-link' %><br/>
+<% end %>
+
+<div class="row">
+    <div class="col-sm-7 singleOption">
+        <h1 class="chekkity"><%= @student.full_name %></h1>
+        <h5><%= @seminar.name %></h5>
+        <% @teachers.each do |teacher| %>
+            <%= teacher.name_with_title %>
+            &emsp;
+        <% end %>
+    </div>
+    
+    <div class="col-sm-1">
+        
+    </div>
+    
+    <% if @gs.goal %>    
+        <div class="col-sm-4">
+            <h2>Current Goal:</h2>
+            <h3><%= @gs.statement_with_target %></h3>
+        </div>
+    <% end %>
+</div>
+</br>
+<%= render 'shared/submenu_navribbon' %>
+</br>
+
+<% @submenu_tabs.each do |sub_tab| %>
+    <div class="singleOption submenu_item submenu_<%= sub_tab[1] %> <%= "currently_hidden" unless sub_tab[2] %>">
+      <%= render :partial => "seminar_students/edit_submenus/#{sub_tab[1]}" %>
+    </div>
+<% end %>
+
+
+</br>
+<%#= button_to "Edit Your Profile", edit_student_path(@student), 
+        class: "btn btn-lg btn-primary", :method => :get %>
