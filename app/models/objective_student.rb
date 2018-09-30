@@ -55,7 +55,7 @@ class ObjectiveStudent < ApplicationRecord
     end
     
     def update_keys(which_key, new_keys)
-        old_keys = self.teacher_granted_keys
+        old_keys = self.read_attribute(:"#{which_key}_keys")
         current_keys = old_keys + new_keys.to_i
         self.update(:"#{which_key}_keys" => current_keys, :pretest_keys => 0)
     end

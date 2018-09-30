@@ -65,6 +65,9 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   
   
   test 'add student to class' do
+    setup_objectives
+    setup_scores
+    
     first_assign = @seminar.objectives.first
     stud_to_add = Student.all.detect{|x| @seminar.students.include?(x) == false}
     
@@ -91,10 +94,11 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     @new_ss = SeminarStudent.last
     @new_student = Student.find(@new_ss.user_id)
     assert_equal @new_student, stud_to_add
-    assert_equal 1, @new_ss.pref_request
+    assert_equal 0, @new_ss.pref_request
     assert_equal true, @new_ss.present
     assert_equal old_ss_count + 1, SeminarStudent.count
     assert_equal @teacher_1, @new_student.sponsor
+    assert_equal Date.today, @new_ss.last_consultant_day
     
     @seminar.reload
     assert @seminar.students.include?(stud_to_add)

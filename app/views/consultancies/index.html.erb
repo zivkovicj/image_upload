@@ -13,6 +13,7 @@
                 <td><%= render 'shared/delete_and_confirm', object: consultancy %> </td>
                 <%#= link_to "Accept", seminar_teacher_path(@st, :seminar_teacher => {:accepted => true}, :came_from_accepting_invites => true), 
                             :method => :put,  class: "btn btn-small btn-primary", :id => "accept_#{@st.id}" %>
+                <td><%= consultancy.duration.capitalize %></td>
                 <td><%= link_to consultancy.display_date, consultancy_path(consultancy, :consultancy_id => consultancy.id), :id => "consultancy_#{consultancy.id}" %></td>
             </tr>
             </br>

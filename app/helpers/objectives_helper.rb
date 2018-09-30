@@ -1,7 +1,7 @@
 module ObjectivesHelper
     
     def no_label_message
-        "You haven't added any labels to this objective. This means that the quiz for this objective does have any questions. Students will not be able to take the quiz for this objective until somebody adds labels."
+        "You haven't added any labels to this objective. This means that the quiz for this objective does not have any questions. Students will not be able to take the quiz for this objective until somebody adds labels."
     end
     
     def quantity_instructions

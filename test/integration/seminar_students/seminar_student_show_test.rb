@@ -54,6 +54,7 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
     end
     
     test 'teacher updates seminar student' do
+        skip
         this_gs = @student_2.goal_students.find_by(:seminar => @seminar, :term => 1)
         assert_nil this_gs.goal_id
         
@@ -61,7 +62,7 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
         click_on("scoresheet_seminar_#{@seminar.id}")
         click_on(@student_2.last_name_first)
         
-        click_on("#{@teacher_1.name_with_title} Market")
+        click_on("Market")
         assert_selector('div', :id => "add_buck_increment")
         
         click_on("Edit This Goal")
@@ -92,6 +93,7 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
         assert @seminar.students.include?(@student_2)
         assert_not @student_2.seminars.include?(sem_2)
         assert_not sem_2.students.include?(@student_2)
+        assert_nil SeminarStudent.find_by(:user => @student_2, :seminar => sem_2)
         
         capybara_login(@teacher_1)
         click_on("scoresheet_seminar_#{@seminar.id}")
@@ -105,6 +107,8 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
         assert_not @seminar.students.include?(@student_2)
         assert @student_2.seminars.include?(sem_2)
         assert sem_2.students.include?(@student_2)
+        newest_sem_stud = SeminarStudent.find_by(:user => @student_2, :seminar => sem_2)
+        assert_equal Date.today, newest_sem_stud.last_consultant_day
         
         new_gs_1 = @student_2.goal_students.find_by(:seminar => sem_2, :term => 1)
         new_gs_2 = @student_2.goal_students.find_by(:seminar => sem_2, :term => 2)
@@ -145,9 +149,8 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
         
         go_to_first_period
         
-        
         button_not_present("add_buck_increment")
-        click_on("#{@teacher_1.name_with_title} Market")
+        click_on("Market")
         
         # Buy button showing.  Others are not.
         element_present_and_showing("buy_button_#{@game_time_ticket.id}")
@@ -164,7 +167,7 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
         
         go_to_first_period
         
-        click_on("#{@teacher_1.name_with_title} Market")
+        click_on("Market")
         button_not_present("add_buck_increment")
         
         # Can't afford showing.
@@ -183,7 +186,7 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
         @game_time_ticket.update(:quantity => 0)
         
         go_to_first_period
-        click_on("#{@teacher_1.name_with_title} Market")
+        click_on("Market")
         
         # Buy button showing.  Others are not.
         element_present_and_hidden("buy_button_#{@game_time_ticket.id}")
@@ -199,6 +202,7 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("scoresheet_seminar_#{@seminar.id}")
         click_on(@student_2.last_name_first)
+        click_on("Market")
         
         # Button to Add Bucks DOES Show for Teacher
         element_present_and_showing("add_buck_increment")

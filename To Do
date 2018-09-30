@@ -43,160 +43,88 @@ Private Repo on Github
 Check Pre-Reqs for "Both-Side Equation" Objectives
 
 
-
-
-APPLICATION ERRORS
-
-Probably try out this benchmark stuff first.
-    At least, as much as I can figure out.
-    
-    https://github.com/schneems/derailed_benchmarks#dynamic-app-benchmarking
-    
-I'm installing the derailed_benchmarks gem into the development group.
-Shouldn't it be in the production group?  Keep that in mind. for future tries.
-
-Can I try putting capybara and poltergeist into the dev/test group?
-
-Do I need the faker gem anymore?  I could use the same list of names from my test fixtures
-
-The application errors seem to be happening most when students visit the class page.  I think that loading
-    fewer database rows could help
- 
 Keep reading at 
     https://devcenter.heroku.com/articles/ruby-memory-use#why-memory-errors-matter
 
-Look for gems that I can eliminate
-V I think it might help to delete some of the unused images
 
 
-ERROR["test_default_goal_if_already_chosen", Minitest::Result, 353.7886522016488]
- test_default_goal_if_already_chosen#Minitest::Result (353.79s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Edit This Goal"
-            test/integration/goals/goal_students_edit_test.rb:71:in `block in <class:GoalStudentsEditTest>'
 
- SKIP["test_goal_edit_back_button", Minitest::Result, 362.7694927039556]
- test_goal_edit_back_button#Minitest::Result (362.77s)
-        Skipped, no message given
-        test/integration/goals/goal_students_edit_test.rb:80:in `block in <class:GoalStudentsEditTest>'
 
- SKIP["test_student_cant_edit_old_checkpoints", Minitest::Result, 372.05267367186025]
- test_student_cant_edit_old_checkpoints#Minitest::Result (372.05s)
-        Skipped, no message given
-        test/integration/goals/goal_students_edit_test.rb:91:in `block in <class:GoalStudentsEditTest>'
 
- SKIP["test_student_chooses_goal", Minitest::Result, 381.32128553278744]
- test_student_chooses_goal#Minitest::Result (381.32s)
-        Skipped, no message given
-        test/integration/goals/goal_students_edit_test.rb:14:in `block in <class:GoalStudentsEditTest>'
+2.80 TEACHER CHOOSES TO SAVE CONSULTANCY AND GIVE KEYS
+V Consultancy
+    V Duration => "preview" or "permanent"
+V Seminar_Student
+    V last_consultant_date, datetime
+V When a new consultancy is first created, it is marked as a preview
+V When teacher presses the "Save Consultancy" button, it updates the consultancy to "permanent"
+V Save Button also grants dc_keys to the students involved
+V Save Consultancy button doesn't appear if the consultancy is permanent
+V List of consultancies shows which are saved and which are previews
+Consultant Days should be a column in seminar_students
+    V Could improve performance and memory usage.
+    V Set it to today's date upon
+        V Moving student to a different seminar
+        V Adding an existing student
+        V Creating new students.
+V Update last_consultant_day for the consultant students when the arrangement is set to permanent
+        V Based on the day that the consultancy is created
+        V In case this day is different from the day that "Save Arrangment" is pressed
+V Consultancy algorithm needs to order consultant turn by "last_consultant_day"
 
- SKIP["test_student_edits_self", Minitest::Result, 728.2142158336937]
- test_student_edits_self#Minitest::Result (728.21s)
-        Skipped, no message given
-        test/integration/students/students_edit_test.rb:38:in `block in <class:StudentsEditTest>'
+V Turn off automatic term-moving
 
- SKIP["test_create_if_its_been_too_long", Minitest::Result, 1115.4622845696285]
- test_create_if_its_been_too_long#Minitest::Result (1115.46s)
-        Skipped, no message given
-        test/integration/schools/schools_commodity_test.rb:24:in `block in <class:SchoolsTermTest>'
+V Image for seminar_student view buttons
+V Image for saving the consultancy
 
- SKIP["test_create_new_stars", Minitest::Result, 1117.9013361958787]
- test_create_new_stars#Minitest::Result (1117.90s)
-        Skipped, no message given
-        test/integration/schools/schools_commodity_test.rb:11:in `block in <class:SchoolsTermTest>'
 
- SKIP["test_dont_create_too_early", Minitest::Result, 1120.678729432635]
- test_dont_create_too_early#Minitest::Result (1120.68s)
-        Skipped, no message given
-        test/integration/schools/schools_commodity_test.rb:37:in `block in <class:SchoolsTermTest>'
 
-ERROR["test_delete_picture", Minitest::Result, 1138.113151194062]
- test_delete_picture#Minitest::Result (1138.11s)
-Excon::Error::Forbidden:         Excon::Error::Forbidden: Expected(204) <=> Actual(403 Forbidden)
-        excon.error.response
-          :body          => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>RequestTimeTooSkewed</Code><Message>The difference between the request time and the current time is too large.</Message><RequestTime>20190120T010444Z</RequestTime><ServerTime>2018-09-20T13:00:17Z</ServerTime><MaxAllowedSkewMilliseconds>900000</MaxAllowedSkewMilliseconds><RequestId>DD24CE2DAF565206</RequestId><HostId>l9u16Bp5IQOgU86PZADuTdyT5p1i5ub8iRIpmb7pHyCTg4yMGe5FDiNZH8IqOrh74W1zvUawt4A=</HostId></Error>"
-          :cookies       => [
-          ]
-          :headers       => {
-            "Content-Type"     => "application/xml"
-            "Date"             => "Thu, 20 Sep 2018 13:00:15 GMT"
-            "Server"           => "AmazonS3"
-            "x-amz-id-2"       => "l9u16Bp5IQOgU86PZADuTdyT5p1i5ub8iRIpmb7pHyCTg4yMGe5FDiNZH8IqOrh74W1zvUawt4A="
-            "x-amz-request-id" => "DD24CE2DAF565206"
-          }
-          :host          => "mrzschoolbucket.s3.amazonaws.com"
-          :local_address => "172.17.0.28"
-          :local_port    => 59668
-          :path          => "/uploads/picture/image/340665903/cheese_logo.jpg"
-          :port          => 443
-          :reason_phrase => "Forbidden"
-          :remote_ip     => "52.216.169.203"
-          :status        => 403
-          :status_line   => "HTTP/1.1 403 Forbidden\r\n"
-        
-            app/controllers/pictures_controller.rb:59:in `destroy'
-            test/integration/pictures/pictures_index_test.rb:50:in `block in <class:PicturesIndexTest>'
 
- SKIP["test_remove_student_from_class", Minitest::Result, 1164.0619862386957]
- test_remove_student_from_class#Minitest::Result (1164.06s)
-        Skipped, no message given
-        test/integration/seminar_students/seminar_student_show_test.rb:130:in `block in <class:SeminarStudentsShowTest>'
+Migrate to add duration to consultancy
+Set duration for existing consultancies
+Set consultant days for existing seminar_students
 
- SKIP["test_move_student_to_different_class", Minitest::Result, 1178.180711414665]
- test_move_student_to_different_class#Minitest::Result (1178.18s)
-        Skipped, no message given
-        test/integration/seminar_students/seminar_student_show_test.rb:78:in `block in <class:SeminarStudentsShowTest>'
+Gad damn fucking error trying to run a desk-consultants chart.
+    Seemed to fix it when I erased all currently-held keys.
+    So maybe the part that checks for keys was causing the error. 
 
-ERROR["test_market_for_teacher", Minitest::Result, 1232.0949046309106]
- test_market_for_teacher#Minitest::Result (1232.09s)
-Capybara::ExpectationNotMet:         Capybara::ExpectationNotMet: expected to find css "div" with id add_buck_increment but there were no matches
-            test/integration/seminar_students/seminar_student_show_test.rb:19:in `element_present_and_showing'
-            test/integration/seminar_students/seminar_student_show_test.rb:206:in `block in <class:SeminarStudentsShowTest>'
+Don't give pretest keys if a student has already failed a pre-req
+(This matters if the teacher adds more pre-tests after students have already begun)
 
-ERROR["test_teacher_updates_seminar_student", Minitest::Result, 1248.1092041968368]
- test_teacher_updates_seminar_student#Minitest::Result (1248.11s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Edit This Goal"
-            test/integration/seminar_students/seminar_student_show_test.rb:67:in `block in <class:SeminarStudentsShowTest>'
 
-Turn off automatic term-moving
-
-I think the live site is missing some migrations.
-Migrate on a day when I can test everything out and update the existing records.
-
-Don't give consultant keys until the teacher pushes the button to do this.
-
+CAN I FIND THE PROBLEM WITH UNFINISHED QUIZZES
 Unfinished Quiz Error: Obj 348, Efren Armas
 
-Something is working really goofy with a new teacher joining a school
+You could install the exception notifier, which will send you an email for every 500 error including a full stack trace.
 
-Main teacher needs to be able to remove other teachers from a class
+When choosing pretests, the objectives should be listed in order by name
+Show the number of questions that each objective has
 
-COMMODITY CONTROLLER PERMISSIONS
+Big link should probably show the icon before the text
 
-Finish controller permissions to ensure authorized access to commodities
-    And they should probably be dried as well
-    
-
-    
-STUDENT PURCHASED ITEMS FOR SCHOOL
-Visually separate the buttons in the teacher view
+REINSTATE JAVASCRIPT TESTING
 
 
-SEPARATE ACTIONS FOR MARKET, ETC.
-Going to second page in market view resets to student profile
+Would it be worth trying to first place apprentices where they have already tried and failed?
+To avoid situations where I'm pretty sure Mia would pass 1700, but she was placed there because she hasn't taken it yet.
 
-I'm hoping this will also fix the bug with objective requests 
-
-
-
-
-
-
-    
-When editing objectives, etc reroute to objectives index instead of profile
+RETURN STUDENT REQUESTS
+Update consultant days when student changes her preference request
+Update pref_requests to work by -1, 0, 1
+    Updating through request screen
+    Existing SeminarStudents
+Set request to nil if teacher changes an objective to priority zero.
 
 
+BETTER APPRENTICE PLACEMENT
 
-2.77 ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
+Instead of iterating through apprentices, iterate through the groups and find an unplaced
+    apprentice to put into the group.
+    This should better use the consultants who were chosen.
+    And minimize the need for replacing those consultants into different groups.
+
+
+2.?? ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
 
 Add a "student_password" column to user.
 This credential can be used to log in for students.  It can be seen and edited by the teacher.
@@ -208,7 +136,27 @@ Would be nice if first page leads teachers to the printable version, but that pa
     
 
 
+
+    
+STUDENT PURCHASED ITEMS
+Buttons for school only on profile page
+Classes have option to see purchased items for that specific class
+Visually separate the buttons in the teacher view
+
+
+RETURN OBJECTIVE REQUESTS
+    
+
+
+
+
+
 IMPORTANT FIXES
+
+Save "check_if_ready" as a column in the objective_student.
+    Set it true or false when obj_stud is created
+    Update it whenever an objective is passed that is a pre-req for another objective
+    Refer to it everywhere that check_if_ready is referred to
 
 Student requests are not updating with ajax.
     This seems to be caused by having too many different forms in the seminar_student view
@@ -238,7 +186,15 @@ Confirm removing <Seminar 1073514> from your classes
 
 Fill-in Questions need at least 8 answer choices
 
-Reinstate javascript testing
+Update seminar_bucks_earned or school_bucks_earned each time a new currency is added
+    Or when an item is purchased
+    Refer to those when loading the view
+    
+When editing objectives, etc reroute to objectives index instead of profile
+
+Stick student names to the left side of the scoresheet
+
+And use less blank space on the scoresheet view
 
 
 
@@ -289,9 +245,18 @@ The current method of choosing labels is sloppy and cumbersome
 
 
 PRE-REQS OF PRETESTS
-
 If an objective is a pretest, then its pre-reqs also need to be pretests
 
+
+
+MAIN TEACHER CAN REMOVE OTHER TEACHERS
+Main teacher needs to be able to remove other teachers from a class
+
+COMMODITY CONTROLLER PERMISSIONS
+
+Finish controller permissions to ensure authorized access to commodities
+    And they should probably be dried as well
+    
 
     
 
@@ -320,9 +285,6 @@ I think it does take away pretest keys if a class is set to no longer be a prete
     Giving pretest keys should be based on whether the student already has a pretest score.
         To prevent weird things from happening if a student is enrolled in two different classes and the teacher takes away a pretest.
         Or if any teacher takes a pretest then gives it back, we don't want to give those students new keys to complete.
-
-SCORE IS NOT SHOWING FROM QUIZ RESULTS
-That's because it's a pre-test.  How do I make that clear to other teachers? 
 
 
 

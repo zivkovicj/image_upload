@@ -11,7 +11,6 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
     end
     
     test 'create new students' do
-        should_score_record = [[nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil], [nil, nil, nil, nil]]
         assert_equal 1, @teacher_1.verified
         assert_not_nil @teacher_1.school
         assignment_count = @seminar.objectives.count
@@ -64,11 +63,11 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         assert_equal @teacher_1.school, first_new_student.school
         assert_equal 0, first_new_student.school_admin
 
-        
         @new_ss = SeminarStudent.find_by(:seminar_id => @seminar.id, :user => first_new_student)
-        assert_equal 1, @new_ss.pref_request
+        assert_equal 0, @new_ss.pref_request
         assert_equal true, @new_ss.present
         assert_equal [0,0,0,0], @new_ss.stars_used_toward_grade
+        assert_equal Date.today, @new_ss.last_consultant_day
         
         @pretest_obj = @seminar.objective_seminars.where(:pretest => 1).last.objective
         assert_not_nil @pretest_obj

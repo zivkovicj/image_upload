@@ -32,7 +32,6 @@ class ConsultanciesController < ApplicationController
         check_for_lone_students
         new_place_for_lone_students
         are_some_unplaced
-        give_dc_keys
         
         current_user.update!(:current_class => @seminar.id)
         render 'show'
@@ -64,6 +63,14 @@ class ConsultanciesController < ApplicationController
         end
     end
     
+    def edit
+        @consultancy = Consultancy.find(params[:id])
+        @consultancy.update(:duration => "permanent")
+        give_dc_keys
+        update_all_consultant_days
+        redirect_to controller: 'consultancies', action: 'show', id: @consultancy.id, consultancy_id: @consultancy.id
+    end
+    
     private
         def check_if_date_already
             date = Date.today
@@ -74,6 +81,21 @@ class ConsultanciesController < ApplicationController
         def check_if_ten
             if @seminar.consultancies.count > 9
                 @seminar.consultancies.order('created_at asc').first.destroy
+            end
+        end
+        
+        def give_dc_keys
+          @consultancy.teams.each do |team|
+            ObjectiveStudent.where(:user_id => team.user_ids, :objective_id => team.objective_id).each do |obj_stud|
+              obj_stud.update_keys("dc", 2) unless obj_stud.points_this_term == 10
+            end
+          end
+        end
+        
+        def update_all_consultant_days
+            all_consultants = @consultancy.all_consultants
+            SeminarStudent.where(:seminar => @consultancy.seminar, :user => all_consultants).each do |ss|
+                ss.set_last_consultant_day(@consultancy.created_at)
             end
         end
 end

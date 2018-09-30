@@ -14,11 +14,8 @@ module DeskConsultants
     end
     
     # Rank students by their adjusted consultant points.
-    def setup_rank_by_consulting()
-        rank_by_consulting = @students.sort {|b,a| 
-            a.consultant_days(@seminar) <=> 
-            b.consultant_days(@seminar)}
-        return rank_by_consulting
+    def setup_rank_by_consulting
+        @seminar.seminar_students.order(:last_consultant_day).map(&:user)
     end
     
     # need_hash
@@ -181,11 +178,5 @@ module DeskConsultants
       end
     end
     
-    def give_dc_keys
-      @consultancy.teams.each do |team|
-        ObjectiveStudent.where(:user_id => team.user_ids, :objective_id => team.objective_id).each do |obj_stud|
-          obj_stud.update_keys("dc", 2) unless obj_stud.points_this_term == 10
-        end
-      end
-    end
+
 end

@@ -76,6 +76,11 @@
   </div>
 <% end %>
 
+<% if @consultancy.duration == "preview" %>
+  <%= render 'shared/big_link', link_link: edit_consultancy_path(@consultancy), 
+        link_text: "Save this Arrangement and Give Quiz Keys to Students", link_image: "sierpinski.png"  %>
+<% end %>
+
 <table class='table table-borderless'>
   <% @consultancy.teams.in_groups_of(3).each do |group| %>
     <tr>
@@ -102,3 +107,4 @@
     </tr>
   <% end %>
 </table>
+

@@ -39,7 +39,6 @@ class StudentsController < ApplicationController
   def show
     @student = Student.find(params[:id])
     @school = @student.school
-    check_if_term_needs_updated
   end
   
   def index

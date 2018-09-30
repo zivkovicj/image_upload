@@ -54,12 +54,6 @@ class ApplicationController < ActionController::Base
   def update_current_class
     current_user.update(:current_class => @seminar.id)
   end
-
-  def check_if_term_needs_updated
-    current_term = @school.term
-    current_term_ending_date = friendly_date(@school.term_dates[@school.term][1])
-    @school.update(:term => current_term + 1) if Date.today > current_term_ending_date.to_date
-  end
   
   def create_commodities
     @teacher.commodities.each do |commode|

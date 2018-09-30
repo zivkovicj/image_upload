@@ -60,6 +60,14 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @ss_9.update(:learn_request => @objective_20.id)
         @ss_10.update(:learn_request => @objective_40.id)
         @ss_46.update(:teach_request => @objective_zero_priority.id)
+        
+        # Ensure all requests are for subjects where the student is qualified
+        SeminarStudent.all.each do |ss|
+            this_tr = ss.teach_request
+            if this_tr
+                ss.update(:teach_request => nil) if ss.user.score_on(this_tr) < 7
+            end
+        end
             
         # Priorities
         @own_assign.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 1)
@@ -146,17 +154,43 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_text("Mark Attendance Before Creating Desk-Consultants Groups")
     end
     
-    test "simple create" do
+    test "preview then permanent" do
         capybara_login(@teacher_1)
         click_on("consultancy_#{@seminar.id}")
         click_on("#{new_consultancy_button_text}")
         assert_text("Mark Attendance Before Creating Desk-Consultants Groups")
         click_on("Create Desk Consultants Groups")
+        
+        # Check Preview Values
         @consultancy = @seminar.consultancies.last
+        assert_equal "preview", @consultancy.duration
+        team_1 = @consultancy.teams.first
+        stud_to_check = team_1.users.detect{|x| x != team_1.consultant}
+        this_obj_stud = ObjectiveStudent.find_by(:user => stud_to_check, :objective => team_1.objective)
+        assert_equal 0, this_obj_stud.dc_keys
+        first_consultant = @consultancy.teams.first.consultant
+        first_consultant_ss = SeminarStudent.find_by(:user => first_consultant, :seminar => @seminar)
+        assert_not_equal Date.today, first_consultant_ss.last_consultant_day
+        
+        # Views for Preview
         assert_text(show_consultancy_headline(@consultancy))
+        assert_selector('h4', :text => "Save this Arrangement and Give Quiz Keys to Students")
+        click_on("Save this Arrangement and Give Quiz Keys to Students")
+        
+        # Reload and Check Permanent Values
+        @consultancy.reload
+        this_obj_stud.reload
+        first_consultant_ss.reload
+        assert_equal 2, this_obj_stud.dc_keys
+        assert_equal "permanent", @consultancy.duration
+        assert_equal Date.today, first_consultant_ss.last_consultant_day
+        
+        # View for Permanent
+        assert_text(show_consultancy_headline(@consultancy))
+        assert_no_selector('h4', :text => "Save this Arrangement and Give Quiz Keys to Students")
     end
     
-    test "delete from show page" do
+    test "delete consultancy from show page" do
         old_consultancy_count = Consultancy.count
         
         capybara_login(@teacher_1)
@@ -179,34 +213,33 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
     test "rank by consulting" do
         set_date = Date.today - 80.days
-        c1 = Consultancy.create(:seminar => @seminar, :created_at => set_date, :updated_at => set_date)
-        t1 = c1.teams.create(:consultant => @student_1, :created_at => set_date, :updated_at => set_date)
-        t1.users << @student_2
-        t1.users << @student_3
-        t3 = c1.teams.create(:consultant => @student_5, :created_at => set_date, :updated_at => set_date)
-        t3.users << @student_6
-        t3.users << @student_7
-        
         set_date_2 = Date.today - 10.days
-        c2 = Consultancy.create(:seminar => @seminar, :created_at => set_date_2, :updated_at => set_date_2)
-        t2 = c2.teams.create(:consultant => @student_1, :created_at => set_date_2, :updated_at => set_date_2)
-        t2.users << @student_2
-        t2.users << @student_3
+        set_date_3 = Date.today - 5.days
         
-        @ss_1.update(:pref_request => 2)
-        @ss_5.update(:pref_request => 0)
         @student_41 = @seminar.students.create(:first_name => "Marko", :last_name => "Zivkovic", :type => "Student", :password_digest => "password")
+        @ss_41 = SeminarStudent.find_by(:user => @student_41, :seminar => @seminar)
         
-        assert_equal 13.2, @student_1.consultant_days(@seminar)
-        assert_equal 0, @student_41.consultant_days(@seminar)
-        assert_equal 63, @student_5.consultant_days(@seminar)
+        @ss_1.update(:pref_request => 0)
+        @ss_2.update(:pref_request => 1)
+        @ss_3.update(:pref_request => -1)
+        @ss_1.set_last_consultant_day(set_date)
+        @ss_2.set_last_consultant_day(set_date_2)
+        @ss_3.set_last_consultant_day(set_date_3)
+        @seminar.seminar_students.each do |ss|
+            ss.reload
+        end
+        
+        assert_equal set_date, @ss_1.last_consultant_day
+        assert_equal set_date_2 - 1.day, @ss_2.last_consultant_day
+        assert_equal set_date_3 + 1.day, @ss_3.last_consultant_day
+        assert_equal Date.today, @ss_41.last_consultant_day
         
         @students = setup_present_students
         @rank_by_consulting = setup_rank_by_consulting
 
         assert_equal @student_41, @rank_by_consulting[-1]
-        assert_equal @student_1, @rank_by_consulting[-2]
-        assert_equal @student_5, @rank_by_consulting[-3]
+        assert_equal @student_3, @rank_by_consulting[-2]
+        assert_equal @student_2, @rank_by_consulting[-3]
     end
     
     test "rank objectives by need" do
@@ -258,36 +291,35 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     end
     
     test "choose consultants" do
-        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
-        ObjectiveStudent.where(:objective => @objective_40).update_all(:points_all_time => 0)
-        @objective_50.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
-        ObjectiveStudent.where(:objective => @objective_50).update_all(:points_all_time => 0)
+        method_setup
+        rbc_0 = @rank_by_consulting[0]
+        rbc_1 = @rank_by_consulting[1]
+        rbc_2 = @rank_by_consulting[2]
+        rbc_3 = @rank_by_consulting[3]
+        rbc_last = @rank_by_consulting[-1]
+        
+        # Make sure there is need for some consultants
         these_obj_studs = @seminar.obj_studs_for_seminar
         12.times do |n|
             these_obj_studs[n].update(:points_all_time => 3)
         end
-        @student_4.seminar_students.find_by(:seminar => @seminar).update(:pref_request => 2)
-        set_specific_score(@student_4, @objective_40, 7)
-        set_specific_score(@student_9, @objective_50, 7)
-        set_specific_score(@student_7, @objective_20, 8)
-        set_specific_score(@student_7, @objective_40, 5)
-        set_specific_score(@student_46, @objective_20, 7)
-        set_specific_score(@student_1, @objective_20, 3)
-        set_specific_score(@student_2, @objective_20, 3)
-        set_specific_score(@student_6, @objective_20, 7)  # To ensure that he's qualified to consult at least one topic.
-        set_specific_score(@student_7, @objective_50, 5)  # So she doesn't get taken because of the priority of the objectives
-        set_date_1 = Date.yesterday
         
-        c1 = Consultancy.create(:seminar => @seminar, :created_at => set_date_1, :updated_at => set_date_1)
-        t1 = c1.teams.create(:consultant => @student_4, :created_at => set_date_1, :updated_at => set_date_1)
-        t1.users << @student_2
-        t1.users << @student_3
+        # Last student is the only one qualified for a high-priority objective
+        @objective_40.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
+        ObjectiveStudent.where(:objective => @objective_40).update_all(:points_all_time => 0)
+        @objective_50.objective_seminars.find_by(:seminar_id => @seminar.id).update(:priority => 5)
+        ObjectiveStudent.where(:objective => @objective_50).update_all(:points_all_time => 0)
+        set_specific_score(rbc_last, @objective_40, 7)
+        set_specific_score(rbc_3, @objective_50, 7)
         
-        method_setup
-        assert_equal @student_7, @rank_by_consulting[0]
-        assert_equal @student_8, @rank_by_consulting[1]
-        assert_equal @student_6, @rank_by_consulting[2]
-        assert_equal @student_46, @rank_by_consulting[3]
+        # Highest student in rank_by_consulting has a teach_request to check for
+        requested_objective = @seminar.objectives.detect{|x| x.id != @objective_40.id && x.id != @objective_50.id}
+        rbc_0_ss = SeminarStudent.find_by(:user => rbc_0, :seminar => @seminar)
+        rbc_0_ss.update(:teach_request => requested_objective.id)
+        set_specific_score(rbc_0, requested_objective, 7)
+        
+        # Second-highest student is not qualified in anything
+        ObjectiveStudent.where(:user => rbc_1).update_all(:points_all_time => 4)
         
         # No teams before choose_consultants
         assert_equal 0, @consultancy.teams.count
@@ -302,30 +334,20 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         end
         
         # Priority #5 assignments are included first
-        # Even takes @student_4, despite her request
-        assert @consultancy.users.include?(@student_4)
-        assert_equal @student_4, @rank_by_consulting.last
-        assert_equal @objective_40, @student_4.teams.find_by(:consultancy => @consultancy).objective
+        assert_equal @objective_40, rbc_last.teams.find_by(:consultancy => @consultancy).objective
         assert_equal 1, @consultancy.teams.where(:objective => @objective_40).count 
-        assert_equal @objective_50, @student_9.teams.find_by(:consultancy => @consultancy).objective
+        assert_equal @objective_50, rbc_3.teams.find_by(:consultancy => @consultancy).objective
         assert_equal 1, @consultancy.teams.where(:objective => @objective_50).count
         
         # First student in rank_by_consulting receives her teach_request
-        assert_equal Objective.find(@ss_7.teach_request), @consultancy.teams.find_by(:consultant => @student_7).objective
+        rbc_0_ss.reload
+        assert_equal Objective.find(rbc_0_ss.teach_request),
+            @consultancy.teams.find_by(:consultant => rbc_0).objective
         
         # Second student in rank_by_consulting gets skipped because she's unqualified
-        assert_not @consultancy.users.include?(@rank_by_consulting[1])
-        assert @consultancy.users.include?(@rank_by_consulting[2])
-        
-        # Student with no teach_request gets teach_options[0]
-        second_team_consultant = @rank_by_consulting[2]
-        assert_equal second_team_consultant.teach_options(@seminar, @rank_objectives_by_need)[0], @consultancy.teams.find_by(:consultant => second_team_consultant).objective
-    
-        # Student whose request has zero priority did not get that request
-        # (This could happen if the priority was changed after the request was made)
-        assert_not_nil @consultancy.teams.find_by(:consultant => @student_46)
-        assert_not_equal Objective.find(@ss_46.teach_request), @consultancy.teams.find_by(:consultant => @student_46).objective
-    
+        assert_not @consultancy.users.include?(rbc_1)
+        assert @consultancy.users.include?(rbc_2)
+
         test_all_consultants
     end
     
@@ -630,34 +652,6 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
         assert unplaced_team.users.include?(@student_5)
         assert unplaced_team.users.include?(@student_10)
-    end
-    
-    test "give dc keys" do
-        method_setup
-        choose_consultants
-        place_apprentices_by_requests
-        place_apprentices_by_mastery
-        check_for_lone_students
-        new_place_for_lone_students
-        are_some_unplaced
-        
-        this_team = @consultancy.teams.select{|x| x.users.count > 1}.first
-        test_stud = this_team.users.select{|x| x != this_team.consultant}.last
-        test_obj_stud = test_stud.objective_students.find_by(:objective => this_team.objective)
-        test_obj_stud.update(:pretest_keys => 2, :points_this_term => nil)
-        
-        this_consultant = @consultancy.teams.first.consultant
-        consultant_obj_stud = this_consultant.objective_students.find_by(:objective => this_team.objective)
-        consultant_obj_stud.update(:dc_keys => 0, :points_this_term => 10)
-        
-        give_dc_keys
-        
-        test_obj_stud.reload
-        assert_equal 2, test_obj_stud.dc_keys
-        assert_equal 0, test_obj_stud.pretest_keys
-        
-        consultant_obj_stud.reload
-        assert_equal 0, consultant_obj_stud.dc_keys
     end
     
     test "destroy if date already" do

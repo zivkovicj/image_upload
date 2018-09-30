@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180813170315) do
+ActiveRecord::Schema.define(version: 20180921222310) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 20180813170315) do
     t.integer  "seminar_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "duration"
     t.index ["seminar_id"], name: "index_consultancies_on_seminar_id"
   end
 
@@ -265,8 +266,10 @@ ActiveRecord::Schema.define(version: 20180813170315) do
     t.integer  "consulting_stars"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+    t.integer  "seminar_bucks_earned"
     t.integer  "gems_given_toward_reward"
     t.text     "stars_used_toward_grade"
+    t.date     "last_consultant_day"
     t.index ["seminar_id", "user_id"], name: "index_seminar_students_on_seminar_id_and_user_id"
     t.index ["seminar_id"], name: "index_seminar_students_on_seminar_id"
     t.index ["user_id"], name: "index_seminar_students_on_user_id"
@@ -347,6 +350,7 @@ ActiveRecord::Schema.define(version: 20180813170315) do
     t.integer  "school_year"
     t.integer  "school_admin"
     t.string   "teacher_currency_name"
+    t.integer  "school_bucks_earned"
   end
 
 end

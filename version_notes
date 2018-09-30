@@ -19,6 +19,14 @@ Between each update, manually test:
     Student cannot change quiz answers after the quiz is finished 
 
 
+
+2.79 SLIMMER VIEW LOADS
+Put capybara and poltergeist into the dev/test group
+Move the faker gem to development environment
+Load only one feature at a time to minimize memory usage
+Delete unused images
+
+
 2.78 COMMODITY DELIVERY
 
 Teachers can mark a purchased item as delivered. 

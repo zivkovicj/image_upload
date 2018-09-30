@@ -13,6 +13,6 @@ module ConsultanciesHelper
     end
     
     def show_consultancy_headline(consultancy)
-        "Groups for #{consultancy.display_date}"
+        "#{consultancy.duration.capitalize} Groups for #{consultancy.display_date}"
     end
 end
