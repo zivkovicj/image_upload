@@ -77,12 +77,9 @@ V Turn off automatic term-moving
 V Image for seminar_student view buttons
 V Image for saving the consultancy
 
-
-
-
-Migrate to add duration to consultancy
-Set duration for existing consultancies
-Set consultant days for existing seminar_students
+V Migrate to add duration to consultancy
+V Set duration for existing consultancies
+V Set last_consultant_day for existing students
 
 Gad damn fucking error trying to run a desk-consultants chart.
     Seemed to fix it when I erased all currently-held keys.
