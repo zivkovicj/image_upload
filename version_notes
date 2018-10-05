@@ -19,6 +19,33 @@ Between each update, manually test:
     Student cannot change quiz answers after the quiz is finished 
 
 
+2.80 TEACHER CHOOSES TO SAVE CONSULTANCY AND GIVE KEYS
+Consultancy
+    Duration => "preview" or "permanent"
+Seminar_Student
+    last_consultant_date, datetime
+When a new consultancy is first created, it is marked as a preview
+When teacher presses the "Save Consultancy" button, it updates the consultancy to "permanent"
+Save Button also grants dc_keys to the students involved
+Save Consultancy button doesn't appear if the consultancy is permanent
+List of consultancies shows which are saved and which are previews
+Consultant Days should be a column in seminar_students
+    Could improve performance and memory usage.
+    Set it to today's date upon
+        Moving student to a different seminar
+        Adding an existing student
+        Creating new students.
+Update last_consultant_day for the consultant students when the arrangement is set to permanent
+        Based on the day that the consultancy is created
+        In case this day is different from the day that "Save Arrangment" is pressed
+Consultancy algorithm needs to order consultant turn by "last_consultant_day"
+Turn off automatic term-moving
+Image for seminar_student view buttons
+Image for saving the consultancy
+Migrate to add duration to consultancy
+Set duration for existing consultancies
+Set last_consultant_day for existing students
+
 
 2.79 SLIMMER VIEW LOADS
 Put capybara and poltergeist into the dev/test group

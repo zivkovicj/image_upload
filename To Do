@@ -42,55 +42,32 @@ Private Repo on Github
 
 Check Pre-Reqs for "Both-Side Equation" Objectives
 
-
 Keep reading at 
     https://devcenter.heroku.com/articles/ruby-memory-use#why-memory-errors-matter
 
+SLIM THE VIEW FOR EDITING A SEMINAR
+
+TERM FORWARDING NEEDS TO COME NEXT
+Change term number of seminar
+Stop referring to term_for_seminar.  Each seminar should hold its own term after all.
+Reset points_this_term for all students
+
+Get Goalkeeper working 
+
+
+SLIM THE VIEW FOR EDITING AN OBJECTIVE
+
+DON'T ALLOW TEACHER TO RUN AN NEW CONSULTANCY IN THE SAME DAY IF IT'S ALREADY SET TO PERMANENT
+
+HALL PASS APP
+Student enters number.
+Screen shows who is using the hall pass.
+(Tracks time somewhere)
+Flashes red if student has already used hall pass twice this week.
+    Or too many times in a term.
 
 
 
-
-
-2.80 TEACHER CHOOSES TO SAVE CONSULTANCY AND GIVE KEYS
-V Consultancy
-    V Duration => "preview" or "permanent"
-V Seminar_Student
-    V last_consultant_date, datetime
-V When a new consultancy is first created, it is marked as a preview
-V When teacher presses the "Save Consultancy" button, it updates the consultancy to "permanent"
-V Save Button also grants dc_keys to the students involved
-V Save Consultancy button doesn't appear if the consultancy is permanent
-V List of consultancies shows which are saved and which are previews
-Consultant Days should be a column in seminar_students
-    V Could improve performance and memory usage.
-    V Set it to today's date upon
-        V Moving student to a different seminar
-        V Adding an existing student
-        V Creating new students.
-V Update last_consultant_day for the consultant students when the arrangement is set to permanent
-        V Based on the day that the consultancy is created
-        V In case this day is different from the day that "Save Arrangment" is pressed
-V Consultancy algorithm needs to order consultant turn by "last_consultant_day"
-
-V Turn off automatic term-moving
-
-V Image for seminar_student view buttons
-V Image for saving the consultancy
-
-V Migrate to add duration to consultancy
-V Set duration for existing consultancies
-V Set last_consultant_day for existing students
-
-Gad damn fucking error trying to run a desk-consultants chart.
-    Seemed to fix it when I erased all currently-held keys.
-    So maybe the part that checks for keys was causing the error. 
-
-Don't give pretest keys if a student has already failed a pre-req
-(This matters if the teacher adds more pre-tests after students have already begun)
-
-
-CAN I FIND THE PROBLEM WITH UNFINISHED QUIZZES
-Unfinished Quiz Error: Obj 348, Efren Armas
 
 You could install the exception notifier, which will send you an email for every 500 error including a full stack trace.
 
@@ -101,16 +78,9 @@ Big link should probably show the icon before the text
 
 REINSTATE JAVASCRIPT TESTING
 
-
 Would it be worth trying to first place apprentices where they have already tried and failed?
 To avoid situations where I'm pretty sure Mia would pass 1700, but she was placed there because she hasn't taken it yet.
 
-RETURN STUDENT REQUESTS
-Update consultant days when student changes her preference request
-Update pref_requests to work by -1, 0, 1
-    Updating through request screen
-    Existing SeminarStudents
-Set request to nil if teacher changes an objective to priority zero.
 
 
 BETTER APPRENTICE PLACEMENT
@@ -119,6 +89,19 @@ Instead of iterating through apprentices, iterate through the groups and find an
     apprentice to put into the group.
     This should better use the consultants who were chosen.
     And minimize the need for replacing those consultants into different groups.
+
+RETURN STUDENT REQUESTS
+Update consultant days when student changes her preference request
+Update pref_requests to work by -1, 0, 1
+    Updating through request screen
+    Existing SeminarStudents
+Set request to nil if teacher changes an objective to priority zero.
+Make sure that the student's request is present in the seminar
+    When student changes class
+    When objectives are removed from a seminar
+
+
+
 
 
 2.?? ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
@@ -1007,6 +990,9 @@ DELETING STUDENT REQUESTS FOR SPECIAL-CASE EVENTS
 Student might make a request for an objective, but then teachers later changes the priority for the objective or the consutlant threshold for the class.
 Perhaps this should be handled by deleting the student's request in either of these events.
 Check whether other events should have the same effect.
+
+Don't give pretest keys if a student has already failed a pre-req
+(This matters if the teacher adds more pre-tests after students have already begun)
 
 PRACTICE QUIZZES
 With some objectives, students should be able to take the quiz as practice
