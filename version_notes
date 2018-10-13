@@ -19,6 +19,16 @@ Between each update, manually test:
     Student cannot change quiz answers after the quiz is finished 
 
 
+2.81 SLIM SEMINAR EDIT VIEW
+Objectives, Priorities, etc. need submit buttons and separate update actions
+Add field for default_buck_increment
+Test routing for seminar edit actions
+Split the huge "edit seminar" test to the multiple, smaller tests
+Sub navigation menus for all seminar edit subscreens.
+
+
+
+
 2.80 TEACHER CHOOSES TO SAVE CONSULTANCY AND GIVE KEYS
 Consultancy
     Duration => "preview" or "permanent"

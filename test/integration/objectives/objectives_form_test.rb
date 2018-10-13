@@ -30,7 +30,6 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         # Before Adding Objective
         oldPreconditionCount = Precondition.count
         capybara_login(@teacher_1)
-        click_on('1st Period')
         click_on('Create a New Objective')
         
         assert_selector('div', :id => "seminars_to_include")
@@ -90,14 +89,15 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     end
         
     
-    test "don't add prereq if seminar already has it" do
+    test "do not add prereq if seminar already has it" do
         @objective_80 = objectives(:objective_80)
         ObjectiveSeminar.create(:seminar_id => @seminar.id, :objective_id => @objective_80.id)
         old_os_count = ObjectiveSeminar.count
         assert @assign_to_add.preassigns.include?(@objective_80)
         
         capybara_login(@teacher_1)
-        click_on('1st Period')
+        click_on("seminar_#{@seminar.id}")
+        click_on("Objectives")
         check("check_#{@assign_to_add.id}")
         click_on('Update This Class')
 
@@ -132,7 +132,8 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert @main_objective.preassigns.include?(@already_preassign_to_main)
         
         capybara_login(@teacher_1)
-        click_on('1st Period')
+        click_on("seminar_#{@seminar.id}")
+        click_on("Objectives")
         check("check_#{@main_objective.id}")
         click_on('Update This Class')
         
@@ -259,7 +260,6 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     
     test "empty name create" do
         capybara_login(@teacher_1)
-        click_on('1st Period')
         click_on('Create a New Objective')
         fill_in "name", with: ""
         click_on('Create a New Objective')

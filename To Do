@@ -45,17 +45,54 @@ Check Pre-Reqs for "Both-Side Equation" Objectives
 Keep reading at 
     https://devcenter.heroku.com/articles/ruby-memory-use#why-memory-errors-matter
 
-SLIM THE VIEW FOR EDITING A SEMINAR
+
+
+
+
+
+
+
+
+
 
 TERM FORWARDING NEEDS TO COME NEXT
-Change term number of seminar
 Stop referring to term_for_seminar.  Each seminar should hold its own term after all.
-Reset points_this_term for all students
+Option appears as another submenu after user clicks seminar_edit
+Check boxes for various functions
+    Change term number of seminar
+    Reset student scores for this term
+Would be nice if there were an option to repeat this for all seminars
 
-Get Goalkeeper working 
+
+
+2.?? ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
+
+Add a "student_password" column to user.
+This credential can be used to log in for students.  It can be seen and edited by the teacher.
+
+    Login method checks for authenticate on regular password, then for a match on student password
+Will need to link teacher to edit passwords from student edit page
+
+Would be nice if first page leads teachers to the printable version, but that page also has a link to edit all usernames and passwords at once
+    
+
+
+
+GET GOALKEEPER WORKING
+Get Goalkeeper working
+
+
+
+Should I turn due_dates back on?
+
+
 
 
 SLIM THE VIEW FOR EDITING AN OBJECTIVE
+
+STICKY STUDENT NAMES AND OBJECTIVE NAMES
+Less blank space on the side of the scoresheet
+
 
 DON'T ALLOW TEACHER TO RUN AN NEW CONSULTANCY IN THE SAME DAY IF IT'S ALREADY SET TO PERMANENT
 
@@ -104,16 +141,6 @@ Make sure that the student's request is present in the seminar
 
 
 
-2.?? ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
-
-Add a "student_password" column to user.
-This credential can be used to log in for students.  It can be seen and edited by the teacher.
-
-    Login method checks for authenticate on regular password, then for a match on student password
-Will need to link teacher to edit passwords from student edit page
-
-Would be nice if first page leads teachers to the printable version, but that page also has a link to edit all usernames and passwords at once
-    
 
 
 

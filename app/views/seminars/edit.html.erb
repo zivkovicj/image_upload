@@ -2,52 +2,58 @@
 <% provide(:title, 'Edit Class') %>
 <% provide(:button_text, 'Update This Class') %>
 
-<% provide(:headerText, "Edit #{@seminar.name}" ) %>
+<% provide(:headerText, "Basic Info for #{@seminar.name}" ) %>
 <% provide(:headerPic, "E.png") %>
 
-
-<div id="dialog1" title="Setting the Priority of your Objective">
-  <p>Set the Consultant Threshold to what you consider proficient. For example, 
-  if you set the consultant threshold to 80%, then students will only
-  be considered as consultants for objectives where they have scored 80% or above.</p>
-  <p>Keep in mind that Desk Consultants usually works best when the consultants
-  have some room to grow.</p>
-  <p>We recommend setting the consultant threshold to 7.</p>
-</div>
-
-<% @submenu_tabs = [["Priorities", "priorities", true], ["Objectives", "objectives", false], ["Pretests", "pretests", false],
-  ["Due Dates", "due_dates", false],  ["Rewards", "rewards", false],  ["Teachers", "shared_teachers",false], ["Name", "name", false],
-  ["School Year", "school_year", false], ["Advanced", "advanced", false] ] %>
-
-<%= render 'shared/pre_req_dialog' %>
 <%= render 'shared/navribbons/main_navribbon' %>
-<%= render 'shared/submenu_navribbon' %>
+<%= render 'seminar_submenus' %>
 <%= render 'shared/headline' %>
 
-<div class="row">
+<%= form_for(@seminar) do |f| %>
+  <%= render 'shared/error_messages', object: @seminar %>
   
-    <%= form_for(@seminar) do |f| %>
-      <%= render 'shared/error_messages', :object => @seminar %>
-      
-      <% @form = f %>
-      <% @submenu_tabs.each do |sub_tab| %>
-        <div class="singleOption submenu_item submenu_<%= sub_tab[1] %> <%= "currently_hidden" unless sub_tab[2] %>">
-          <%= render :partial => "seminars/edit_submenus/#{sub_tab[1]}" %>
-        </div>
-      <% end %>
-      
-          
-      </br>
-      <%= f.submit yield(:button_text), class: "btn btn-primary" %>
-    <% end %>
+  <div class="row">
+    <div class="col-sm-4">
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+  
+    <div class="col-sm-2">
+      <%= f.label "School Year" %>
+      <%= render 'shared/school_year_selection', :index => 1, :default_year => @seminar.school_year, :name => "seminar[school_year]" %>
+    </div>
     
-</div>
+    <div class="col-sm-4">
+      <%= f.label "Default Currency Increment" %>
+      <h5>(How much class money do you usually give students at a time?)</h5>
+      <%= f.text_field :default_buck_increment %>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="singleOption col-sm-6">
+      <%= f.label "Consultant Threshold" %>
+      <%= f.collection_radio_buttons :consultantThreshold, [[5, '5 stars'] , [6, '6 stars'] ,[7, '7 stars'], [8, '8 stars'], [9, '9 stars'], [10, '10 stars']],
+              :first, :last, { item_wrapper_tag: false } do |b| %>
+          <label class="radio-inline">
+              <%= b.radio_button%> &nbsp; <%= b.label %>
+          </label>
+      <% end %>
+    </div>
+  </div>
+  
+  </br>
+  </br>
+  
+  <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+<% end %>
 
-<br/>
 
-
+</br>
+</br>
+</br>
+</br>
 <div>
-  <%= button_to "Create a New Objective", new_objective_path(:origin => @seminar.id), :method => :get, class: "btn btn-lg btn-primary" %><br/>
   <%= button_to "Create New Students", new_student_path, :method => :get, class: "btn btn-lg btn-primary" %><br/>
   <%= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %><br/>
   

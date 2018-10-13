@@ -1,0 +1,52 @@
+<% provide(:title, 'Class Priorities') %>
+<% provide(:button_text, 'Update This Class') %>
+
+<% provide(:headerText, "Priorities for #{@seminar.name}" ) %>
+<% provide(:headerPic, "priorities.png") %>
+
+<%= render 'shared/navribbons/main_navribbon' %>
+<%= render 'seminar_submenus' %>
+<%= render 'shared/headline' %>
+
+<h2>Priorities of Objectives</h2>
+
+<%= form_for(@seminar) do |f| %>
+  <table>
+    <thead>
+        <tr>
+            <td></td>
+            <td class="center">0 - Ignore</td>
+            <td class="center">1 - Low</td>
+            <td class="center">&emsp; 2 &emsp;</td>
+            <td class="center">&emsp; 3 &emsp;</td>
+            <td class="center">4 - High</td>
+            <td class="center">5 - Critical</td>
+        </tr>
+    </thead>
+    <% @seminar.objectives.order(:name).each do |objective| %>
+        <tr>
+          <% os = objective.objective_seminars.find_by(:seminar => @seminar) %>
+          <% if os %>
+              <td><%= objective.name %></td>
+              <% 6.times do |n| %>
+                  <% check_tag = false %>
+                  <% show_symbol = "" %>
+                  <% if n == os.priority %>
+                    <% check_tag = true %>
+                    <% show_symbol = "X" %>
+                  <% end %>
+                  <% check_tag = "checked" if n == os.priority %>
+                  <td>
+                    <% if @this_teacher_can_edit %>
+                      <%= radio_button("os", "priority", n, {:name => "priorities[#{os.id}]", :checked => check_tag, :id => "#{os.id}_#{n}" }) %>
+                    <% else %>
+                      <%= show_symbol %>
+                    <% end %>
+                  </td> 
+              <% end %>
+          <% end %>
+        </tr>
+    <% end %>
+  </table>
+  <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+<% end %>

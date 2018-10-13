@@ -9,6 +9,7 @@ class Seminar < ApplicationRecord
   has_many    :consultancies, dependent: :destroy
   has_many    :teams, through: :consultancies
   has_many    :goal_students, dependent: :destroy
+  belongs_to  :school
   
   validates :name, presence: true, length: { maximum: 40 }
   validates :consultantThreshold, presence: true, numericality: { only_integer: true }

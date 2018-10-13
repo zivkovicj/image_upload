@@ -1,0 +1,36 @@
+<% provide(:title, 'Pretests') %>
+<% provide(:button_text, 'Update This Class') %>
+
+<% provide(:headerText, "Pretests for #{@seminar.name}" ) %>
+<% provide(:headerPic, "objectives.png") %>
+
+<%= render 'shared/navribbons/main_navribbon' %>
+<%= render 'seminar_submenus' %>
+<%= render 'shared/headline' %>
+
+<h2>Pretest Objectives</h2>
+
+<% if @this_teacher_can_edit %>
+    <h3>Would you like any of the objectives for this class to be considered Pre-Tests?</h3>
+    <h4>These objectives will be offered to students as soon as they enroll in the class.</h4>
+    </br>
+    <%= form_for @seminar do |f| %>
+        <table>
+            <% @seminar.objective_seminars.each do |os| %>
+                <% obj = os.objective %>
+                <tr>
+                    <td width="20%"><%= check_box_tag 'pretest_on[]', os.id, os.pretest > 0, {:id => "pretest_on_#{obj.id}"} %></td>
+                    <td><%= obj.name %></td>
+                </tr>
+            <% end %>
+            <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+        </table>
+    <% end %>
+<% else %>
+    <h3>The following objectives are considered pre-tests in this class.</h3>
+    <ul>
+        <% @pretests.each do |objective| %>
+            <li><%= objective.name %></li>
+        <% end %>
+    </ul>
+<% end %>

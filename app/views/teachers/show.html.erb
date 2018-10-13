@@ -39,7 +39,7 @@
     </thead>
     <% @seminars.order(:name).each do |sem| %>
       <tr>
-        <td><h4><%= link_to sem.name, edit_seminar_path(sem) %></h4></td>
+        <td><h4><%= link_to sem.name, seminar_path(sem) %></h4></td>
         
         <% teacher_show_links.each do |z| %>
           <td>

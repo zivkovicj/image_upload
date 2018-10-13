@@ -37,30 +37,30 @@ class SeminarsController < ApplicationController
     def show
         @seminar = Seminar.find(params[:id])
         @teachers = @seminar.teachers
-        gather_objectives_and_scores
-        @students = @seminar.students.order(:last_name)
         update_current_class
     end
     
     def edit
         @seminar = Seminar.find(params[:id])
         @teacher = current_user
-        @school = @teacher.school if @teacher.verified
-        @objectives = @seminar.objectives.order(:name)
-        @this_teacher_can_edit = @teacher.can_edit_this_seminar(@seminar)
-        update_current_class
+        set_editing_privilege
     end
 
     def update
         @seminar = Seminar.find(params[:id])
-        @old_objectives = @seminar.objective_ids
-        set_checkpoint_due_dates
-        set_priorities
-        set_pretests
-        @seminar.update_attributes(seminar_params)
-        add_pre_reqs_to_seminar
+        if params[:priorities]
+            set_priorities
+        elsif params[:pretest_on]
+            set_pretests
+        elsif params[:seminar]
+            @old_objectives = @seminar.objective_ids
+            add_pre_reqs_to_seminar if @seminar.update(seminar_params)
+        end
         flash[:success] = "Class Updated"
-        redirect_to edit_seminar_path(@seminar)
+        redirect_to seminar_path(@seminar)
+        #set_checkpoint_due_dates
+        #@seminar.update_attributes(seminar_params)
+        
     end
     
     def destroy
@@ -69,8 +69,44 @@ class SeminarsController < ApplicationController
         flash[:success] = "Class Deleted"
         redirect_to current_user
     end
-    
+
+
+
+
+
+
     ### Sub-menus for editing seminar
+    
+    def copy_due_dates
+        @seminar = Seminar.find(params[:id])
+        first_seminar = current_user.first_seminar
+        @seminar.update(:checkpoint_due_dates => first_seminar.checkpoint_due_dates)
+        flash[:success] = "Checkpoint Due Dates Updated"
+        redirect_to edit_seminar_path(@seminar)
+    end
+    
+    def due_dates
+        @seminar = Seminar.find(params[:id])
+        set_editing_privilege
+    end
+    
+    def objectives
+        @seminar = Seminar.find(params[:id])
+        set_editing_privilege
+        @objectives = @seminar.objectives
+    end
+    
+    def pretests
+        @seminar = Seminar.find(params[:id])
+        set_editing_privilege
+        @objectives = @seminar.objectives
+        @pretests = @seminar.objective_seminars.where(:pretest => 1).map(&:objective)
+    end
+    
+    def priorities
+        @seminar = Seminar.find(params[:id])
+        set_editing_privilege
+    end
     
     def scoresheet
         @seminar = Seminar.find(params[:id])
@@ -102,6 +138,12 @@ class SeminarsController < ApplicationController
         update_current_class
     end
     
+    def shared_teachers
+        @seminar = Seminar.find(params[:id])
+        set_editing_privilege
+        @school = @seminar.school
+    end
+    
     def update_scoresheet
         @seminar = Seminar.find(params[:id])
         buncha_scores = params[:scores]
@@ -128,13 +170,7 @@ class SeminarsController < ApplicationController
         @students = @seminar.students
     end
     
-    def copy_due_dates
-        @seminar = Seminar.find(params[:id])
-        first_seminar = current_user.first_seminar
-        @seminar.update(:checkpoint_due_dates => first_seminar.checkpoint_due_dates)
-        flash[:success] = "Checkpoint Due Dates Updated"
-        redirect_to edit_seminar_path(@seminar)
-    end
+
     
     private 
         def seminar_params
@@ -171,6 +207,10 @@ class SeminarsController < ApplicationController
             @seminar.checkpoint_due_dates = date_array 
         end
         
+        def set_editing_privilege
+            @this_teacher_can_edit = current_user.can_edit_this_seminar(@seminar) 
+        end
+        
         def gather_objectives_and_scores
             if @show_all == "false"
                 pre_objectives = @seminar.obj_studs_for_seminar.where("points_this_term > ?", 0).map(&:objective).uniq
@@ -178,15 +218,6 @@ class SeminarsController < ApplicationController
                 pre_objectives = @seminar.objectives
             end
             @objectives = pre_objectives.sort_by(&:name)
-        end
-        
-        def set_priorities
-            if params[:priorities]
-                params[:priorities].each do |key, value|
-                    @objective_seminar = ObjectiveSeminar.find(key)
-                    @objective_seminar.update(:priority => value)
-                end
-            end
         end
         
         def set_pretests
@@ -205,5 +236,16 @@ class SeminarsController < ApplicationController
                 end
             end
         end
+        
+        def set_priorities
+            if params[:priorities]
+                params[:priorities].each do |key, value|
+                    @objective_seminar = ObjectiveSeminar.find(key)
+                    @objective_seminar.update(:priority => value)
+                end
+            end
+        end
+        
+
         
 end

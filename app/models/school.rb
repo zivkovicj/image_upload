@@ -1,9 +1,10 @@
 class School < ApplicationRecord
     after_create  :set_market_and_currency_name
     
-    has_many  :teachers
-    has_many  :students
-    has_many  :commodities
+    has_many    :teachers
+    has_many    :students
+    has_many    :seminars
+    has_many    :commodities
     
     include ModelMethods
     include NeedDelivered

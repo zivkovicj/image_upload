@@ -12,10 +12,18 @@
       <%= render 'shared/error_messages', :object => @seminar %>
       
       <%= f.hidden_field :teacher_id, :value => current_user.id %>
-      <% @form = f %>
       
-      <%= render 'seminars/edit_submenus/name' %>
-      <%= render 'seminars/edit_submenus/school_year' %>
+      <div class="col-sm-4">
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </div>
+  
+      <div class="col-sm-2">
+        <%= f.label "School Year" %>
+        <%= render 'shared/school_year_selection', :index => 1, :default_year => @seminar.school_year, :name => "seminar[school_year]" %>
+      </div>
+      
+      
       </br>
       
       <%= f.submit yield(:button_text), class: "btn btn-primary" %>

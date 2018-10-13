@@ -8,27 +8,26 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         setup_users
         setup_schools
         setup_seminars
-        
         @old_st_count = SeminarTeacher.count
     end
     
     def go_to_invite_screen
         capybara_login(@teacher_1)
-        click_on("edit_seminar_#{@seminar.id}") 
+        click_on("seminar_#{@seminar.id}")
+        click_on("Shared Teachers")
     end
     
     def send_the_invite
-        find("#navribbon_shared_teachers").click
         find("#invite_teacher_#{@other_teacher.id}").click
-         
         @st_2 = SeminarTeacher.find_by(:seminar => @seminar, :user => @other_teacher)
     end
     
     def send_another_invite
-        click_on("other_class_#{@seminar_2.id}")
-        find("#navribbon_shared_teachers").click
+        find("#home_link_top").click
+        click_on("Your profile")
+        click_on("seminar_#{@seminar_2.id}")
+        click_on("Shared Teachers")
         find("#invite_teacher_#{@other_teacher.id}").click
-        
         @st_3 = SeminarTeacher.find_by(:seminar => @seminar_2, :user => @other_teacher)
     end
     
@@ -36,10 +35,9 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         assert @teacher_1.school.teachers.include?(@other_teacher)
         assert @teacher_1.seminar_teachers.find_by(:seminar => @seminar).can_edit
         assert_not SeminarTeacher.find_by(:seminar => @seminar, :user => @other_teacher)
-        
         go_to_invite_screen
         
-        # This section makes sure that buttons don't appear for a teacher to invite herself or revoke her own editing privileges.
+        # Buttons don't appear for a teacher to invite herself
         assert_selector('a', :id => "invite_teacher_#{@other_teacher.id}")
         assert_no_selector('a', :id => "invite_teacher_#{@teacher_1.id}")
         
@@ -50,8 +48,6 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     
         # Can't invite unverified teacher
         assert_no_selector('a', :id => "invite_teacher_#{@unverified_teacher.id}")
-        
-        assert_selector('h2', :text => "Edit #{@seminar.name}")
         
         assert_equal @old_st_count + 1, SeminarTeacher.count
         assert_not @st_2.can_edit
@@ -129,13 +125,9 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         @teacher_3.update(:verified => 1)
         
         capybara_login(@teacher_1)
-        click_on("edit_seminar_#{@avcne_seminar.id}")
-        find("#navribbon_shared_teachers").click
+        click_on("seminar_#{@avcne_seminar.id}")
+        click_on("Shared Teachers")
         assert_no_selector('a', :id => "invite_teacher_#{@teacher_3.id}")
-        
-        click_on("other_class_#{@seminar.id}")
-        find("#navribbon_shared_teachers").click
-        assert_selector('a', :id => "invite_teacher_#{@teacher_3.id}")
     end
     
     test "give edit privileges" do
@@ -143,19 +135,14 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         assert_equal false, @st_2.can_edit
         
         capybara_login(@teacher_1)
-        click_on("edit_seminar_#{@seminar.id}")
-        find("#navribbon_shared_teachers").click
+        click_on("seminar_#{@seminar.id}")
+        click_on("Shared Teachers")
         click_on("give_edit_privileges_#{@other_teacher.id}")
-        
-        assert_selector('h2', :text => "Edit #{@seminar.name}")
         
         @st_2.reload
         assert @st_2.can_edit
         
-        find("#navribbon_shared_teachers").click
         click_on("stop_edit_privileges_#{@other_teacher.id}")
-        
-        assert_selector('h2', :text => "Edit #{@seminar.name}")
         
         @st_2.reload
         assert_not @st_2.can_edit

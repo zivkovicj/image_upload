@@ -54,6 +54,9 @@ Rails.application.routes.draw do
     get 'due_dates', on: :member
     get 'copy_due_dates', on: :member
     get 'usernames', on: :member
+    get 'rewards', on: :member
+    get 'shared_teachers', on: :member
+    get 'basic_info', on: :member
   end
   resources :seminar_students do
     get 'give_keys', on: :member

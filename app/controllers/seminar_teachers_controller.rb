@@ -6,7 +6,7 @@ class SeminarTeachersController < ApplicationController
     @user = Teacher.find(params[:user_id])
     @st = SeminarTeacher.create(:seminar => @seminar, :user => @user)
     flash[:success] = "#{@user.full_name_with_title} Invited"
-    redirect_to edit_seminar_path(@seminar)
+    redirect_to shared_teachers_seminar_path(@seminar)
   end
   
   def update
@@ -16,7 +16,7 @@ class SeminarTeachersController < ApplicationController
       if params[:came_from_accepting_invites]
         home_or_more_invites
       else
-        redirect_to edit_seminar_path(@seminar_teacher.seminar)
+        redirect_to shared_teachers_seminar_path(@seminar_teacher.seminar)
       end
     end
   end

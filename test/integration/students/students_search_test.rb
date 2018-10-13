@@ -12,7 +12,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   
   test 'searching' do
     capybara_login(@teacher_1)
-    click_on('1st Period')
+    click_on("scoresheet_seminar_#{@seminar.id}")
     click_on('Add an Existing Student')
     
     assert_no_text(@student_1.last_name_first)
@@ -72,7 +72,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     stud_to_add = Student.all.detect{|x| @seminar.students.include?(x) == false}
     
     capybara_login(@teacher_1)
-    click_on('1st Period')
+    click_on("scoresheet_seminar_#{@seminar.id}")
     click_on('Add an Existing Student')
     
     #Setup before adding student
@@ -114,7 +114,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     @last_student.update(:verified => 0)
     
     capybara_login(@teacher_1)
-    click_on('1st Period')
+    click_on("scoresheet_seminar_#{@seminar.id}")
     click_on('Add an Existing Student')
     
     fill_in "search_field", with: @last_student.user_number
@@ -124,11 +124,13 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
   
   test "unverified teacher can only find sponsored students" do
     @last_student = Student.last
+    @unverified_teacher_class = seminars(:unverified_teacher_class)
     @last_student.update(:sponsor => @unverified_teacher)
     
     capybara_login(@unverified_teacher)
+    
     assert @unverified_teacher.school.students.include?(@student_1)
-    click_on('unverified teachers class')
+    click_on("scoresheet_seminar_#{@unverified_teacher_class.id}")
     click_on('Add an Existing Student')
     
     fill_in "search_field", with: @student_1.user_number

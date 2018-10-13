@@ -7,6 +7,7 @@
 
 one:
   name: 1st Period
+  school: school_1
   consultantThreshold: 7
   which_checkpoint: 0
   school_year: 9
@@ -15,7 +16,7 @@ one:
 
 two:
   name: 2nd Period
-  #user: archer
+  school: school_1
   consultantThreshold: 7
   which_checkpoint: 0
   school_year: 9
@@ -25,6 +26,7 @@ two:
 
 three:
   name: 3rd Period
+  school: school_1
   #user: archer
   consultantThreshold: 7
   which_checkpoint: 0
@@ -34,6 +36,7 @@ three:
   
 archer_can_view_not_edit:
   name: Archer Can View
+  school: school_1
   #user: archer
   consultantThreshold: 7
   which_checkpoint: 0

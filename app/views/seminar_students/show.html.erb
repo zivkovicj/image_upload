@@ -10,27 +10,25 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-3">
-        <%= render 'shared/big_link', link_link: star_market_seminar_student_path(@ss), 
-            link_text: "Market", link_image: "market.png"  %>
-    </div>
-    
-    <% if current_user.type == "Teacher" %>
-        <div class="col-sm-4">
-            <%= render 'shared/big_link', link_link: give_keys_seminar_student_path(@ss), 
-                link_text: "Give Keys", link_image: "key.jpg"  %>
-        </div>
-        
-        <div class="col-sm-4">
-            <%= render 'shared/big_link', link_link: move_or_remove_seminar_student_path(@ss), 
-                link_text: "Move or Remove", link_image: "student_move.png"  %>
-        </div>
-    <% else %>
-        <div class="col-sm-4">
-            <%= render 'shared/big_link', link_link: quizzes_seminar_student_path(@ss), 
-                link_text: "Quizzes", link_image: "quiz.png"  %>
-        </div>
-    <% end %>
-</div>
+<% star_market_info = [star_market_seminar_student_path(@ss), "Market", "market.png"] %>
+<% give_key_info = [give_keys_seminar_student_path(@ss), "Give Keys", "key.jpg"] %>
+<% move_or_remove_info = [move_or_remove_seminar_student_path(@ss), "Move or Remove", "student_move.png"] %>
+<% quiz_info = [quizzes_seminar_student_path(@ss), "Quizzes", "quiz.png"] %>
+
+<% if current_user.type == "Teacher" %>
+    <% @submenus = [
+        star_market_info,
+        give_key_info,
+        move_or_remove_info,
+        ]
+    %>
+<% elsif current_user.type == "Student" %>
+    <% @submenus = [
+        star_market_info,
+        quiz_info
+        ]
+    %>
+<% end %>
+
+<%= render 'shared/submenus' %>
 

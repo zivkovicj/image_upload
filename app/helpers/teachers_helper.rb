@@ -10,7 +10,7 @@ module TeachersHelper
         [["Scoresheet", "scoresheet.png", "scoresheet_seminar", "scoresheet", "seminars"],
         ["Desk Consultants", "desk_consult.png", "consultancy", "show", "consultancies"],
         ["Goalkeeper", "apple.jpg", "goal_students", "index", "goal_students"],
-        ["Edit", "E.png", "edit_seminar", "edit", "seminars"],
+        ["Edit", "E.png", "seminar", "show", "seminars"],
         ["Usernames", "usernames.png", "usernames_seminar", "usernames", "seminars"]]
     end
       
