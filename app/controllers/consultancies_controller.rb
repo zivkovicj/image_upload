@@ -34,7 +34,7 @@ class ConsultanciesController < ApplicationController
         are_some_unplaced
         
         current_user.update!(:current_class => @seminar.id)
-        render 'show'
+        redirect_to consultancy_path(@consultancy, :consultancy_id => @consultancy.id)
     end
     
     def show
@@ -94,8 +94,10 @@ class ConsultanciesController < ApplicationController
         
         def update_all_consultant_days
             all_consultants = @consultancy.all_consultants
-            SeminarStudent.where(:seminar => @consultancy.seminar, :user => all_consultants).each do |ss|
-                ss.set_last_consultant_day(@consultancy.created_at)
-            end
+            this_seminar = @consultancy.seminar
+            this_date = @consultancy.created_at
+            SeminarStudent
+                .where(:seminar => this_seminar, :user => all_consultants)
+                .update_all(:last_consultant_day => this_date)
         end
 end

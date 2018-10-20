@@ -16,15 +16,18 @@ class ObjectivesController < ApplicationController
   
   def create
     name_protect
-    @objective = Objective.new(objective_params)
-    
+    @objective = Objective.new(objective_params_basic)
     if @objective.save
       flash[:success] = "Objective Created"
-      redirect_to quantities_objective_path(@objective)
+      redirect_to objective_path(@objective)
     else # This actually shouldn't be able to happen right now, since the controller gives the objective a name
       new_objective_stuff
       render 'new'
     end
+  end
+  
+  def show
+    @objective = Objective.find(params[:id])
   end
   
   def index
@@ -47,39 +50,40 @@ class ObjectivesController < ApplicationController
 
   def edit
     @objective = Objective.find(params[:id])
-    @labels = labels_to_offer
-    @term = current_user.school.term if current_user.school
-
     set_permissions(@objective)
-    @pre_req_list = build_pre_req_list(@objective)
   end
 
   def update
-    name_protect
     @objective = Objective.find(params[:id])
-    @old_seminars = @objective.seminar_ids
-    if current_user == @objective.user || current_user.type == "Admin" 
-      this_redirect_path = quantities_objective_path(@objective)
-      params_to_use = objective_params
-    else
-      this_redirect_path = current_user
-      params_to_use = limited_objective_params
+    redirect_path = @objective
+    params_to_use = objective_params_seminars
+    if params[:objective][:name]
+      name_protect
+      params_to_use = objective_params_basic
+    elsif params[:objective][:label_ids]
+      params_to_use = objective_params_labels
+      redirect_path = quantities_objective_path(@objective)
+    elsif params[:objective][:preassign_ids]
+      params_to_use = objective_params_preassigns
     end
     if @objective.update_attributes(params_to_use)
       add_pre_reqs_to_objective
       flash[:success] = "Objective Updated"
-      redirect_to this_redirect_path
-    else
-      @labels = labels_to_offer
-      @pre_req_list = build_pre_req_list(@objective)
-      render 'edit'
+      redirect_to redirect_path
     end
+    
+    #if @objective.update_attributes(objective_params_basic)
+      #
+      #flash[:success] = "Objective Updated"
+      #redirect_to this_redirect_path
+    #else
+      #@labels = labels_to_offer
+      #@pre_req_list = build_pre_req_list(@objective)
+      #render 'edit'
+    #end
   end
   
-  def quantities
-    @objective = Objective.find(params[:id])
-    @label_objectives = @objective.label_objectives.sort_by{|x| [x.label.name]}
-  end
+
 
   def destroy
     @objective = Objective.find(params[:id])
@@ -94,6 +98,42 @@ class ObjectivesController < ApplicationController
     redirect_to objectives_path
   end
   
+  
+  
+  ## Submenu Actions
+  
+  #@labels = labels_to_offer
+    #@term = current_user.school.term if current_user.school
+
+    #set_permissions(@objective)
+    
+  
+  def include_labels
+    @objective = Objective.find(params[:id])
+    set_permissions(@objective)
+    @labels = labels_to_offer
+  end
+  
+  def include_seminars
+    @objective = Objective.find(params[:id])
+  end
+  
+  def keys_for_objective
+    @objective = Objective.find(params[:id])
+  end
+  
+  def pre_reqs
+    @objective = Objective.find(params[:id])
+    set_permissions(@objective)
+    @pre_req_list = build_pre_req_list(@objective)
+  end
+  
+  def quantities
+    @objective = Objective.find(params[:id])
+    @label_objectives = @objective.label_objectives.sort_by{|x| [x.label.name]}
+    set_permissions(@objective)
+  end
+  
   def whole_class_keys
     @objective = Objective.find(params[:id])
     @seminar = Seminar.find(params[:sem_id])
@@ -103,22 +143,36 @@ class ObjectivesController < ApplicationController
     end
   end
   
+  
+  
+  
+  
   private
-    def objective_params
-        params.require(:objective).permit(:name, :extent, :user_id, preassign_ids: [], seminar_ids: [], label_ids: [])
+    def objective_params_basic
+        params.require(:objective).permit(:name, :extent, :user_id)
+    end
+    
+    def objective_params_labels
+      params.require(:objective).permit(label_ids: [])
+    end
+    
+    def objective_params_preassigns
+      params.require(:objective).permit(preassign_ids: [])
+    end
+    
+    def objective_params_seminars
+        params.require(:objective).permit(seminar_ids: [])
     end
     
     def add_pre_reqs_to_objective
       if @objective.seminar_ids != @old_seminars
         @objective.objective_seminars.each do |os|
-          os.addPreReqs
+          os.add_preassigns
         end
       end
     end
     
-    def limited_objective_params
-        params.require(:objective).permit(seminar_ids: [])
-    end
+    
     
     def new_objective_stuff
       @objective.name = "Objective #{Objective.count}"

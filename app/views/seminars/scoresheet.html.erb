@@ -50,7 +50,7 @@
         <th class="rotate table-borderless score_box"><div><span>Total Stars</span></div></th>
         <% @objectives.each_with_index do |objective, index| %>
           <th class="rotate table-borderless score_box col_<%= index %>"><div><span>
-            <%= link_to objective.short_name, edit_objective_path(objective) %>
+            <%= link_to objective.short_name, objective_path(objective) %>
           </span></div></th>
         <% end %>
       </thead>

@@ -15,17 +15,18 @@ class SeminarStudent < ApplicationRecord
     
     include ModelMethods
     
-    def set_last_consultant_day(date_of_consultancy)
-        new_date = date_of_consultancy - self.pref_request.to_i.days
-        self.update(:last_consultant_day => new_date)
-    end
+    # Not used right now
+    #def set_last_consultant_day(date_of_consultancy)
+        #new_date = date_of_consultancy - self.pref_request.to_i.days
+        #self.update(:last_consultant_day => new_date)
+    #end
     
     private
         def add_student_stuff
             new_student_goals
             new_student_scores
             new_student_pretest_keys
-            self.set_last_consultant_day(Date.today)
+            self.update(:last_consultant_day => Date.today)
         end
         
         def new_student_goals

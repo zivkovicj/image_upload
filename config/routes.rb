@@ -33,6 +33,10 @@ Rails.application.routes.draw do
   end
   resources :objective_students
   resources :objectives do
+    get 'include_labels', on: :member
+    get 'include_seminars', on: :member
+    get 'keys_for_objective', on: :member
+    get 'pre_reqs', on: :member
     get 'quantities', on: :member
     post 'whole_class_keys', on: :member
   end

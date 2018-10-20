@@ -1,0 +1,29 @@
+<% provide(:title, "#{@objective.name}") %>
+<% provide(:button_text, "Save Changes") %>
+
+<% provide(:headerText, "Labels") %>
+<% provide(:headerPic, 'objectives.png') %>
+
+<%= render 'back_to_objective' %>
+<%= render 'shared/headline' %>
+<%= render 'objective_subheadline' %>
+
+<div class="row">
+  
+    <%= form_for(@objective) do |a| %>
+    
+      <%= render 'shared/error_messages', object: @objective %>
+      
+      
+      <%= render :partial => 'shared/include_checks', 
+        :locals => {:list_for_checks => @labels,
+          :check_box_name => "objective[label_ids][]",
+          :inclusion_var => @objective.labels, :boulderfist => false,
+          :include_word => "labels", :include_on => "on the assessment for this objective",
+          :model_name => "objective"} %>
+      
+      <br/><br/>
+      <%= a.submit yield(:button_text), class: "btn btn-primary" %>
+    <% end %>
+    
+</div>

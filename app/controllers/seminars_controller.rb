@@ -180,7 +180,7 @@ class SeminarsController < ApplicationController
         def add_pre_reqs_to_seminar
             if @seminar.objective_ids != @old_objectives
                 @seminar.objective_seminars.each do |os|
-                    os.addPreReqs
+                    os.add_preassigns
                 end
             end
         end

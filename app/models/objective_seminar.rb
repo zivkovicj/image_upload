@@ -11,7 +11,7 @@ class ObjectiveSeminar < ApplicationRecord
         objective.objective_students.where(:user => seminar.students).select{|x| !x.passed}.count
     end
     
-    def addPreReqs
+    def add_preassigns
         objective.preassigns.each do |preassign|
             seminar.objective_seminars.find_or_create_by(:objective_id => preassign.id)
             seminar.students.each do |student|

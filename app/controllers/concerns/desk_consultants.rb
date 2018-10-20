@@ -15,7 +15,7 @@ module DeskConsultants
     
     # Rank students by their adjusted consultant points.
     def setup_rank_by_consulting
-        @seminar.seminar_students.order(:last_consultant_day).map(&:user)
+        @seminar.seminar_students.where(:user => @students).order(:last_consultant_day).map(&:user)
     end
     
     # need_hash

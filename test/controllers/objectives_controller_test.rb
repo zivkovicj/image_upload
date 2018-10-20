@@ -25,25 +25,27 @@ class ObjectivesControllerTest < ActionDispatch::IntegrationTest
   end
   
   test "edit as non-admin" do
-    oldName = @objective_20.name
+    skip
+    old_name = @objective_20.name
     
     log_in_as(@teacher_1)
     patch objective_path(@objective_20), params: { objective: { name:  "Burgersauce",
                                           seminar_id: @seminar.id } }
                                           
     @objective_20.reload
-    assert_equal oldName, @objective_20.name
+    assert_equal old_name, @objective_20.name
   end
   
   test "edit without login" do
-    oldName = @objective_20.name
+    skip
+    old_name = @objective_20.name
     
     log_in_as(@teacher_1)
     patch objective_path(@objective_20), params: { objective: { name:  "Burgersauce",
                                           seminar_id: @seminar.id } }
                                           
     @objective_20.reload
-    assert_equal oldName, @objective_20.name
+    assert_equal old_name, @objective_20.name
   end
 
   test "wrong user can't delete" do

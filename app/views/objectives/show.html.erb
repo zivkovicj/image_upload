@@ -1,0 +1,19 @@
+<% provide(:title, "#{@objective.name}") %>
+
+<% provide(:headerText, "#{@objective.name}") %>
+<% provide(:headerPic, 'objectives.png') %>
+
+<% @submenus = [
+    [include_seminars_objective_path(@objective), "Included Classes", "apple.jpg"],
+    [edit_objective_path(@objective), "Basic Info", "apple.jpg"],
+    [keys_for_objective_objective_path(@objective), "Give Keys", "key.jpg"],
+    [pre_reqs_objective_path(@objective), "Pre Requisites", "apple.jpg"],
+    [include_labels_objective_path(@objective), "Labels", "labels.png"]
+  ]
+%>
+
+<%= render 'shared/back-link' %>
+<%= render 'shared/submenus' %>
+<%= render 'shared/headline' %>
+
+

@@ -53,15 +53,33 @@ Keep reading at
 
 
 
+2.82 SLIM OBJECTIVE EDITING VIEW
+V Break the objective-editing test into several smaller tests
+V "Include Labels" test should also check taking away a label
+V When adding a seminar, test adding a pre-requisite to that seminar
+V Make sure objective name is not changed when not editing basic info
+V Only re-route to quantities after changing labels, not any other actions
+V Show the name of the objective on all submenus
 
 
 TERM FORWARDING NEEDS TO COME NEXT
+Seminar Model
+    term    :integer
 Stop referring to term_for_seminar.  Each seminar should hold its own term after all.
 Option appears as another submenu after user clicks seminar_edit
 Check boxes for various functions
-    Change term number of seminar
-    Reset student scores for this term
+    Set number of current term
+        Default is one higher than the current term
+    Offer to reset student scores for this term
 Would be nice if there were an option to repeat this for all seminars
+    But only for classes where the teacher has edit permission
+
+
+GET GOALKEEPER WORKING
+Get Goalkeeper working
+Should I turn due_dates back on?
+
+
 
 
 
@@ -76,25 +94,45 @@ Will need to link teacher to edit passwords from student edit page
 Would be nice if first page leads teachers to the printable version, but that page also has a link to edit all usernames and passwords at once
     
 
-
-
-GET GOALKEEPER WORKING
-Get Goalkeeper working
-
-
-
-Should I turn due_dates back on?
-
+BETTER APPRENTICE PLACEMENT
+Instead of iterating through apprentices, iterate through the groups and find an unplaced
+    apprentice to put into the group.
+    This should better use the consultants who were chosen.
+    And minimize the need for replacing those consultants into different groups.
+Live site is not showing student signatory badge right now.
 
 
 
-SLIM THE VIEW FOR EDITING AN OBJECTIVE
+
+
+
+
+
 
 STICKY STUDENT NAMES AND OBJECTIVE NAMES
 Less blank space on the side of the scoresheet
 
 
+OBJECTIVE PERMISSIONS
+Ensure unauthorized user cannot edit objective
+Set permissions for all actions
+    Alternate display if there isn't edit permission
+Messages about not editing public objectives need to appear in all submenus.
+There should be a direct link to quantities
+Show extent even if user cannot edit
+Unskip all of the objective-viewing tests
+How does the message work no for objectives that have no labels?
+Don't give consultant keys for an objective that has no questions
+When adding keys to an objective, if a class doesn't include the objective, user gets message 
+    "Doesn't include this objective"
+    Would be nice if there were a button to add the objective.
+
 DON'T ALLOW TEACHER TO RUN AN NEW CONSULTANCY IN THE SAME DAY IF IT'S ALREADY SET TO PERMANENT
+
+
+NEEDED FIXES
+Navmenu on the quantities is weird
+Need a navmenu when giving keys to a whole class
 
 HALL PASS APP
 Student enters number.
@@ -120,12 +158,7 @@ To avoid situations where I'm pretty sure Mia would pass 1700, but she was place
 
 
 
-BETTER APPRENTICE PLACEMENT
 
-Instead of iterating through apprentices, iterate through the groups and find an unplaced
-    apprentice to put into the group.
-    This should better use the consultants who were chosen.
-    And minimize the need for replacing those consultants into different groups.
 
 RETURN STUDENT REQUESTS
 Update consultant days when student changes her preference request
@@ -459,9 +492,6 @@ HOTFIXES
 Can I re-name the "present" attribute of the seminar student?  That's already a ruby word.
 For the sake of performance, the method "set_pretests" should only be called when pretests are changed.  Right now, it is getting called when
     anything about the seminar is changed.
-Tests to add
-Adding bucks sometimes adds double or even quad.
-Seems to stop doing that after a refresh
 Check pagination everywhere it occurs
 Don't block the "Desk Consultants" icon when it isn't availble. Instead, re-route to a screen that explains what is needed.
 
@@ -667,6 +697,7 @@ Test the navribbon in the seminar edit view.
 Student using the sub-tabs to navigate the seminar_student view
 Mr. Z School needs to test a student visiting when there is a teacher comment.
 Should I enforce that term start and end dates are sequential?  I think I should
+Test that absent students cannot be chosen as consultant
 
 
 

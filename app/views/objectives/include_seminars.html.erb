@@ -1,0 +1,38 @@
+<% provide(:title, "#{@objective.name}") %>
+<% provide(:button_text, "Save Changes") %>
+
+<% provide(:headerText, "Included Classes") %>
+<% provide(:headerPic, 'objectives.png') %>
+
+<%= render 'back_to_objective' %>
+<%= render 'shared/headline' %>
+<%= render 'objective_subheadline' %>
+
+<%= form_for(@objective) do |a| %>
+    
+    <%= render 'shared/error_messages', object: @objective %>
+      
+    <% if @assign_permission != "admin" %>
+        <div class="singleOption" id="seminars_to_include">
+          <h2>Classes To Include This Objective</h2>
+          <table>
+          <thead>
+            <tr>
+              <td>Include?</td>
+              <td>Class</td>
+            </tr>
+          </thead>
+            <%= a.collection_check_boxes(:seminar_ids, current_user.seminars.order(:name), :id, :name) do |b| %>
+              <% classType = "none" %>
+              <% classType = "boulderfist" if (!@objective.seminar_ids.include?(b.object.id) && @objective.preassigns.count > 0) %>
+              <tr>
+                <td width="20%"><%= b.check_box(:class => classType, :id => b.object.name) %></td>
+                <td><%= b.label %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+        <br/>
+        <%= a.submit yield(:button_text), class: "btn btn-primary" %>
+   <% end %>
+<% end %>

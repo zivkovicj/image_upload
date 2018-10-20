@@ -222,9 +222,9 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @ss_1.update(:pref_request => 0)
         @ss_2.update(:pref_request => 1)
         @ss_3.update(:pref_request => -1)
-        @ss_1.set_last_consultant_day(set_date)
-        @ss_2.set_last_consultant_day(set_date_2)
-        @ss_3.set_last_consultant_day(set_date_3)
+        @ss_1.update(:last_consultant_day => set_date)
+        @ss_2.update(:last_consultant_day => set_date_2)
+        @ss_3.update(:last_consultant_day => set_date_3)
         @seminar.seminar_students.each do |ss|
             ss.reload
         end

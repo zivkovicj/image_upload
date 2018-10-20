@@ -1,11 +1,12 @@
+<% provide(:title, "#{@objective.name}") %>
+<% provide(:button_text, "Save Changes") %>
 
 <% provide(:headerText, "Edit Quantities and Point Values") %>
-<% provide(:headerPic, "labels.png") %>
+<% provide(:headerPic, 'objectives.png') %>
 
-<%= render 'shared/navribbons/main_navribbon' %>
-<%= render 'shared/back-link' %>
+<%= render 'back_to_objective' %>
 <%= render 'shared/headline' %>
-<h2>For: <%= @objective.name %></h2>
+<%= render 'objective_subheadline' %>
 
 <% point_array = *(1..10) %>
 <% points_poss = 0 %>
@@ -49,7 +50,7 @@
         
         <p>Total Points Possible: <strong><span id="total_disp"><%= points_poss %> </span></strong></p>
         
-        <%= submit_tag "Update these quantities" %>
+        <%= submit_tag "Update These Quantities", :class => "btn btn-primary"  %>
     
     <% end %>
 <% end %>

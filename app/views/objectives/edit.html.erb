@@ -1,12 +1,11 @@
-<% provide(:title, 'Edit Objective') %>
-<% provide(:button_text, 'Save Changes') %>
+<% provide(:title, "#{@objective.name}") %>
+<% provide(:button_text, "Save Changes") %>
 
-<% provide(:headerText, "Edit Objective") %>
-<% provide(:headerPic, "objectives.png") %>
+<% provide(:headerText, "Basic Info") %>
+<% provide(:headerPic, 'objectives.png') %>
 
-<%= render 'headline' %>
-</br>
-<%= render 'keys_for_objective' %>
-</br>
+<%= render 'back_to_objective' %>
+<%= render 'shared/headline' %>
+<%= render 'objective_subheadline' %>
+
 <%= render 'form' %>
-

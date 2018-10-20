@@ -1,0 +1,23 @@
+<% provide(:title, "#{@objective.name}") %>
+<% provide(:button_text, "Save Changes") %>
+
+<% provide(:headerText, "Pre-Requisites") %>
+<% provide(:headerPic, 'objectives.png') %>
+
+<%= render 'back_to_objective' %>
+<%= render 'shared/headline' %>
+<%= render 'objective_subheadline' %>
+
+<%= form_for(@objective) do |a| %>
+    
+    <%= render 'shared/error_messages', object: @objective %>
+  
+    <%= render :partial => 'shared/include_checks', 
+      :locals => {:list_for_checks => @pre_req_list,
+      :check_box_name => "objective[preassign_ids][]",
+      :inclusion_var => @objective.preassigns, :boulderfist => true,
+      :include_word => "pre-requisite", :include_on => "for this objective",
+      :model_name => "objective"} %>
+      
+    <%= a.submit yield(:button_text), class: "btn btn-primary" %>
+<% end %>
