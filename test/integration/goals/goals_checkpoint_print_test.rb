@@ -16,7 +16,7 @@ class GoalsCheckpointPrintTest < ActionDispatch::IntegrationTest
         go_to_goals
         click_on("Printable Version")
         
-        assert_text("Printable Goals for Term 2, Checkpoint 3")
+        assert_text("Printable Goals for Term 3, Checkpoint 3")
         @seminar.students.each do |student|
             assert_text("#{student.first_name} #{student.last_name}")
         end

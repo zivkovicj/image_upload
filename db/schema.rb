@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180921222310) do
+ActiveRecord::Schema.define(version: 20181020210932) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -300,6 +300,7 @@ ActiveRecord::Schema.define(version: 20180921222310) do
     t.integer  "school_id"
     t.datetime "term_start_date"
     t.datetime "term_end_date"
+    t.integer  "term"
     t.index ["school_id"], name: "index_seminars_on_school_id"
     t.index ["user_id"], name: "index_seminars_on_user_id"
   end

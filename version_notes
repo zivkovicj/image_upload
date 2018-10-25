@@ -19,6 +19,17 @@ Between each update, manually test:
     Student cannot change quiz answers after the quiz is finished 
 
 
+
+
+2.82 SLIM OBJECTIVE EDITING VIEW
+Break the objective-editing test into several smaller tests
+"Include Labels" test should also check taking away a label
+When adding a seminar, test adding a pre-requisite to that seminar
+Make sure objective name is not changed when not editing basic info
+Only re-route to quantities after changing labels, not any other actions
+Show the name of the objective on all submenus
+
+
 2.81 SLIM SEMINAR EDIT VIEW
 Objectives, Priorities, etc. need submit buttons and separate update actions
 Add field for default_buck_increment

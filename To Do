@@ -53,35 +53,53 @@ Keep reading at
 
 
 
-2.82 SLIM OBJECTIVE EDITING VIEW
-V Break the objective-editing test into several smaller tests
-V "Include Labels" test should also check taking away a label
-V When adding a seminar, test adding a pre-requisite to that seminar
-V Make sure objective name is not changed when not editing basic info
-V Only re-route to quantities after changing labels, not any other actions
-V Show the name of the objective on all submenus
 
 
 TERM FORWARDING NEEDS TO COME NEXT
-Seminar Model
-    term    :integer
-Stop referring to term_for_seminar.  Each seminar should hold its own term after all.
-Option appears as another submenu after user clicks seminar_edit
-Check boxes for various functions
-    Set number of current term
-        Default is one higher than the current term
-    Offer to reset student scores for this term
-Would be nice if there were an option to repeat this for all seminars
-    But only for classes where the teacher has edit permission
+V Seminar Model
+    V term    :integer
+V Stop referring to term_for_seminar.  Each seminar should hold its own term after all.
+V Option appears as another submenu after user clicks seminar_edit
+V Default term for seminar is one
+    V Going with the term displayed to user.  Keep consistent with that.
+V Options in the change term menu
+    V Set number of current term
+        V Default is one higher than the current term
+    V Offer to reset student scores for this term
+V Would be nice if there were an option to repeat this for all seminars
+V But only for classes where the teacher has edit permission
+
+           
+
+
+
+Migrate to add term to existing seminars
+Give each seminar a current term
 
 
 GET GOALKEEPER WORKING
+Set all terms and checkpoints so that they match what the teacher will see.
 Get Goalkeeper working
 Should I turn due_dates back on?
 
 
 
 
+ FAIL["test_place_apprentices_by_request", Minitest::Result, 192.3266328405589]
+ test_place_apprentices_by_request#Minitest::Result (192.33s)
+        Expected false to be truthy.
+        test/integration/consultancies/consultancies_show_test.rb:138:in `block (2 levels) in test_all_apprentices'
+        test/integration/consultancies/consultancies_show_test.rb:137:in `block in test_all_apprentices'
+        test/integration/consultancies/consultancies_show_test.rb:136:in `test_all_apprentices'
+        test/integration/consultancies/consultancies_show_test.rb:466:in `block in <class:ConsultanciesShowTest>'
+
+
+
+ FAIL["test_rank_by_consulting", Minitest::Result, 267.98395700659603]
+ test_rank_by_consulting#Minitest::Result (267.98s)
+        Expected: Sat, 13 Oct 2018
+          Actual: Sun, 14 Oct 2018
+        test/integration/consultancies/consultancies_show_test.rb:233:in `block in <class:ConsultanciesShowTest>'
 
 2.?? ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
 
@@ -1182,8 +1200,6 @@ If there's trouble logging in, add a message reminding users that teachers use a
 ELL STUDENTS
 Allow students to be marked as ELL. When that happens, they are default exempt from text-heavy objectives and questions
  
-TEACHER CAN ADD A CUSTOM CHECKPOINT
-Teacher can add a custom checkpoint
 
 SMALL IMPROVEMENTS TO COMPLETE MUCH LATER
 When there's only one public objective, the list looks really weird.

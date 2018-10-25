@@ -10,7 +10,7 @@ class RipostesController < ApplicationController
         @question = @riposte.question
         @quiz = @riposte.quiz
         if @quiz.total_score == nil
-            next_riposte_num = @riposte.position + 1
+            next_riposte_num = @riposte.position
             
             perc = 0
             case @question.style

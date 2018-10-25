@@ -22,7 +22,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
             @check_3.reload
         end
         
-        @gs = @student_2.goal_students.find_by(:seminar => @seminar, :term => @seminar.term_for_seminar)
+        @gs = @student_2.goal_students.find_by(:seminar => @seminar, :term => @seminar.term)
         @check_0 = @gs.checkpoints.find_by(:sequence => 0)
         @check_1 = @gs.checkpoints.find_by(:sequence => 1)
         @check_2 = @gs.checkpoints.find_by(:sequence => 2)

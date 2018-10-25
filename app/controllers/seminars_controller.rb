@@ -52,7 +52,14 @@ class SeminarsController < ApplicationController
             set_priorities
         elsif params[:pretest_on]
             set_pretests
-        elsif params[:seminar]
+        elsif params[:seminar][:term]
+            these_sems = [@seminar]
+            these_sems = current_user.seminars_i_can_edit if params[:repeat]
+            these_sems.each do |sem|
+                sem.update(seminar_params)
+                reset_all_student_grades(sem) if params[:reset]
+            end
+        else
             @old_objectives = @seminar.objective_ids
             add_pre_reqs_to_seminar if @seminar.update(seminar_params)
         end
@@ -83,6 +90,11 @@ class SeminarsController < ApplicationController
         @seminar.update(:checkpoint_due_dates => first_seminar.checkpoint_due_dates)
         flash[:success] = "Checkpoint Due Dates Updated"
         redirect_to edit_seminar_path(@seminar)
+    end
+    
+    def change_term
+       @seminar = Seminar.find(params[:id]) 
+       @current_term = @seminar.term
     end
     
     def due_dates
@@ -174,7 +186,7 @@ class SeminarsController < ApplicationController
     
     private 
         def seminar_params
-            params.require(:seminar).permit(:name, :consultantThreshold, :default_buck_increment, :school_year, objective_ids: [], teacher_ids: [])
+            params.require(:seminar).permit(:name, :consultantThreshold, :default_buck_increment, :school_year, :term, objective_ids: [], teacher_ids: [])
         end
         
         def add_pre_reqs_to_seminar
@@ -218,6 +230,10 @@ class SeminarsController < ApplicationController
                 pre_objectives = @seminar.objectives
             end
             @objectives = pre_objectives.sort_by(&:name)
+        end
+        
+        def reset_all_student_grades(seminar)
+            seminar.obj_studs_for_seminar.update_all(:points_this_term => 0) 
         end
         
         def set_pretests

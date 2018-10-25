@@ -4,75 +4,57 @@
             ["01/11/2018","01/21/2018","01/31/2018","02/07/2018"],
             ["03/07/2018","03/14/2018","03/21/2018","03/28/2018"],
             ["04/07/2018","04/14/2018","04/21/2018","04/28/2018"]] %>
+            
+barebones: &minimal
+  consultantThreshold: 7
+  default_buck_increment: 5
+  school_year: 9
+  term: 1
+  which_checkpoint: 0
 
 one:
   name: 1st Period
   school: school_1
-  consultantThreshold: 7
-  which_checkpoint: 0
-  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
-  default_buck_increment: 5
+  <<: *minimal
 
 two:
   name: 2nd Period
   school: school_1
-  consultantThreshold: 7
-  which_checkpoint: 0
-  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
-  default_buck_increment: 5
+  <<: *minimal
   
 
 three:
   name: 3rd Period
   school: school_1
-  #user: archer
-  consultantThreshold: 7
-  which_checkpoint: 0
-  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
-  default_buck_increment: 5
+  <<: *minimal
   
 archer_can_view_not_edit:
   name: Archer Can View
   school: school_1
-  #user: archer
-  consultantThreshold: 7
-  which_checkpoint: 0
-  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
-  default_buck_increment: 5
+  <<: *minimal
   
 four:
   name: Zacky's first period
-  #user: zacky
-  consultantThreshold: 7
-  which_checkpoint: 0
-  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
-  default_buck_increment: 5
+  <<: *minimal
   
-
 
   
 <% 30.times do |n| %>
 seminar_<%= n %>:
   name:  <%= "Seminar #{n}" %>
   #user: archer
-  consultantThreshold: 7
-  which_checkpoint: 0
-  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
-  default_buck_increment: 5
+  <<: *minimal
 <% end %>
 
 
 unverified_teacher_class:
   name: unverified teachers class
   #user: user_1
-  consultantThreshold: 7
-  which_checkpoint: 0
-  school_year: 9
   checkpoint_due_dates: <%= checkpoint_array %>
-  default_buck_increment: 5
+  <<: *minimal

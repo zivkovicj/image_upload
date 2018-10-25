@@ -75,7 +75,7 @@ class CommoditiesController < ApplicationController
             if @commodity.name == "Star"
                 @seminar = Seminar.find(params[:seminar_id]) 
                 @ss = SeminarStudent.find_by(:seminar => @seminar, :user => @student)
-                @term = @seminar.term_for_seminar
+                @term = @seminar.term
                 old_stars_used = @ss.stars_used_toward_grade[@term]
                 @ss.stars_used_toward_grade[@term] = old_stars_used + 1
                 @ss.save

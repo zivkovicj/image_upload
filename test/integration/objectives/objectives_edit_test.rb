@@ -73,7 +73,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         click_on("Save Changes")
         
         assert_selector('h2', :text => "Edit Quantities and Point Values")
-        assert_selector('h2', :text => "For: #{@own_assign.name}")
+        assert_selector('h2', :text => "for #{@own_assign.name}")
         
         @own_assign.reload
         assert_equal old_name, @own_assign.name

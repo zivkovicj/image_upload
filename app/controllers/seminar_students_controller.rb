@@ -33,7 +33,7 @@ class SeminarStudentsController < ApplicationController
     #@school = @student.school
     
     #@seminar_id = @seminar.id
-    #@term = @seminar.term_for_seminar
+    #@term = @seminar.term
     #@oss = @seminar.objective_seminars.includes(:objective).order(:priority)
     #@bucks_current = @student.bucks_current(:seminar, @seminar)
     #@school_or_seminar = "seminar"
@@ -46,7 +46,7 @@ class SeminarStudentsController < ApplicationController
     #@student_scores = @student.objective_students.where(:objective_id => objective_ids)
     
     #@quiz_stars_this_term = @student.quiz_stars_this_term(@seminar)
-    #@stars_used_toward_grade_this_term = @student.stars_used_toward_grade_this_term(@seminar, @seminar.term_for_seminar)
+    #@stars_used_toward_grade_this_term = @student.stars_used_toward_grade_this_term(@seminar, @seminar.term)
     #@total_stars_this_term = @quiz_stars_this_term + @stars_used_toward_grade_this_term
     #@quiz_stars_all_time = @student.quiz_stars_all_time(@seminar)
     
@@ -105,7 +105,7 @@ class SeminarStudentsController < ApplicationController
     @bucks_current = @student.bucks_current(:seminar, @seminar)
     @dbi = @seminar.default_buck_increment
     @commodities = @seminar.commodities_for_seminar.paginate(:per_page => 6, page: params[:page])
-    @term = @seminar.term_for_seminar
+    @term = @seminar.term
     @school_or_seminar = "seminar"
   end
   

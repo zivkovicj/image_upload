@@ -230,8 +230,8 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         end
         
         assert_equal set_date, @ss_1.last_consultant_day
-        assert_equal set_date_2 - 1.day, @ss_2.last_consultant_day
-        assert_equal set_date_3 + 1.day, @ss_3.last_consultant_day
+        assert_equal set_date_2, @ss_2.last_consultant_day
+        assert_equal set_date_3, @ss_3.last_consultant_day
         assert_equal Date.today, @ss_41.last_consultant_day
         
         @students = setup_present_students

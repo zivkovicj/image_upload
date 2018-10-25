@@ -21,9 +21,10 @@ class Seminar < ApplicationRecord
      ["06/05/2019","06/05/2019","06/05/2019","06/05/2019"],
      ["06/05/2019","06/05/2019","06/05/2019","06/05/2019"],
      ["06/05/2019","06/05/2019","06/05/2019","06/05/2019"]]
+     
   attribute :checkpoint_due_dates, :text, default: due_date_array
   attribute :consultantThreshold, :integer, default: 7
-  attribute :term, :integer, default: 0
+  attribute :term, :integer, default: 1
   attribute :which_checkpoint, :integer, default: 0
   attribute :default_buck_increment, :integer, default: 5
   
@@ -47,10 +48,6 @@ class Seminar < ApplicationRecord
   
   def rank_objectives_by_need
     objectives.select{|z| z.priority_in(self) > 0}.sort_by{|x| [-x.priority_in(self), -x.students_who_requested(self)] }
-  end
-  
-  def term_for_seminar
-    self.teachers.first.school.term
   end
   
   def set_random_goals

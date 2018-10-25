@@ -47,7 +47,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     
     test "setup quiz" do
         old_riposte_count = Riposte.count
-        current_term = @seminar.term_for_seminar
+        current_term = @seminar.term
         term_start_date = Date.strptime(@school.term_dates[current_term][0], "%m/%d/%Y")
         @student_2.quizzes.create(:objective => @objective_10, :origin => "teacher_granted", :total_score => 2, :updated_at => term_start_date + 2.days)
         old_quiz_count = Quiz.count

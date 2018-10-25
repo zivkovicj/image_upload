@@ -30,8 +30,12 @@ class Teacher < User
         self.update(:teacher_currency_name => "#{self.name_with_title} Bucks") 
     end
     
+    def seminars_i_can_edit
+        SeminarTeacher.where(:user => self, :can_edit => true).map(&:seminar).sort_by(&:name)
+    end
+    
     def unaccepted_classes
-        self.seminars.select{|x| !x.seminar_teachers.find_by(:user => self).accepted}
+        SeminarTeacher.where(:user => self, :accepted => false).map(&:seminar).sort_by(&:name)
     end
     
     private

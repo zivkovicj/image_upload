@@ -7,7 +7,7 @@
     </br>
     <h1><%= @seminar.name %></h1>
     </br>
-    <h1><span class="no_print">Printable</span> Goals for Term <%= @this_term + 1 %>, Checkpoint <%= @this_checkpoint + 1 %></h1>
+    <h1><span class="no_print">Printable</span> Goals for Term <%= @this_term %>, Checkpoint <%= @this_checkpoint + 1 %></h1>
     </br>
     <h2 class="no_print">Click the "Print" feature in your web browser.</h2>
     </br>
@@ -24,7 +24,7 @@
 
 <% them_kids.each do |stud| %>
     <% @stud = stud %>
-    <% @gs = stud.goal_students.find_by(:seminar => @seminar, :term => @seminar.term_for_seminar) %>
+    <% @gs = stud.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
     <div class="break_here"></div>
     <div class="singleOption">
         <%= render 'goal_students/print_pieces/headline' %>

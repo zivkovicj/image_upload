@@ -90,6 +90,20 @@ class TeacherTest < ActiveSupport::TestCase
     end
   end
   
+  test "seminars I can edit" do
+    setup_users
+    setup_seminars
+    
+    sem_teach_1 = SeminarTeacher.where(:user => @teacher_1, :seminar => @seminar)
+    sem_teach_2 = SeminarTeacher.where(:user => @teacher_1, :seminar => @seminar_2)
+    sem_teach_1.update(:can_edit => true)
+    sem_teach_2.update(:can_edit => false)
+    
+    these_sems = @teacher_1.seminars_i_can_edit
+    assert these_sems.include?(@seminar)
+    assert_not these_sems.include?(@seminar_2)
+  end
+  
   test "teacher commodities needing delivered" do
     setup_users
     setup_schools

@@ -21,7 +21,7 @@
 <% them_kids = @seminar.students.order(:last_name) %>
 <% them_kids.each do |student| %>
     <% @student = student %>
-    <% @gs = student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term_for_seminar) %>
+    <% @gs = student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
     <% @gs_id = @gs.id if @gs %>
     <table class="table-borderless" style="table-layout:fixed">
         <tr>

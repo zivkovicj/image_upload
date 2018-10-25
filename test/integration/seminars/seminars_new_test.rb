@@ -23,6 +23,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         assert_equal 8, @seminar.school_year
         assert_equal 7, @seminar.consultantThreshold
         assert_equal @teacher_1, @seminar.teachers.first
+        assert_equal 1, @seminar.term
         
         sem_teach = SeminarTeacher.last
         assert_equal @teacher_1, sem_teach.user
@@ -33,7 +34,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         assert_selector('h2', :text => "Basic Info for #{@seminar.name}")
         
         # This section creates students for a new class, and then make sure those students show up
-        # That feature wasn't working properly on 8/17
+        # That feature wasn't working properly on 08/17/18
         
         click_on("Create New Students")
         

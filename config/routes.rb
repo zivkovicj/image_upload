@@ -50,17 +50,18 @@ Rails.application.routes.draw do
   resources :quizzes
   resources :ripostes
   resources :seminars do
+    get 'basic_info', on: :member
+    get 'change_term', on: :member
+    get 'copy_due_dates', on: :member
+    get 'due_dates', on: :member
+    get 'objectives', on: :member
     get 'pretests', on: :member
     get 'priorities', on: :member
-    get 'scoresheet', on: :member
-    post 'update_scoresheet', on: :member
-    get 'objectives', on: :member
-    get 'due_dates', on: :member
-    get 'copy_due_dates', on: :member
-    get 'usernames', on: :member
     get 'rewards', on: :member
+    get 'scoresheet', on: :member
     get 'shared_teachers', on: :member
-    get 'basic_info', on: :member
+    post 'update_scoresheet', on: :member
+    get 'usernames', on: :member
   end
   resources :seminar_students do
     get 'give_keys', on: :member

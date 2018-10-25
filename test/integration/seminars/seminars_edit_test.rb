@@ -18,6 +18,15 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
          ["06/17/2019","06/18/2019","06/19/2019","06/20/2019"]]
     end
     
+    def set_score_for_random_student(seminar)
+        test_student = seminar.students.limit(1).order("RANDOM()").first
+        test_obj = seminar.objectives.limit(1).order("RANDOM()").first
+        test_obj_stud = ObjectiveStudent
+            .find_by(:user => test_student, :objective => test_obj)
+        test_obj_stud.update(:points_this_term => 4)
+        return test_obj_stud
+    end
+    
     test "add obj and preassign at once" do
         setup_objectives
         setup_scores
@@ -67,7 +76,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         
         fill_in "seminar[name]", with: "Dangle"
         fill_in "seminar[default_buck_increment]", with: 9
-        find("#school_year_1").select("3")  # Choose 5 for 5th grade
+        find("#school_year_1").select("3")  # Choose 3 for 5th grade
         choose("seminar_consultantThreshold_8")
         
         click_on("Update This Class")
@@ -98,6 +107,76 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         
         assert_selector('h2', :text => "Edit #{@seminar.name}")
     end
+    
+    test "change term and reset grades" do
+        assert_equal 1, @seminar.term
+        setup_scores
+        test_obj_stud = set_score_for_random_student(@seminar)
+        
+        capybara_login(@teacher_1)
+        click_on("seminar_#{@seminar.id}")
+        click_on("Grading Term")
+        
+        find("#seminar_term").select("3")  # Choose 5 for 5th grade
+        check("reset")
+        click_on("Update This Class")
+        
+        assert_equal 3, @seminar.reload.term
+        assert_equal 1, @seminar_2.reload.term    # To make sure that only changes if the repeat choice is checked.
+        assert_equal 0, test_obj_stud.reload.points_this_term
+    end
+    
+    test "change term default" do
+        assert_equal 1, @seminar.term
+        
+        capybara_login(@teacher_1)
+        click_on("seminar_#{@seminar.id}")
+        click_on("Grading Term")
+        
+        click_on("Update This Class")
+        
+        assert_equal 2, @seminar.reload.term
+    end
+    
+    test "change term do not reset grades" do
+        setup_scores
+        test_obj_stud = set_score_for_random_student(@seminar)
+        
+        capybara_login(@teacher_1)
+        click_on("seminar_#{@seminar.id}")
+        click_on("Grading Term")
+        
+        find("#seminar_term").select("3")  # Choose 5 for 5th grade
+        click_on("Update This Class")
+        
+        assert_equal 4, test_obj_stud.reload.points_this_term
+    end
+    
+    test "change term repeat" do
+        assert_equal 1, @seminar.term
+        assert_equal 1, @seminar_2.term
+        assert_equal 1, @avcne_seminar.term
+        
+        setup_scores
+        test_obj_stud_1 = set_score_for_random_student(@seminar)
+        test_obj_stud_2 = set_score_for_random_student(@seminar_2)
+        
+        capybara_login(@teacher_1)
+        click_on("seminar_#{@seminar.id}")
+        click_on("Grading Term")
+        
+        find("#seminar_term").select("3")  # Choose 5 for 5th grade
+        check("reset")
+        check("repeat")
+        click_on("Update This Class")
+        
+        assert_equal 3, @seminar.reload.term
+        assert_equal 3, @seminar_2.reload.term
+        assert_equal 1, @avcne_seminar.reload.term
+        assert_equal 0, test_obj_stud_1.reload.points_this_term
+        assert_equal 0, test_obj_stud_2.reload.points_this_term
+    end
+    
     
     test "objectives" do
         setup_objectives
