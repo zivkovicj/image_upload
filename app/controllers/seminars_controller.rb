@@ -65,9 +65,6 @@ class SeminarsController < ApplicationController
         end
         flash[:success] = "Class Updated"
         redirect_to seminar_path(@seminar)
-        #set_checkpoint_due_dates
-        #@seminar.update_attributes(seminar_params)
-        
     end
     
     def destroy
@@ -207,7 +204,7 @@ class SeminarsController < ApplicationController
         end
         
         def set_checkpoint_due_dates
-            date_array = [[],[],[],[]]
+            date_array = [0, [],[],[],[]]
             params[:seminar][:checkpoint_due_dates].each do |level_x|
                 x = level_x.to_i
                 params[:seminar][:checkpoint_due_dates][level_x].each do |level_y|

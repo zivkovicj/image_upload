@@ -55,33 +55,31 @@ Keep reading at
 
 
 
-TERM FORWARDING NEEDS TO COME NEXT
-V Seminar Model
-    V term    :integer
-V Stop referring to term_for_seminar.  Each seminar should hold its own term after all.
-V Option appears as another submenu after user clicks seminar_edit
-V Default term for seminar is one
-    V Going with the term displayed to user.  Keep consistent with that.
-V Options in the change term menu
-    V Set number of current term
-        V Default is one higher than the current term
-    V Offer to reset student scores for this term
-V Would be nice if there were an option to repeat this for all seminars
-V But only for classes where the teacher has edit permission
-
-           
-
-
-
-Migrate to add term to existing seminars
-Give each seminar a current term
+    
 
 
 GET GOALKEEPER WORKING
+Edit checkpoint due dates
+    First entry of checkpoint array needs to be a zero entry
+    This needs to be accounted for in method that changes due dates
 Set all terms and checkpoints so that they match what the teacher will see.
 Get Goalkeeper working
 Should I turn due_dates back on?
+In goal edit view, don't allow editing if goal has already been approved
+    Let student know of this
+Test checkpoint editing if a due date is nil
 
+
+Resetting points_this_term should set them to nil, not zero.
+Warning that running DC again will delete the previous arrangment from the same day.
+
+
+
+
+
+RETURN THE FEATURE THAT SHOWS THE STUDENT'S GOAL IN THEIR OPENING SCREEN
+Instead of loading the goal with the seminar show screen,
+    it might be best to add a column to the seminar that includes the goal and current checkpoint.
 
 
 

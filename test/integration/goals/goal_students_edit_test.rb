@@ -10,8 +10,12 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         setup_scores
     end
     
+    def go_to_goal_screen
+        go_to_first_period
+        click_on("Edit Goal")
+    end
+    
     test "student chooses goal" do
-        skip
         travel_to_testing_date
         
         def reload_stuff
@@ -29,8 +33,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         @check_3 = @gs.checkpoints.find_by(:sequence => 3)
         assert_nil @check_0.action
         
-        go_to_first_period
-        click_on("Edit This Goal")
+        go_to_goal_screen
         assert_selector('input', :id => "goal_submit_button", :visible => false)
         select("#{Goal.second.name}", :from => 'goal_student_goal_id')
         assert_selector('input', :id => "goal_submit_button", :visible => true)
@@ -64,12 +67,10 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "default goal if already chosen" do
-        skip
         @this_gs = @student_2.goal_students.find_by(:seminar => @seminar, :term => 1)
         @this_gs.update(:goal => Goal.first)
         
-        go_to_first_period
-        click_on("Edit This Goal")
+        go_to_goal_screen
         click_on("Save This Goal")
         
         assert_selector('h2', :text => "Choose your Checkpoints")
@@ -78,9 +79,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "goal edit back button" do
-        skip
-        go_to_first_period
-        click_on("Edit This Goal")
+        go_to_goal_screen
         assert_no_selector('h5', :text => @seminar.name)
         
         click_on("Back to Viewing Your Class")
@@ -89,14 +88,11 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "student cant edit old checkpoints" do
-        skip
         setup_scores
         setup_goals
-        travel_to Time.zone.local(2018, 01, 20, 01, 04, 44)
-        @seminar.update(:term => 3) # To test for an error on the nil due date
+        travel_to Time.zone.local(2017, 12, 12, 01, 04, 44)
         
-        go_to_first_period
-        click_on("Edit This Goal")
+        go_to_goal_screen
         select("#{Goal.second.name}", :from => 'goal_student_goal_id')
         select("60%", :from => 'goal_student_target')
         click_on("Save This Goal")

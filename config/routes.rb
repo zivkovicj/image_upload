@@ -64,6 +64,7 @@ Rails.application.routes.draw do
     get 'usernames', on: :member
   end
   resources :seminar_students do
+    get 'goal_reroute', on: :member
     get 'give_keys', on: :member
     get 'move_or_remove', on: :member
     get 'star_market', on: :member

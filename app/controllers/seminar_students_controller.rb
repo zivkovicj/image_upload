@@ -91,6 +91,15 @@ class SeminarStudentsController < ApplicationController
     @objectives = @seminar.objectives.order(:name)
   end
   
+  def goal_reroute
+    @ss = SeminarStudent.find(params[:id])
+    @user = @ss.user
+    @seminar = @ss.seminar
+    @term = @seminar.term
+    @gs = GoalStudent.find_by(:user => @user, :seminar => @seminar, :term => @term)
+    redirect_to edit_goal_student_path(@gs)
+  end
+  
   def move_or_remove
     setup_ss_vars
     

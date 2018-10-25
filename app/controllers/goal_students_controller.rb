@@ -30,6 +30,7 @@ class GoalStudentsController < ApplicationController
     def checkpoints
        @gs = GoalStudent.find(params[:id])
        @seminar = @gs.seminar
+       @term = @gs.term
     end
     
     def update_checkpoints

@@ -5,22 +5,29 @@
   <%= link_to "Copy Due Dates from #{first_seminar.name}", copy_due_dates_seminar_path(@seminar), :id => "copy_due_dates" unless first_seminar == @seminar %>
 <% end %>
   
-
-<% 4.times do |n| %>
-  <h3>&emsp; Term <%= n+1 %></h3>
-  <table class="table-borderless">
-    <% 4.times do |m| %>
-      <tr>
-        <td>&emsp; &emsp; Checkpoint <%= m+1 %> due</td>
-        <% if @this_teacher_can_edit %>
-          <td>&emsp; <input type="text" class="datepicker" name="seminar[checkpoint_due_dates][<%= n %>][<%= m %>]" 
-            value="<%= @seminar.checkpoint_due_dates[n][m] if @seminar.checkpoint_due_dates %>"></td>
-        <% else %>
-          <td>
-            <%= @seminar.checkpoint_due_dates[n][m] %>
-          </td>
+<%= form_for(@seminar) do |f| %>
+  <% 4.times do |n| %>
+    <% term_num = n + 1 %>
+    <h3>&emsp; Term <%= term_num %></h3>
+    
+    <div class="row">
+      <table class="table-borderless">
+        <% 4.times do |m| %>
+          <tr>
+            <td>&emsp; &emsp; Checkpoint <%= m+1 %> due</td>
+            <% if @this_teacher_can_edit %>
+              <td>&emsp; <input type="text" class="datepicker" name="seminar[checkpoint_due_dates][<%= n %>][<%= m %>]" 
+                value="<%= @seminar.checkpoint_due_dates[n][m] if @seminar.checkpoint_due_dates %>"></td>
+            <% else %>
+              <td>
+                <%= @seminar.checkpoint_due_dates[n][m] %>
+              </td>
+            <% end %>
+          </tr>
         <% end %>
-      </tr>
-    <% end %>
-  </table>
+      </table>
+    </div>
+    
+  <% end %>
+  <%= f.submit yield(:button_text), class: "btn btn-primary" %>
 <% end %>

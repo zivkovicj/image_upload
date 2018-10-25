@@ -177,6 +177,11 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         assert_equal 0, test_obj_stud_2.reload.points_this_term
     end
     
+    test "due dates" do
+        capybara_login(@teacher_1)
+        click_on("seminar_#{@seminar.id}")
+        click_on("Due Dates")
+    end
     
     test "objectives" do
         setup_objectives

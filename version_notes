@@ -19,6 +19,22 @@ Between each update, manually test:
     Student cannot change quiz answers after the quiz is finished 
 
 
+8.83 TERM FORWARDING NEEDS TO COME NEXT
+V Seminar Model
+    V term    :integer
+V Stop referring to term_for_seminar.  Each seminar should hold its own term after all.
+V Option appears as another submenu after user clicks seminar_edit
+V Default term for seminar is one
+    V Going with the term displayed to user.  Keep consistent with that.
+V Options in the change term menu
+    V Set number of current term
+        V Default is one higher than the current term
+    V Offer to reset student scores for this term
+V Would be nice if there were an option to repeat this for all seminars
+V But only for classes where the teacher has edit permission
+
+       
+
 
 
 2.82 SLIM OBJECTIVE EDITING VIEW
