@@ -4,19 +4,19 @@
 <% provide(:headerText, "Edit Goal" ) %>
 <% provide(:headerPic, "apple.jpg") %>
 
-<% @ss = SeminarStudent.find_by(:seminar => @goal_student.seminar, :user => @goal_student.user) %>
+<% @ss = SeminarStudent.find_by(:seminar => @gs.seminar, :user => @gs.user) %>
 <%= link_to "Back to Viewing Your Class", seminar_student_path(@ss), class: "btn btn-primary" %>
 <%= render 'shared/headline' %>
 
 
-<%= form_for(@goal_student) do |f| %>
-    <%= f.label :goal %>
-    <% if @goal_student.goal.present? %>
-        <%= f.collection_select :goal_id, Goal.all, :id, :name, prompt: true, :selected => @goal_student.goal.name  %>
-    <% else %>
-        <%= f.collection_select :goal_id, Goal.all, :id, :name, :prompt => "Choose your goal"  %>
+    <%= form_for(@gs) do |f| %>
+        <%= f.label :goal %>
+        <% if @gs.goal.present? %>
+            <%= f.collection_select :goal_id, Goal.all, :id, :name, prompt: true, :selected => @gs.goal.name  %>
+        <% else %>
+            <%= f.collection_select :goal_id, Goal.all, :id, :name, :prompt => "Choose your goal"  %>
+        <% end %>
+        <%= f.label :target %>
+        <%= f.select(:target, percent_array) %>
+        <div><%= f.submit "Save This Goal", class: "btn btn-primary", :id => "goal_submit_button" %></div>
     <% end %>
-    <%= f.label :target %>
-    <%= f.select(:target, percent_array) %>
-    <div><%= f.submit "Save This Goal", class: "btn btn-primary", :id => "goal_submit_button" %></div>
-<% end %>

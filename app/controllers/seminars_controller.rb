@@ -52,6 +52,8 @@ class SeminarsController < ApplicationController
             set_priorities
         elsif params[:pretest_on]
             set_pretests
+        elsif params[:seminar][:checkpoint_due_dates]
+            set_checkpoint_due_dates
         elsif params[:seminar][:term]
             these_sems = [@seminar]
             these_sems = current_user.seminars_i_can_edit if params[:repeat]
@@ -86,7 +88,7 @@ class SeminarsController < ApplicationController
         first_seminar = current_user.first_seminar
         @seminar.update(:checkpoint_due_dates => first_seminar.checkpoint_due_dates)
         flash[:success] = "Checkpoint Due Dates Updated"
-        redirect_to edit_seminar_path(@seminar)
+        redirect_to seminar_path(@seminar)
     end
     
     def change_term
@@ -204,7 +206,7 @@ class SeminarsController < ApplicationController
         end
         
         def set_checkpoint_due_dates
-            date_array = [0, [],[],[],[]]
+            date_array = [[0], [],[],[],[]]
             params[:seminar][:checkpoint_due_dates].each do |level_x|
                 x = level_x.to_i
                 params[:seminar][:checkpoint_due_dates][level_x].each do |level_y|
@@ -213,7 +215,8 @@ class SeminarsController < ApplicationController
                     date_array[x][y] = (this_date) if this_date.present?
                 end
             end
-            @seminar.checkpoint_due_dates = date_array 
+            @seminar.checkpoint_due_dates = date_array
+            @seminar.save
         end
         
         def set_editing_privilege

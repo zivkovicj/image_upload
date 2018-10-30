@@ -55,33 +55,55 @@ Keep reading at
 
 
 
-    
-
 
 GET GOALKEEPER WORKING
-Edit checkpoint due dates
-    First entry of checkpoint array needs to be a zero entry
-    This needs to be accounted for in method that changes due dates
-Set all terms and checkpoints so that they match what the teacher will see.
-Get Goalkeeper working
-Should I turn due_dates back on?
-In goal edit view, don't allow editing if goal has already been approved
-    Let student know of this
-Test checkpoint editing if a due date is nil
+V Edit checkpoint due dates
+    V First entry of checkpoint array needs to be a zero entry
+    V This needs to be accounted for in method that changes due dates
+V Set all terms and checkpoints so that they match what the teacher will see.
+V Push zeros into the first spots for goal actions
 
+V In goal edit view, don't allow editing if goal has already been approved
+    V Let student know of this
+V Checkpoints need to preload with current values
+
+
+zivkovicj:~/workspace (master) $ rails test
+Running via Spring preloader in process 66636
+Started with run options --seed 62498
+
+
+
+Adjust the sequence value of existing checkpoints
+And the checkpoint_due_dates
+Use method below to push zeros into the first spots for goal actions
+
+Goal.all.each do |goal|
+    old_actions = goal.actions
+    new_actions = old_actions.unshift([0])
+    goal.update(:actions => new_actions)
+end
+
+
+
+SHOW THE STUDENT'S GOAL IN THEIR SEMINAR_STUDENT SHOW VIEW
+Seminar_Student
+    Goal
+Update when goal is chosen
+Clear when term resets
+Can I speed the loading of goal_students index action?
+
+Test checkpoint editing if a due date is nil
 
 Resetting points_this_term should set them to nil, not zero.
 Warning that running DC again will delete the previous arrangment from the same day.
 
 
 
+ADD CHECKPOINT TO SEMINAR_STUDENT GOAL 
 
 
-RETURN THE FEATURE THAT SHOWS THE STUDENT'S GOAL IN THEIR OPENING SCREEN
-Instead of loading the goal with the seminar show screen,
-    it might be best to add a column to the seminar that includes the goal and current checkpoint.
-
-
+TWO DC ERRORS
 
  FAIL["test_place_apprentices_by_request", Minitest::Result, 192.3266328405589]
  test_place_apprentices_by_request#Minitest::Result (192.33s)

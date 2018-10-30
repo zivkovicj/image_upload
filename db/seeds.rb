@@ -328,14 +328,16 @@ end
 goal_array = [
     ["Turn in assignments",
       "I will turn in (?) % of my assignments this term.",
-     [["Write all assignments in my planner.", "Check my grades online to see which assignments I'm missing.","Choose a classmate who is very good at completing assignments. Ask to be partners with that classmate."],
+     [[0],
+      ["Write all assignments in my planner.", "Check my grades online to see which assignments I'm missing.","Choose a classmate who is very good at completing assignments. Ask to be partners with that classmate."],
       ["Turn in (?) % of my assignments so far."],
       ["Write all assignments in my planner.", "Check my grades online to see which assignments I'm missing.","Choose a classmate who is very good at completing assignments. Ask to be partners with that classmate."],
       ["I will turn in (?) % of my assignments since Checkpoint 2."]]],
       
     ["Arrive to class on time",
        "I will arrive to class on time for (?) % of the school days this term.",
-      [["Write a description of the reasons why I am sometimes tardy, and a short plan for how I will change my habits.", "Identify a friend who causes me to be tardy often."],
+      [[0],
+       ["Write a description of the reasons why I am sometimes tardy, and a short plan for how I will change my habits.", "Identify a friend who causes me to be tardy often."],
        ["Arrive to class on time for for (?) % of the school days so far."],
        ["Write a description of the reasons why I am sometimes tardy, and a short plan for how I will change my habits.", "Identify a friend who causes me to be tardy often."],
        ["I will arrive to class on time for (?) % of the days since Checkpoint 2."]]]]

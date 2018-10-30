@@ -11,7 +11,8 @@ Be_Awesome:
   user: archer
   extent: public
   statement_stem: I will be awesome (?) % of the time this term.
-  actions: [["Play something awesome","Say something awesome","Do something awesome","Write something awesome","Sing something awesome","Watch something awesome","Eat something awesome","Imagine something awesome"],
+  actions: [[0],
+  ["Play something awesome","Say something awesome","Do something awesome","Write something awesome","Sing something awesome","Watch something awesome","Eat something awesome","Imagine something awesome"],
   ["Be halfway awesome","Be awesome (?) % of the time so far","Rewrite your plan for how to be more awesome."],
   ["Play something awesome","Say something awesome","Do something awesome","Write something awesome","Sing something awesome","Watch something awesome","Eat something awesome","Imagine something awesome"],
   ["I will be awesome for (?)% of the school days this term."]]
@@ -23,7 +24,8 @@ Be_Kind:
   user: archer
   extent: public
   statement_stem: I will be kind (?) % of the time this term.
-  actions: [["Play something kind","Say something kind","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind","Imagine something kind"],
+  actions: [[0],
+  ["Play something kind","Say something kind","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind","Imagine something kind"],
    ["Testing Placeholder","I will be kind (?) % of the time so far."],
    ["Play something kind","Say something kind","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind","Imagine something kind"],
    ["I will be kind (?) % of the time."]]
@@ -35,7 +37,8 @@ other_teacher_goal:
   user: zacky
   extent: public
   statement_stem: I will achieve a goal written by another teacher.
-  actions: [["Play another teacher","Say another teacher","Do another teacher","Write another teacher","Sing another teacher","Watch another teacher","Eat another teacher","Imagine another teacher"],
+  actions: [[0],
+   ["Play another teacher","Say another teacher","Do another teacher","Write another teacher","Sing another teacher","Watch another teacher","Eat another teacher","Imagine another teacher"],
    ["I will be another teacher (?) % of the time so far."],
    ["Play another teacher","Say another teacher","Do another teacher","Write another teacher","Sing another teacher","Watch another teacher","Eat another teacher","Imagine another teacher"],
    ["I will be another teacher (?) % of the time."]]
@@ -46,7 +49,8 @@ private_goal:
   user: zacky
   extent: private
   statement_stem: I will achieve a private goal.
-  actions: [["Play something private","Say something private","Do something private","Write something private","Sing something private","Watch something private","Eat something private","Imagine something private"],
+  actions: [[0],
+   ["Play something private","Say something private","Do something private","Write something private","Sing something private","Watch something private","Eat something private","Imagine something private"],
    ["I will be something private (?) % of the time so far."],
    ["Play something private","Say something private","Do something private","Write something private","Sing something private","Watch something private","Eat something private","Imagine something private"],
    ["I will be something private (?) % of the time."]]

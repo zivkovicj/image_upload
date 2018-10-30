@@ -24,6 +24,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         assert_equal 7, @seminar.consultantThreshold
         assert_equal @teacher_1, @seminar.teachers.first
         assert_equal 1, @seminar.term
+        assert_equal Seminar.due_date_array, @seminar.checkpoint_due_dates
         
         sem_teach = SeminarTeacher.last
         assert_equal @teacher_1, sem_teach.user

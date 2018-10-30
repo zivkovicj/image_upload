@@ -11,13 +11,6 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         @old_st_count = SeminarTeacher.count
     end
     
-    def due_date_array
-        [["06/05/2019","06/06/2019","06/07/2019","06/08/2019"],
-         ["06/09/2019","06/10/2019","06/11/2019","06/12/2019"],
-         ["06/13/2019","06/14/2019","06/15/2019","06/16/2019"],
-         ["06/17/2019","06/18/2019","06/19/2019","06/20/2019"]]
-    end
-    
     def set_score_for_random_student(seminar)
         test_student = seminar.students.limit(1).order("RANDOM()").first
         test_obj = seminar.objectives.limit(1).order("RANDOM()").first
@@ -178,9 +171,56 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "due dates" do
+        
+        def due_date_array
+            [["0"],
+            ["0", "06/19/2019", "12/14/2017", "12/21/2017", "12/28/2017"],
+            ["0", "01/11/2018", "01/21/2018", "01/31/2018", "02/07/2018"],
+            ["0", "03/07/2018", "03/14/2018", "03/21/2018", "03/28/2018"],
+            ["0", "04/07/2018", "04/14/2018", "06/20/2019", "04/28/2018"]]
+        end
+    
         capybara_login(@teacher_1)
         click_on("seminar_#{@seminar.id}")
         click_on("Due Dates")
+        
+        fill_in "seminar[checkpoint_due_dates][1][1]", with: "06/19/2019"
+        fill_in "seminar[checkpoint_due_dates][4][3]", with: "06/20/2019"
+        click_on("Update This Class")
+        
+        @seminar.reload
+        assert_equal due_date_array, @seminar.checkpoint_due_dates
+    end
+    
+    test "due dates copy" do
+        @array_should_be = 
+        [["09/05/2019","09/06/2019","09/07/2019","09/08/2019"],
+         ["09/09/2019","09/10/2019","09/11/2019","09/12/2019"],
+         ["09/13/2019","09/14/2019","09/15/2019","09/16/2019"],
+         ["09/17/2019","09/18/2019","09/19/2019","09/20/2019"]]
+        
+        first_seminar = @teacher_1.first_seminar
+        first_seminar.update(:checkpoint_due_dates => @array_should_be)
+        second_seminar = @teacher_1.seminars.second
+        assert_not_equal @array_should_be, second_seminar.checkpoint_due_dates
+        
+        capybara_login(@teacher_1)
+        click_on("seminar_#{second_seminar.id}")
+        click_on("Due Dates")
+        click_on("Copy Due Dates from #{first_seminar.name}")
+        
+        assert_selector("h2", :text => "Edit #{second_seminar.name}")
+        second_seminar.reload
+        assert_equal @array_should_be, second_seminar.checkpoint_due_dates
+    end
+    
+    test "due dates no copy button for same class" do
+        first_seminar = @teacher_1.first_seminar
+        
+        capybara_login(@teacher_1)
+        click_on("seminar_#{first_seminar.id}")
+        click_on("Due Dates")
+        assert_no_text("Copy Due Dates from #{first_seminar.name}")
     end
     
     test "objectives" do
@@ -358,35 +398,5 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         assert @st_1.can_edit
     end
     
-    test "copy due dates" do
-        skip
-        @array_should_be = 
-        [["09/05/2019","09/06/2019","09/07/2019","09/08/2019"],
-         ["09/09/2019","09/10/2019","09/11/2019","09/12/2019"],
-         ["09/13/2019","09/14/2019","09/15/2019","09/16/2019"],
-         ["09/17/2019","09/18/2019","09/19/2019","09/20/2019"]]
-        
-        first_seminar = @teacher_1.first_seminar
-        first_seminar.update(:checkpoint_due_dates => @array_should_be)
-        second_seminar = @teacher_1.seminars.second
-        assert_not_equal @array_should_be, second_seminar.checkpoint_due_dates
-        
-        capybara_login(@teacher_1)
-        click_on("seminar_#{second_seminar.id}")
-        click_on("Due Dates")
-        click_on("Copy Due Dates from #{first_seminar.name}")
-        
-        assert_selector("h2", :text => "Edit #{second_seminar.name}")
-        second_seminar.reload
-        assert_equal @array_should_be, second_seminar.checkpoint_due_dates
-    end
     
-    test "no copy button for same class" do
-        skip
-        first_seminar = @teacher_1.first_seminar
-        
-        capybara_login(@teacher_1)
-        click_on("edit_seminar_#{first_seminar.id}")
-        assert_no_text("Copy Due Dates from #{first_seminar.name}")
-    end
 end

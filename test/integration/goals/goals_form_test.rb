@@ -16,8 +16,8 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
         # Fail on first try
         click_on('Create a New Goal Option')
         assert_text('Create a New Goal Option')
-        fill_in "goal[actions][0][0]", with: "Research types of beetles" #These first two should carry over to the second try after the first try fails.
-        fill_in "goal[actions][0][1]", with: "Buy beetles from Harmons"
+        fill_in "goal[actions][1][0]", with: "Research types of beetles" #These first two should carry over to the second try after the first try fails.
+        fill_in "goal[actions][1][1]", with: "Buy beetles from Harmons"
         assert_selector('div', :id => "error_explanation")
         assert_selector('li', :text => "Name can't be blank")
         assert_selector('li', :text => "checkpoint 2 needs at least one action")
@@ -27,18 +27,19 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
         # Correct on second try
         fill_in "goal[name]", with: "Eat more beetles"
         fill_in "goal[statement_stem]", with: "I will eat (?)% of the beetles in Utah"
-        fill_in "goal[actions][0][2]", with: "Sneak in to a demolished building"
-        fill_in "goal[actions][1][2]", with: "I will eat (?)% of the beetles in my county"
-        fill_in "goal[actions][2][2]", with: "Break the glass at an insect museum"
-        fill_in "goal[actions][2][4]", with: "Buy beetles from Rancho Market"
-        fill_in "goal[actions][3][0]", with: "I will eat (?) % of the beetles in the other counties."
+        fill_in "goal[actions][1][2]", with: "Sneak in to a demolished building"
+        fill_in "goal[actions][2][2]", with: "I will eat (?)% of the beetles in my county"
+        fill_in "goal[actions][3][2]", with: "Break the glass at an insect museum"
+        fill_in "goal[actions][3][4]", with: "Buy beetles from Rancho Market"
+        fill_in "goal[actions][4][0]", with: "I will eat (?) % of the beetles in the other counties."
         choose("public_goal")
         click_on('Create a New Goal Option')
         
         assert_equal @old_goal_count + 1, Goal.count
         newest_goal = Goal.last
         actions_should_be =
-            [["Research types of beetles", "Buy beetles from Harmons", "Sneak in to a demolished building"], 
+            [["0"],
+            ["Research types of beetles", "Buy beetles from Harmons", "Sneak in to a demolished building"], 
             ["I will eat (?)% of the beetles in my county"], 
             ["Break the glass at an insect museum", "Buy beetles from Rancho Market"], 
             ["I will eat (?) % of the beetles in the other counties."]]
@@ -64,14 +65,15 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
         
         assert_no_text("You are viewing the details of this goal. You may not make any edits because it was created by another teacher.")
         fill_in "goal[name]", with: "Be shockingly kind"
-        fill_in "goal[actions][0][1]", with: "Buy pez for my homies"
-        fill_in "goal[actions][0][7]", with: ""
-        fill_in "goal[actions][1][2]", with: "Will it add one option?"
+        fill_in "goal[actions][1][1]", with: "Buy pez for my homies"
+        fill_in "goal[actions][1][7]", with: ""
+        fill_in "goal[actions][2][2]", with: "Will it add one option?"
         choose("private_goal")
         click_on('Update this Goal Option')
         
         actions_should_be =
-            [["Play something kind","Buy pez for my homies","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind"],
+            [["0"],
+            ["Play something kind","Buy pez for my homies","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind"],
             ["Testing Placeholder","I will be kind (?) % of the time so far.","Will it add one option?"],
             ["Play something kind","Say something kind","Do something kind","Write something kind","Sing something kind","Watch something kind","Eat something kind","Imagine something kind"],
             ["I will be kind (?) % of the time."]]

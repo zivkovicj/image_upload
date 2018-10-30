@@ -1,4 +1,4 @@
-<% limit_array = [8,4,8,1] %>
+<% limit_array = [0,8,4,8,1] %>
 <% action_examples = 
   [["Example: I will turn in my next assignment as soon as it is due.", "Example: I will write a description of the reasons why I didn't turn in all my assignments last term."],
     ["Example: I will turn in (?) % of my assignments for the first half of the term."],
@@ -27,18 +27,20 @@
   
   
   <% if @assign_permission != "other" %>
+    <input type="hidden" name="goal[actions][0][0]" value="0" />
     <% 4.times do |n| %>
+      <% check_num = n + 1 %>
       <div class="singleOption">
-        <h2>Options for Checkpoint <%= n+1 %></h2>
-        <% if n == 0 %>
+        <h2>Options for Checkpoint <%= check_num %></h2>
+        <% if check_num == 0 %>
           <h3>You don't need to fill in every blank. You only need one option for each checkpoint.</h3>
-        <% elsif n == 1 or n == 3 %>
+        <% elsif check_num == 1 or check_num == 3 %>
           <h3>Include a question mark in parentheses in the spot where you want the student's target to appear. For example: If you type "Turn in (?) % of my assignments", 
           the student will see "Turn in 70 % of my assignments". </h3>
         <% end %>
-        <% limit_array[n].times do |m| %>
-          <% curr_val = @goal.actions[n][m] %>
-          <input type="text" name="goal[actions][<%= n %>][<%= m %>]" id="action_<%= n %>_choice_<%= m %>" value="<%= curr_val if curr_val.present? %>" placeholder="<%= action_examples[n][m] if action_examples[n][m] %>" />
+        <% limit_array[check_num].times do |m| %>
+          <% curr_val = @goal.actions[check_num][m] %>
+          <input type="text" name="goal[actions][<%= check_num %>][<%= m %>]" id="action_<%= n %>_choice_<%= m %>" value="<%= curr_val if curr_val.present? %>" placeholder="<%= action_examples[n][m] if action_examples[n][m] %>" />
         <% end %>
         </br>
       </div>

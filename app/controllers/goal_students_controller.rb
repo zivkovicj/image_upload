@@ -13,7 +13,8 @@ class GoalStudentsController < ApplicationController
     end
     
     def edit
-        @goal_student = GoalStudent.find(params[:id])
+        @gs = GoalStudent.find(params[:id])
+        redirect_to checkpoints_goal_student_path(@gs) if @gs.approved
     end
     
     def update

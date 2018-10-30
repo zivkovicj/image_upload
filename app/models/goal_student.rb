@@ -33,10 +33,10 @@ class GoalStudent < ApplicationRecord
         if self.goal_id.present?
             this_goal = Goal.find(self.goal_id)
             self.goal = this_goal
-            self.checkpoints.find_by(:sequence => 1).update(:action => this_goal.actions[0][0])
-            self.checkpoints.find_by(:sequence => 2).update(:action => this_goal.actions[1][0])
-            self.checkpoints.find_by(:sequence => 3).update(:action => this_goal.actions[2][0])
-            self.checkpoints.find_by(:sequence => 4).update(:action => this_goal.actions[3][0])
+            self.checkpoints.find_by(:sequence => 1).update(:action => this_goal.actions[1][0])
+            self.checkpoints.find_by(:sequence => 2).update(:action => this_goal.actions[2][0])
+            self.checkpoints.find_by(:sequence => 3).update(:action => this_goal.actions[3][0])
+            self.checkpoints.find_by(:sequence => 4).update(:action => this_goal.actions[4][0])
             self.save
         end
     end

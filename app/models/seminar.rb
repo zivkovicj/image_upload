@@ -16,7 +16,7 @@ class Seminar < ApplicationRecord
 
   serialize :checkpoint_due_dates
   
-  due_date_array = 
+  def self.due_date_array
     [
       [0],
       [0, "06/05/2019","06/05/2019","06/05/2019","06/05/2019"],
@@ -24,8 +24,9 @@ class Seminar < ApplicationRecord
       [0, "06/05/2019","06/05/2019","06/05/2019","06/05/2019"],
       [0, "06/05/2019","06/05/2019","06/05/2019","06/05/2019"]
     ]
+  end
      
-  attribute :checkpoint_due_dates, :text, default: due_date_array
+  attribute :checkpoint_due_dates, :text, default: self.due_date_array
   attribute :consultantThreshold, :integer, default: 7
   attribute :term, :integer, default: 1
   attribute :which_checkpoint, :integer, default: 0

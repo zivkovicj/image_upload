@@ -4,7 +4,7 @@ class GoalsController < ApplicationController
     
     def new
         @goal = Goal.new(:user => current_user)
-        @goal.actions = [[],[],[],[]]
+        @goal.actions = [[],[],[],[],[]]
         set_permissions(@goal)
     end
     
@@ -49,13 +49,14 @@ class GoalsController < ApplicationController
         end
     
         def set_actions
-           action_array = [[],[],[],[]]
+           action_array = [[],[],[],[],[]]
             params[:goal][:actions].each do |level_x|
                 x = level_x.to_i
                 params[:goal][:actions][level_x].each do |level_y|
                     this_string = params[:goal][:actions][level_x][level_y]
                     action_array[x].push(this_string) if this_string.present?
                 end
+                
             end
             @goal.actions = action_array 
         end

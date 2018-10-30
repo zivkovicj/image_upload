@@ -261,10 +261,6 @@ class ActiveSupport::TestCase
     fill_in "question_#{a}_choice_#{b}", with: @new_choice[a][b]
   end
   
-  def travel_to_testing_date
-    travel_to Time.zone.local(2017, 12, 07, 01, 04, 44)
-  end
-  
   def poltergeist_stuff
     Capybara.register_driver :poltergeist do |app|
       Capybara::Poltergeist::Driver.new(app, {:timeout => 60})

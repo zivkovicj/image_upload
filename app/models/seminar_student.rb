@@ -31,7 +31,8 @@ class SeminarStudent < ApplicationRecord
         
         def new_student_goals
             4.times do |n|
-                user.goal_students.create(:seminar_id => seminar.id, :term => n)
+                term_num = n + 1
+                user.goal_students.create(:seminar_id => seminar.id, :term => term_num)
             end
         end
         
