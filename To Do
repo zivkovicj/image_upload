@@ -57,21 +57,16 @@ Cannot delete a teacher because of the hanging commodities
 
 2.85  SHOW THE STUDENT'S GOAL IN THEIR SEMINAR_STUDENT SHOW VIEW
 
-Show the student's goal and the current checkpoint
+V Show the student's goal and the current checkpoint
     V Test view if no goal is selected
     V Then after goal is selected
-    
 V Teacher needs to be able to change the checkpoint, along with the term
-
 V Can I speed the loading of goal_students index action?
-
 V Return due dates to index and print display 
-
 V Include due date in the seminar_student display
-
 V Hints about (?) are showing up in the wrong checkpoints
 
-
+Do checkpoint sequences need to be updated for the live checkpoints?
 
 
 Checkpoint due dates could use a back button
@@ -83,11 +78,8 @@ Ability to delete a goal option
 Resetting points_this_term should set them to nil, not zero.
 Warning that running DC again will delete the previous arrangment from the same day.
 
-Check that two goal_students haven't been created for each student and term.
-
 After a student is moved, the old goal_students should be erased
 
-Do checkpoint sequences need to be updated for the live checkpoints?
 
 
 
