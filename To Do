@@ -52,58 +52,54 @@ Keep reading at
 
 
 
+Cannot delete a teacher because of the hanging commodities
+
+
+2.85  SHOW THE STUDENT'S GOAL IN THEIR SEMINAR_STUDENT SHOW VIEW
+
+Show the student's goal and the current checkpoint
+    V Test view if no goal is selected
+    V Then after goal is selected
+    
+V Teacher needs to be able to change the checkpoint, along with the term
+
+V Can I speed the loading of goal_students index action?
+
+V Return due dates to index and print display 
+
+V Include due date in the seminar_student display
+
+V Hints about (?) are showing up in the wrong checkpoints
 
 
 
 
-GET GOALKEEPER WORKING
-V Edit checkpoint due dates
-    V First entry of checkpoint array needs to be a zero entry
-    V This needs to be accounted for in method that changes due dates
-V Set all terms and checkpoints so that they match what the teacher will see.
-V Push zeros into the first spots for goal actions
-
-V In goal edit view, don't allow editing if goal has already been approved
-    V Let student know of this
-V Checkpoints need to preload with current values
-
-
-zivkovicj:~/workspace (master) $ rails test
-Running via Spring preloader in process 66636
-Started with run options --seed 62498
-
-
-
-Adjust the sequence value of existing checkpoints
-And the checkpoint_due_dates
-Use method below to push zeros into the first spots for goal actions
-
-Goal.all.each do |goal|
-    old_actions = goal.actions
-    new_actions = old_actions.unshift([0])
-    goal.update(:actions => new_actions)
-end
-
-
-
-SHOW THE STUDENT'S GOAL IN THEIR SEMINAR_STUDENT SHOW VIEW
-Seminar_Student
-    Goal
-Update when goal is chosen
-Clear when term resets
-Can I speed the loading of goal_students index action?
+Checkpoint due dates could use a back button
 
 Test checkpoint editing if a due date is nil
+
+Ability to delete a goal option
 
 Resetting points_this_term should set them to nil, not zero.
 Warning that running DC again will delete the previous arrangment from the same day.
 
+Check that two goal_students haven't been created for each student and term.
+
+After a student is moved, the old goal_students should be erased
+
+Do checkpoint sequences need to be updated for the live checkpoints?
 
 
-ADD CHECKPOINT TO SEMINAR_STUDENT GOAL 
+
+
+
+
 
 
 TWO DC ERRORS
+
+If a due date is updated to something that isn't a date, back-end needs to change that.
+
 
  FAIL["test_place_apprentices_by_request", Minitest::Result, 192.3266328405589]
  test_place_apprentices_by_request#Minitest::Result (192.33s)
@@ -171,6 +167,8 @@ DON'T ALLOW TEACHER TO RUN AN NEW CONSULTANCY IN THE SAME DAY IF IT'S ALREADY SE
 NEEDED FIXES
 Navmenu on the quantities is weird
 Need a navmenu when giving keys to a whole class
+Option to mark consultancy permanent without giving keys
+    Or better yet, just don't give keys for objectives that have no questions.  
 
 HALL PASS APP
 Student enters number.
@@ -179,7 +177,8 @@ Screen shows who is using the hall pass.
 Flashes red if student has already used hall pass twice this week.
     Or too many times in a term.
 
-
+SLUNK
+Manage a class game of slunk
 
 
 You could install the exception notifier, which will send you an email for every 500 error including a full stack trace.

@@ -32,9 +32,9 @@
       <% check_num = n + 1 %>
       <div class="singleOption">
         <h2>Options for Checkpoint <%= check_num %></h2>
-        <% if check_num == 0 %>
+        <% if check_num == 1 %>
           <h3>You don't need to fill in every blank. You only need one option for each checkpoint.</h3>
-        <% elsif check_num == 1 or check_num == 3 %>
+        <% elsif check_num == 2 or check_num == 4 %>
           <h3>Include a question mark in parentheses in the spot where you want the student's target to appear. For example: If you type "Turn in (?) % of my assignments", 
           the student will see "Turn in 70 % of my assignments". </h3>
         <% end %>

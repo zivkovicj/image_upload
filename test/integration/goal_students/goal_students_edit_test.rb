@@ -35,7 +35,9 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         @check_4 = @gs.checkpoints.find_by(:sequence => 4)
         assert_nil @check_1.action
         
-        go_to_goal_screen
+        go_to_first_period
+        assert_selector('h3', :text => "No goal set")
+        click_on("Edit Goal")
         assert_selector('input', :id => "goal_submit_button", :visible => false)
         select("#{Goal.second.name}", :from => 'goal_student_goal_id')
         assert_selector('input', :id => "goal_submit_button", :visible => true)
@@ -66,6 +68,9 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
         assert_equal "Play something kind", @check_3.action  # Should stay as the default because it wasn't changed.
         
         assert_selector('h5', :text => @seminar.name)
+        assert_no_selector('h3', :text => "No goal set")
+        assert_selector('h2', :text => @gs.statement_with_target)
+        assert_selector('h3', :text => @gs.checkpoints.find_by(:sequence => 1).statement)
     end
     
     test "default goal if already chosen" do

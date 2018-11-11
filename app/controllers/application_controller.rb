@@ -43,10 +43,6 @@ class ApplicationController < ActionController::Base
     end
   end
   
-  def friendly_date(input)
-      Date.strptime(input, "%m/%d/%Y")
-  end
-  
   def redirect_for_students
     redirect_to(login_url) if current_user.type == "Student"
   end

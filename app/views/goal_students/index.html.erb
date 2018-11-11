@@ -18,14 +18,15 @@
 </br>
 
 
-<% them_kids = @seminar.students.order(:last_name) %>
-<% them_kids.each do |student| %>
-    <% @student = student %>
-    <% @gs = student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
-    <% @gs_id = @gs.id if @gs %>
+<% them_gs = @seminar.goal_students.where(:term => @this_term).sort_by{|item| item.user.last_name} %>
+<% them_gs.each do |gs| %>
+    <% @student = gs.user %>
+    <%# @gs = student.goal_students.find_by(:seminar => @seminar, :term => @seminar.term) %>
+    <% @gs = gs %>
+    <% @gs_id = gs.id %>
     <table class="table-borderless" style="table-layout:fixed">
         <tr>
-            <td colspan="3"><h3><strong><%= student.last_name_first %></strong></h3></td>
+            <td colspan="3"><h3><strong><%= @student.last_name_first %></strong></h3></td>
             
             &emsp; <%= render 'goal_students/index_pieces/goal_choice' %>
         </tr>
@@ -37,8 +38,6 @@
     </table>
     <% @edit_type_for_comment = "Teacher" %>
     <%= render 'shared/checkpoint_table/checkpoint_table' %>
-    
-    
 <% end %>
 
 

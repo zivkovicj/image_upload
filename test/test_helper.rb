@@ -47,6 +47,10 @@ class ActiveSupport::TestCase
     Question.where.not(:picture_id => nil).update_all(:picture_id => nil) 
   end
   
+  def go_to_seminar
+    click_on("seminar_#{@seminar.id}")
+  end
+  
   def set_specific_score(student, objective, score)
     ObjectiveStudent.find_by(:user => student, :objective => objective)
       .update(:points_all_time => score, :points_this_term => score)

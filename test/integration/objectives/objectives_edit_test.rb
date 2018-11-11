@@ -213,7 +213,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert @assign_to_add.preassigns.include?(@objective_80)
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Objectives")
         check("check_#{@assign_to_add.id}")
         click_on('Update This Class')

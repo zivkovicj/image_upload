@@ -26,6 +26,11 @@ class SeminarStudentsController < ApplicationController
   
   def show
     setup_ss_vars
+    term = @seminar.term
+    this_sequence = @seminar.which_checkpoint
+    @gs = GoalStudent.find_by(:user => @student, :seminar => @seminar, :term => term)
+    @checkpoint = Checkpoint.find_by(:goal_student => @gs, :sequence => this_sequence)
+    @checkpoint_due_date = @seminar.checkpoint_due_dates[term][this_sequence]
     
     #@ss_id = @ss.id
     
@@ -38,8 +43,7 @@ class SeminarStudentsController < ApplicationController
     #@bucks_current = @student.bucks_current(:seminar, @seminar)
     #@school_or_seminar = "seminar"
     
-    #@this_checkpoint = @seminar.which_checkpoint
-    #@gs = @student.goal_students.find_by(:seminar => @seminar, :term => @term)
+    
     
     #@objectives = @seminar.objectives.order(:name)
     #objective_ids = @objectives.map(&:id)

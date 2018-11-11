@@ -13,7 +13,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     
     def go_to_invite_screen
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Shared Teachers")
     end
     
@@ -135,7 +135,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         assert_equal false, @st_2.can_edit
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Shared Teachers")
         click_on("give_edit_privileges_#{@other_teacher.id}")
         

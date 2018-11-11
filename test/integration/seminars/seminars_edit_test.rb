@@ -11,6 +11,10 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         @old_st_count = SeminarTeacher.count
     end
     
+    def go_to_term_and_checkpoint
+        click_on("Term and Checkpoint") 
+    end
+    
     def set_score_for_random_student(seminar)
         test_student = seminar.students.limit(1).order("RANDOM()").first
         test_obj = seminar.objectives.limit(1).order("RANDOM()").first
@@ -27,7 +31,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         @this_preassign = @assign_to_add.preassigns.first
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Objectives")
         
         check("check_#{@assign_to_add.id}")
@@ -46,7 +50,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         old_thresh = @seminar.consultantThreshold
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Basic Info")
         
         click_on("Update This Class")
@@ -64,7 +68,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         assert_not_equal 8, @seminar.consultantThreshold
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Basic Info")
         
         fill_in "seminar[name]", with: "Dangle"
@@ -88,7 +92,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         old_name = @seminar.name
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Basic Info")
         
         fill_in "seminar[name]", with: ""
@@ -103,18 +107,22 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
     
     test "change term and reset grades" do
         assert_equal 1, @seminar.term
+        assert_equal 1, @seminar.which_checkpoint
         setup_scores
         test_obj_stud = set_score_for_random_student(@seminar)
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
-        click_on("Grading Term")
+        go_to_seminar
+        go_to_term_and_checkpoint
         
-        find("#seminar_term").select("3")  # Choose 5 for 5th grade
+        find("#seminar_term").select("3")
+        find("#seminar_which_checkpoint").select("4")
         check("reset")
         click_on("Update This Class")
         
-        assert_equal 3, @seminar.reload.term
+        @seminar.reload
+        assert_equal 3, @seminar.term
+        assert_equal 4, @seminar.which_checkpoint
         assert_equal 1, @seminar_2.reload.term    # To make sure that only changes if the repeat choice is checked.
         assert_equal 0, test_obj_stud.reload.points_this_term
     end
@@ -123,8 +131,8 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         assert_equal 1, @seminar.term
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
-        click_on("Grading Term")
+        go_to_seminar
+        go_to_term_and_checkpoint
         
         click_on("Update This Class")
         
@@ -136,8 +144,8 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         test_obj_stud = set_score_for_random_student(@seminar)
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
-        click_on("Grading Term")
+        go_to_seminar
+        go_to_term_and_checkpoint
         
         find("#seminar_term").select("3")  # Choose 5 for 5th grade
         click_on("Update This Class")
@@ -155,8 +163,8 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         test_obj_stud_2 = set_score_for_random_student(@seminar_2)
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
-        click_on("Grading Term")
+        go_to_seminar
+        go_to_term_and_checkpoint
         
         find("#seminar_term").select("3")  # Choose 5 for 5th grade
         check("reset")
@@ -181,7 +189,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         end
     
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Due Dates")
         
         fill_in "seminar[checkpoint_due_dates][1][1]", with: "06/19/2019"
@@ -230,7 +238,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         @objective_zero_priority = objectives(:objective_zero_priority)
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Objectives")
         
         obj_array.each do |obj|
@@ -281,7 +289,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         obj_stud_1_1.update(:pretest_keys => 0, :points_all_time => 10)
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Pretests")
         
         check("pretest_on_#{@os_1.objective.id}")
@@ -311,7 +319,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         @seminar.objective_seminars.update_all(:priority => 2)
         
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Priorities")
         
         choose("#{@os_0.id}_3")
@@ -330,7 +338,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
     
     test "delete seminar" do
         capybara_login(@teacher_1)
-        click_on("seminar_#{@seminar.id}")
+        go_to_seminar
         click_on("Basic Info")
         
         assert_no_selector('p', :id => "remove_#{@seminar.id}")

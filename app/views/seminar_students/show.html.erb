@@ -1,12 +1,18 @@
 
 <div class="row">
-    <div class="col-sm-7 singleOption">
+    <div class="col-sm-5 singleOption">
         <h1 class="chekkity"><%= @student.full_name %></h1>
         <h5><%= @seminar.name %></h5>
         <% @teachers.each do |teacher| %>
             <%= teacher.name_with_title %>
             &emsp;
         <% end %>
+    </div>
+    
+    <div class="col-sm-1"></div>
+    
+    <div class="col-sm-6 singleOption">
+        <%= render 'student_profile_checkpoint_statement' %>
     </div>
 </div>
 
@@ -32,5 +38,7 @@
     %>
 <% end %>
 
-<%= render 'shared/submenus' %>
-
+</br>
+<div class="row">
+    <%= render 'shared/submenus' %>
+</div>

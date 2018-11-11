@@ -7,13 +7,15 @@
     </tr>
     <% @gs.checkpoints_in_order.each do |checkpoint| %>
         <% @checkpoint = checkpoint %>
+        <% this_sequence = @checkpoint.sequence %>
         <tr>
-            <td><%= (checkpoint.sequence) + 1 %>)</td>
+            <td><%= (this_sequence) %>)</td>
             <%= render 'shared/checkpoint_table/achievement_choice' %>
             <td class="center"><%= @checkpoint.grade_percentage %></td>
             <td>
                 <%= render 'shared/checkpoint_table/action_choice' %>
-                <%= render 'shared/checkpoint_table/comments' %>
+                Due <%= friendly_date(@checkpoint_due_dates[this_sequence]) %>
+                </br><%= render 'shared/checkpoint_table/comments' %>
             </td>
         </tr>
         

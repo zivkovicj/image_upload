@@ -94,6 +94,7 @@ class SeminarsController < ApplicationController
     def change_term
        @seminar = Seminar.find(params[:id]) 
        @current_term = @seminar.term
+       @current_checkpoint = @seminar.which_checkpoint
     end
     
     def due_dates
@@ -185,7 +186,8 @@ class SeminarsController < ApplicationController
     
     private 
         def seminar_params
-            params.require(:seminar).permit(:name, :consultantThreshold, :default_buck_increment, :school_year, :term, objective_ids: [], teacher_ids: [])
+            params.require(:seminar).permit(:name, :consultantThreshold, :default_buck_increment, 
+                :school_year, :term, :which_checkpoint, objective_ids: [], teacher_ids: [])
         end
         
         def add_pre_reqs_to_seminar

@@ -12,7 +12,7 @@ barebones: &minimal
   default_buck_increment: 5
   school_year: 9
   term: 1
-  which_checkpoint: 0
+  which_checkpoint: 1
 
 one:
   name: 1st Period

@@ -14,7 +14,7 @@
   <%= render 'shared/error_messages', object: @seminar %>
   
   <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-2">
       <h5>Current term: <%= @current_term %></h5>
       <% suggested_term = 4 %>
       <% suggested_term = @current_term + 1 unless @current_term == 4 %>
@@ -23,17 +23,35 @@
       <%= f.select :term, select_options, :selected => suggested_term %>
     </div>
     
-    <div class="col-sm-4 singleOption">
+    <div class="col-sm-2">
+      <h5>Current checkpoint: <%= @current_checkpoint %></h5>
+      <% suggested_checkpoint = 4 %>
+      <% suggested_checkpoint = @current_checkpoint + 1 unless @current_checkpoint == 4 %>
+      </br>
+      <%= f.label "Change to:" %>
+      <%= f.select :which_checkpoint, select_options, :selected => suggested_checkpoint %>
+    </div>
+    
+    <div class="col-sm-1"></div>
+    
+    <div class="col-sm-3 singleOption">
       <%= f.label "Reset Student Grades for This Term" %>
       <p>Warning: This cannot be undone.</p>
       <%= check_box_tag :reset %>
     </div>
     
-    <div class="col-sm-4 singleOption">
+    <div class="col-sm-1"></div>
+    
+    <div class="col-sm-3 singleOption">
       <%= f.label "Repeat this change for all of your classes?" %>
       <%= check_box_tag :repeat %>
     </div>
   </div>
-    
+  
+  </br>  
+  <div class="row">
     <%= f.submit yield(:button_text), class: "btn btn-primary" %>
+  </div>
+  
+  
 <% end %>

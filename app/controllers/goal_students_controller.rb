@@ -4,6 +4,7 @@ class GoalStudentsController < ApplicationController
         this_param = params[:seminar] || params[:format]
         @seminar = Seminar.find(this_param)
         goals_stuff
+        
     end
     
     def print
@@ -53,8 +54,8 @@ class GoalStudentsController < ApplicationController
         end
         
         def goals_stuff
-            @seminar.update(:which_checkpoint => params[:which_checkpoint]) if params[:which_checkpoint]
             @this_term = @seminar.term
             @this_checkpoint = @seminar.which_checkpoint
+            @checkpoint_due_dates = @seminar.checkpoint_due_dates[@this_term]
         end
 end
