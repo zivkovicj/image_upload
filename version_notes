@@ -19,6 +19,17 @@ Between each update, manually test:
     Student cannot change quiz answers after the quiz is finished 
 
 
+2.85  SHOW THE STUDENT'S GOAL IN THEIR SEMINAR_STUDENT SHOW VIEW
+
+Show the student's goal and the current checkpoint
+    Test view if no goal is selected
+    Then after goal is selected
+Teacher needs to be able to change the checkpoint, along with the term
+Can I speed the loading of goal_students index action?
+Return due dates to index and print display 
+Include due date in the seminar_student display
+Hints about (?) are showing up in the wrong checkpoints
+
 
 2.84 GET GOALKEEPER WORKING
 Edit checkpoint due dates
@@ -602,7 +613,7 @@ Migrate to remove benchmark column
 
 2.53 TARGETS WITHIN ACTIONS
 When updating a target, it doesn't seem to update the checkpoint actions.
-Make sure that updating a goal target, etc, doesn't change the student's actions by calling the gs_update_stuff function.
+Make sure that updating a goal target, etc, doesn't change the student's actions by calling the set_checkpoints function.
 Complete the percent_array. The lower numbers are needed for marking low achievement.
 Test that "Update this goal" button appears when student changes the goal.
 Cancel button while creating a new class.

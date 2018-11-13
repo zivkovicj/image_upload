@@ -21,7 +21,7 @@ class GoalStudentsController < ApplicationController
     def update
         @gs = GoalStudent.find(params[:id])
         if @gs.update_attributes(goal_student_params)
-            @gs.gs_update_stuff
+            @gs.set_checkpoints if params[:set_checkpoints]
             flash[:success] = "Profile updated"
             redirect_to checkpoints_goal_student_path(@gs)
         else

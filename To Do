@@ -52,21 +52,12 @@ Keep reading at
 
 
 
-Cannot delete a teacher because of the hanging commodities
 
 
-2.85  SHOW THE STUDENT'S GOAL IN THEIR SEMINAR_STUDENT SHOW VIEW
 
-V Show the student's goal and the current checkpoint
-    V Test view if no goal is selected
-    V Then after goal is selected
-V Teacher needs to be able to change the checkpoint, along with the term
-V Can I speed the loading of goal_students index action?
-V Return due dates to index and print display 
-V Include due date in the seminar_student display
-V Hints about (?) are showing up in the wrong checkpoints
+CHECKPOINT ACTION APPROVAL BUG
+When the teacher approves the goal, the checkpoint action is reset to the first action.
 
-Do checkpoint sequences need to be updated for the live checkpoints?
 
 
 Checkpoint due dates could use a back button
@@ -79,6 +70,8 @@ Resetting points_this_term should set them to nil, not zero.
 Warning that running DC again will delete the previous arrangment from the same day.
 
 After a student is moved, the old goal_students should be erased
+
+Cannot delete a teacher because of the hanging commodities
 
 
 
@@ -108,6 +101,12 @@ If a due date is updated to something that isn't a date, back-end needs to chang
         Expected: Sat, 13 Oct 2018
           Actual: Sun, 14 Oct 2018
         test/integration/consultancies/consultancies_show_test.rb:233:in `block in <class:ConsultanciesShowTest>'
+
+FAIL["test_deprioritize_consultants_who_already_have_keys", Minitest::Result, 924.3650707723573]
+ test_deprioritize_consultants_who_already_have_keys#Minitest::Result (924.37s)
+        Expected: 0
+          Actual: 1
+        test/integration/consultancies/consultancies_show_test.rb:371:in `block in <class:ConsultanciesShowTest>'
 
 2.?? ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
 
