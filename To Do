@@ -55,26 +55,15 @@ Keep reading at
 
 
 
-CHECKPOINT ACTION APPROVAL BUG
-When the teacher approves the goal, the checkpoint action is reset to the first action.
 
 
 
-Checkpoint due dates could use a back button
-
-Test checkpoint editing if a due date is nil
-
-Ability to delete a goal option
-
-Resetting points_this_term should set them to nil, not zero.
-Warning that running DC again will delete the previous arrangment from the same day.
-
-After a student is moved, the old goal_students should be erased
-
-Cannot delete a teacher because of the hanging commodities
 
 
+STICKY STUDENT NAMES AND OBJECTIVE NAMES
+https://www.w3schools.com/howto/howto_js_sticky_header.asp
 
+Less blank space on the side of the scoresheet
 
 
 
@@ -128,14 +117,20 @@ Live site is not showing student signatory badge right now.
 
 
 
+Checkpoint due dates could use a back button
+
+Test checkpoint editing if a due date is nil
+
+Ability to delete a goal option
+
+Resetting points_this_term should set them to nil, not zero.
+Warning that running DC again will delete the previous arrangment from the same day.
+
+After a student is moved, the old goal_students should be erased
+
+Cannot delete a teacher because of the hanging commodities
 
 
-
-
-
-
-STICKY STUDENT NAMES AND OBJECTIVE NAMES
-Less blank space on the side of the scoresheet
 
 
 OBJECTIVE PERMISSIONS
