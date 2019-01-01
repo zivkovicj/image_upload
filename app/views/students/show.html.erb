@@ -10,11 +10,11 @@
     <div class="singleOption lowSingOpt">
         <h3><strong>Your Classes</strong></h3>
     </div>
-    <br/>
+    </br>
     <% @student.seminar_students.each do |ss| %>
         <%= link_to seminar_student_path(ss) do %>
             <div class="singleOption lowSingOpt linkDiv hoverHigh">
-                <h4 class="linkHeader"><%= ss.seminar.name %></h4>
+                <h4 class="linkHeader plain_link"><%= ss.seminar.name %></h4>
             </div>
         <% end %>
     <% end %>
@@ -23,7 +23,7 @@
     <% if false %>
         <%= link_to commodities_path(:school_id => @school.id) do %>
             <div class="singleOption lowSingOpt linkDiv hoverHigh">
-                <h4 class="linkHeader"><%= @school.market_name %></h4>
+                <h4 class="linkHeader plain_link"><%= @school.market_name %></h4>
             </div>
         <% end %>
     <% end %>

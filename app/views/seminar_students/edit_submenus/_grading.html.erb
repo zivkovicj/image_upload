@@ -30,7 +30,7 @@
   </div>
   <div class="col-sm-6">
     <div class="singleOption lowSingOpt center">
-      <h3><%= yield(:scores_label) %></h3><br/>
+      <h3><%= yield(:scores_label) %></h3></br>
       <table class="marginTable">
         <% this_ss = @student.seminar_students.find_by(:seminar_id => @seminar.id) %>
         <% @seminar.objectives.order(:name).each do |objective| %>
@@ -40,7 +40,7 @@
             </tr>
         <% end %>
       </table>
-      <br/>
+      </br>
     </div>
   </div>
 </div>

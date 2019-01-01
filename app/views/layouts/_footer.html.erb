@@ -4,13 +4,10 @@
               'https://mrzschool.herokuapp.com/' %>
     <nav>
       <ul>
-        <li><%= link_to "About",   about_path %></li>
-        <li><%= link_to "Contact", contact_path %></li>
-        <li><%= link_to "Partner", partner_path %></li>
+        <li><%= link_to "About",   about_path, :class => "plain_link" %></li>
+        <li><%= link_to "Contact", contact_path, :class => "plain_link" %></li>
+        <li><%= link_to "Partner", partner_path, :class => "plain_link" %></li>
       </ul>
     </nav>
-  </div>
-  <div class="row">
-    <h4>It's time to stop teaching as though all 30 students shared the same brain.</h4>
   </div>
 </footer>

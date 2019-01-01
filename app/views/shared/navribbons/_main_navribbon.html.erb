@@ -21,7 +21,10 @@
                     <% current_user.seminars.order(:name).limit(10).each do |seminar| %>
                         <td class="<%= 'highlighted' if (@seminar && @seminar==seminar) %>">
                             <h5>
-                                <%= link_to seminar.name[0], send(@this_path, seminar, :seminar_id => seminar.id), :id => "other_class_#{seminar.id}" %>
+                                <%= link_to seminar.name[0],
+                                    send(@this_path, seminar, :seminar_id => seminar.id),
+                                    :class => "plain_link",
+                                    :id => "other_class_#{seminar.id}" %>
                                 &nbsp;
                             </h5>
                         </td>
@@ -34,7 +37,9 @@
         <table class="table-borderless">
             <tr>
                 <td class="small_spacer"></td>
-                <td><%= link_to image_tag("home.png"), current_user, :id => "home_link" %></td>
+                <td><%= link_to image_tag("home.png"), current_user,
+                    :id => "home_link" %>
+                </td>
                 <td class="spacer"></td>
                 
                 <% if @seminar %>
@@ -53,7 +58,9 @@
                 <% if @seminar %>
                     <% teacher_show_links.each do |z| %>
                         <td class="<%= 'highlighted' if (action_name == z[3] && controller_name == z[4]) %> center">
-                            <b><%= link_to z[0], send("#{z[2]}_url", @seminar, :seminar_id => @seminar.id) %></b>
+                            <b><%= link_to z[0],
+                                send("#{z[2]}_url", @seminar, :seminar_id => @seminar.id),
+                                :class => "plain_link" %></b>
                         </td>
                     <% end %>
                 <% end %>
@@ -63,4 +70,4 @@
     </div>
 <% end %>
 
-<br/>
+</br>

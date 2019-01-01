@@ -6,10 +6,17 @@ class StudentsController < ApplicationController
   include AddStudentStuff
   
   def new
+    @seminar = Seminar.find(params[:seminar_id]) if params[:seminar_id]
+    @default_year = 7
+    if @seminar
+      @default_year = @seminar.school_year
+    end
+    current_user.update(:current_class => params[:seminar_id])
     new_student_stuff
   end
 
   def create
+    
     @seminar = Seminar.find(params[:ss][:seminar_id])
     one_saved = false
     params["students"].each do |student|

@@ -1,5 +1,7 @@
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
 
 /* mixins, variables, etc. */
 
@@ -11,40 +13,33 @@ $button-color: #4dc3ff;
 /* universal */
 
 body {
-  padding-top: 60px;
-}
-
-section {
-  overflow: auto;
-}
-
-textarea {
-  resize: vertical;
+  padding-top: 40px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 
-
-.center {
-  text-align: center;
-  h1 {
-    margin-bottom: 10px;
-  }
-}
-
-body { 
-    padding-top: 100px; 
-}
 
 /* typography */
+
+
+.plain_link {
+  color: black !important; 
+  text-decoration: none;
+  &:hover {
+    color: black;
+    text-decoration: none;
+  }
+}
 
 h1, h2, h3, h4, h5, h6 {
   line-height: 1;
 }
 
 h1 {
-  font-size: 3em;
+  font-size: 2em;
   letter-spacing: -2px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
@@ -73,6 +68,18 @@ p {
 }
 
 
+
+.center {
+  text-align: center;
+}
+
+.highlighted {
+  background: #82c2ed;
+}
+
+
+
+
 /* header */
 
 #logo {
@@ -82,7 +89,8 @@ p {
   color: white;
   text-transform: uppercase;
   letter-spacing: -1px;
-  padding-top: 9px;
+  padding-top: 12px;
+  padding-left: 9px;
   font-weight: bold;
   &:hover {
     color: white;
@@ -92,11 +100,7 @@ p {
 
 header {
   h4 {
-  color: white;
-  text-align: center;
-  }
-  ul li {
-    color: white;
+    text-align: center;
   }
 }
 
@@ -112,19 +116,13 @@ header {
   color: white;
 }
 
-.dropdown-menu {
-  background: black;
-}
-
-.dropdown-menu li a:hover {
-  color: black;
-}
-
 .slogan {
   color: white;
   margin: 0px 0px 5px 280px;
   font-weight: bold;
+  padding-top: 12px;
 }
+
 
 
 
@@ -142,9 +140,6 @@ footer {
       text-decoration: none;
     }
   }
-  small {
-    float: left;
-  }
   ul {
     float: right;
     list-style: none;
@@ -155,6 +150,7 @@ footer {
   }
 }
 
+
 /* mixins, variables, etc. */
 
 @mixin box_sizing {
@@ -163,18 +159,8 @@ footer {
   box-sizing:         border-box;
 }
 
+
 /* forms */
-
-input, textarea, select, .uneditable-input {
-  border: 1px solid #bbb;
-  width: 100%;
-  margin-bottom: 15px;
-  @include box_sizing;
-}
-
-input {
-  height: auto !important;
-}
 
 #error_explanation {
   color: red;
@@ -182,18 +168,6 @@ input {
     color: red;
     margin: 0 0 30px 0;
   }
-}
-
-.field_with_errors {
-  @extend .has-error;
-  .form-control {
-    color: $state-danger-text;
-  }
-}
-
-.short-field {
-  width: 40%;
-  display: inline;
 }
 
 .checkbox {
@@ -205,23 +179,6 @@ input {
   }
 }
 
-#session_remember_me {
-  width: auto;
-  margin-left: 0;
-}
-
-/* Users index */
-
-.users {
-  list-style: none;
-  margin: 0;
-  li {
-    overflow: auto;
-    padding: 10px 0;
-    border-bottom: 1px solid $gray-lighter;
-  }
-}
-
 
 
 /* Tables */
@@ -229,6 +186,7 @@ input {
 table, th, td {
   border: 1px solid black;
 }
+
 
 .table-borderless {
     border: none !important;
@@ -243,64 +201,42 @@ table, th, td {
     }
 }
 
-.table-borderless .with-border {
-  border: 4px solid black !important;
-  width: 175px;
-  height: 60px;
-  td {
-      border: 1px solid black !important;
-  }
+.reg_cell {
+  padding-left:7px;
+}
+
+.score_table {
+  table-layout: fixed;
+}
+
+.score_header {
+  width: 85px;
+}
+
+.student_name_header {
+  height: 24px;
+}
+
+.score_cell {
+  width: 87px;
+  height: 24px;
+  padding: 0px;
+}
+
+#table_div {
+  overflow: scroll;
+  width:1200px;
+  height:500px;
+  position: relative
 }
 
 .button-within {
   height: 45px;
 }
 
-.topic {
-  background-color: $apprentice-color !important;
-}
 
-.consultant-group {
-  margin-bottom: 20px;
-}
 
-.studentName {
-  font-size: large;
-  font-weight: bold;
-  margin-bottom: 2px;
-  margin-top: 5px;
-  margin-left: 3px;
-  margin-right: 3px;
-  
-  display: block; /* or inline-block */
-  overflow: hidden;
-  max-height: 3em;
-  line-height: 1.2em;
-}
 
-.consultant {
-  background: $consultant-color !important;
-  color: white;
-  padding: 5px;
-}
-
-.small_spacer {
-  width: 50px;
-}
-
-.spacer {
-  width: 150px;
-}
-
-.attendanceName {
-  display: inline-block;
-  margin: 0px;
-}
-
-.presentTag {
-  display: inline-block;
-  margin: 0px;
-}
 
 
 /* buttons */
@@ -315,7 +251,6 @@ table, th, td {
 .btn-primary a:link, a:visited, a:active {
     color: white;
 }
-
 
 .big_link {
   border-radius: 36px;
@@ -333,15 +268,13 @@ table, th, td {
   color: black;
 }
 
-a {
-    text-decoration: none;
-}
 
 
 
 .btn-small {
   width: 80px;
   padding: 5px 10px 5px 10px;
+  margin: 8px;
   display: inline;
 }
 
@@ -359,151 +292,14 @@ a {
 }
 
 .confirm_button {
+  background: red;
+  box-shadow: 0 3px 0 0 #000000;
   margin: 10px;
 }
 
 
 
-/* miscellaneous */
-
-.ribbon {
-  background: #e6ffff;
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-}
-
-td .navIcon {
-  display: block;
-  margin: 0 auto;
-}
-
-.highlighted {
-  background: #82c2ed;
-}
-
-.debug_dump {
-  clear: both;
-  float: left;
-  width: 100%;
-  margin-top: 45px;
-  @include box_sizing;
-}
-
-.currently_hidden {
-  display: none;
-}
-
-.click-1 {
-  display: none;
-}
-
-.click-2 {
-  display: none;
-}
-
-.click-3 {
-  display: none;
-}
-
-.second-add-button {
-  display: none;
-}
-
-.third-add-button {
-  display: none;
-}
-
-
-.draggable-item {
-  list-style-type: none;
-  border: none;
-  background: #ffeecc;
-  width: 140px;
-  height: 60px; 
-  border-radius: 10px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-left: -4px;
-  position: relative;
-}
-
-.my-placeholder {
-  background: #AAFFAA;
-  border: 1px dashed gray;
-  width: 140px;
-  height: 30px;
-}
-
-.seat {
-  border: 2px solid black;
-  width: 168px;
-  height: 76px;
-  margin: 5px 5px 5px 5px;
-}
-
-.supernaut {
-  background: #b3ffcc;
-  h4 {
-    margin-left: 30px;
-  }
-}
-
-.block {
-  display: inline-block;
-  margin-right: 20px;
-}
-
-#dashOutline {
-  border: 1px dashed black;
-  border-radius: 10px;
-  width: 700px;
-  height: 60px;
-  h4 {
-    text-align: center;
-  }
-}
-
-.themScores {
-  width: 42px;
-  text-align: center;
-}
-
-.scoreInput {
-  width: 32px;
-}
-
-.commentInput {
-  width: 500px;
-}
-
-.absent {
-  background: red;
-}
-
-
-th.rotate {
-  /* Something you can count on */
-  height: 250px;
-  white-space: nowrap;
-}
-
-th.rotate > div {
-  transform: 
-    /* Magic Numbers */
-    translate(5px, 90px)
-    /* 45 is really 360 - 45 */
-    rotate(270deg);
-  width: 30px;
-}
-th.rotate > div > span {
-  border-bottom: 1px solid #ccc;
-  /* padding: 5px 10px; */
-}
-
-.scoreTable tbody tr:nth-child(odd) {
-   background-color: #ccc;
-}
-
+/* Requests */
 
 .requestBox {
   border-radius: 24px;
@@ -523,59 +319,53 @@ th.rotate > div > span {
 }
 
 
-.singleOption {
-  border-radius: 24px;
-  border: 1px solid black;
-  padding: 3px 20px 5px 20px;
+
+/* Desk Consultants */
+
+.absent {
+  background: red;
 }
 
-.hoverHigh:hover {
-  background: #00ffff;
-  color: black;
+.presentTag {
+  display: inline-block;
+  margin: 0px;
 }
 
-
-.lowSingOpt {
-  background: white;
+.clicky_seat {
+  border-style: solid;
 }
 
-.highSingOpt {
-  border: 4px solid black;
-  background: #00aaa0;
+.topic {
+  background-color: $apprentice-color !important;
+}
+
+.consultant-group {
+  margin-bottom: 20px;
+  
+}
+
+.consultant_cell {
+  width: 160px;
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-top: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
+
+  max-height: 3em;
+  line-height: 1.2em;
+}
+
+.consultant {
+  background: $consultant-color !important;
   color: white;
+  padding: 5px;
 }
 
-.student_link {
-  border: 4px solid black;
-  background: #00aaa0;
-  color: white;
-  a:visited {
-    color: white;
-  }
-  a:active {
-    color: white;
-  }
-  a:link {
-    color: white;
-  }
-}
 
-.marginTable {
-  margin-left: 160px;
-}
 
-.text-area {
-  width: 500px;
-}
-
-.answer-choice {
-  width: 300px;
-  margin-bottom: 0px;
-}
-
-.new-student-input {
-  margin-bottom: 0px;
-}
+/* Assessor */
 
 .green {
   color: green;
@@ -588,10 +378,59 @@ th.rotate > div > span {
 }
 
 
-.confirm_button {
-  background: red;
-  box-shadow: 0 3px 0 0 #000000;
+
+/* Goalkeeper */
+
+.commentInput {
+  width: 500px;
 }
+
+
+
+/* miscellaneous */
+
+.ribbon {
+  background: #e6ffff;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.currently_hidden {
+  display: none;
+}
+
+.small_spacer {
+  width: 50px;
+}
+
+.spacer {
+  width: 150px;
+}
+
+.singleOption {
+  border-radius: 24px;
+  border: 1px solid black;
+  padding: 3px 20px 5px 20px;
+}
+
+.hoverHigh:hover {
+  background: #00ffff;
+  color: black;
+}
+
+.lowSingOpt {
+  background: white;
+}
+
+.highSingOpt {
+  border: 4px solid black;
+  background: #00aaa0;
+  color: white;
+}
+
+
+
+/* Printing */
 
 @media print {
   .break_here {

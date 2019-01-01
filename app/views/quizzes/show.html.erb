@@ -38,10 +38,13 @@
                 You have used all your keys for this quiz.
             </div>
         <% else %>
-            <%= link_to "Try this quiz again", {:controller => "quizzes", :action => "new", :objective_id => @objective.id, :origin => @offer_next_try}, 
-                :class => "btn btn-lg btn-primary" %>
+            <%= link_to "Try this quiz again",
+                {:controller => "quizzes", :action => "new", :objective_id => @objective.id, :origin => @offer_next_try}, 
+                :class => "btn btn-lg btn-primary plain_link" %>
         <% end %>
-        <%= link_to "Back to Your Class Page", seminar_student_path(current_user.seminar_students.find_by(:seminar => current_user.current_class)), :class => "btn btn-lg btn-primary" %>
+        <%= link_to "Back to Your Class Page", 
+            seminar_student_path(current_user.seminar_students.find_by(:seminar => current_user.current_class)),
+            :class => "btn btn-lg btn-primary plain_link" %>
     </div>
 </div>
 </br>

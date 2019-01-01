@@ -24,7 +24,9 @@
         <td><%= image_tag(picture.image_url(:thumb).to_s) %></td>
         <td>
           <% if picture.user == current_user || current_user.type == "Admin" %>
-            <%= link_to 'Edit', edit_picture_path(picture), :id => "edit_#{picture.id}" %>
+            <%= link_to 'Edit', edit_picture_path(picture),
+              :class => "plain_link",
+              :id => "edit_#{picture.id}" %>
           <% end %>
         </td>
         
@@ -35,4 +37,6 @@
 
 <br>
 
-<%= link_to 'New Picture', new_picture_path %>
+<%= link_to 'New Picture',
+  new_picture_path,
+  :class => "plain_link" %>

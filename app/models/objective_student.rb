@@ -34,11 +34,11 @@ class ObjectiveStudent < ApplicationRecord
         new_score_all_time = Quiz.where(:user_id => user_id, :objective_id => objective_id).maximum(:total_score)
         self.points_all_time = new_score_all_time
         
-        if origin == "pretest"
+        if origin == "pretest" || origin == "manual_pretest_score"
             self.pretest_score = this_score if this_score > self.pretest_score.to_i
-        elsif origin == "manual"
+        elsif origin == "manual_points_this_term"
             self.points_this_term = this_score
-        else
+        elsif origin != "manual_points_all_time"
             self.points_this_term = [points_this_term.to_i, this_score].max
         end
         

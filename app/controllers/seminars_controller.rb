@@ -126,17 +126,17 @@ class SeminarsController < ApplicationController
         @school = @teacher.school
         @students = @seminar.students.order(:last_name)
         @term = params[:term].to_i
-        @show_all = params[:show_all]
-        @pretests = params[:pretests].to_s
         
-        col_to_use = :points_this_term
-        if @pretests == "true"
-            col_to_use = :pretest_score
-        end
+        @show_all = params[:show_all] || "true"
+        which_score_param = params[:which_scores] || :points_this_term
+        param_hash = {"points_this_term" => "Current Term", "points_all_time" => "All Time", "pretest_score" => "Pretest"}
+        @special_title = "#{param_hash[which_score_param.to_s]} Scores"
+        @which_scores = which_score_param.to_sym
         
         gather_objectives_and_scores
+        make_empty_objectives
         @scores = @seminar.obj_studs_for_seminar
-            .pluck(:user_id, :objective_id, col_to_use)
+            .pluck(:user_id, :objective_id, @which_scores)
             .reduce({}) do |result, (student, obj, points)|
                 result[student] ||= {}
                 result[student][obj] = points
@@ -160,6 +160,7 @@ class SeminarsController < ApplicationController
         @seminar = Seminar.find(params[:id])
         buncha_scores = params[:scores]
         old_scores = eval(params[:old_scores])
+        which_scores = params[:which_scores]
         buncha_scores.each do |key_x|
             stud_id = key_x.to_i
             buncha_scores[key_x].each do |key_y, value|
@@ -168,7 +169,7 @@ class SeminarsController < ApplicationController
                 if this_val && this_val != old_scores[stud_id][obj_id]
                     this_quiz = Quiz.find_or_create_by(:user_id => stud_id,
                         :objective_id => obj_id,
-                        :origin => "manual")
+                        :origin => "manual_#{which_scores}")
                     this_quiz.update(:total_score => this_val,
                         :seminar => @seminar)
                 end
@@ -225,13 +226,20 @@ class SeminarsController < ApplicationController
             @this_teacher_can_edit = current_user.can_edit_this_seminar(@seminar) 
         end
         
-        def gather_objectives_and_scores
+        def gather_objectives_and_scores    
             if @show_all == "false"
-                pre_objectives = @seminar.obj_studs_for_seminar.where("points_this_term > ?", 0).map(&:objective).uniq
+                pre_objectives = @seminar.obj_studs_for_seminar.where("#{@which_scores} > ?", 0).map(&:objective).uniq
             else
                 pre_objectives = @seminar.objectives
             end
             @objectives = pre_objectives.sort_by(&:name)
+        end
+        
+        def make_empty_objectives
+            while @objectives.count < 14
+                new_objective = Objective.new(:name => "")
+                @objectives.push(new_objective)
+            end
         end
         
         def reset_all_student_grades(seminar)

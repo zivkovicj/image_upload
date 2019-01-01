@@ -9,9 +9,15 @@
                 <td class="<%= 'highlighted' if n==@term %>">
                     <h2>
                         <% if @which_path == "seminar_scoresheet" %> 
-                            <%= link_to n+1, scoresheet_seminar_path(:seminar => @seminar, :term => n), :id => "term_#{n}" %>
+                            <%= link_to n+1,
+                                scoresheet_seminar_path(:seminar => @seminar, :term => n),
+                                :class => "plain_link",
+                                :id => "term_#{n}" %>
                         <% else %>
-                            <%= link_to n+1, goal_students_path(:seminar => @seminar, :term => n), :id => "term_#{n}" %>
+                            <%= link_to n+1,
+                                goal_students_path(:seminar => @seminar, :term => n),
+                                :class => "plain_link",
+                                :id => "term_#{n}" %>
                         <% end %>
                     </h2>
                 </td>

@@ -3,65 +3,55 @@
 <% provide(:headerText, show_consultancy_headline(@consultancy)) %>
 <% provide(:headerPic, "desk_consult.png") %>
 
-<%= render 'shared/navribbons/main_navribbon' %><br/>
-<%= render 'shared/back-link' %>
-<%= render 'shared/teacher_name_and_edit', user: current_user %><br/>
-<%= render 'shared/class_and_edit' %>
+<%= render 'shared/navribbons/main_navribbon' %></br>
 
-<%= render 'shared/headline' %>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-7">
-      <div class="singleOption lowSingOpt">
-      
-        <h2><%= @seminar.name %></h2>
-        </br>
-        &emsp;&emsp;&emsp; <h4 class="studentName block">Key:</h4>
-        <p class="studentName consultant block">Consultant</p>
-        <p class="studentName topic block">Topic</p>
-      </div>
-    </div>
-    <div class="col-md-5">
-      <%= render 'shared/big_link', link_link: new_consultancy_path(:seminar => @seminar.id), 
-        link_text: new_consultancy_button_text, link_image: "desk_consult.png"  %>
-      <%= render 'shared/big_link', link_link: consultancies_path(:seminar => @seminar.id), 
-        link_text: "List All Arrangements", link_image: "sierpinski.png"  %>
-      <table><tr>
-      <%= render 'shared/delete_and_confirm', object: @consultancy %>
-      </tr></table>
-    </div>
+<div class="row">
+  <div class="col-md-7">
+    <%= render 'shared/headline' %>
+    <%= render 'shared/teacher_name_and_edit', user: current_user %></br>
+    <%= render 'shared/class_and_edit' %>
   </div>
-<br/>
+  <div class="col-md-5">
+    <% if @consultancy.duration == "preview" %>
+    <%= render 'shared/big_link', link_link: edit_consultancy_path(@consultancy), 
+        link_text: "Save this Arrangement and Give Quiz Keys to Students", link_image: "sierpinski.png"  %>
+    <% end %>
+    <%= render 'shared/big_link', link_link: new_consultancy_path(:seminar => @seminar.id), 
+      link_text: new_consultancy_button_text, link_image: "desk_consult.png"  %>
+    <%= render 'shared/big_link', link_link: consultancies_path(:seminar => @seminar.id), 
+      link_text: "List All Arrangements", link_image: "sierpinski.png"  %>
+    <table><tr>
+    <%= render 'shared/delete_and_confirm', object: @consultancy %>
+    </tr></table>
+  </div>
+</div>
+</br>
 
 <% @group_num = 0 %>
 <% @letters = [0,"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T"] %>
 
 
-<% def studentCell(num, groupNum, team) %>
-  <% thisClass = (team.consultant.present? && team.users[num] == team.consultant ? "table with-border consultant" : "table with-border") %>
-  <td class = "<%= thisClass %>">
-    <p class = "studentName center">
+<% def student_cell(num, groupNum, team) %>
+  <% thisClass = (team.consultant.present? && team.users[num] == team.consultant ? "consultant" : "") %>
+  <td class = "<%= thisClass %> consultant_cell">
       <% this_student = team.users[num] %>
       <% if this_student %>
         <%= this_student.first_plus_init %>
         <% this_score = this_student.objective_students.find_or_create_by(:objective => team.objective) %>
         <% if this_score.passed_with_100 %>
-          <br/><small>(100%)</small>
+          </br><small>(100%)</small>
         <% end %>
       <% end %>
-    </p>
   </td>
 <% end %>
 
 <% def objective_cell(objective) %>
-  <td colspan="2" bgcolor='blue' class="table with-border topic">
+  <td colspan="2"  class="topic center consultant_cell">
     <% if @group_num < 20 %>
-      <p class="studentName center"><small>Group <%= @letters[@group_num] %></small></p>
+      <small>Group <%= @letters[@group_num] %></small>&emsp;
     <% end %>
-    <p class='studentName center'>
-      <%= objective.short_name %>
-    </p>
+    <%= objective.short_name %>
   </td>
 <% end %>
 
@@ -76,10 +66,7 @@
   </div>
 <% end %>
 
-<% if @consultancy.duration == "preview" %>
-  <%= render 'shared/big_link', link_link: edit_consultancy_path(@consultancy), 
-        link_text: "Save this Arrangement and Give Quiz Keys to Students", link_image: "sierpinski.png"  %>
-<% end %>
+
 
 <table class='table table-borderless'>
   <% @consultancy.teams.in_groups_of(3).each do |group| %>
@@ -90,15 +77,15 @@
           <td>
             <table class="consultant-group">
               <tr>
-                <% studentCell(0, @group_num, team) %> 
-                <% studentCell(1, @group_num, team) %> 
+                <% student_cell(0, @group_num, team) %> 
+                <% student_cell(1, @group_num, team) %> 
               </tr>
               <tr>
                 <% objective_cell(team.objective) %>
               </tr>
               <tr>
-                <% studentCell(2, @group_num, team) %> 
-                <% studentCell(3, @group_num, team) %> 
+                <% student_cell(2, @group_num, team) %> 
+                <% student_cell(3, @group_num, team) %> 
               </tr>
             </table>
           </td>

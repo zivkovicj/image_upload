@@ -6,7 +6,10 @@
 
 <% if @this_teacher_can_edit %>
   <% first_seminar = current_user.first_seminar %>
-  <%= link_to "Copy Due Dates from #{first_seminar.name}", copy_due_dates_seminar_path(@seminar), :id => "copy_due_dates" unless first_seminar == @seminar %>
+  <%= link_to "Copy Due Dates from #{first_seminar.name}",
+    copy_due_dates_seminar_path(@seminar),
+    :class => "plain_link",
+    :id => "copy_due_dates" unless first_seminar == @seminar %>
 <% end %>
   
 <%= form_for(@seminar) do |f| %>

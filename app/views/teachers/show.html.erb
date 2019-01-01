@@ -2,8 +2,6 @@
 
 <%= render 'shared/teacher_name_and_edit', user: @teacher %>
 
-<p><strong><%= @teacher.type.capitalize %></strong></p>
-
 <% if @unverified_teachers.present? %>
   <div class="singleOption">
     <%= verify_waiting_teachers_message %>
@@ -39,7 +37,7 @@
     </thead>
     <% @seminars.order(:name).each do |sem| %>
       <tr>
-        <td><h4><%= link_to sem.name, seminar_path(sem) %></h4></td>
+        <td><h4><%= link_to sem.name, seminar_path(sem), :class => "plain_link" %></h4></td>
         
         <% teacher_show_links.each do |z| %>
           <td>
@@ -51,7 +49,7 @@
     <% end %>
   </table>
 </div>
-<br/>
+</br>
 
 <% if @teacher.type == "Teacher" %>
   <div class="row">

@@ -135,7 +135,9 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     def test_all_apprentices
         @consultancy.teams.each do |team|
             team.users.each do |member|
-                assert member.score_on(team.objective) <= @seminar.consultantThreshold unless member == team.consultant
+                unless member == team.consultant
+                    assert member.score_on(team.objective) <= @seminar.consultantThreshold
+                end
             end
         end
     end

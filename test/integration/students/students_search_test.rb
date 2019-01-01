@@ -10,10 +10,15 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     setup_seminars
   end
   
-  test 'searching' do
+  def go_to_student_search
     capybara_login(@teacher_1)
-    click_on("scoresheet_seminar_#{@seminar.id}")
-    click_on('Add an Existing Student')
+    click_on("seminar_#{@seminar.id}")
+    click_on("Basic Info")
+    click_on("Add an Existing Student")
+  end
+  
+  test 'searching' do
+    go_to_student_search
     
     assert_no_text(@student_1.last_name_first)
     fill_in "search_field", with: @student_1.user_number
@@ -71,9 +76,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     first_assign = @seminar.objectives.first
     stud_to_add = Student.all.detect{|x| @seminar.students.include?(x) == false}
     
-    capybara_login(@teacher_1)
-    click_on("scoresheet_seminar_#{@seminar.id}")
-    click_on('Add an Existing Student')
+    go_to_student_search
     
     #Setup before adding student
     old_ss_count = SeminarStudent.count
@@ -112,10 +115,8 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     # The counterpart is in the "searching" test
     @last_student = Student.last
     @last_student.update(:verified => 0)
-    
-    capybara_login(@teacher_1)
-    click_on("scoresheet_seminar_#{@seminar.id}")
-    click_on('Add an Existing Student')
+  
+    go_to_student_search
     
     fill_in "search_field", with: @last_student.user_number
     click_button('Search')
@@ -130,8 +131,9 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     capybara_login(@unverified_teacher)
     
     assert @unverified_teacher.school.students.include?(@student_1)
-    click_on("scoresheet_seminar_#{@unverified_teacher_class.id}")
-    click_on('Add an Existing Student')
+    click_on("seminar_#{@unverified_teacher_class.id}")
+    click_on("Basic Info")
+    click_on("Add an Existing Student")
     
     fill_in "search_field", with: @student_1.user_number
     click_button('Search')

@@ -44,7 +44,8 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         
         click_on("Create these student accounts")
         
-        assert_selector('h2', :text => "#{@seminar.name} Scoresheet")
+        assert_text(@seminar.name)
+        assert_selector('h2', :text => "Current Term Scores")
         
         assert_selector('a', :text => "New Guy")
     end

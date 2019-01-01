@@ -30,7 +30,9 @@
           <% @objectives.each do |objective| %>
             <tr class="users">
               <td><%= render 'shared/delete_and_confirm', object: objective %></td>
-              <td><%= link_to objective.full_name, objective_path(objective), :id => "edit_#{objective.id}" %></td>
+              <td><%= link_to objective.full_name, objective_path(objective),
+                :class => "plain_link",
+                :id => "edit_#{objective.id}" %></td>
               <td><%= objective.extent.capitalize %></td>
               <td><%= objective.seminars.count %></td>
               <% if current_user.type == "Admin" %>

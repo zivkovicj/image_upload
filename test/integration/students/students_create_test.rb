@@ -96,7 +96,8 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         fifth_new_student = Student.find_by(:last_name => "with Email")
         assert_equal "dude@email.com", fifth_new_student.email
     
-        assert_text("#{@seminar.name} Scoresheet")
+        assert_text("#{@seminar.name}")
+        assert_text("Current Term Scores")
     end
     
     test "username already taken" do

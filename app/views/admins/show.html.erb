@@ -7,11 +7,11 @@
 
 <% if current_user == @admin %>
   <div>
-    <br/><%= button_to 'Teachers Index', teachers_path, class: "btn btn-lg btn-primary",
+    </br><%= button_to 'Teachers Index', teachers_path, class: "btn btn-lg btn-primary",
       :method => :get %>
-    <br/><%= button_to 'Students Index', students_path, class: "btn btn-lg btn-primary",
+    </br><%= button_to 'Students Index', students_path, class: "btn btn-lg btn-primary",
       :method => :get %>
-    <br/><%= button_to 'Seminars Index', seminars_path, class: "btn btn-lg btn-primary",
+    </br><%= button_to 'Seminars Index', seminars_path, class: "btn btn-lg btn-primary",
       :method => :get %>
   </div>
 <% end %>

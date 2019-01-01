@@ -149,7 +149,7 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
         visit("/commodities/new")
         
         assert_no_selector('h2', :text => "New Item")
-        assert_selector('p', :text => "New to Desk Consultants?")
+        assert_selector('p', :text => "New to Mr. Z School?")
     end
     
 end

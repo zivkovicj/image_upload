@@ -11,7 +11,7 @@ module TeachersHelper
         ["Desk Consultants", "desk_consult.png", "consultancy", "show", "consultancies"],
         ["Goalkeeper", "apple.jpg", "goal_students", "index", "goal_students"],
         ["Edit", "E.png", "seminar", "show", "seminars"],
-        ["Usernames", "usernames.png", "usernames_seminar", "usernames", "seminars"]]
+        ["Students", "students.png", "usernames_seminar", "usernames", "seminars"]]
     end
       
     def verify_waiting_teachers_message

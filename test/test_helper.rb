@@ -230,7 +230,8 @@ class ActiveSupport::TestCase
   
   def go_to_create_student_view
     capybara_login(@teacher_1)
-    click_on("scoresheet_seminar_#{@seminar.id}")
+    click_on("seminar_#{@seminar.id}")
+    click_on("Basic Info")
     click_on('Create New Students')
   end
   

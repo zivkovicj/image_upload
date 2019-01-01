@@ -29,8 +29,8 @@
       <% @seminars.each do |seminar| %>
         <tr class="users">
           <td><%= render 'shared/delete_and_confirm', object: seminar %></td>
-          <td><%= link_to seminar.id, seminar %></td>
-          <td><%= link_to seminar.name, seminar %></td>
+          <td><%= link_to seminar.id, seminar, :class => "plain_link" %></td>
+          <td><%= link_to seminar.name, seminar, :class => "plain_link" %></td>
           <% teacherId = seminar.teachers.first.id %>
           <% teacher = User.find(teacherId) %>
           <td><%= teacherId %> <%= teacher.last_name %></td>

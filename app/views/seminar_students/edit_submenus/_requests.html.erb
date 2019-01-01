@@ -6,7 +6,7 @@
       <div class="singleOption lowSingOpt">
         <h3 class="center"><strong><%= big_label %> Request</strong></h3>
       </div>
-      <br/>
+      </br>
       <% if list_items && list_items.first %>
         <% list_items.each do |req_option| %>
           <% req_id = show_score ? req_option.id : req_option[1] %>
@@ -15,7 +15,7 @@
           <% high_class = req_id == @ss.read_attribute(:"#{req_type}_request") ? 'highSingOpt' : 'lowSingOpt' %>
           <div class="<%= high_class %> singleOption req_option req_option_<%= req_type %> center hoverHigh"
             req_id="<%= req_id %>" seminar_student_id="<%= @ss.id %>" req_type="<%= req_type %>" >
-            <%= req_name %><br/>
+            <%= req_name %></br>
             <%= score.points_all_time if show_score %>
           </div>
         <% end %>

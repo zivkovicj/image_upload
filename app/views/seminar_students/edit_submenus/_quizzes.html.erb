@@ -7,8 +7,10 @@
             <% list.each do |objective| %>
             <% this_os = objective.objective_students.find_by(:user => @student) %>
                 <tr>
-                    <td><%= link_to objective.name, {controller: :quizzes, action: this_action, :objective_id => objective.id, :origin => id_label}, 
-                            class: 'someClass', id: "#{id_label}_#{objective.id}"  %></td>
+                    <td><%= link_to objective.name, 
+                            {controller: :quizzes, action: this_action, :objective_id => objective.id, :origin => id_label}, 
+                            :class => 'plain_link',
+                            :id => "#{id_label}_#{objective.id}"  %></td>
                     <td><%= render 'shared/keys/list_of_keys', :this_os => this_os, :this_sem => @seminar %></td>
                 </tr>
             <% end %>

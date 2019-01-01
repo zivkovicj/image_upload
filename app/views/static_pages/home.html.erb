@@ -29,7 +29,7 @@
     <%= button_to "Your profile", polymorphic_path(current_user), class: "btn btn-lg btn-primary", :method => :get %>
   <% else %>
     <%= button_to "Log In", login_path, class: "btn btn-lg btn-primary",
-      :method => :get %><br/>
+      :method => :get %></br>
     <%= button_to "Sign up for a new teacher account", new_teacher_path, class: "btn btn-lg btn-primary",
       :method => :get %>
   <% end %>
@@ -46,7 +46,8 @@
 
 <div>
   <%= link_to image_tag("spp_logo.png", alt: "Student Privacy Pledge Signatory"),
-            'https://studentprivacypledge.org/signatories/' %>
+      'https://studentprivacypledge.org/signatories/',
+      :class => "plain_link" %>
 </div>
 
 

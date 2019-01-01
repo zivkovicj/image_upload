@@ -1,102 +1,162 @@
-<% provide(:title, "#{@seminar.name} Scoresheet") %>
 
-<% provide(:headerText, "#{@seminar.name} Scoresheet") %>
+<% provide(:title, @special_title) %>
+
+<% provide(:headerText, @special_title) %>
 <% provide(:headerPic, "scoresheet.png") %>
-
 
 <%= render 'shared/navribbons/main_navribbon' %><br/>
 <%= render 'shared/teacher_name_and_edit', user: @teacher %><br/>
 <%= render 'shared/class_and_edit' %>
 <%= render 'shared/headline' %>
 
-
-
-<% if @show_all == "true" %>
-    <%= link_to "Show only scores from this term", 
-        scoresheet_seminar_path(:seminar => @seminar, :show_all => false) %>
-<% else %>
-    <%= link_to "Show all objectives", 
-        scoresheet_seminar_path(:seminar => @seminar, :show_all => true) %>
-<% end %>
-
-&emsp;
-<% if @pretests == "true" %>
-  <%= link_to "Show scores for current term",
-      scoresheet_seminar_path(:seminar => @seminar, :pretests => false) %>
-<% else %>
-  <%= link_to "Show pretests",
-      scoresheet_seminar_path(:seminar => @seminar, :pretests => true),
-      :id => "switch_to_pretests" %>
-<% end %>
+<div class="row">
+  <div class="col-sm-1">
+    <% if @show_all == "true" %>
+        <%= button_to "Hide Blank Columns", 
+            scoresheet_seminar_path(:seminar => @seminar),
+            :params => {:show_all => false, :which_scores => @which_scores},
+            :class => "btn btn-primary", :method => :get,
+            :id => "hide_blank_columns" %>
+    <% else %>
+        <%= button_to "Show Blank Columns", 
+            scoresheet_seminar_path(:seminar => @seminar),
+            :params => {:show_all => true, :which_scores => @which_scores},
+            :class => "btn btn-primary", :method => :get,
+            :id => "show_blank_columns" %>
+    <% end %>
+  </div>
   
-
-
-
-<div>
-  <%= button_tag "Hide Scores", :id => "toggle_text", :first_text => "Hide Scores", :second_text => "Show Scores" %>
+  <div class="col-sm-1"></div>
+  
+  <div class="col-sm-2 singleOption">
+    <div class="row">
+      <% if @which_scores != :points_this_term %>
+        <div class="col-sm-2">
+          <%= button_to "Current Term",
+              scoresheet_seminar_path(:seminar => @seminar),
+              :params => {:show_all => @show_all, :which_scores => :points_this_term},
+              :class => "btn btn-primary", :method => :get,
+              :id => "switch_to_current_term" %>
+        </div>
+        <div class="col-sm-3"></div>
+      <% end %>
+      
+      <% if @which_scores != :points_all_time %>
+        <div class="col-sm-3">
+          <%= button_to "All Time",
+              scoresheet_seminar_path(:seminar => @seminar), 
+              :params => {:show_all => @show_all, :which_scores => :points_all_time},
+              :class => "btn btn-primary", :method => :get,
+              :id => "switch_to_all_time" %>
+        </div>
+      <% end %>
+      
+      <% if @which_scores != :pretest_score %>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3">
+          <%= button_to "Pretests",
+            scoresheet_seminar_path(:seminar => @seminar), 
+            :params => {:show_all => @show_all, :which_scores => :pretest_score},
+            :class => "btn btn-primary", :method => :get,
+            :id => "switch_to_pretests" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
+</br>
 
 <%= form_tag update_scoresheet_seminar_path(@seminar) do %>
-  <%= submit_tag "Save Scores", class: "btn btn-primary", :id => "save_scores_top" %>
   <%= hidden_field_tag "old_scores", @scores %>
-
-  <br/>
-  <div>
-    <table class="table-borderless scoreTable" id="scoreTable">
-      <thead class="table-borderless">
-        <th class="table-borderless">Student</th>
-        <th class="rotate table-borderless score_box"><div><span>Quiz Stars</span></div></th>
-        <th class="rotate table-borderless score_box"><div><span>Stars Used Toward Grade</span></div></th>
-        <th class="rotate table-borderless score_box"><div><span>Total Stars</span></div></th>
-        <% @objectives.each_with_index do |objective, index| %>
-          <th class="rotate table-borderless score_box col_<%= index %>"><div><span>
-            <%= link_to objective.short_name, objective_path(objective) %>
-          </span></div></th>
-        <% end %>
-      </thead>
-      <tbody>
-        <% @students.each_with_index do |student, indexx| %>
-          <% stud_id = student.id %>
-          <% ss = student.seminar_students.find_by(:seminar => @seminar) %>
-          <tr>
-            <td class="score_box row_<%= indexx %>"><h4><%= link_to student.last_name_first, seminar_student_path(ss) %> </h4></td>
-            <td><%= stars_this_term = @scores[stud_id].values.inject{|a,b| a.to_i + b.to_i}.to_i %></td>
-            <td><%= bought_stars = student.stars_used_toward_grade_this_term(@seminar, @term).to_i %></td>
-            <td><%= stars_this_term + bought_stars %></td>
-            <% @objectives.each_with_index do |objective, indexy| %>
-              <% obj_id = objective.id %>
-              <% this_points = @scores[stud_id][obj_id] %>
-              <td class="themScores to_unhide score_box row_<%= indexx %> col_<%= indexy %>">
-                  <% if @pretests == "true" %>
-                    <span id="scores[<%= stud_id %>][<%= obj_id %>]">
-                      <%= this_points %>
-                    </span>
-                  <% else %>
-                    <input type="text" name="scores[<%= stud_id %>][<%= obj_id %>]" 
-                      class="score_cell r<%= indexx %>c<%= indexy %>" 
-                      value="<%= this_points %>" 
-                      cell_row="<%= indexx %>" cell_col="<%= indexy %>"
-                      id="scores[<%= stud_id %>][<%= obj_id %>]">
+  <%= hidden_field_tag "which_scores", @which_scores %>
+  <table cellspacing="0" cellpadding="0" border="0" >
+    <tr>
+      <td id="firstTd">
+      </td>
+      <td>
+        <div id="divHeader" style="overflow:hidden;width:1180px;">
+          <table cellspacing="0" cellpadding="0" border="1" >
+            <tr>
+              <% ["Quiz Stars", "Stars Used", "Total Stars"].each do |col_header| %>
+                <td class="score_table_piece">
+                  <div class="score_header center"><%= col_header %></div>
+                </td>
+              <% end %>
+              <% @objectives.each_with_index do |objective, indexy| %>
+                <td class="score_table_piece col_<%= indexy %>">
+                  <% if objective.id != nil %>
+                    <div class="score_header center">
+                      <%= link_to objective.name, objective_path(objective),
+                          :class => "plain_link",
+                          :id => "obj_#{objective.id}" %>
+                    </div>
                   <% end %>
-              </td>
+                </td>
+              <% end %>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td valign="top">
+        <div id="firstcol" style="overflow: hidden;height:480px">
+          <table width="200px" cellspacing="0" cellpadding="0" border="1" >
+            <% @students.each_with_index do |student, indexx| %>
+              <% this_ss = SeminarStudent.find_by(:seminar => @seminar, :user => student) %>
+              <tr>
+                <td class="score_table_piece row_<%= indexx %> first_col">
+                  <div class="student_name_header">
+                    <%= link_to student.last_name_first, seminar_student_path(this_ss),
+                          :class => "plain_link",
+                          :id => "ss_#{this_ss.id}" %>
+                  </div>
+                </td>
+              </tr>
             <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-  </br>
-  <%= submit_tag "Save Scores", class: "btn btn-primary" %>
-  
+          </table>
+        </div>
+      </td>
+      
+      <td valign="top">
+        <div id="table_div">
+          <table class="score_table" width="1200px" cellspacing="0" cellpadding="0" border="1" >
+            <% @students.each_with_index do |student, indexx| %>
+              <% stud_id = student.id %>
+              <tr>
+                <% stars_this_term = @scores[stud_id].values.inject{|a,b| a.to_i + b.to_i}.to_i %>
+                <% bought_stars = student.stars_used_toward_grade_this_term(@seminar, @term).to_i %>
+                <% total_stars = stars_this_term + bought_stars %>
+                <% [stars_this_term, bought_stars, total_stars].each do |this_var| %>
+                  <td class="score_cell score_table_piece center row_<%= indexx %>" cell_row="<%= indexx %>" >
+                    <%= this_var %>
+                  </td>
+                <% end %>
+                <% @objectives.each_with_index do |objective, indexy| %>
+                  <% obj_id = objective.id %>
+                  <% this_points = @scores[stud_id][obj_id] %>
+                  <td class="score_cell" cell_row="<%= indexx %>" cell_col="<%= indexy %>">
+                    <% if obj_id.present? %>
+                      <input type="text" cell_row="<%= indexx %>" cell_col="<%= indexy %>"
+                          class="score_cell score_table_piece r<%= indexx %>c<%= indexy %> row_<%= indexx %> col_<%= indexy %>" 
+                          value="<%= this_points %>" 
+                          
+                          name="scores[<%= stud_id %>][<%= obj_id %>]"
+                          id="scores[<%= stud_id %>][<%= obj_id %>]">
+                    <% end %>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <%= submit_tag "Save Scores", :id => "save_scores_bottom", :class => "btn btn-primary" %>
 <% end %>
-  
+
 <div>
   <h3> <%= pluralize(@students.count, "Student") %> </h3>
-</div>
-
-<div>
-  <%= button_to "Create a New Objective", new_objective_path, :method => :get, class: "btn btn-lg btn-primary" %><br/>
-  <%= button_to "Create New Students", new_student_path, :method => :get, class: "btn btn-lg btn-primary" %><br/>
-  <%= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %><br/>
-  
 </div>

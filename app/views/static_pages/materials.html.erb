@@ -10,7 +10,8 @@
 <p>This study guide demonstrates all the features of a quality study guide.</p>
 <%= link_to "Study Guide 158 ~ Solutions to Inequalities", 
     '/Study_Guides/SG_158_Solutions_to_inequalities.docx',
-    :download => "SG_158_Solutions_to_inequalities.docx" %>
+    :download => "SG_158_Solutions_to_inequalities.docx",
+    :class => "plain_link" %>
 
 <h2>Ideals for Study Guides</h2>
 <p>Teachers submitting study guides for consideration should keep the following ideals in mind:</p>
@@ -43,7 +44,8 @@ already have.</p>
     <li>
         <%= link_to mat[0], 
         mat[1],
-        :download => mat[2] %>
+        :download => mat[2],
+        :class => "plain_link" %>
     </li>
 <% end %>
 </ul>

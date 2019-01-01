@@ -17,16 +17,19 @@
         <!--<span>Remember me on this computer</span>-->
       <%# end %>
 
+      </br>
       <%= f.submit "Log In", class: "btn btn-primary" %>
     <% end %>
     
-    <br/>
+    </br>
     
-    <%= link_to "(Forgot Password)", new_password_reset_path %>
+    <%= link_to "(Forgot Password)", new_password_reset_path, :class => "plain_link" %>
     
-    <br/>
+    </br></br>
 
-    <p>New to Desk Consultants? <%= button_to "Sign up now!", signup_path, 
-      class: "btn btn-lg btn-primary", :method => :get %></p>
+    <p>New to Mr. Z School?</p>
+    </br>
+    <%= button_to "Sign up now!", signup_path, 
+      class: "btn btn-lg btn-primary", :method => :get %>
   </div>
 </div>

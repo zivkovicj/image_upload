@@ -45,10 +45,11 @@
         <table class="table-borderless">
           <tr>
             <td>Students may sell this item back to the store?</td>
-            <td width="15%"><input type="radio" name="commodity[salable]" id="salable_true" value="true" <%= "checked=checked" if @commodity.salable %> /></td>
             <td>Yes</td>
-            <td width="15%"><input type="radio" name="commodity[salable]" id="salable_false" value="false" <%= "checked=checked" if @commodity.salable == false %> /></td>
+            <td width="15%"><input type="radio" name="commodity[salable]" id="salable_true" value="true" <%= "checked=checked" if @commodity.salable %> /></td>
             <td>No</td>
+            <td width="15%"><input type="radio" name="commodity[salable]" id="salable_false" value="false" <%= "checked=checked" if @commodity.salable == false %> /></td>
+            
           </tr>
         </table>
       </div>
@@ -57,15 +58,16 @@
         <table class="table-borderless singleOption">
           <tr>
             <td>This is a physical item that students can receive?</td>
-            <td width="15%"><input type="radio" name="commodity[deliverable]" id="deliverable_true" value="true" <%= "checked=checked" if @commodity.deliverable %> /></td>
             <td>Yes</td>
-            <td width="15%"><input type="radio" name="commodity[deliverable]" id="deliverable_false" value="false" <%= "checked=checked" if @commodity.deliverable == false %> /></td>
+            <td width="15%"><input type="radio" name="commodity[deliverable]" id="deliverable_true" value="true" <%= "checked=checked" if @commodity.deliverable %> /></td>
             <td>No</td>
+            <td width="15%"><input type="radio" name="commodity[deliverable]" id="deliverable_false" value="false" <%= "checked=checked" if @commodity.deliverable == false %> /></td>
+            
           </tr>
         </table>
       </div>
       
-      <h5>Note: A this time, Mr Z School Market does not allow for both of these options to be "Yes"</h5>
+      <h5>Note: At this time, Mr Z School Market does not allow for both of these options to be "Yes"</h5>
     </div>
   </div>
   

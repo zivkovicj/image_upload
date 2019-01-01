@@ -6,7 +6,7 @@
       <div class="singleOption lowSingOpt">
         <h3 class="center"><strong>Consultant Request</strong></h3>
       </div>
-      <br/>
+      </br>
       <% if @teach_options && @teach_options.first %>
         <% @teach_options.each do |reqOption| %>
           <% score = @student.objective_students.find_by(:objective_id => reqOption.id) %>
@@ -16,7 +16,7 @@
             <% highClass = 'lowSingOpt' %>
           <% end %>
           <div class="<%= highClass %> singleOption teachReqOption center hoverHigh" id="<%= reqOption.name %>" req_id="<%= reqOption.id %>" seminar_student_id="<%= @ss.id %>" >
-            <%= reqOption.name %><br/>
+            <%= reqOption.name %></br>
             <%= score.points_all_time %>
           </div>
         <% end %>
@@ -32,7 +32,7 @@
       <div class="singleOption lowSingOpt">
         <h3 class="center"><strong>Apprentice Request</strong></h3>
       </div>
-      <br/>
+      </br>
       <% if @learn_options && @learn_options.first %>
         <% @learn_options.each do |reqOption| %>
           <% score = @student.objective_students.find_by(:objective_id => reqOption.id) %>
@@ -42,7 +42,7 @@
             <% highClass = 'lowSingOpt' %>
           <% end %>
           <div class="<%= highClass %> singleOption learnReqOption center hoverHigh" req_id="<%= reqOption.id %>" seminar_student_id="<%= @ss.id %>" id="<%= reqOption.name %>">
-            <%= reqOption.name %><br/>
+            <%= reqOption.name %></br>
             <%= score.points_all_time %>
           </div>
         <% end %>
@@ -58,7 +58,7 @@
       <div class="singleOption lowSingOpt">
         <h3 class="center"><strong>Your Preference</strong></h3>
       </div>
-      <br/>
+      </br>
       <% if @teach_options && @learn_options && !!@teach_options.first && !!@learn_options.first %>
         <% [['Consultant',2],['Either Is Okay',1],['Apprentice',0]].each do |choice| %>
           <% if choice[1] == @ss.pref_request %>

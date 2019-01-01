@@ -54,8 +54,8 @@
 </br>
 </br>
 <div>
-  <%= button_to "Create New Students", new_student_path, :method => :get, class: "btn btn-lg btn-primary" %><br/>
-  <%= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %><br/>
+  <%= button_to "Create New Students", new_student_path, :params => {:seminar_id => @seminar.id}, :method => :get, class: "btn btn-lg btn-primary" %></br>
+  <%= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %></br>
   
   <% if @seminar.teachers.count > 1 %>
     <p class="btn btn-lg btn-primary remove_btn" id="remove_<%= @seminar.id %>">Remove This Class</p>

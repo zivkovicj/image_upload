@@ -31,9 +31,9 @@
     <% @teachers.each do |teacher| %>
       <tr class="users">
         <td><%= render 'shared/delete_and_confirm', object: teacher %></td>
-        <td><%= link_to teacher.id, teacher %></td>
-        <td><%= link_to teacher.name_with_title, edit_teacher_path(teacher) %></td>
-        <td><%= link_to teacher.first_name, teacher %></td>
+        <td><%= link_to teacher.id, teacher, :class => "plain_link" %></td>
+        <td><%= link_to teacher.name_with_title, edit_teacher_path(teacher), :class => "plain_link" %></td>
+        <td><%= link_to teacher.first_name, teacher, :class => "plain_link" %></td>
         <td><%= teacher.email %></td>
         <td><%= teacher.seminars.count %></td>
         <td><%= teacher.students.count %></td>
@@ -46,5 +46,5 @@
 
 <%= will_paginate %>
 
-<br/>
+</br>
 <%= link_to "Add New Teacher", signup_path(), class: "btn btn-lg btn-primary" %>

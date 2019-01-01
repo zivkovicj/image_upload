@@ -1,4 +1,12 @@
 
+Demo Teacher:
+demo_teacher@gmail.com
+demopass
+
+Demo Student:
+lh258
+lh258
+
 
 BUSINESS / MARKETING TO-DO'S
 
@@ -61,9 +69,122 @@ Keep reading at
 
 
 STICKY STUDENT NAMES AND OBJECTIVE NAMES
-https://www.w3schools.com/howto/howto_js_sticky_header.asp
+V https://www.w3schools.com/howto/howto_js_sticky_header.asp
+V http://programminginrubyonrails.blogspot.com/2017/08/how-to-add-bootstrap-table-with-fixed.html
+V Less blank space on the side of the scoresheet
 
-Less blank space on the side of the scoresheet
+V I cut the container from the layouts/application.html in testing the css
+
+Make sure the scoresheet looks okay when there are zero or one objectives
+  It might have problems because of the empty columns.
+  Shouldn't.  But it might.
+V Fix what is displayed when you click "show all objectives" buttons.  They aren't working properly.
+V Should only update the student's :points_this_term if the teacher is viewing the current term scoresheet
+V Finish re-instating javascript
+V "Hide blank columns" stopped working
+
+V Test for inputing points with different scoresheet views
+V Display a large header to make clear to the teacher which scores is being edited
+V Hide the other two buttons
+
+V Unclutter login screen
+V Seats in consultant map the same size
+V Turn objective names in scoresheet back into links
+V Many links are invisible
+V Return the desk outlines when marking students absent.
+V Line up rows and columns one more time
+V Make sure it works in another browser
+
+Clogged "Mr. Z School Teacher Since:"
+
+Test the market thoroughly to make sure I'm not messing it up for Andrew
+Double-check everything that uses javascript
+
+
+
+
+
+
+
+MOST IMPORTANT FIX AFTER SCORESHEET:
+Figure out why D/C sometimes throws an error.
+
+Figure out why quizzes are throwing errors.  It was doing it for all of Xavier's quizzes.
+
+There is an error when editing teachers. 
+
+ FAIL["test_place_apprentices_by_request", Minitest::Result, 101.21296747308224]
+ test_place_apprentices_by_request#Minitest::Result (101.21s)
+        Expected false to be truthy.
+        test/integration/consultancies/consultancies_show_test.rb:138:in `block (2 levels) in test_all_apprentices'
+        test/integration/consultancies/consultancies_show_test.rb:137:in `block in test_all_apprentices'
+        test/integration/consultancies/consultancies_show_test.rb:136:in `test_all_apprentices'
+        test/integration/consultancies/consultancies_show_test.rb:466:in `block in <class:ConsultanciesShowTest>'
+
+ FAIL["test_choose_consultants", Minitest::Result, 336.130864654202]
+ test_choose_consultants#Minitest::Result (336.13s)
+        Expected false to be truthy.
+        test/integration/consultancies/consultancies_show_test.rb:349:in `block in <class:ConsultanciesShowTest>'
+
+FAIL["test_deprioritize_consultants_who_already_have_keys", Minitest::Result, 597.7001137840562]
+ test_deprioritize_consultants_who_already_have_keys#Minitest::Result (597.70s)
+        Expected: 0
+          Actual: 1
+        test/integration/consultancies/consultancies_show_test.rb:373:in `block in <class:ConsultanciesShowTest>'
+
+Using stars toward grade isn't working
+
+Goalkeeper is showing "Me" when it should be showing student names
+
+Move content-creation buttons to their own screen
+
+Don't give keys for quizzes that have no questions
+
+Remove 'hide_scores' from the javascript
+
+Smaller students icon
+
+Taking away keys isn't working
+
+Known moderate severity security vulnerability detected in rack >= 2.0.0, < 2.0.6 defined in Gemfile.lock.
+Gemfile.lock update suggested: rack ~> 2.0.6
+
+Known moderate severity security vulnerability detected in loofah < 2.2.3 defined in Gemfile.lock.
+Gemfile.lock update suggested: loofah ~> 2.2.3.
+
+Also, when trying to choose a student's checkpoint, it won't allow me to choose something different than the first choice.
+  And then it leaves that choice with a blank. 
+  
+ Figure out why I cannot remove 2-04 as a pre-req
+ 
+Reorganize this file
+
+Prevent user from deleting an objective from a seminar if that objective is a preassign for another.
+That's why some objectives cannot be deleted.  I need to find out what they're pre-reqs to.
+
+I think the DC algorithm is working a little too hard not to place a consultant who has scored 100.
+But don't fix that until after I implement consultant stars
+  It was really struggling to make the seating map in Coding Class, where the pre-reqs are really stacked.
+
+"Create New Students" button should show up on the class edit page
+
+Don't need the edit button below teacher's name
+
+Check whether dialog5 is still needed
+
+
+
+See if this bit of scss should be re-inserted:
+.field_with_errors {
+  @extend .has-error;
+  .form-control {
+    color: $state-danger-text;
+  }
+}
+
+
+
+
 
 
 
@@ -106,7 +227,16 @@ This credential can be used to log in for students.  It can be seen and edited b
 Will need to link teacher to edit passwords from student edit page
 
 Would be nice if first page leads teachers to the printable version, but that page also has a link to edit all usernames and passwords at once
-    
+
+Remove references to 'class_and_edit'
+
+Replace "spacer" and "small_spacer" with padding
+
+Switch the image and text on big links
+
+"Teacher Since" should move to the teacher-editing screen 
+
+
 
 BETTER APPRENTICE PLACEMENT
 Instead of iterating through apprentices, iterate through the groups and find an unplaced
@@ -130,6 +260,11 @@ After a student is moved, the old goal_students should be erased
 
 Cannot delete a teacher because of the hanging commodities
 
+
+
+LINK FILES TO OBJECTIVES
+
+I need to connect all my cool, authored stuff to the correct sites.
 
 
 

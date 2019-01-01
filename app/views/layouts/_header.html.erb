@@ -1,5 +1,4 @@
 <header class="navbar navbar-fixed-top navbar-inverse no_print">
-  <div class="container">
     <%= link_to "Mr. Z School", root_path, id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
@@ -11,11 +10,21 @@
         <% end %>
       </ul>
     </nav>
-  </div>
   
   <% listOfQuotes = 
     ["It's time to stop treating 30 students like they all share one brain.",
-    "Students should work with math that's interesting to them."] %>
+    "Students should work with math that's interesting to them.",
+    "Math is fun, beautiful, and interesting.",
+    "Pure mathematics is the poetry of ideas.  -Albert Einstein",
+    "Mathematics is the most beautiful and most powerful creation of the human spirit.  -Stefan Banach",
+    "Reason 1 for learning math ~ Communication",
+    "Reason 2 for learning math ~ Aesthetic",
+    "Reason 3 for learning math ~ Math is Money",
+    "Reason 4 for learning math ~ Problem Solving",
+    "Reason 5 for learning math ~ Perseverance",
+    "Success is rarely an accident.",
+    "Tell me and I forget. Teach me and I remember. Involve me and I learn.  -Ben Franklin",
+    "If you want your children to be intelligent, read them fairy tales.  -Albert Einsten."] %>
   <% whichQuote = rand(listOfQuotes.length) %>
   <h5 class="slogan"><%= listOfQuotes[whichQuote] %></h5>
 </header>
