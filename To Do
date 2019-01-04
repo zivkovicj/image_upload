@@ -60,53 +60,15 @@ Keep reading at
 
 
 
-
-
-
-
-
-
-
-
-STICKY STUDENT NAMES AND OBJECTIVE NAMES
-V https://www.w3schools.com/howto/howto_js_sticky_header.asp
-V http://programminginrubyonrails.blogspot.com/2017/08/how-to-add-bootstrap-table-with-fixed.html
-V Less blank space on the side of the scoresheet
-
-V I cut the container from the layouts/application.html in testing the css
-
-Make sure the scoresheet looks okay when there are zero or one objectives
-  It might have problems because of the empty columns.
-  Shouldn't.  But it might.
-V Fix what is displayed when you click "show all objectives" buttons.  They aren't working properly.
-V Should only update the student's :points_this_term if the teacher is viewing the current term scoresheet
-V Finish re-instating javascript
-V "Hide blank columns" stopped working
-
-V Test for inputing points with different scoresheet views
-V Display a large header to make clear to the teacher which scores is being edited
-V Hide the other two buttons
-
-V Unclutter login screen
-V Seats in consultant map the same size
-V Turn objective names in scoresheet back into links
-V Many links are invisible
-V Return the desk outlines when marking students absent.
-V Line up rows and columns one more time
-V Make sure it works in another browser
-
-Clogged "Mr. Z School Teacher Since:"
-
-Test the market thoroughly to make sure I'm not messing it up for Andrew
-Double-check everything that uses javascript
-
-
-
-
-
-
-
 MOST IMPORTANT FIX AFTER SCORESHEET:
+Make sure column heads and main columns are aligned
+
+When editing a question, the box prompt is way too small.
+
+Edit quantities and point values screen is cluttered.
+
+Log out/log in needs some padding from the edge.
+
 Figure out why D/C sometimes throws an error.
 
 Figure out why quizzes are throwing errors.  It was doing it for all of Xavier's quizzes.
@@ -133,6 +95,11 @@ FAIL["test_deprioritize_consultants_who_already_have_keys", Minitest::Result, 59
         test/integration/consultancies/consultancies_show_test.rb:373:in `block in <class:ConsultanciesShowTest>'
 
 Using stars toward grade isn't working
+
+Quizzes that have no questions shouldn't give any stars at all.
+    Shouldn't even allow the student a response.
+    Even after I make the update that allows for teacher-graded questions, this will still be an issue
+        Because quizzes like rotations still cannot be submitted online. For now.
 
 Goalkeeper is showing "Me" when it should be showing student names
 

@@ -20,6 +20,36 @@ Between each update, manually test:
 
 
 
+2.85 STICKY STUDENT NAMES AND OBJECTIVE NAMES
+https://www.w3schools.com/howto/howto_js_sticky_header.asp
+http://programminginrubyonrails.blogspot.com/2017/08/how-to-add-bootstrap-table-with-fixed.html
+Less blank space on the side of the scoresheet
+
+I cut the container from the layouts/application.html in testing the css
+
+Make sure the scoresheet looks okay when there are zero or one objectives
+  It might have problems because of the empty columns.
+  Shouldn't.  But it might.
+Fix what is displayed when you click "show all objectives" buttons.  They aren't working properly.
+Should only update the student's :points_this_term if the teacher is viewing the current term scoresheet
+Finish re-instating javascript
+"Hide blank columns" stopped working
+
+Test for inputing points with different scoresheet views
+Display a large header to make clear to the teacher which scores is being edited
+Hide the other two buttons
+
+Unclutter login screen
+Seats in consultant map the same size
+Turn objective names in scoresheet back into links
+Many links are invisible
+Return the desk outlines when marking students absent.
+Line up rows and columns one more time
+Make sure it works in another browser
+
+
+
+
 
 2.85  SHOW THE STUDENT'S GOAL IN THEIR SEMINAR_STUDENT SHOW VIEW
 
