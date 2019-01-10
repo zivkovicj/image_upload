@@ -70,13 +70,13 @@
             <tr>
               <% ["Quiz Stars", "Stars Used", "Total Stars"].each do |col_header| %>
                 <td class="score_table_piece">
-                  <div class="score_header center"><%= col_header %></div>
+                  <div class="score_header_div center"><%= col_header %></div>
                 </td>
               <% end %>
               <% @objectives.each_with_index do |objective, indexy| %>
                 <td class="score_table_piece col_<%= indexy %>">
                   <% if objective.id != nil %>
-                    <div class="score_header center">
+                    <div class="score_header_div center">
                       <%= link_to objective.name, objective_path(objective),
                           :class => "plain_link",
                           :id => "obj_#{objective.id}" %>
@@ -123,21 +123,22 @@
                 <% total_stars = stars_this_term + bought_stars %>
                 <% [stars_this_term, bought_stars, total_stars].each do |this_var| %>
                   <td class="score_cell score_table_piece center row_<%= indexx %>" cell_row="<%= indexx %>" >
-                    <%= this_var %>
+                    <div class="score_cell_div"><%= this_var %></div>
                   </td>
                 <% end %>
                 <% @objectives.each_with_index do |objective, indexy| %>
                   <% obj_id = objective.id %>
                   <% this_points = @scores[stud_id][obj_id] %>
                   <td class="score_cell" cell_row="<%= indexx %>" cell_col="<%= indexy %>">
-                    <% if obj_id.present? %>
-                      <input type="text" cell_row="<%= indexx %>" cell_col="<%= indexy %>"
-                          class="score_cell score_table_piece r<%= indexx %>c<%= indexy %> row_<%= indexx %> col_<%= indexy %>" 
-                          value="<%= this_points %>" 
-                          
-                          name="scores[<%= stud_id %>][<%= obj_id %>]"
-                          id="scores[<%= stud_id %>][<%= obj_id %>]">
-                    <% end %>
+                    <div class="score_cell_div">
+                      <% if obj_id.present? %>
+                        <input type="text" cell_row="<%= indexx %>" cell_col="<%= indexy %>"
+                            class="score_cell score_table_piece r<%= indexx %>c<%= indexy %> row_<%= indexx %> col_<%= indexy %>" 
+                            value="<%= this_points %>" 
+                            name="scores[<%= stud_id %>][<%= obj_id %>]"
+                            id="scores[<%= stud_id %>][<%= obj_id %>]">
+                      <% end %>
+                    </div>
                   </td>
                 <% end %>
               </tr>

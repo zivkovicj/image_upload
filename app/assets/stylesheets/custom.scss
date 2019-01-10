@@ -206,21 +206,26 @@ table, th, td {
 }
 
 .score_table {
-  table-layout: fixed;
   width: 1200px;
 }
 
-.score_header {
-  width: 85px;
-}
+
 
 .student_name_header {
   height: 24px;
   width: 200px;
 }
 
+.score_header_div {
+  width: 85px;
+}
+
+.score_cell_div {
+  width: 85px;
+}
+
 .score_cell {
-  width: 87px;
+  width: 84px;
   height: 24px;
   padding: 0px;
 }
