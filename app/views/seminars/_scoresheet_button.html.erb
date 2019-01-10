@@ -1,0 +1,5 @@
+<%= button_to label, 
+    scoresheet_seminar_path(:seminar => @seminar),
+    :params => {:show_all => show_all, :which_scores => which_scores},
+    :class => "btn btn-primary", :method => :get,
+    :id => "hide_blank_columns" %>

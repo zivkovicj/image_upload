@@ -207,6 +207,7 @@ table, th, td {
 
 .score_table {
   table-layout: fixed;
+  width: 1200px;
 }
 
 .score_header {
@@ -215,6 +216,7 @@ table, th, td {
 
 .student_name_header {
   height: 24px;
+  width: 200px;
 }
 
 .score_cell {
@@ -228,6 +230,17 @@ table, th, td {
   width:1200px;
   height:500px;
   position: relative
+}
+
+#div_header {
+  overflow:hidden;
+  width:1180px;
+}
+
+#first_col {
+  overflow: hidden;
+  height: 480px;
+  width: 200px;
 }
 
 .button-within {

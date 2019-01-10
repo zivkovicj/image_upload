@@ -61,6 +61,11 @@ Keep reading at
 
 
 MOST IMPORTANT FIX AFTER SCORESHEET:
+Begin by extracting all style to css page
+    Watch closely to see if any changes are doubling the width of the last column
+    Or increasing the height of the student name field.
+    Or ruining the highlights.
+
 Make sure column heads and main columns are aligned
 
 When editing a question, the box prompt is way too small.

@@ -9,56 +9,46 @@
 <%= render 'shared/class_and_edit' %>
 <%= render 'shared/headline' %>
 
+
+
+
 <div class="row">
+  <%# SHOW/HIDE BUTTONS %>
   <div class="col-sm-1">
     <% if @show_all == "true" %>
-        <%= button_to "Hide Blank Columns", 
-            scoresheet_seminar_path(:seminar => @seminar),
-            :params => {:show_all => false, :which_scores => @which_scores},
-            :class => "btn btn-primary", :method => :get,
-            :id => "hide_blank_columns" %>
+      <%= render 'scoresheet_button', :label => "Hide Blank Columns", :id => "hide_blank_columns",
+        :show_all => false, :which_scores => @which_scores %>
     <% else %>
-        <%= button_to "Show Blank Columns", 
-            scoresheet_seminar_path(:seminar => @seminar),
-            :params => {:show_all => true, :which_scores => @which_scores},
-            :class => "btn btn-primary", :method => :get,
-            :id => "show_blank_columns" %>
+        <%= render 'scoresheet_button', :label => "Show Blank Columns", :id => "show_blank_columns",
+          :show_all => true, :which_scores => @which_scores %>
     <% end %>
   </div>
   
   <div class="col-sm-1"></div>
   
+  <%# WHICH SCORE BUTTONS %>
   <div class="col-sm-2 singleOption">
     <div class="row">
       <% if @which_scores != :points_this_term %>
         <div class="col-sm-2">
-          <%= button_to "Current Term",
-              scoresheet_seminar_path(:seminar => @seminar),
-              :params => {:show_all => @show_all, :which_scores => :points_this_term},
-              :class => "btn btn-primary", :method => :get,
-              :id => "switch_to_current_term" %>
+          <%= render 'scoresheet_button', :label => "Current Term", :id => "switch_to_current_term",
+            :show_all => @show_all, :which_scores => :points_this_term %>
         </div>
         <div class="col-sm-3"></div>
       <% end %>
       
       <% if @which_scores != :points_all_time %>
         <div class="col-sm-3">
-          <%= button_to "All Time",
-              scoresheet_seminar_path(:seminar => @seminar), 
-              :params => {:show_all => @show_all, :which_scores => :points_all_time},
-              :class => "btn btn-primary", :method => :get,
-              :id => "switch_to_all_time" %>
+          <%= render 'scoresheet_button', :label => "All Time", :id => "switch_to_all_time",
+            :show_all => @show_all, :which_scores => :points_all_time %>
         </div>
       <% end %>
       
       <% if @which_scores != :pretest_score %>
         <div class="col-sm-1"></div>
         <div class="col-sm-3">
-          <%= button_to "Pretests",
-            scoresheet_seminar_path(:seminar => @seminar), 
-            :params => {:show_all => @show_all, :which_scores => :pretest_score},
-            :class => "btn btn-primary", :method => :get,
-            :id => "switch_to_pretests" %>
+          <%= render 'scoresheet_button', :label => "Pretests", :id => "switch_to_pretests",
+            :show_all => @show_all, :which_scores => :pretest_score %>
         </div>
       <% end %>
     </div>
@@ -69,13 +59,14 @@
 <%= form_tag update_scoresheet_seminar_path(@seminar) do %>
   <%= hidden_field_tag "old_scores", @scores %>
   <%= hidden_field_tag "which_scores", @which_scores %>
-  <table cellspacing="0" cellpadding="0" border="0" >
+  <table >
     <tr>
       <td id="firstTd">
       </td>
       <td>
-        <div id="divHeader" style="overflow:hidden;width:1180px;">
-          <table cellspacing="0" cellpadding="0" border="1" >
+        <div id="div_header">
+          <%# OBJECTIVE HEADER %>
+          <table >
             <tr>
               <% ["Quiz Stars", "Stars Used", "Total Stars"].each do |col_header| %>
                 <td class="score_table_piece">
@@ -101,8 +92,9 @@
     
     <tr>
       <td valign="top">
-        <div id="firstcol" style="overflow: hidden;height:480px">
-          <table width="200px" cellspacing="0" cellpadding="0" border="1" >
+        <div id="first_col">
+          <%# STUDENT NAME COLUMN %>
+          <table>
             <% @students.each_with_index do |student, indexx| %>
               <% this_ss = SeminarStudent.find_by(:seminar => @seminar, :user => student) %>
               <tr>
@@ -121,7 +113,8 @@
       
       <td valign="top">
         <div id="table_div">
-          <table class="score_table" width="1200px" cellspacing="0" cellpadding="0" border="1" >
+          <%# SCORES %>
+          <table class="score_table">
             <% @students.each_with_index do |student, indexx| %>
               <% stud_id = student.id %>
               <tr>
