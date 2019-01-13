@@ -58,15 +58,13 @@ Keep reading at
 
 
 
+Figure out why D/C sometimes throws an error.
 
 
-MOST IMPORTANT FIX AFTER SCORESHEET:
-Begin by extracting all style to css page
-    Watch closely to see if any changes are doubling the width of the last column
-    Or increasing the height of the student name field.
-    Or ruining the highlights.
 
-Make sure column heads and main columns are aligned
+2.86 FIX EDITING TEACHERS
+
+There is an error when editing teachers.
 
 When editing a question, the box prompt is way too small.
 
@@ -74,11 +72,11 @@ Edit quantities and point values screen is cluttered.
 
 Log out/log in needs some padding from the edge.
 
-Figure out why D/C sometimes throws an error.
 
-Figure out why quizzes are throwing errors.  It was doing it for all of Xavier's quizzes.
 
-There is an error when editing teachers. 
+
+
+ 
 
  FAIL["test_place_apprentices_by_request", Minitest::Result, 101.21296747308224]
  test_place_apprentices_by_request#Minitest::Result (101.21s)
@@ -123,6 +121,10 @@ Gemfile.lock update suggested: rack ~> 2.0.6
 
 Known moderate severity security vulnerability detected in loofah < 2.2.3 defined in Gemfile.lock.
 Gemfile.lock update suggested: loofah ~> 2.2.3.
+
+ - The units of money should not use the dollar sign.  Instead, I think it would be good to either use a letter 'Z' with a line through it (every dollar is called a Z buck) or letting the teacher choose from various symbols for their own dollar.
+
+ - Using decimals (at least 0.25 and 0.50).  Actually this suggestion came from a student of mine who thought that the MrZ Marketplace would be a good way of teaching and learning decimal operations
 
 Also, when trying to choose a student's checkpoint, it won't allow me to choose something different than the first choice.
   And then it leaves that choice with a blank. 
