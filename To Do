@@ -82,7 +82,9 @@ Migrate
 Update owner for all existing classes
     To first teacher
 
+Fix git remotes
 
+Erase skipped tests
 
 Live site threw an error in 6th period.  Insert/Update violates foreign key constraint.  Trying to add a student to a team.
 

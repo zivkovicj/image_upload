@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
+class SeminarTeachersInviteTest < ActionDispatch::IntegrationTest
     
     include UsersHelper
     
