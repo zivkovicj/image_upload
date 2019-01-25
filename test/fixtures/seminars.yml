@@ -18,6 +18,7 @@ one:
   name: 1st Period
   school: school_1
   checkpoint_due_dates: <%= checkpoint_array %>
+  owner: archer
   <<: *minimal
 
 two:

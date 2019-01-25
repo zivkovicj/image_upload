@@ -23,6 +23,7 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         assert_equal 8, @seminar.school_year
         assert_equal 7, @seminar.consultantThreshold
         assert_equal @teacher_1, @seminar.teachers.first
+        assert_equal @teacher_1, @seminar.owner
         assert_equal 1, @seminar.term
         assert_equal Seminar.due_date_array, @seminar.checkpoint_due_dates
         
@@ -69,5 +70,18 @@ class SeminarsNewTest < ActionDispatch::IntegrationTest
         assert_selector('h2', :text => "New Class")
         assert_selector('div', :id => "error_explanation")
         assert_selector('li', :text => "Name can't be blank")
+    end
+    
+    test "name too long" do
+        capybara_login(@teacher_1)
+        click_on("Create a New Class")
+        fill_in "seminar[name]", with: "a"*41
+        
+        click_on("Create This Class")
+        
+        assert_equal @old_seminar_count, Seminar.count
+        assert_selector('h2', :text => "New Class")
+        assert_selector('div', :id => "error_explanation")
+        assert_selector('li', :text => "Name is too long (maximum is 40 characters)")
     end
 end

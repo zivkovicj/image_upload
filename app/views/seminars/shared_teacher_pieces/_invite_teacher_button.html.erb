@@ -1,0 +1,5 @@
+<%= link_to "Invite",
+    new_seminar_teacher_path(:user_id => @teacher.id, :seminar_id => @seminar.id), 
+    :method => :get,
+    :class => "btn btn-small btn-primary",
+    :id => "invite_teacher_#{@teacher.id}" %>

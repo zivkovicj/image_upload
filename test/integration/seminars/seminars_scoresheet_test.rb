@@ -97,7 +97,7 @@ class SeminarsScoresheetTest < ActionDispatch::IntegrationTest
     end
     
     test "update all time not this term" do
-        Quiz.create(:user => @student_2, :objective => @objective_10, :origin => "teacher_granted", :total_score => 8)
+        Quiz.create(:user => @student_2, :objective => @objective_10, :origin => "teacher_granted", :total_score => 7)
         @test_obj_stud.update(:pretest_score => 2, :points_this_term => 6)
         
         capybara_login(@teacher_1)
@@ -105,7 +105,7 @@ class SeminarsScoresheetTest < ActionDispatch::IntegrationTest
         
         click_on("switch_to_all_time")
         
-        fill_in "scores[#{@student_2.id}][#{@objective_10.id}]", with: 7
+        fill_in "scores[#{@student_2.id}][#{@objective_10.id}]", with: 8
         click_on("Save Scores")
         
         @test_obj_stud.reload

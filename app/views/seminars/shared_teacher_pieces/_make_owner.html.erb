@@ -1,0 +1,8 @@
+
+<% if current_user == @seminar.owner %>
+    <% if @st %>
+        <% unless @teacher == @seminar.owner %>
+            <%= render 'seminars/shared_teacher_pieces/make_owner_button' %>
+        <% end %>
+    <% end %>
+<% end %>

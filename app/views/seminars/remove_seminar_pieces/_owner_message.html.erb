@@ -1,0 +1,11 @@
+
+<div class="row">
+    <div class="col-sm-4 singleOption center" id="owner_message">
+        <p>You are the owner of this class, but other teachers are using it.</p>
+        <p>Please choose a new owner before removing this class.</p>
+    </div>
+    <div class="col-sm-2">
+        <%= render 'shared/big_link', link_link: shared_teachers_seminar_path(@seminar), 
+            link_text: "Shared Teachers", link_image: "apple.jpg"  %>
+    </div>
+</div>

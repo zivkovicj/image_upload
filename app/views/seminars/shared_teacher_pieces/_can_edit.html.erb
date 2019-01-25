@@ -1,0 +1,20 @@
+
+<% if @this_teacher_can_edit %>
+    <% if @st %>
+        <% if @st.can_edit %>
+            <% unless @teacher == @seminar.owner %>
+                <%# STOP EDIT PRIVILEGES BUTTON %>
+                <%= render 'seminars/shared_teacher_pieces/stop_edit_privileges_button' %>
+            <% end %>
+        <% else %>
+            <%# GIVE EDIT PRIVILEGES BUTTON %>
+            <%= render 'seminars/shared_teacher_pieces/give_edit_privileges_button' %>
+        <% end %>
+    <% end %>
+<% else %>
+    <% if @st && @st.can_edit %>
+        Yes
+    <% else %>
+        No
+    <% end %>
+<% end %>

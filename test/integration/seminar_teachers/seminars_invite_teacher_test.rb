@@ -19,6 +19,9 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     
     def send_the_invite
         find("#invite_teacher_#{@other_teacher.id}").click
+    end
+    
+    def set_new_seminar_teacher
         @st_2 = SeminarTeacher.find_by(:seminar => @seminar, :user => @other_teacher)
     end
     
@@ -42,6 +45,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         assert_no_selector('a', :id => "invite_teacher_#{@teacher_1.id}")
         
         send_the_invite
+        set_new_seminar_teacher
         
         assert_selector('a', :id => "give_edit_privileges_#{@other_teacher.id}")
         assert_no_selector('a', :id => "give_edit_privileges_#{@teacher_1.id}")
@@ -57,6 +61,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     test "invite and accept" do
         go_to_invite_screen
         send_the_invite
+        set_new_seminar_teacher
         click_on("Log out")
         
         capybara_login(@other_teacher)
@@ -73,6 +78,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     test "invite and decline" do
         go_to_invite_screen
         send_the_invite
+        set_new_seminar_teacher
         click_on("Log out")
         
         capybara_login(@other_teacher)
@@ -86,6 +92,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     test "more invites to accept" do
         go_to_invite_screen
         send_the_invite
+        set_new_seminar_teacher
         send_another_invite
         click_on("Log out")
         
@@ -105,6 +112,7 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
     test "more invites to decline" do
         go_to_invite_screen
         send_the_invite
+        set_new_seminar_teacher
         send_another_invite
         click_on("Log out")
         
@@ -146,6 +154,42 @@ class SeminarsInviteTeacherTest < ActionDispatch::IntegrationTest
         
         @st_2.reload
         assert_not @st_2.can_edit
+    end
+    
+    test "make owner" do
+        @st_2 = SeminarTeacher.create(:user => @other_teacher, :seminar => @seminar)
+        assert_not @st_2.can_edit
+        assert_equal @teacher_1, @seminar.owner
+        
+        capybara_login(@teacher_1)
+        go_to_seminar
+        click_on("Shared Teachers")
+        
+        click_on("make_owner_#{@other_teacher.id}")
+        
+        @seminar.reload
+        @st_2.reload
+        assert_equal @other_teacher, @seminar.owner
+        assert @st_2.can_edit
+    end
+    
+    test "remove teacher" do
+        @st_2 = SeminarTeacher.create(:user => @other_teacher, :seminar => @seminar)
+        @st_3 = SeminarTeacher.create(:user => @teacher_3, :seminar => @seminar, :can_edit => true)
+        assert @seminar.teachers.include?(@other_teacher)
+        
+        capybara_login(@teacher_3)  #Log in as second teacher to test appearance of removal button.
+        go_to_seminar
+        click_on("Shared Teachers")
+        
+        assert_selector('a', :id => "remove_teacher_#{@other_teacher.id}")
+        assert_no_selector('a', :id => "remove_teacher_#{@teacher_1.id}")
+        assert_selector('span', :id => "owner_#{@teacher_1.id}")
+        
+        click_on("remove_teacher_#{@other_teacher.id}")
+        
+        assert_selector('h2', :text => "Edit #{@seminar.name}")
+        assert_not @seminar.teachers.include?(@other_teacher)
     end
     
 end

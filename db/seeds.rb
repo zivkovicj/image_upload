@@ -71,11 +71,11 @@ end
 
 # Seminars
 sem_1 = Seminar.create!(name: "Main Teacher, 1st Period", user_id: 5, consultantThreshold: 7, term: 0, 
-    which_checkpoint: 0, school_year: 9)
+    which_checkpoint: 0, school_year: 9, :owner => Teacher.find(5))
 sem_2 = Seminar.create!(name: "Main Teacher, 2nd Period", user_id: 5, consultantThreshold: 7, term: 0, 
-    which_checkpoint: 0, school_year: 9)
+    which_checkpoint: 0, school_year: 9, :owner => Teacher.find(5))
 sem_3 = Seminar.create!(name: "Another Teacher, First Period", user_id: 6, consultantThreshold: 7, term: 0,
-    which_checkpoint: 0, school_year: 9)
+    which_checkpoint: 0, school_year: 9, :owner => Teacher.find(6))
 
 sem_1.teachers << Teacher.find(5)
 sem_2.teachers << Teacher.find(5)

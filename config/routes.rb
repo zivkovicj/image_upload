@@ -51,12 +51,14 @@ Rails.application.routes.draw do
   resources :ripostes
   resources :seminars do
     get 'basic_info', on: :member
+    get 'change_owner', on: :member
     get 'change_term', on: :member
     get 'copy_due_dates', on: :member
     get 'due_dates', on: :member
     get 'objectives', on: :member
     get 'pretests', on: :member
     get 'priorities', on: :member
+    get 'remove', on: :member
     get 'rewards', on: :member
     get 'scoresheet', on: :member
     get 'shared_teachers', on: :member

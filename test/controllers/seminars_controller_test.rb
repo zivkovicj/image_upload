@@ -68,21 +68,4 @@ class SeminarsControllerTest < ActionDispatch::IntegrationTest
     end
   end
   
-  test "empty seminar name" do
-    log_in_as @teacher_1
-    assert_no_difference 'Seminar.count' do
-      post '/seminars/', params: { seminar: { name: " ",  consultantThreshold: 7, school_year: 9 } }
-    end
-    assert_template 'seminars/new'
-  end
-  
-  test "class name too long" do
-    log_in_as @teacher_1
-    assert_no_difference 'Seminar.count' do
-      post '/seminars/', params: { seminar: { name: "a"*41,  consultantThreshold: 7, school_year: 9 } }
-    end
-    assert_template 'seminars/new'
-  end
-  
-  
 end

@@ -1,0 +1,5 @@
+<%= link_to "Stop Editing Privileges",
+    seminar_teacher_path(@st, :seminar_teacher => {:can_edit => false}), 
+    :method => :put,
+    :class => "btn btn-small btn-primary",
+    :id => "stop_edit_privileges_#{@teacher.id}" %>

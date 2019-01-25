@@ -1,0 +1,20 @@
+
+<% if @this_teacher_can_edit %>
+    <% if @st %>
+        <% if @teacher == @seminar.owner %>
+            <span id="owner_<%= @teacher.id %>">Owner</span>
+        <% else %>
+            <%# REMOVE TEACHER BUTTON %>
+            <%= render 'seminars/shared_teacher_pieces/remove_teacher_button' %>
+        <% end %>
+    <% else %>
+        <%# INVITE TEACHER BUTTON %>
+        <%= render 'seminars/shared_teacher_pieces/invite_teacher_button' %>
+    <% end %>
+<% else %>
+    <% if @st %>
+        Yes
+    <% else %>
+        No
+    <% end %>
+<% end %>

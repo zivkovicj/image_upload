@@ -12,8 +12,9 @@ class SeminarsController < ApplicationController
     
     def create
         @seminar = Seminar.new(seminar_params)
+        @creating_teacher = Teacher.find(params[:seminar][:teacher_id])
+        @seminar.owner = @creating_teacher
         if @seminar.save
-            @creating_teacher = Teacher.find(params[:seminar][:teacher_id])
             @seminar.teachers << @creating_teacher
             
             edit_permission_for_creating_teacher
@@ -91,6 +92,17 @@ class SeminarsController < ApplicationController
         redirect_to seminar_path(@seminar)
     end
     
+    def change_owner
+        @seminar = Seminar.find(params[:id])
+        @teacher = Teacher.find(params[:new_owner])
+    
+        @seminar.update(:owner => @teacher)
+        SeminarTeacher.find_or_create_by(:user => @teacher, :seminar => @seminar).update(:can_edit => true)
+        
+        flash[:success] = "Class Owner Updated"
+        redirect_to @seminar
+    end
+    
     def change_term
        @seminar = Seminar.find(params[:id]) 
        @current_term = @seminar.term
@@ -118,6 +130,10 @@ class SeminarsController < ApplicationController
     def priorities
         @seminar = Seminar.find(params[:id])
         set_editing_privilege
+    end
+    
+    def remove
+        @seminar = Seminar.find(params[:id])
     end
     
     def scoresheet

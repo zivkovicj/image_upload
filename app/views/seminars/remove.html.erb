@@ -1,0 +1,23 @@
+<% provide(:title, 'Class Priorities') %>
+<% provide(:button_text, 'Update This Class') %>
+
+<% provide(:headerText, "Priorities for #{@seminar.name}" ) %>
+<% provide(:headerPic, "priorities.png") %>
+
+<%= render 'shared/navribbons/main_navribbon' %>
+<%= render 'seminar_submenus' %>
+<%= render 'shared/headline' %>
+
+</br>
+<% if @seminar.teachers.count > 1 %>
+    <% if current_user == @seminar.owner %>
+        <%# REQUEST TO CHANGE OWNER BEFORE REMOVING %>
+        <%= render 'seminars/remove_seminar_pieces/owner_message' %>
+    <% else %>
+        <%# CONFIRM REMOVING SEMINAR %>
+        <%= render 'seminars/remove_seminar_pieces/confirm_remove_button' %>
+    <% end %>
+<% else %>
+    <%# CONFIRM DELETING SEMINAR %>
+    <%= render 'seminars/remove_seminar_pieces/confirm_delete_button' %>
+<% end %>

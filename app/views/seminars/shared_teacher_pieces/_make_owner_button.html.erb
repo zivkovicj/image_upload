@@ -1,0 +1,4 @@
+<%= link_to "Make Owner",
+    change_owner_seminar_path(@seminar, :new_owner => @teacher),
+    :class => "btn btn-small btn-primary",
+    :id => "make_owner_#{@teacher.id}" %>

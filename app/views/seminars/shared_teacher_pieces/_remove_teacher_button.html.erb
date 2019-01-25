@@ -1,0 +1,5 @@
+<%= link_to "Remove Teacher",
+    seminar_teacher_path(@st, :other_teacher_removed => true), 
+    :method => :delete,
+    :class => "btn btn-small btn-primary",
+    :id => "remove_teacher_#{@teacher.id}" %>

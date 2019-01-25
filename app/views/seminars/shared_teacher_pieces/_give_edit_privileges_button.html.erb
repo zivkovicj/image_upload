@@ -1,0 +1,5 @@
+<%= link_to "Give Editing Privileges",
+    seminar_teacher_path(@st, :seminar_teacher => {:can_edit => true}), 
+    :method => :put,
+    class: "btn btn-small btn-primary",
+    :id => "give_edit_privileges_#{@teacher.id}" %>

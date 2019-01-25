@@ -339,23 +339,24 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
     test "delete seminar" do
         capybara_login(@teacher_1)
         go_to_seminar
-        click_on("Basic Info")
+        click_on("Remove This Class")
         
-        assert_no_selector('p', :id => "remove_#{@seminar.id}")
-        assert_selector('p', :id => "delete_#{@seminar.id}")  #Counterpart.  This button should not exist if the class is shared.
-        find("#delete_#{@seminar.id}").click
-        click_on("confirm_#{@seminar.id}")
+        assert_no_selector('a', :id => "confirm_remove_#{@seminar.id}")
+        assert_selector('a', :id => "confirm_delete_#{@seminar.id}")  #Counterpart.  This button should not exist if the class is shared.
+        find("#confirm_delete_#{@seminar.id}").click
         
         assert_equal @old_seminar_count - 1, Seminar.count
     end
     
-    test "no delete button for shared class" do
-        capybara_login(@other_teacher)
-        click_on("seminar_#{@avcne_seminar.id}")
-        click_on("Basic Info")
+    test "owner message" do
+        assert_equal @seminar.owner, @teacher_1
+        assert @seminar.teachers << @other_teacher # Need two teachers for the owner message to appear.
         
-        assert_selector('p', :id => "remove_#{@avcne_seminar.id}")   #Counterpart.  This button should not exist if the class is not shared.
-        assert_no_selector('p', :id => "delete_#{@avcne_seminar.id}")
+        capybara_login(@teacher_1)
+        click_on("seminar_#{@seminar.id}")
+        click_on("Remove This Class")
+        
+        assert_selector('div', :id => "owner_message")
     end
     
     test "remove seminar" do
@@ -364,46 +365,15 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         
         capybara_login(@teacher_1)
         click_on("seminar_#{@avcne_seminar.id}")
-        click_on("Basic Info")
-        find("#remove_#{@avcne_seminar.id}").click
+        click_on("Remove This Class")
+        assert_no_selector('a', :id => "confirm_delete_#{@avcne_seminar.id}")  # Delete button shouldn't be offered for a shared class.
+        assert_selector('a', :id => "confirm_remove_#{@avcne_seminar.id}")
         find("#confirm_remove_#{@avcne_seminar.id}").click
         
         @teacher_1.reload
         assert_equal @old_st_count - 1, SeminarTeacher.count
         assert_not @teacher_1.seminars.include?(@avcne_seminar)
         assert_not @avcne_seminar.teachers.include?(@teacher_1)
-    end
-    
-    test "some user can edit" do
-        @avcne_seminar.teachers << @teacher_3
-        @st_1 = @teacher_1.seminar_teachers.find_by(:seminar => @avcne_seminar)
-        @st_2 = @other_teacher.seminar_teachers.find_by(:seminar => @avcne_seminar)
-        @st_3 = @teacher_3.seminar_teachers.find_by(:seminar => @avcne_seminar)
-        assert_not @st_1.can_edit
-        assert @st_2.can_edit
-        assert_not @st_3.can_edit
-        
-        capybara_login(@teacher_3)
-        click_on("seminar_#{@avcne_seminar.id}")
-        click_on("Basic Info")
-        find("#remove_#{@avcne_seminar.id}").click
-        find("#confirm_remove_#{@avcne_seminar.id}").click
-        
-        @st_1.reload
-        @st_2.reload
-        assert_not @st_1.can_edit
-        assert @st_2.can_edit
-        
-        click_on("Log out")
-        
-        capybara_login(@other_teacher)
-        click_on("seminar_#{@avcne_seminar.id}")
-        click_on("Basic Info")
-        find("#remove_#{@avcne_seminar.id}").click
-        find("#confirm_remove_#{@avcne_seminar.id}").click
-        
-        @st_1.reload
-        assert @st_1.can_edit
     end
     
     

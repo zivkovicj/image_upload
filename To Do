@@ -62,11 +62,36 @@ Figure out why D/C sometimes throws an error.
 
 
 
-2.86 FIX EDITING TEACHERS
+2.87 FIX EDITING TEACHERS
+V Fully remove a teacher from a class
+    V Not just revoke editing privileges
+V Need a system to keep track of which teacher is the owner of the class.
+    V Creating a new class makes you the owner
+    V When viewing shared teachers, don't offer a "Remove" button for the owner teacher
+    V If you are the owner, you'll see a "Make owner" button on the other teachers in the class
+        V Changes old owner to new owner
+        V Gives edit privileges 
+    V Someone_can_edit function is no longer needed.
+        V Owner-transferring has replaced it.
+        V Test that owner-change prompt appears
+V Make sure it's possible to remove yourself from a class normally
 
-There is an error when editing teachers.
+V Seeds
 
-Should be able to remove a teacher from a class
+Migrate
+Update owner for all existing classes
+    To first teacher
+
+
+
+Live site threw an error in 6th period.  Insert/Update violates foreign key constraint.  Trying to add a student to a team.
+
+Eliminate the feature where goals transfer with the student.  It's causing an error.
+
+Index of consultancies should show created_at
+    So I can get rid of display_date
+    Make sure last_consultant_day also works by created_at
+
 
 
 
@@ -79,8 +104,15 @@ Edit quantities and point values screen is cluttered.
 
 Log out/log in needs some padding from the edge.
 
+Don't show the goal on a student's profile unless teacher has enabled goalkeeper.
 
+Submenu buttons should be equal size
 
+The colors are far too busy with all the different buttons.
+
+Basic Info Icon doesn't make sense.
+
+Submenus needs a ribbon or something to set it apart.
 
 
  
@@ -226,6 +258,14 @@ Instead of iterating through apprentices, iterate through the groups and find an
     And minimize the need for replacing those consultants into different groups.
 Live site is not showing student signatory badge right now.
 
+
+HUGE LIST OF LABELS FOR QUESTIONS
+
+Best solution brainstormed so far is to make a "label-viewer" mini-app.
+    Whenever labels need to be chosen, show that app.
+    It will expand and contract the list based on some choices.  
+    
+    
 
 
 Checkpoint due dates could use a back button

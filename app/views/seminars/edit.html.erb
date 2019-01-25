@@ -56,18 +56,6 @@
 <div>
   <%= button_to "Create New Students", new_student_path, :params => {:seminar_id => @seminar.id}, :method => :get, class: "btn btn-lg btn-primary" %></br>
   <%= button_to "Add an Existing Student", {:controller => "students", :action => "index"}, :method => :get, class: "btn btn-lg btn-primary" %></br>
-  
-  <% if @seminar.teachers.count > 1 %>
-    <p class="btn btn-lg btn-primary remove_btn" id="remove_<%= @seminar.id %>">Remove This Class</p>
-    <% @st = @seminar.seminar_teachers.find_by(:user => current_user) %>
-    
-    <%= link_to "Confirm Removing #{@seminar} from your Classes.", seminar_teacher_path(@st), 
-          :method => :delete,  class: "btn btn-small btn-primary", :id => "confirm_remove_#{@seminar.id}" %>
-  <% else %>
-    <p class="btn btn-lg btn-primary remove_btn" id="delete_<%= @seminar.id %>">Delete This Class</p>
-    <%= button_to "Click here to confirm that you want to delete #{@seminar.name}", @seminar, 
-        :method => :delete, :id => "confirm_#{@seminar.id}", class: "btn btn-lg btn-primary confirm_button" %>
-  <% end %>
 </div>
 
 
