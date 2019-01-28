@@ -28,34 +28,9 @@ class SeminarStudentsController < ApplicationController
     setup_ss_vars
     term = @seminar.term
     this_sequence = @seminar.which_checkpoint
-    @gs = GoalStudent.find_by(:user => @student, :seminar => @seminar, :term => term)
-    @checkpoint = Checkpoint.find_by(:goal_student => @gs, :sequence => this_sequence)
-    @checkpoint_due_date = @seminar.checkpoint_due_dates[term][this_sequence]
-    
-    #@ss_id = @ss.id
-    
-    
-    #@school = @student.school
-    
-    #@seminar_id = @seminar.id
-    #@term = @seminar.term
-    #@oss = @seminar.objective_seminars.includes(:objective).order(:priority)
-    #@bucks_current = @student.bucks_current(:seminar, @seminar)
-    #@school_or_seminar = "seminar"
-    
-    
-    
-    #@objectives = @seminar.objectives.order(:name)
-    #objective_ids = @objectives.map(&:id)
-    #@student_scores = @student.objective_students.where(:objective_id => objective_ids)
-    
-    #@quiz_stars_this_term = @student.quiz_stars_this_term(@seminar)
-    #@stars_used_toward_grade_this_term = @student.stars_used_toward_grade_this_term(@seminar, @seminar.term)
-    #@total_stars_this_term = @quiz_stars_this_term + @stars_used_toward_grade_this_term
-    #@quiz_stars_all_time = @student.quiz_stars_all_time(@seminar)
-    
-    #@teach_options = @student.teach_options(@seminar, @seminar.rank_objectives_by_need)
-    #@learn_options = @student.learn_options(@seminar, @seminar.rank_objectives_by_need)
+    #@gs = GoalStudent.find_by(:user => @student, :seminar => @seminar, :term => term)
+    #@checkpoint = Checkpoint.find_by(:goal_student => @gs, :sequence => this_sequence)
+    #@checkpoint_due_date = @seminar.checkpoint_due_dates[term][this_sequence]
   
     update_current_class
   end
