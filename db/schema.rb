@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190113175238) do
+ActiveRecord::Schema.define(version: 20190131044836) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -354,6 +354,16 @@ ActiveRecord::Schema.define(version: 20190113175238) do
     t.integer  "school_admin"
     t.string   "teacher_currency_name"
     t.integer  "school_bucks_earned"
+  end
+
+  create_table "worksheets", force: :cascade do |t|
+    t.string   "name"
+    t.string   "uploaded_file"
+    t.string   "extent"
+    t.integer  "user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["user_id"], name: "index_worksheets_on_user_id"
   end
 
 end

@@ -1,0 +1,28 @@
+<%= form_for(@worksheet) do |f| %>
+  <% if @worksheet.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@worksheet.errors.count, "error") %> prohibited this file from being saved:</h2>
+
+      <ul>
+      <% @worksheet.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+  
+  <div class="field">
+    <%= f.label "Upload a File...." %>
+    <%= f.file_field :uploaded_file %>
+  </div>
+
+    </br>
+  <div class="actions">
+    <%= f.submit :class => "btn btn-lg btn-primary" %>
+  </div>
+<% end %>

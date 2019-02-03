@@ -58,34 +58,92 @@ Keep reading at
 
 
 
+
+
+
+
+
+
+2.88 OBJECTIVE FILES
+
+This page looks the most promising:
+https://richonrails.com/articles/allowing-file-uploads-with-carrierwave
+
+Move the damn content-creation buttons to their own view.
+That's going to add an extra step to almost all of my tests.
+
+Will probably need a join model between objective and worksheet so I can do habtm
+
+Add "Files" to objective menu for teacher editing
+
+Student can access the study guide or other files for an upcoming objective.
+Grade screen showing grades for all objectives.
+Student view of objective shows downloadable file
+
+
+
+View files already connected
+Disconnect files from objectives
+
+Don't need name protect on worksheet or picture if I just validate for name.
+    That's better anyway.  We don't want 1,000 pics/files with generic names.
+Worksheet should have a user
+
+Make sure there are no errors for objectives that do not have a worksheet
+
+Try to do it the same as I do with photos.
+
+Migrate to add worksheet model
+
+
+
+Look into my capacity with AWS.
+
+
+
+
+IMPROVED APPRENTICE PLACEMENT
+
+Instead of iterating through apprentices, iterate through the groups and find an unplaced
+    apprentice to put into the group.
+    This should better use the consultants who were chosen.
+    And minimize the need for replacing those consultants into different groups.
+Live site is not showing student signatory badge right now.
+
+/C isn't forcing Priority 5 objectives.
+Consider allowing a student into a team as a last resort, even if that student has passed the objective.
+
+
+
+
+
+
+RE ACTIVATE THE SUGGESTED NEXT OBJECTIVE BUTTON
+Maybe two suggestions: Suggested retake, and suggested new objective
+Keep track of which objectives are not good for doing outside of a D/C environment
+
+
+BROWSE ALL STUDY GUIDES
+Teachers can browse all study guides
+
+
+BUTTON TO ADD ALREADY-EXISTING FILE TO AN OBJECTIVE
+Instead of uploading a new one.
+
+
+
+
+
+
+
+
 Figure out why D/C sometimes throws an error.
-
-
-
-2.87 FIX EDITING TEACHERS
-V Fully remove a teacher from a class
-    V Not just revoke editing privileges
-V Need a system to keep track of which teacher is the owner of the class.
-    V Creating a new class makes you the owner
-    V When viewing shared teachers, don't offer a "Remove" button for the owner teacher
-    V If you are the owner, you'll see a "Make owner" button on the other teachers in the class
-        V Changes old owner to new owner
-        V Gives edit privileges 
-    V Someone_can_edit function is no longer needed.
-        V Owner-transferring has replaced it.
-        V Test that owner-change prompt appears
-V Make sure it's possible to remove yourself from a class normally
-
-V Seeds
-
-Migrate
-Update owner for all existing classes
-    To first teacher
 
 Not allowing me to remove 3-2 as a pre-req from 3-3
 
-Gavin couldn't go into his class.
+Term-changing needs to offer getting rid of teacher keys, dc keys, and unfinished quizzes.
 
+Updating a pre-test shouldn't give keys to students who have already assessed in that objective.
 
 Fix git remote address
 
@@ -258,12 +316,7 @@ Switch the image and text on big links
 
 
 
-BETTER APPRENTICE PLACEMENT
-Instead of iterating through apprentices, iterate through the groups and find an unplaced
-    apprentice to put into the group.
-    This should better use the consultants who were chosen.
-    And minimize the need for replacing those consultants into different groups.
-Live site is not showing student signatory badge right now.
+
 
 
 HUGE LIST OF LABELS FOR QUESTIONS
@@ -272,7 +325,26 @@ Best solution brainstormed so far is to make a "label-viewer" mini-app.
     Whenever labels need to be chosen, show that app.
     It will expand and contract the list based on some choices.  
     
-    
+ 
+ 
+RE-IMPLEMENT SCHOOL MARKET
+
+<% view_word = "View" %>
+<% if @teacher.school_admin > 0 %>
+  <% view_word = "Manage" %>
+<% end %>
+
+<%= link_to "#{view_word} #{@school.market_name}",
+  commodities_path(:school_id => @school.id),
+  :class => "btn btn-lg btn-primary",
+  :method => :get,
+  :id => "manage_school_market" %>
+
+<%= link_to "Manage #{@teacher.name_with_title} Market", commodities_path(:user_id => @teacher.id), class: "btn btn-lg btn-primary", :method => :get,
+  :id => "manage_teacher_market" %> 
+  
+  
+  
 
 
 Checkpoint due dates could use a back button
@@ -288,11 +360,6 @@ After a student is moved, the old goal_students should be erased
 
 Cannot delete a teacher because of the hanging commodities
 
-
-
-LINK FILES TO OBJECTIVES
-
-I need to connect all my cool, authored stuff to the correct sites.
 
 
 
@@ -446,9 +513,6 @@ SHOW NEW STARS MORE CLEARLY
 Students are confused when a quiz shows a low score for new stars.
 
 
-CONNECT FILES WITH OBJECTIVES
-Student can access the study guide of other files for an upcoming objective.
-Teachers can browse all study guides
 
 
 
@@ -1113,7 +1177,7 @@ The jquery for showing those info buttons needs to be dried down to one single f
 
 AUTO-UPDATE TOTAL
 The "total" field in the scoresheet should update upon changing one of that students' scores.
-Scoresheet show show mean and median for objectives
+Scoresheet show mean and median for objectives
 
 ACCOUNT ACTIVATIONS
 Since the teacher's profile shows a request for them to activate their account, it should also include a link to send a second activation email. 

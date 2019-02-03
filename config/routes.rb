@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get    '/help',    to: 'static_pages#help'
   get    '/about',   to: 'static_pages#about'
   get    '/contact', to: 'static_pages#contact'
+  get    '/content', to: 'static_pages#content'
   get    '/partner', to: 'static_pages#partner'
   get   '/materials', to: 'static_pages#materials', :as => "materials"
   get    '/signup',  to: 'teachers#new'
@@ -79,7 +80,8 @@ Rails.application.routes.draw do
   resources :students do
     get 'edit_teaching_requests', on: :member
   end
-  resources :teachers 
+  resources :teachers
+  resources :worksheets
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

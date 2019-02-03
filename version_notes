@@ -21,6 +21,24 @@ Between each update, manually test:
 
 
 
+2.87 FIX EDITING TEACHERS
+Fully remove a teacher from a class
+    Not just revoke editing privileges
+Need a system to keep track of which teacher is the owner of the class.
+    Creating a new class makes you the owner
+    When viewing shared teachers, don't offer a "Remove" button for the owner teacher
+    If you are the owner, you'll see a "Make owner" button on the other teachers in the class
+        Changes old owner to new owner
+        Gives edit privileges 
+    Someone_can_edit function is no longer needed.
+        Owner-transferring has replaced it.
+        Test that owner-change prompt appears
+Make sure it's possible to remove yourself from a class normally
+
+Seeds
+
+
+
 
 
 
