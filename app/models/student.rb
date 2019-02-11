@@ -70,17 +70,23 @@ class Student < User
         self.seminar_students.find_by(:seminar => seminar).teach_request
     end
     
-    def teach_options(seminar, assign_list)
-        objective_students.where(:objective_id => seminar.objs_above_zero_priority)
-            .where(:points_all_time => seminar.consultantThreshold..9)
+    def teach_options(seminar)
+        objective_students
+            .where(:objective => seminar.objectives, :points_all_time => seminar.consultantThreshold..9)
             .select{|x| x.total_keys == 0}
+            .sort_by {|x| -x.objective.priority_in(seminar)}
             .take(10)
             .map(&:objective)
-            .sort_by{|x| [-x.priority_in(seminar), -x.students_who_requested(seminar)] }
     end
     
-    def learn_options(seminar, assign_list)
-        assign_list.select{|x| self.objective_students.find_by(:objective => x).obj_ready_and_willing?(seminar.consultantThreshold)}.take(10) 
+    def learn_options(seminar)
+        c_thresh = seminar.consultantThreshold
+        objective_students
+            .where(:objective => seminar.objectives)
+            .select{|x| x.total_keys == 0 && x.obj_ready_and_willing?(c_thresh)}
+            .sort_by{|x| -x.objective.priority_in(seminar)}
+            .take(10)
+            .map(&:objective)
     end
     
     def present_in(seminar)

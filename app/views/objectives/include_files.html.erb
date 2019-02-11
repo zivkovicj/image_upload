@@ -1,0 +1,56 @@
+<% provide(:title, "#{@objective.name}") %>
+<% provide(:button_text, "Save Changes") %>
+
+<% provide(:headerText, "Files") %>
+<% provide(:headerPic, 'objectives.png') %>
+
+<%= render 'back_to_objective' %>
+<%= render 'shared/headline' %>
+<%= render 'objective_subheadline' %>
+
+<% if @current_worksheets.count > 0 then %>
+  <div class="row">
+    <h2>Current Files</h2>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @current_worksheets.each do |worksheet| %>
+          <tr>
+            <td><%= worksheet.name %></td>
+            <td><%= link_to "Download File", worksheet.uploaded_file.to_s %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+
+<% if @assign_permission != "other" %>
+  <div class="row singleOption">
+    <h3>Upload a New File</h3>
+    <%= render 'worksheets/form', objective_id: @objective.id %>
+  </div>
+  </br>
+
+  <div class="row">
+    <%= form_for(@objective) do |a| %>
+    
+      <%= render 'shared/error_messages', object: @objective %>
+      
+      <%= render :partial => 'shared/include_checks', 
+        :locals => {:list_for_checks => @worksheets,
+          :check_box_name => "objective[worksheet_ids][]",
+          :inclusion_var => @objective.worksheets, :boulderfist => false,
+          :include_word => "files", :include_on => "for this objective",
+          :model_name => "objective"} %>
+      
+      </br></br>
+      <%= a.submit yield(:button_text), class: "btn btn-primary" %>
+    <% end %>
+  </div>
+<% end %>

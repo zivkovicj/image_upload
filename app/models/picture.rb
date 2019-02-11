@@ -6,6 +6,7 @@ class Picture < ApplicationRecord
   
   validates_presence_of :image
   validates_presence_of :user
+  validates_presence_of :name
   
   mount_uploader :image, ImageUploader
   

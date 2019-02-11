@@ -12,6 +12,8 @@ class Objective < ApplicationRecord
     has_many    :mainassigns, through: :mainconditions, as: :preassign, source: :mainassign
     has_many    :label_objectives, dependent: :destroy
     has_many    :labels, through: :label_objectives
+    has_many    :objective_worksheets, dependent: :destroy
+    has_many    :worksheets, through: :objective_worksheets
     has_many    :questions, through: :labels
     has_many    :teams, dependent: :destroy
     has_many    :quizzes, dependent: :destroy
@@ -29,7 +31,7 @@ class Objective < ApplicationRecord
     end
     
     def priority_in(seminar)
-        self.objective_seminars.find_by(:seminar => seminar).priority
+        objective_seminars.find_by(:seminar => seminar).priority
     end
     
     def students_who_requested(seminar)

@@ -1,0 +1,54 @@
+
+<% def objective_table(obj_list) %>
+  <table>
+    <% obj_list.each do |objective| %>
+        <tr>
+          <td>&nbsp;
+            <% if objective.worksheets.count > 0 then %>
+              <%= link_to objective.name, include_files_objective_path(objective),
+                    :class => "blue_link",
+                    :id => "link_to_#{objective.id}" %>
+            <% else %>
+              <%= objective.name %>
+            <% end %> &nbsp;
+          </td>
+          <td>&nbsp; <%= @score_hash[objective.id] %>&nbsp;</td>
+        </tr>
+    <% end %>
+  </table>
+<% end %>
+
+<div class="row">
+  <div class="col-sm-1">
+  </div>   
+  
+  <div class="singleOption col-sm-4">
+    <%= render 'shared/back-link' %>
+    </br>
+    
+    <h3>Stars This Term  <strong><%= @quiz_stars_this_term %></strong></h3>
+    </br>
+    <h3>Stars All Time  <strong><%= @quiz_stars_all_time %></strong></h3>
+    </br>
+    <% if @learn_options %>
+      <h3>Suggested objectives for you to study next:</h3>
+      <% objective_table(@learn_options) %>
+    <% end %>
+    
+  </div>
+  
+  <div class="col-sm-1">
+  </div> 
+  
+  <div class="singleOption col-sm-3">
+    <h3>All Objectives</h3>
+    <% objective_table(@objectives) %>
+    </br>
+  </div>
+</div>
+</br>
+
+
+
+
+

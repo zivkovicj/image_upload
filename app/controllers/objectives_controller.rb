@@ -15,7 +15,6 @@ class ObjectivesController < ApplicationController
   end
   
   def create
-    name_protect
     @objective = Objective.new(objective_params_basic)
     if @objective.save
       flash[:success] = "Objective Created"
@@ -58,13 +57,14 @@ class ObjectivesController < ApplicationController
     redirect_path = @objective
     params_to_use = objective_params_seminars
     if params[:objective][:name]
-      name_protect
       params_to_use = objective_params_basic
     elsif params[:objective][:label_ids]
       params_to_use = objective_params_labels
       redirect_path = quantities_objective_path(@objective)
     elsif params[:objective][:preassign_ids]
       params_to_use = objective_params_preassigns
+    elsif params[:objective][:worksheet_ids]
+      params_to_use = objective_params_worksheets
     end
     if @objective.update_attributes(params_to_use)
       add_pre_reqs_to_objective
@@ -107,6 +107,13 @@ class ObjectivesController < ApplicationController
 
     #set_permissions(@objective)
     
+  def include_files
+    @objective = Objective.find(params[:id])
+    @worksheet = Worksheet.new
+    @current_worksheets = @objective.worksheets.order(:name)
+    set_permissions(@objective)
+    @worksheets = Worksheet.all
+  end
   
   def include_labels
     @objective = Objective.find(params[:id])
@@ -164,6 +171,10 @@ class ObjectivesController < ApplicationController
         params.require(:objective).permit(seminar_ids: [])
     end
     
+    def objective_params_worksheets
+      params.require(:objective).permit(worksheet_ids: [])
+    end
+    
     def add_pre_reqs_to_objective
       if @objective.seminar_ids != @old_seminars
         @objective.objective_seminars.each do |os|
@@ -181,10 +192,5 @@ class ObjectivesController < ApplicationController
       set_permissions(@objective)
       @pre_req_list = build_pre_req_list(@objective)
     end
-    
-    def name_protect
-      params[:objective][:name] = "Objective #{Objective.count}" if params[:objective][:name].blank?
-    end
-          
           
 end

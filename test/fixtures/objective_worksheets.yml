@@ -4,17 +4,8 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
-    name: "worksheet 1"
-    uploaded_file: "string to replace a file"
-    user: archer
-    
-two:
-    name: "worksheet 2"
-    uploaded_file: "string to replace a file 2"
-    user: archer
-    
-three:
-    name: "worksheet 3"
-    uploaded_file: "string to replace a file 3"
-    user: archer
+one: {}
+# column: value
+#
+two: {}
+# column: value

@@ -12,9 +12,14 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
         setup_questions()
     end
     
+    def go_to_all_questions
+        click_on("View/Create Content")
+        click_on("All Questions")
+    end
+    
     test "index questions as admin" do
         capybara_login(@admin_user)
-        click_on("All Questions")
+        go_to_all_questions
 
         assert_selector('a', :id => "edit_#{@admin_q.id}", :text => @admin_q.short_prompt)
         assert_selector('h5', :id => "delete_#{@admin_q.id}", :text => "Delete")
@@ -28,7 +33,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     
     test "index questions as non admin" do
         capybara_login(@teacher_1)
-        click_on("All Questions")
+        go_to_all_questions
     
         assert_selector('a', :id => "edit_#{@admin_q.id}", :text => @admin_q.short_prompt)
         assert_selector('h5', :id => "delete_#{@admin_q.id}", :text => "Delete", :count => 0)
@@ -42,7 +47,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
     
     test "back button" do
         capybara_login(@teacher_1)
-        click_on("All Questions")
+        go_to_all_questions
         assert_selector("h2", :text => "All Questions")
         assert_not_on_teacher_page
         click_on("back_button")
@@ -58,7 +63,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
         lo.update(:quantity => old_lab_quest_count)
         
         capybara_login(@admin_user)
-        click_on("All Questions")
+        go_to_all_questions
         
         find("#delete_#{@admin_q.id}").click
         click_on("confirm_#{@admin_q.id}")
@@ -76,7 +81,7 @@ class QuestionsIndexTest < ActionDispatch::IntegrationTest
         assert_equal 1, this_lab.label_objectives.count
         
         capybara_login(@admin_user)
-        click_on("All Questions")
+        go_to_all_questions
         
         fill_in "search_field", with: this_quest.prompt
         click_on("Search")

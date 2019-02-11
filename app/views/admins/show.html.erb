@@ -16,41 +16,7 @@
   </div>
 <% end %>
 
-<div>
-  <div class="row">
-    <div class="col-sm-4">
-      <%= button_to "Create New Questions", new_question_path, 
-        class: "btn btn-lg btn-primary", :method => :get %>
-    </div>
-    <div class="col-sm-4">
-      <%= button_to "Create a New Label", new_label_path, 
-        class: "btn btn-lg btn-primary", :method => :get %>
-    </div>
-    <div class="col-sm-4">
-      <%= button_to "Create a New Objective", new_objective_path, 
-        class: "btn btn-lg btn-primary", :method => :get %>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-4">
-      <%= button_to 'All Questions', questions_path, class: "btn btn-lg btn-primary",
-          :method => :get %>
-    </div>
-    <div class="col-sm-4">
-      <%= button_to 'All Labels', labels_path, class: "btn btn-lg btn-primary",
-          :method => :get %>
-    </div>
-    <div class="col-sm-4">
-      <%= button_to 'All Objectives', objectives_path, class: "btn btn-lg btn-primary",
-          :method => :get %>
-    </div>
-  </div>
+<div class="col-sm-4">
+  <%= button_to "View/Create Content", content_path, 
+  class: "btn btn-lg btn-primary", :method => :get %>
 </div>
-
-
-<%= button_to "Goals", goals_path, class: "btn btn-lg btn-primary", :method => :get %>
-
-<%= button_to 'Upload Picture', new_picture_path, class: "btn btn-lg btn-primary",
-          :method => :get %>
-          
-<%= button_to "All Pictures", pictures_path, class: "btn btn-lg btn-primary", :method => :get %>

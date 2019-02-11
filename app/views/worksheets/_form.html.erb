@@ -10,6 +10,10 @@
       </ul>
     </div>
   <% end %>
+  
+  <% if @objective.present? %>
+    <%= f.hidden_field :objective, :value => @objective.id %>
+  <% end %>
 
   <div class="field">
     <%= f.label :name %>

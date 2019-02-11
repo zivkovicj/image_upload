@@ -13,7 +13,7 @@
     <% @worksheets.each do |worksheet| %>
       <tr>
         <td><%= worksheet.name %></td>
-        <td><%= link_to "Download File", worksheet.uploaded_file.url %></td>
+        <td><%= link_to "Download File", worksheet.uploaded_file.to_s %></td>
         <td><%= button_to "Delete",  worksheet, method: :delete, class: "btn btn-danger", confirm: "Are you sure that you wish to delete #{worksheet.name}?" %></td>
       </tr>
     <% end %>

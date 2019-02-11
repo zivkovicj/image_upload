@@ -23,14 +23,15 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
         @old_question_count = Question.count
     end
     
-    def go_to_questions_details
+    def go_to_new_questions
+        click_on("View/Create Content")
         click_on("Create New Questions")
-        click_on("Create Some Questions")
     end
+        
 
     test "create multiple choice questions" do
         capybara_login(@teacher_1)
-        click_on("Create New Questions")
+        go_to_new_questions
         
         assert_selector('input', :id => "style_multiple-choice") # Counterpart to a line in the questions_edit_test
         assert_selector('input', :id => "label_#{@admin_l.id}")
@@ -89,7 +90,7 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
     
     test "create fill-in questions" do
         capybara_login(@teacher_1)
-        click_on("Create New Questions")
+        go_to_new_questions
         
         choose("style_fill-in")
         choose("label_#{@user_l.id}")
@@ -130,7 +131,8 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
     
     test "dont create with empty prompt" do
         capybara_login(@teacher_1)
-        go_to_questions_details
+        go_to_new_questions
+        click_on("Create Some Questions")
         
         fill_prompt(0)
         fill_prompt(2)
@@ -141,7 +143,8 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
     
     test "all prompts empty" do
         capybara_login(@teacher_1)
-        go_to_questions_details
+        go_to_new_questions
+        click_on("Create Some Questions")
         
         click_on("Create These Questions")
         
@@ -153,7 +156,8 @@ class QuestionsNewTest < ActionDispatch::IntegrationTest
     test "default correct and label" do
         capybara_login(@teacher_1)
         
-        go_to_questions_details
+        go_to_new_questions
+        click_on("Create Some Questions")
         fill_prompt(0)
         fill_choice(0,0)
         click_on("Create These Questions")

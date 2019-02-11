@@ -22,6 +22,7 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
     end
     
     test "create school commodity" do
+        skip
         capybara_login(@teacher_1)
         click_on("manage_school_market")
         click_on("Create a New Item")
@@ -126,6 +127,7 @@ class CommoditiesCreateTest < ActionDispatch::IntegrationTest
     end
     
     test "new item button hidden for low admin school market" do
+        skip
         @other_teacher.update(:school_admin => 0)
         capybara_login(@other_teacher)
         click_on("View #{@school.market_name}")

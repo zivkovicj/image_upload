@@ -12,7 +12,6 @@ class PicturesController < ApplicationController
   end
 
   def create
-    name_protect
     @picture = Picture.new(picture_params)
     @picture.user = current_user
     
@@ -38,7 +37,6 @@ class PicturesController < ApplicationController
   end
 
   def update
-    name_protect
     @picture = Picture.find(params[:id])
     if @picture.update(picture_params)
       flash[:success] = "Picture Updated"
@@ -65,9 +63,5 @@ class PicturesController < ApplicationController
   private
     def picture_params
       params.require(:picture).permit(:name, :image, label_ids: [])
-    end
-    
-    def name_protect
-      params[:picture][:name] = "Picture #{Picture.count}" if params[:picture][:name].blank?
     end
 end

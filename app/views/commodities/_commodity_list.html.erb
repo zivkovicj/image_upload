@@ -16,7 +16,7 @@
     <% end %>
     <tr>
         <td height="100"><%= image_tag(commode.image_url(:thumb).to_s) %></td>
-        <td><%= @commode.name %></td>
+        <td>&emsp;<%= @commode.name %>&emsp;</td>
         <td class="center" >$ <span class="price_display" id="price_<%= @com_id %>" com_id="<%= @com_id %>"><%= @price %></span></td>
         
         <% if controller_name == "seminar_students" %>
@@ -24,7 +24,7 @@
             <%= render 'commodities/purchased_info' %>
             <%= render 'commodities/market_buttons/sell_button' if @commode.salable %>
             <%= render 'commodities/market_buttons/use_button' if @commode.usable %>
-        <% elsif current_user.school_admin > 0 %>
+        <% elsif current_user.type == "Teacher" %>
             <td><%= link_to 'Edit', edit_commodity_path(@commode), 
                         :class => "btn btn-small btn-primary",
                         :id => "edit_#{@commode.id}" %></td>

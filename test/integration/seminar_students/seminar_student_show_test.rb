@@ -53,6 +53,40 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
         give_student(@teacher_1_star)
     end
     
+    test 'grades back button' do
+        capybara_login(@student_2)
+        click_on("1st Period")
+        click_on("Objectives")
+    end
+    
+    test 'objective downloading screen' do
+        setup_objectives
+        setup_worksheets
+        
+        capybara_login(@student_2)
+        click_on("1st Period")
+        click_on("Objectives")
+        
+        assert_selector("h3", :text => "Stars This Term")
+        assert_selector("a", :text => @own_assign.name)
+        assert_no_selector("a", :text => @objective_10.name)
+        assert_selector("td", :text => @objective_10.name)
+        
+        # Check that student can link to download files for an objective, but not change them.
+        click_link("link_to_#{@own_assign.id}")
+        
+        assert_no_selector("h5", :text => "1st Period")
+        assert_selector("h2", :text => "for #{@own_assign.name}")
+        assert_selector("h2", :text => "Current Files")
+        assert_no_selector("h3", :text => "Upload a New File")  #Counterpart is in objectives_edit_test
+        
+        # Back to class screen
+        click_on("Back to 1st Period")
+        
+        assert_no_selector("h2", :text => "Current Files")
+        assert_selector("h5", :text => "1st Period")
+    end
+    
     test 'teacher updates seminar student' do
         skip
         this_gs = @student_2.goal_students.find_by(:seminar => @seminar, :term => 1)

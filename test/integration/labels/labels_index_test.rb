@@ -9,9 +9,14 @@ class LabelsIndexTest < ActionDispatch::IntegrationTest
         @old_label_count = Label.count
     end
     
+    def go_to_all_labels
+        click_on("View/Create Content")
+        click_on("All Labels")
+    end
+    
     test "index labels as admin" do
         capybara_login(@admin_user)
-        click_on("All Labels")
+        go_to_all_labels
 
         assert_selector('a', :id => "edit_#{@admin_l.id}", :text => @admin_l.name)
         assert_selector('h5', :id => "delete_#{@admin_l.id}", :text => "Delete")
@@ -25,8 +30,8 @@ class LabelsIndexTest < ActionDispatch::IntegrationTest
     
     test "index labels as non admin" do
         capybara_login(@teacher_1)
-        click_on("All Labels")
-    
+        go_to_all_labels
+        
         assert_selector('a', :id => "edit_#{@admin_l.id}", :text => @admin_l.name)
         assert_selector('h5', :id => "delete_#{@admin_l.id}", :text => "Delete", :count => 0)
         assert_selector('a', :id => "edit_#{@user_l.id}", :text => @user_l.name)
@@ -39,7 +44,7 @@ class LabelsIndexTest < ActionDispatch::IntegrationTest
     
     test "back button" do
         capybara_login(@teacher_1)
-        click_on("All Labels")
+        go_to_all_labels
         assert_selector("h2", :text => "All Labels")
         assert_not_on_teacher_page
         click_on("back_button")
@@ -53,7 +58,7 @@ class LabelsIndexTest < ActionDispatch::IntegrationTest
         first_pic_label_count = first_pic.labels.count
         
         capybara_login(@admin_user)
-        click_on("All Labels")
+        go_to_all_labels
         
         find("#delete_#{@admin_l.id}").click
         click_on("confirm_#{@admin_l.id}")

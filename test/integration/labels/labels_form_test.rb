@@ -10,11 +10,21 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
         @new_name = "20.1 One-step equations with diagrams"
     end
     
+    def go_to_all_labels
+        click_on("View/Create Content")
+        click_on("All Labels")
+    end
+    
+    def go_to_new_label
+        click_on("View/Create Content")
+        click_on("Create a New Label")
+    end
+    
     test "create new label" do
         old_label_count = Label.count
         
         capybara_login(@teacher_1)
-        click_on("Create a New Label")
+        go_to_new_label
         
         fill_in "name", with: @new_name
         click_on("Create This Label")
@@ -32,7 +42,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
     
      test "admin creates label" do
         capybara_login(@admin_user)
-        click_on("Create a New Label")
+        go_to_new_label
         
         fill_in "name", with: @new_name
         choose("public_label")
@@ -48,7 +58,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
     
     test "invalid label" do
         capybara_login(@teacher_1)
-        click_on("Create a New Label")
+        go_to_new_label
         
         # No name entered
         click_on("Create This Label")
@@ -60,7 +70,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
     
     test "view other teacher label" do
         capybara_login(@teacher_1)
-        click_on('All Labels')
+        go_to_all_labels
         click_on(@other_l_pub.name)
         
         assert_text("You are viewing the details of this label. You may not make any edits because it was created by another teacher.")
@@ -71,7 +81,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
     
     test "edit admin label" do
         capybara_login(@teacher_1)
-        click_on('All Labels')
+        go_to_all_labels
         click_on(@admin_l.name)
         
         assert_text("You are viewing the details of this label. You may not make any edits because it was created by another teacher.")
@@ -83,7 +93,7 @@ class LabelsFormTest < ActionDispatch::IntegrationTest
         assert_not_equal new_name, @user_l.name
         
         capybara_login(@teacher_1)
-        click_on('All Labels')
+        go_to_all_labels
         click_on(@user_l.name)
         
         assert_no_text("You may only edit a label that you have created.")

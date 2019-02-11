@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190131044836) do
+ActiveRecord::Schema.define(version: 20190205230406) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -168,6 +168,15 @@ ActiveRecord::Schema.define(version: 20190131044836) do
     t.index ["objective_id", "user_id"], name: "index_objective_students_on_objective_id_and_user_id"
     t.index ["objective_id"], name: "index_objective_students_on_objective_id"
     t.index ["user_id"], name: "index_objective_students_on_user_id"
+  end
+
+  create_table "objective_worksheets", force: :cascade do |t|
+    t.integer  "objective_id"
+    t.integer  "worksheet_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["objective_id"], name: "index_objective_worksheets_on_objective_id"
+    t.index ["worksheet_id"], name: "index_objective_worksheets_on_worksheet_id"
   end
 
   create_table "objectives", force: :cascade do |t|

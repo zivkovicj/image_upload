@@ -191,6 +191,14 @@ class ActiveSupport::TestCase
     end
   end
   
+  def setup_worksheets
+    @worksheet_1 = worksheets(:one)
+    @worksheet_2 = worksheets(:two)
+    @worksheet_3 = worksheets(:three)
+    
+    @worksheet_1.objectives << @own_assign
+  end
+  
   def is_logged_in?
     !session[:user_id].nil?
   end

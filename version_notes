@@ -21,6 +21,21 @@ Between each update, manually test:
 
 
 
+
+
+
+
+
+
+2.88 OBJECTIVE FILES
+
+Allow user to upload and download files.
+Move the damn content-creation buttons to their own view.
+That's going to add an extra step to almost all of my tests.
+
+
+
+
 2.87 FIX EDITING TEACHERS
 Fully remove a teacher from a class
     Not just revoke editing privileges

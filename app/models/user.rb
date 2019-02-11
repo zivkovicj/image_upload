@@ -18,6 +18,7 @@ class User < ApplicationRecord
     belongs_to  :school
     belongs_to   :sponsor,  :class_name => "User"
     has_many    :goal_students, dependent: :destroy
+    has_many    :worksheets
     
     attribute :verified, :integer, default: 0
     attribute :school_admin, :integer, default: 0

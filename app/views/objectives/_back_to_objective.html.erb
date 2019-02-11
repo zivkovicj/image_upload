@@ -1,3 +1,17 @@
-<%= button_to "Back to #{@objective.name}", @objective,
-    :class => "btn btn-primary",
-    :method => :get %>
+
+<% if current_user.type != "Student" %>
+    <% back_message = "Back to #{@objective.name}" %>
+    <% back_link = @objective %>
+<% elsif current_user.current_class then %>
+    <% @seminar = Seminar.find(current_user.current_class) %>
+    <% @ss = SeminarStudent.find_by(:user => current_user, :seminar => @seminar) %>
+    <% back_message = "Back to #{@seminar.name}" %>
+    <% back_link = seminar_student_path(@ss) %>
+<% else %>
+    <% back_message = "Profile" %>
+    <% back_link = current_user %>
+<% end %>
+
+<%= button_to back_message, back_link,
+        :class => "btn btn-primary",
+        :method => :get %>

@@ -11,6 +11,11 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         @old_objective_count = Objective.count
     end
     
+    def go_to_all_objectives
+        click_on("View/Create Content")
+        click_on('All Objectives')
+    end
+    
     def create_and_add_student(seminar)
         @new_student = Student.new(:first_name => "new", :last_name => "student")
         @new_student.save
@@ -18,7 +23,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     end
     
     def go_to_objective_show_page(this_objective)
-        click_on('All Objectives')
+        
         click_on(this_objective.full_name)
     end
     
@@ -50,7 +55,32 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_equal "private", @assign_to_add.extent
     end
     
-    test "labels and quantities" do
+    test "include files" do
+        setup_objectives
+        setup_worksheets
+        
+        assert @own_assign.worksheets.include?(@worksheet_1)
+        assert_not @own_assign.worksheets.include?(@worksheet_2)
+        assert_not @own_assign.worksheets.include?(@worksheet_3)
+        
+        capybara_login(@teacher_1)
+        go_to_objective_show_page(@own_assign)
+        click_on "Files"
+        
+        uncheck("check_#{@worksheet_1.id}")
+        check("check_#{@worksheet_2.id}")
+        check("check_#{@worksheet_3.id}")
+        assert_selector("h3", :text => "Upload a New File")  #Counterpart.  This line shouldn't show up for students.
+        click_on("Save Changes")
+        
+        assert_selector("h2", :text => @own_assign.name)
+        
+        assert_not @own_assign.worksheets.include?(@worksheet_1)
+        assert @own_assign.worksheets.include?(@worksheet_2)
+        assert @own_assign.worksheets.include?(@worksheet_3)
+    end
+    
+    test "include labels and quantities" do
         setup_labels
         setup_objectives
         
@@ -159,9 +189,9 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_nil @new_student.objective_students.find_by(:objective => @preassign_to_add)
         
         capybara_login(@teacher_1)
-        click_on('All Objectives')
+        go_to_all_objectives
         click_on(@main_objective.full_name)
-        click_on("Pre Requisites")
+        click_on("Pre Reqs")
         
         check("check_#{@preassign_to_add.id}")
         check("check_#{@already_preassign_to_super.id}")
@@ -184,9 +214,9 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         setup_objectives
         
         capybara_login(@admin_user)
-        click_on('All Objectives')
+        go_to_all_objectives
         click_on(@objective_40.full_name)
-        click_on("Pre Requisites")
+        click_on("Pre Reqs")
         
         assert_no_selector('input', :id => "check_#{@own_assign.id}")
         assert_selector('input', :id => "check_#{@objective_30.id}")
@@ -196,9 +226,9 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         setup_objectives
             # But that mainassign SHOULD appear as an option for others
         capybara_login(@admin_user)
-        click_on('All Objectives')
+        go_to_all_objectives
         click_on(@super_objective.full_name)
-        click_on("Pre Requisites")
+        click_on("Pre Reqs")
         
         assert_selector('input', :id => "check_#{@own_assign.id}")
     end
@@ -232,9 +262,9 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert @objective_50.mainassigns.include?(@own_assign)
         
         capybara_login(@own_assign.user)
-        click_on("All Objectives")
+        go_to_all_objectives
         click_on(@own_assign.full_name)
-        click_on("Pre Requisites")
+        click_on("Pre Reqs")
         
         uncheck("check_#{@objective_40.id}")
         click_on("Save Changes")
@@ -250,7 +280,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         skip
         assert @seminar.objectives.include?(@objective_20)
         capybara_login(@teacher_1)
-        click_on('All Objectives')
+        go_to_all_objectives
         click_on(@objective_20.full_name)
         check(@seminar.name)
         
@@ -263,7 +293,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     test "view other teacher objective" do
         skip
         capybara_login(@teacher_1)
-        click_on('All Objectives')
+        go_to_all_objectives
         click_on(@objective_20.full_name)
         check(@seminar.name)
         
@@ -281,7 +311,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         old_label_objective_count = LabelObjective.count
         
         capybara_login(@teacher_1)
-        click_on('All Objectives')
+        go_to_all_objectives
         click_on(@own_assign.full_name)
         assert_no_text("You may only edit an objective that you have created. You may use this window to choose which classes this objective is assigned to.")
         
@@ -312,9 +342,10 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     
     test "empty name update" do
         setup_objectives
+        old_name = @own_assign.name
         
         capybara_login(@teacher_1)
-        click_on('All Objectives')
+        go_to_all_objectives
         click_on(@own_assign.full_name)
         click_on("Basic Info")
         
@@ -322,7 +353,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         click_on("Save Changes")
         
         @own_assign.reload
-        assert_equal "Objective #{@old_objective_count}", @own_assign.name
+        assert_equal old_name, @own_assign.name
     end
    
     test "teacher made no objectives" do

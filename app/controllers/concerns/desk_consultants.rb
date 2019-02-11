@@ -88,7 +88,7 @@ module DeskConsultants
         end
         
         # If the request didn't work out, look at the student's teach_options
-        obj = student.teach_options(@seminar, @rank_objectives_by_need).detect{|x| @need_hash[x.id] > 0}
+        obj = student.teach_options(@seminar).detect{|x| @need_hash[x.id] > 0}
         establish_new_group(student, obj, true) if obj
       end
     end
@@ -146,7 +146,7 @@ module DeskConsultants
             # This is mostly for the case where the student doesn't have a learn_request
             # This can also happen if something happened to the student's learn_request after it was made.
             # For example, the teacher changed the priority to zero.
-            obj = student.learn_options(@seminar, @rank_objectives_by_need)[0]
+            obj = student.learn_options(@seminar)[0]
             establish_new_group(student, obj, false) if obj
           end
         end

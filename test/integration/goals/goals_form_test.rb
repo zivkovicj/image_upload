@@ -8,9 +8,15 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
         @old_goal_count = Goal.count
     end
     
+    def go_to_goals_page
+        click_on("View/Create Content")
+        click_on("Goals")
+    end
+    
     test "create new goal" do
         capybara_login(@teacher_1)
-        click_on("Goals")
+        
+        go_to_goals_page
         click_on("Create a New Goal Option")
         
         # Fail on first try
@@ -56,7 +62,7 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
         assert_equal "public", edited_goal.extent
         
         capybara_login(@teacher_1)
-        click_on("Goals")
+        go_to_goals_page
         
         assert_text(Goal.first.name)
         assert_text(goals(:other_teacher_goal).name)
@@ -92,7 +98,7 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
         assert_equal "public", edited_goal.extent
         
         capybara_login(@teacher_1)
-        click_on("Goals")
+        go_to_goals_page
         click_on(edited_goal.name)
         click_on('Update this Goal Option')
         
@@ -104,7 +110,7 @@ class GoalsFormTest < ActionDispatch::IntegrationTest
         other_teacher_goal = goals(:other_teacher_goal)
         
         capybara_login(@teacher_1)
-        click_on('Goals')
+        go_to_goals_page
         click_on(other_teacher_goal.name)
         
         assert_text("You are viewing the details of this goal. You may not make any edits because it was created by another teacher.")

@@ -61,43 +61,107 @@ Keep reading at
 
 
 
+2.89 CONNECT FILE TO OBJECTIVE
+VT Create a join model 
+VT Add associations to model file
+VT Add "Files" to objective menu for teacher editing
+VT Use the "Include Checks" partial to make a list of files to connect the objective
+VT Don't need name protect on worksheet or picture if I just validate for name.
+    VT That's better anyway.  We don't want 1,000 pics/files with generic names.
 
+V Going through the objective menu, then viewing files, that screen has an option to upload a
+    new file.  This automatically adds the target objective to that file after it's uploaded
 
+VT Grade screen showing grades for all objectives
+VT Student can access the study guide or other files for an upcoming objective
+V Needs a back button
+V When viewing the files for an objective, the back button needs to lead back to the student page.
+V Don't search by :points_all_time for every score in the view.  That can be done with a hash like the scoresheet.
 
-2.88 OBJECTIVE FILES
+V Should mark which objectives have files.
 
-This page looks the most promising:
-https://richonrails.com/articles/allowing-file-uploads-with-carrierwave
+V Re-implement learning options.
 
-Move the damn content-creation buttons to their own view.
-That's going to add an extra step to almost all of my tests.
+Worksheet didn't seem to attach when an admin created a new worksheet while attaching.
 
-Will probably need a join model between objective and worksheet so I can do habtm
+Can I learn how to test file uploads in a reasonable time?
 
-Add "Files" to objective menu for teacher editing
+Test everything
+    Test that a "user" is added to a worksheet as it's uploaded
 
-Student can access the study guide or other files for an upcoming objective.
-Grade screen showing grades for all objectives.
-Student view of objective shows downloadable file
+Shrink picture for apple, label, etc.  They should all be the size of the key.
 
-
-
-View files already connected
-Disconnect files from objectives
-
-Don't need name protect on worksheet or picture if I just validate for name.
-    That's better anyway.  We don't want 1,000 pics/files with generic names.
-Worksheet should have a user
-
-Make sure there are no errors for objectives that do not have a worksheet
-
-Try to do it the same as I do with photos.
-
-Migrate to add worksheet model
-
-
+Migrate to add objective_worksheet model
 
 Look into my capacity with AWS.
+
+
+
+
+
+
+
+
+
+
+
+
+
+ERROR["test_edit_teacher_commodity", Minitest::Result, 1216.8916852809489]
+ test_edit_teacher_commodity#Minitest::Result (1216.89s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Mr. Archer Market"
+            test/integration/commodities/commodities_index_test.rb:12:in `go_to_edit_game_ticket'
+            test/integration/commodities/commodities_index_test.rb:61:in `block in <class:CommoditiesIndexTest>'
+
+ERROR["test_edit_teacher_commodity_default_info", Minitest::Result, 1218.6967552285641]
+ test_edit_teacher_commodity_default_info#Minitest::Result (1218.70s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Mr. Archer Market"
+            test/integration/commodities/commodities_index_test.rb:86:in `block in <class:CommoditiesIndexTest>'
+
+ERROR["test_delete_commodity", Minitest::Result, 1220.9492160221562]
+ test_delete_commodity#Minitest::Result (1220.95s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Burglecut Elementary Market"
+            test/integration/commodities/commodities_index_test.rb:129:in `block in <class:CommoditiesIndexTest>'
+
+ERROR["test_cant_edit_commodity_to_blank_name", Minitest::Result, 1223.1795354988426]
+ test_cant_edit_commodity_to_blank_name#Minitest::Result (1223.18s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Burglecut Elementary Market"
+            test/integration/commodities/commodities_index_test.rb:106:in `block in <class:CommoditiesIndexTest>'
+
+ERROR["test_deliverable_not_salable_on_edit", Minitest::Result, 1225.0992233138531]
+ test_deliverable_not_salable_on_edit#Minitest::Result (1225.10s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Mr. Archer Market"
+            test/integration/commodities/commodities_index_test.rb:12:in `go_to_edit_game_ticket'
+            test/integration/commodities/commodities_index_test.rb:18:in `block in <class:CommoditiesIndexTest>'
+
+ERROR["test_edit_school_commodity", Minitest::Result, 1226.940116448328]
+ test_edit_school_commodity#Minitest::Result (1226.94s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Burglecut Elementary Market"
+            test/integration/commodities/commodities_index_test.rb:33:in `block in <class:CommoditiesIndexTest>'
+
+ERROR["test_default_picture_name", Minitest::Result, 1249.0443339571357]
+ test_default_picture_name#Minitest::Result (1249.04s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Upload Pictures"
+            test/integration/pictures/pictures_new_test.rb:19:in `goto_picture_create'
+            test/integration/pictures/pictures_new_test.rb:51:in `block in <class:PicturesNewTest>'
+
+ERROR["test_uploads_an_image", Minitest::Result, 1250.8690473996103]
+ test_uploads_an_image#Minitest::Result (1250.87s)
+ActiveRecord::RecordNotFound:         ActiveRecord::RecordNotFound: Couldn't find Picture without an ID
+            test/integration/pictures/pictures_new_test.rb:24:in `block in <class:PicturesNewTest>'
+
+ERROR["test_create_new_picture", Minitest::Result, 1252.842140656896]
+ test_create_new_picture#Minitest::Result (1252.84s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Upload Pictures"
+            test/integration/pictures/pictures_new_test.rb:19:in `goto_picture_create'
+            test/integration/pictures/pictures_new_test.rb:28:in `block in <class:PicturesNewTest>'
+
+ERROR["test_no_picture_file", Minitest::Result, 1254.70336010959]
+ test_no_picture_file#Minitest::Result (1254.70s)
+Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Upload Pictures"
+            test/integration/pictures/pictures_new_test.rb:19:in `goto_picture_create'
+            test/integration/pictures/pictures_new_test.rb:61:in `block in <class:PicturesNewTest>'
+
 
 
 
@@ -127,15 +191,8 @@ BROWSE ALL STUDY GUIDES
 Teachers can browse all study guides
 
 
-BUTTON TO ADD ALREADY-EXISTING FILE TO AN OBJECTIVE
-Instead of uploading a new one.
 
-
-
-
-
-
-
+Should check for assign_permission on the back end to prevent url hacks
 
 Figure out why D/C sometimes throws an error.
 
@@ -157,7 +214,8 @@ Index of consultancies should show created_at
     So I can get rid of display_date
     Make sure last_consultant_day also works by created_at
 
-
+<h3>Market Stars Used This Term: <strong><%= @stars_used_toward_grade_this_term %></strong></h3>
+<h3>Total Stars for This Term: <strong><%= @total_stars_this_term %></strong></h3>
 
 
 

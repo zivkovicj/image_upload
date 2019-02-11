@@ -8,10 +8,15 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         @old_objective_count = Objective.count
     end
     
+    def go_to_new_objective
+        click_on("View/Create Content")
+        click_on('Create a New Objective')
+    end
+    
     test "new objective button from main user page" do
         capybara_login(@teacher_1)
         assert_on_teacher_page
-        click_on('Create a New Objective')
+        go_to_new_objective
         assert_selector('h2', :text => 'New Objective', :visible => true)
         assert_not_on_teacher_page
     end
@@ -19,7 +24,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     
     test "empty name create" do
         capybara_login(@teacher_1)
-        click_on('Create a New Objective')
+        go_to_new_objective
         fill_in "name", with: ""
         click_on('Create a New Objective')
         
@@ -30,7 +35,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     
     test "user creates objective" do
         capybara_login(@teacher_1)
-        click_on('Create a New Objective')
+        go_to_new_objective
         
         name = "009 Compare Unit Rates"
         fill_in "name", with: name
@@ -48,7 +53,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
     
     test "admin creates objective" do
         capybara_login(@admin_user)
-        click_on('Create a New Objective')
+        go_to_new_objective
 
         name = "010 Destroy Unit Rates"
         fill_in "name", with: name

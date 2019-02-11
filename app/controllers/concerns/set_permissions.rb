@@ -9,7 +9,7 @@ module SetPermissions
           @assign_permission = "admin"
       else
         if thisId == current_user.id
-          @assign_permission = "thisUser"
+          @assign_permission = "this_user"
         else
           @assign_permission = "other"
         end

@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   end
   resources :objective_students
   resources :objectives do
+    get 'include_files', on: :member
     get 'include_labels', on: :member
     get 'include_seminars', on: :member
     get 'keys_for_objective', on: :member
@@ -69,6 +70,7 @@ Rails.application.routes.draw do
   resources :seminar_students do
     get 'goal_reroute', on: :member
     get 'give_keys', on: :member
+    get 'grades', on: :member
     get 'move_or_remove', on: :member
     get 'star_market', on: :member
     get 'quizzes', on: :member

@@ -5,16 +5,22 @@ class WorksheetsController < ApplicationController
     end
     
     def create
-        #name_protect
-        @worksheet = Worksheet.new(worksheet_params)
-        #@worksheet.user = current_user
-    
-        if @worksheet.save
-          flash[:success] = "File Successfully Uploaded"
+      @worksheet = Worksheet.new(worksheet_params)
+      @worksheet.user = current_user
+  
+      if @worksheet.save
+        flash[:success] = "File Successfully Uploaded"
+        this_obj_id = params[:worksheet][:objective] 
+        if this_obj_id == nil
           redirect_to current_user
         else
-          render 'new'
+          @objective = Objective.find_by(this_obj_id)
+          @worksheet.objectives << @objective
+          redirect_to @objective
         end
+      else
+        render 'new'
+      end
     end 
     
     def index
@@ -31,7 +37,7 @@ class WorksheetsController < ApplicationController
     private
     
         def worksheet_params
-          params.require(:worksheet).permit(:name, :file)
+          params.require(:worksheet).permit(:name, :uploaded_file)
         end
     
 end

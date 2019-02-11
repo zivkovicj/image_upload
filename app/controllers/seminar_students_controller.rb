@@ -26,8 +26,8 @@ class SeminarStudentsController < ApplicationController
   
   def show
     setup_ss_vars
-    term = @seminar.term
-    this_sequence = @seminar.which_checkpoint
+    #term = @seminar.term
+    #this_sequence = @seminar.which_checkpoint
     #@gs = GoalStudent.find_by(:user => @student, :seminar => @seminar, :term => term)
     #@checkpoint = Checkpoint.find_by(:goal_student => @gs, :sequence => this_sequence)
     #@checkpoint_due_date = @seminar.checkpoint_due_dates[term][this_sequence]
@@ -68,6 +68,28 @@ class SeminarStudentsController < ApplicationController
     setup_ss_vars
     
     @objectives = @seminar.objectives.order(:name)
+  end
+  
+  def grades
+    @ss = SeminarStudent.find_by(params[:id])
+    @student = @ss.user
+    @seminar = @ss.seminar
+    
+    @objectives = @seminar.objectives.order(:name)
+    
+    @scores = @student.objective_students.where(:objective => @objectives)
+    @quiz_stars_this_term= @scores.sum(:points_this_term)
+    @quiz_stars_all_time = @scores.sum(:points_all_time)
+    
+    @score_hash = @scores
+    .pluck(:objective_id, :points_all_time)
+    .reduce({}) do |result, (obj, points)|
+        result[obj] = points
+        result
+    end
+    
+    @learn_options = @student.learn_options(@seminar)
+    
   end
   
   def goal_reroute

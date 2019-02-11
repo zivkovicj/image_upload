@@ -1,4 +1,7 @@
 
+<%= render 'shared/back-link' %>
+</br>
+
 <% def list_of_quizzes(list, category, id_label, age) %>
     <% if list.count > 0 %>
     <% this_action = age == "new" ? "new" : "edit" %>

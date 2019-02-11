@@ -97,8 +97,8 @@ class StudentsController < ApplicationController
     @oss = @seminar.objective_seminars.includes(:objective).order(:priority)
     @ss = SeminarStudent.find_by(:user => @student, :seminar => @seminar)
     
-    @teach_options = @student.teach_options(@seminar, @seminar.rank_objectives_by_need)
-    @learn_options = @student.learn_options(@seminar, @seminar.rank_objectives_by_need)
+    @teach_options = @student.teach_options(@seminar)
+    @learn_options = @student.learn_options(@seminar)
   end
 
   def destroy

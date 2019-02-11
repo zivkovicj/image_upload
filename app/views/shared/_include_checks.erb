@@ -1,7 +1,6 @@
 <% scope_words = ["Your", "Public"] %>
 <% split_list = [list_for_checks.where(:user => current_user), list_for_checks.where.not(:user => current_user)] %>
 
-
 <div class="singleOption">
     <h2><strong><%= include_word.capitalize.pluralize(2) %></strong></h2>
     

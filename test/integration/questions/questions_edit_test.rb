@@ -21,15 +21,20 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
        assert_no_text("You may not make any edits because it was created by another teacher.")
     end
     
+    def go_to_all_questions
+        click_on("View/Create Content")
+        click_on('All Questions')
+    end
+    
     def goto_mc_question
         capybara_login(@teacher_1)
-        click_on('All Questions')
+        go_to_all_questions
         click_on(@user_q.short_prompt)
     end
     
     test "edit other teacher question" do
         capybara_login(@teacher_1)
-        click_on('All Questions')
+        go_to_all_questions
         click_on(@other_q_pub.short_prompt)
         
         on_show_page
@@ -40,7 +45,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
     
     test "edit admin question" do
         capybara_login(@teacher_1)
-        click_on('All Questions')
+        go_to_all_questions
         click_on(@admin_q.short_prompt)
         
         on_show_page
@@ -83,7 +88,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         @user_q.update(:correct_answers => ["2"], :picture => nil)
         
         capybara_login(@teacher_1)
-        click_on('All Questions')
+        go_to_all_questions
         click_on(@user_q.short_prompt)
         click_on("save_changes_2")
         
@@ -103,7 +108,7 @@ class QuestionsEditTest < ActionDispatch::IntegrationTest
         old_label = @fill_q.label
         
         capybara_login(@teacher_1)
-        click_on('All Questions')
+        go_to_all_questions
         fill_in "search_field", with: @fill_q.prompt
         click_on("Search")
         click_on(@fill_q.short_prompt)

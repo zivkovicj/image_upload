@@ -7,10 +7,15 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     setup_schools
     setup_objectives
   end
+  
+  def go_to_all_objectives
+    click_on("View/Create Content")
+    click_on("All Objectives")
+  end
 
   test "index objectives as admin" do
     capybara_login(@admin_user)
-    click_on("All Objectives")
+    go_to_all_objectives
 
     assert_selector('a', :id => "edit_#{@objective_20.id}", :text => @objective_20.full_name)
     assert_selector('h5', :id => "delete_#{@objective_20.id}", :text => "Delete")
@@ -22,7 +27,7 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
 
   test "index objectives as non admin" do
     capybara_login(@teacher_1)
-    click_on("All Objectives")
+    go_to_all_objectives
     
     assert_selector('a', :id => "edit_#{@objective_20.id}", :text => @objective_20.full_name)
     assert_selector('h5', :id => "delete_#{@objective_20.id}", :text => "Delete", :count => 0)
@@ -34,7 +39,7 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
   
   test "back button" do
     capybara_login(@teacher_1)
-    click_on("All Objectives")
+    go_to_all_objectives
     assert_not_on_teacher_page
     click_on("back_button")
     assert_on_teacher_page
@@ -70,7 +75,7 @@ class ObjectivesIndexTest < ActionDispatch::IntegrationTest
     assert_equal @second_ss.learn_request, obj_id
     
     capybara_login(@admin_user)
-    click_on("All Objectives")
+    go_to_all_objectives
     
     find("#delete_#{@objective_40.id}").click
     click_on("confirm_#{@objective_40.id}")
