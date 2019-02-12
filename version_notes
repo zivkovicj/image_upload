@@ -26,6 +26,33 @@ Between each update, manually test:
 
 
 
+2.89 CONNECT FILE TO OBJECTIVE
+ Create a join model 
+ Add associations to model file
+ Add "Files" to objective menu for teacher editing
+ Use the "Include Checks" partial to make a list of files to connect the objective
+ Don't need name protect on worksheet or picture if I just validate for name.
+     That's better anyway.  We don't want 1,000 pics/files with generic names.
+
+Going through the objective menu, then viewing files, that screen has an option to upload a
+    new file.  This automatically adds the target objective to that file after it's uploaded
+
+ Grade screen showing grades for all objectives
+ Student can access the study guide or other files for an upcoming objective
+Needs a back button
+When viewing the files for an objective, the back button needs to lead back to the student page.
+Don't search by :points_all_time for every score in the view.  That can be done with a hash like the scoresheet.
+
+Should mark which objectives have files.
+
+Re-implement learning options.
+
+
+
+
+
+
+
 
 2.88 OBJECTIVE FILES
 

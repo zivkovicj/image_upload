@@ -61,26 +61,37 @@ Keep reading at
 
 
 
-2.89 CONNECT FILE TO OBJECTIVE
-VT Create a join model 
-VT Add associations to model file
-VT Add "Files" to objective menu for teacher editing
-VT Use the "Include Checks" partial to make a list of files to connect the objective
-VT Don't need name protect on worksheet or picture if I just validate for name.
-    VT That's better anyway.  We don't want 1,000 pics/files with generic names.
 
-V Going through the objective menu, then viewing files, that screen has an option to upload a
-    new file.  This automatically adds the target objective to that file after it's uploaded
 
-VT Grade screen showing grades for all objectives
-VT Student can access the study guide or other files for an upcoming objective
-V Needs a back button
-V When viewing the files for an objective, the back button needs to lead back to the student page.
-V Don't search by :points_all_time for every score in the view.  That can be done with a hash like the scoresheet.
 
-V Should mark which objectives have files.
 
-V Re-implement learning options.
+2.9 IMPROVED APPRENTICE PLACEMENT
+
+ObjectiveStudent
+    Ready, boolean
+    Every time an assignment is passed, update readiness for the mainassigns
+    Every time a pre-req is added, update readiness for that mainassigns
+    
+ObjectiveSeminar
+    students_needed, integer
+    initialize when os is created
+    update when a student passes an objective with 8 or more
+        for all seminars that include the objective
+    update when new student is added
+    update when student is removed
+
+Instead of iterating through apprentices, iterate through the groups and find an unplaced
+    apprentice to put into the group.
+    This should better use the consultants who were chosen.
+    And minimize the need for replacing those consultants into different groups.
+
+Don't place an apprentice who has 80 or 90, but do allow placing an apprentice who has 60 or 70.
+    Probably try that as a last resort, though.
+Continue trying to avoid placing a consultant who has scored 100
+    But allow it, if needed.  That will help the algorithm be more thorough.
+    Make sure to offer extra points to students who end up in that position.
+Go by these numbers, not seminar.consultantThreshold
+
 
 Worksheet didn't seem to attach when an admin created a new worksheet while attaching.
 
@@ -91,91 +102,26 @@ Test everything
 
 Shrink picture for apple, label, etc.  They should all be the size of the key.
 
-Migrate to add objective_worksheet model
+
+
 
 Look into my capacity with AWS.
 
+Sign up Mr. Z School to receive BAT
+
+The sign-up screen looks like crap
 
 
 
 
+CONSULTANT POINTS AS A METHOD OF DETERMINING CONSULTANT PLACEMENT
 
+ObjectiveStudent
+    consultant_points, integer
 
+Need to rework the sytem so that students don't get blocked off from being consultant until they
+    have already been.
 
-
-
-
-
-
-ERROR["test_edit_teacher_commodity", Minitest::Result, 1216.8916852809489]
- test_edit_teacher_commodity#Minitest::Result (1216.89s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Mr. Archer Market"
-            test/integration/commodities/commodities_index_test.rb:12:in `go_to_edit_game_ticket'
-            test/integration/commodities/commodities_index_test.rb:61:in `block in <class:CommoditiesIndexTest>'
-
-ERROR["test_edit_teacher_commodity_default_info", Minitest::Result, 1218.6967552285641]
- test_edit_teacher_commodity_default_info#Minitest::Result (1218.70s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Mr. Archer Market"
-            test/integration/commodities/commodities_index_test.rb:86:in `block in <class:CommoditiesIndexTest>'
-
-ERROR["test_delete_commodity", Minitest::Result, 1220.9492160221562]
- test_delete_commodity#Minitest::Result (1220.95s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Burglecut Elementary Market"
-            test/integration/commodities/commodities_index_test.rb:129:in `block in <class:CommoditiesIndexTest>'
-
-ERROR["test_cant_edit_commodity_to_blank_name", Minitest::Result, 1223.1795354988426]
- test_cant_edit_commodity_to_blank_name#Minitest::Result (1223.18s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Burglecut Elementary Market"
-            test/integration/commodities/commodities_index_test.rb:106:in `block in <class:CommoditiesIndexTest>'
-
-ERROR["test_deliverable_not_salable_on_edit", Minitest::Result, 1225.0992233138531]
- test_deliverable_not_salable_on_edit#Minitest::Result (1225.10s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Mr. Archer Market"
-            test/integration/commodities/commodities_index_test.rb:12:in `go_to_edit_game_ticket'
-            test/integration/commodities/commodities_index_test.rb:18:in `block in <class:CommoditiesIndexTest>'
-
-ERROR["test_edit_school_commodity", Minitest::Result, 1226.940116448328]
- test_edit_school_commodity#Minitest::Result (1226.94s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Manage Burglecut Elementary Market"
-            test/integration/commodities/commodities_index_test.rb:33:in `block in <class:CommoditiesIndexTest>'
-
-ERROR["test_default_picture_name", Minitest::Result, 1249.0443339571357]
- test_default_picture_name#Minitest::Result (1249.04s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Upload Pictures"
-            test/integration/pictures/pictures_new_test.rb:19:in `goto_picture_create'
-            test/integration/pictures/pictures_new_test.rb:51:in `block in <class:PicturesNewTest>'
-
-ERROR["test_uploads_an_image", Minitest::Result, 1250.8690473996103]
- test_uploads_an_image#Minitest::Result (1250.87s)
-ActiveRecord::RecordNotFound:         ActiveRecord::RecordNotFound: Couldn't find Picture without an ID
-            test/integration/pictures/pictures_new_test.rb:24:in `block in <class:PicturesNewTest>'
-
-ERROR["test_create_new_picture", Minitest::Result, 1252.842140656896]
- test_create_new_picture#Minitest::Result (1252.84s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Upload Pictures"
-            test/integration/pictures/pictures_new_test.rb:19:in `goto_picture_create'
-            test/integration/pictures/pictures_new_test.rb:28:in `block in <class:PicturesNewTest>'
-
-ERROR["test_no_picture_file", Minitest::Result, 1254.70336010959]
- test_no_picture_file#Minitest::Result (1254.70s)
-Capybara::ElementNotFound:         Capybara::ElementNotFound: Unable to find link or button "Upload Pictures"
-            test/integration/pictures/pictures_new_test.rb:19:in `goto_picture_create'
-            test/integration/pictures/pictures_new_test.rb:61:in `block in <class:PicturesNewTest>'
-
-
-
-
-
-IMPROVED APPRENTICE PLACEMENT
-
-Instead of iterating through apprentices, iterate through the groups and find an unplaced
-    apprentice to put into the group.
-    This should better use the consultants who were chosen.
-    And minimize the need for replacing those consultants into different groups.
-Live site is not showing student signatory badge right now.
-
-/C isn't forcing Priority 5 objectives.
-Consider allowing a student into a team as a last resort, even if that student has passed the objective.
 
 
 
