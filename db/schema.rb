@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190205230406) do
+ActiveRecord::Schema.define(version: 20190212042755) do
 
   create_table "checkpoints", force: :cascade do |t|
     t.integer  "goal_student_id"
@@ -144,8 +144,9 @@ ActiveRecord::Schema.define(version: 20190205230406) do
     t.integer  "objective_id"
     t.integer  "priority"
     t.integer  "pretest"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "students_needed"
     t.index ["objective_id", "seminar_id"], name: "index_objective_seminars_on_objective_id_and_seminar_id"
     t.index ["objective_id"], name: "index_objective_seminars_on_objective_id"
     t.index ["seminar_id"], name: "index_objective_seminars_on_seminar_id"
@@ -156,8 +157,8 @@ ActiveRecord::Schema.define(version: 20190205230406) do
     t.integer  "user_id"
     t.integer  "points_all_time"
     t.integer  "unlocked"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.integer  "pretest_keys"
     t.integer  "dc_keys"
     t.integer  "teacher_granted_keys"
@@ -165,6 +166,7 @@ ActiveRecord::Schema.define(version: 20190205230406) do
     t.integer  "pretest_score"
     t.integer  "teacher_manual_score"
     t.integer  "points_this_term"
+    t.boolean  "ready",                default: false, null: false
     t.index ["objective_id", "user_id"], name: "index_objective_students_on_objective_id_and_user_id"
     t.index ["objective_id"], name: "index_objective_students_on_objective_id"
     t.index ["user_id"], name: "index_objective_students_on_user_id"

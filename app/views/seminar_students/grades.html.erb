@@ -1,5 +1,5 @@
 
-<% def objective_table(obj_list) %>
+<% def objective_table(obj_list, id_word) %>
   <table>
     <% obj_list.each do |objective| %>
         <tr>
@@ -7,7 +7,7 @@
             <% if objective.worksheets.count > 0 then %>
               <%= link_to objective.name, include_files_objective_path(objective),
                     :class => "blue_link",
-                    :id => "link_to_#{objective.id}" %>
+                    :id => "link_to_#{id_word}_#{objective.id}" %>
             <% else %>
               <%= objective.name %>
             <% end %> &nbsp;
@@ -32,7 +32,7 @@
     </br>
     <% if @learn_options %>
       <h3>Suggested objectives for you to study next:</h3>
-      <% objective_table(@learn_options) %>
+      <% objective_table(@learn_options, "recommended") %>
     <% end %>
     
   </div>
@@ -42,7 +42,7 @@
   
   <div class="singleOption col-sm-3">
     <h3>All Objectives</h3>
-    <% objective_table(@objectives) %>
+    <% objective_table(@objectives, "all") %>
     </br>
   </div>
 </div>

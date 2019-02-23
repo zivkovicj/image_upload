@@ -234,6 +234,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
     test "objectives" do
         setup_objectives
         obj_array = [@objective_30, @objective_40, @objective_50, @own_assign, @assign_to_add]
+        assert_equal 0, @objective_30.preassigns.count
         @this_preassign = @assign_to_add.preassigns.first
         @objective_zero_priority = objectives(:objective_zero_priority)
         
@@ -258,7 +259,9 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
         assert_equal 1, @seminar.objective_seminars.where(:objective => @this_preassign).count
         assert @seminar.objectives.include?(@assign_to_add.preassigns.first)  
         @seminar.students.each do |student|
-            assert_not_nil student.objective_students.find_by(:objective_id => @assign_to_add.id)
+            assert_not_nil ObjectiveStudent.find_by(:objective => @assign_to_add, :user => student)
+            # Mark ready for an objective with no pre-reqs
+            assert ObjectiveStudent.find_by(:user => student, :objective => @objective_30).ready  
         end
         
         assert_selector('div', :text => "Class Updated")

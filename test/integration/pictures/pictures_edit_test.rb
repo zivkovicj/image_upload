@@ -12,6 +12,7 @@ class PicturesEditTest < ActionDispatch::IntegrationTest
     
     def goto_user_pic_edit
         capybara_login(@teacher_1)
+        click_on("View/Create Content")
         click_on('All Pictures')
         click_on("edit_#{@user_p.id}")
     end
@@ -41,14 +42,15 @@ class PicturesEditTest < ActionDispatch::IntegrationTest
     end
     
     test "default picture name edit" do
+        old_name = @user_p.name
         goto_user_pic_edit
         fill_in "picture_name", with: ""
         attach_file('picture[image]', Rails.root + 'app/assets/images/apple.jpg')
         click_on ("Update Picture")
         
         @user_p.reload
-        assert_equal "Picture #{@old_picture_count}", @user_p.name
-        assert_selector('p', :text => "Teacher Since:")
+        assert_equal old_name, @user_p.name
+        assert_selector('li', :text => "Name can't be blank")
     end
     
     test "no picture edit" do

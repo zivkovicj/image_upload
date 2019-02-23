@@ -18,6 +18,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "basic goal choosing" do
+        skip
         travel_to Time.zone.local(2011, 12, 07, 01, 04, 44)
         
         def reload_stuff
@@ -74,6 +75,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "default goal if already chosen" do
+        skip
         @this_gs.update(:goal => Goal.first)
         
         go_to_goal_screen
@@ -87,6 +89,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "goal already approved" do
+        skip
         @this_gs.update(:approved => true, :goal => Goal.first)
         
         go_to_goal_screen
@@ -96,6 +99,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "goal edit back button" do
+        skip
         go_to_goal_screen
         assert_no_selector('h5', :text => @seminar.name)
         
@@ -105,6 +109,7 @@ class GoalStudentsEditTest < ActionDispatch::IntegrationTest
     end
     
     test "student cant edit old checkpoints" do
+        skip
         setup_scores
         setup_goals
         travel_to Time.zone.local(2017, 12, 12, 01, 04, 44)

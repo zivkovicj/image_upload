@@ -72,7 +72,7 @@ class Student < User
     
     def teach_options(seminar)
         objective_students
-            .where(:objective => seminar.objectives, :points_all_time => seminar.consultantThreshold..9)
+            .where(:objective => seminar.objs_above_zero_priority, :points_all_time => seminar.consultantThreshold..9)
             .select{|x| x.total_keys == 0}
             .sort_by {|x| -x.objective.priority_in(seminar)}
             .take(10)

@@ -54,6 +54,8 @@ class ObjectivesController < ApplicationController
 
   def update
     @objective = Objective.find(params[:id])
+    @old_seminars = @objective.seminar_ids
+    @old_pre_reqs = @objective.preassign_ids
     redirect_path = @objective
     params_to_use = objective_params_seminars
     if params[:objective][:name]
@@ -67,7 +69,8 @@ class ObjectivesController < ApplicationController
       params_to_use = objective_params_worksheets
     end
     if @objective.update_attributes(params_to_use)
-      add_pre_reqs_to_objective
+      add_pre_reqs_to_seminars
+      set_ready_for_all_students
       flash[:success] = "Objective Updated"
       redirect_to redirect_path
     end
@@ -175,14 +178,23 @@ class ObjectivesController < ApplicationController
       params.require(:objective).permit(worksheet_ids: [])
     end
     
-    def add_pre_reqs_to_objective
-      if @objective.seminar_ids != @old_seminars
-        @objective.objective_seminars.each do |os|
-          os.add_preassigns
+    # If preassigns or seminars are changed, add new preassigns to every class that doesn't yet have them.
+    def add_pre_reqs_to_seminars
+      unless @objective.seminar_ids == @old_seminars && @objective.preassign_ids == @old_pre_reqs
+        @objective.objective_seminars.each do |o_sem|
+          o_sem.add_preassigns
         end
       end
     end
     
+    # If preassigns are changed, set_ready for all students
+    def set_ready_for_all_students
+      unless @objective.preassign_ids == @old_pre_reqs
+        @objective.objective_students.each do |o_stud|
+          o_stud.set_ready
+        end
+      end
+    end
     
     
     def new_objective_stuff

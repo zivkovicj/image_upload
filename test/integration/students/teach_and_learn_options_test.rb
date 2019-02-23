@@ -12,6 +12,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     
     test "teach options" do
         @student_1.objective_students.update_all(:points_all_time => 8)
+        set_ready_all(@student_1)
         num_of_objectives = @seminar.objectives.count
         assert_equal num_of_objectives - 1, 
             @student_1.teach_options(@seminar).count  # (-1) because one of the objectives has zero priority
@@ -40,6 +41,7 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
         set_specific_score(@student_1, @objective_10, 2)
         assert_equal 1, @objective_10.mainassigns.count
         set_specific_score(@student_1, mainassign, 2)
+        set_ready_all(@student_1)
         assert @student_1.learn_options(@seminar).include?(@objective_10)
         assert_not @student_1.learn_options(@seminar).include?(mainassign)
         

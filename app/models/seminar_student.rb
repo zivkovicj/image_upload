@@ -44,8 +44,8 @@ class SeminarStudent < ApplicationRecord
         end
     
         def new_student_scores
-            seminar.objectives.each do |obj|
-                obj.objective_students.find_or_create_by(:user => user)
+            seminar.objectives.each_with_index do |obj, index|
+                ObjectiveStudent.find_or_create_by(:user => user, :objective => obj)
             end
         end
         

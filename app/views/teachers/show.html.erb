@@ -13,7 +13,7 @@
 <% if @unaccepted_classes.present? %>
   <div class="singleOption">
     <h3>You have been invited to be a co-teacher.</h3>
-    <%= button_to "Accept or Reject Invitations", accept_invitations_seminar_teachers_path, 
+    <%= button_to "Accept or Decline Invitations", accept_invitations_seminar_teachers_path, 
         class: "btn btn-lg btn-primary", :method => :get, :id => "accept_invites" %>
   </div>
 <% end %>

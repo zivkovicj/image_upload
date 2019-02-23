@@ -136,7 +136,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @consultancy.teams.each do |team|
             team.users.each do |member|
                 unless member == team.consultant
-                    assert member.score_on(team.objective) <= @seminar.consultantThreshold
+                    assert member.score_on(team.objective) <= 6
                 end
             end
         end
@@ -176,7 +176,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         # Views for Preview
         assert_text(show_consultancy_headline(@consultancy))
-        assert_selector('h4', :text => "Save this Arrangement and Give Quiz Keys to Students")
+        assert_selector('h5', :text => "Save this Arrangement and Give Quiz Keys to Students")
         click_on("Save this Arrangement and Give Quiz Keys to Students")
         
         # Reload and Check Permanent Values
@@ -260,27 +260,6 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         assert_equal @objective_40, @rank_objectives_by_need[1]
         assert_equal @objective_20, @rank_objectives_by_need[2]
         assert_not @rank_objectives_by_need.include?(@objective_50)
-    end
-    
-    test "check if ready" do
-        main_assign = objectives(:objective_60)
-        pre_assign_1 = objectives(:objective_50)
-        pre_assign_2 = objectives(:objective_40)
-        
-        set_specific_score(@student_1, pre_assign_1, 0)
-        set_specific_score(@student_1, pre_assign_2, 0)
-        this_obj_stud = @student_1.objective_students.find_by(:objective => main_assign)
-        assert_not this_obj_stud.obj_ready?
-        
-        set_specific_score(@student_2, pre_assign_1, 10)
-        set_specific_score(@student_2, pre_assign_2, 10)
-        this_obj_stud = @student_2.objective_students.find_by(:objective => main_assign)
-        assert this_obj_stud.obj_ready?
-        
-        set_specific_score(@student_3, pre_assign_1, 0)
-        set_specific_score(@student_3, pre_assign_2, 10)
-        this_obj_stud = @student_3.objective_students.find_by(:objective => main_assign)
-        assert_not this_obj_stud.obj_ready?
     end
     
     test "prof list" do
@@ -469,12 +448,6 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         
         # Students who had a request available received their request.
         assert request_obj, @student_6.teams.find_by(:consultancy => @consultancy).objective.id
-        
-        # Student not placed if she doesn't meet all pre-requisites for her request
-        # (This could happen if the pre-reqs were changed after the request was made)
-        assert @student_9.seminar_students.find_by(:seminar => @seminar).learn_request == @objective_20.id
-        assert_not @student_9.objective_students.find_by(:objective => @objective_20).obj_ready?
-        assert @consultancy.teams.where(:objective => @objective_20).count > 0
     end
     
     test "find placement" do
@@ -541,7 +514,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         unplaced_so_far.each do |stud|
             teams_with_room.each do |team|
                 obj_stud = stud.objective_students.find_by(:objective => team.objective)
-                assert !obj_stud.obj_ready? || !obj_stud.obj_willing?(@cThresh)
+                assert !obj_stud.ready || !obj_stud.obj_willing?(@cThresh)
             end
         end
         

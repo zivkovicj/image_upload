@@ -23,7 +23,7 @@ class ObjectiveSeminar < ApplicationRecord
     private
         def createScores
             seminar.students.each do |student|
-                student.objective_students.find_or_create_by(:objective_id => objective.id)
+                new_score = ObjectiveStudent.find_or_create_by(:user => student, :objective_id => objective.id)
             end
         end
         

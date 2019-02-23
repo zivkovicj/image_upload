@@ -65,12 +65,32 @@ Keep reading at
 
 
 
-2.9 IMPROVED APPRENTICE PLACEMENT
+2.90 Student_Ready
 
 ObjectiveStudent
-    Ready, boolean
-    Every time an assignment is passed, update readiness for the mainassigns
-    Every time a pre-req is added, update readiness for that mainassigns
+    VT Ready, boolean
+    VT Every time an assignment is passed, update readiness for the mainassigns
+    VT Every time a pre-req is added, update readiness for that mainassigns
+    VT Or when pre-req is subtracted
+    VT At first, I updated set_ready upon creating a new ObjectiveStudent, but that isn't needed if I create
+        an ObjectiveStudent for all mainassigns when student becomes ready, or when preassigns are changed.
+    
+    Ensure that student is marked ready if an objective has no pre-reqs
+    
+    V Don't need to setup all of the objectives for every test.  Just the most commonly-used
+    
+    V Change button text to "Accept or Decline Invitations" (Not reject)
+    
+    Test changing objective seminars and preassigns in live site.  Make sure they work as expected.
+    
+    
+
+Migrate to add ready
+    
+Update ready for all existing models    
+    
+    
+   
     
 ObjectiveSeminar
     students_needed, integer
@@ -79,6 +99,9 @@ ObjectiveSeminar
         for all seminars that include the objective
     update when new student is added
     update when student is removed
+
+
+
 
 Instead of iterating through apprentices, iterate through the groups and find an unplaced
     apprentice to put into the group.
@@ -92,17 +115,30 @@ Continue trying to avoid placing a consultant who has scored 100
     Make sure to offer extra points to students who end up in that position.
 Go by these numbers, not seminar.consultantThreshold
 
-
 Worksheet didn't seem to attach when an admin created a new worksheet while attaching.
 
 Can I learn how to test file uploads in a reasonable time?
 
-Test everything
-    Test that a "user" is added to a worksheet as it's uploaded
+
+
+Test that a "user" is added to a worksheet as it's uploaded
 
 Shrink picture for apple, label, etc.  They should all be the size of the key.
 
+Migrate to add students_needed
 
+ 
+
+Update students_needed for all existing models
+
+A teacher's Class list is showing all classes, even before invite is accepted.
+
+    Could probably use a better line than this one: assert_no_text("Teacher Since:") when testing redirection to profile.
+
+    Button should say "Finish Quiz" if it's on the last question.
+    
+Look into adding multiple records at once with rails and SQL.
+    If possible, add new ObjectiveStudents this way
 
 
 Look into my capacity with AWS.
@@ -135,6 +171,8 @@ Keep track of which objectives are not good for doing outside of a D/C environme
 
 BROWSE ALL STUDY GUIDES
 Teachers can browse all study guides
+
+Blocking teacher from giving keys to student with 100 or not ready is problematic
 
 
 

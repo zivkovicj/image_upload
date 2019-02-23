@@ -51,10 +51,23 @@ class ActiveSupport::TestCase
     click_on("seminar_#{@seminar.id}")
   end
   
-  def set_specific_score(student, objective, score)
-    ObjectiveStudent.find_by(:user => student, :objective => objective)
-      .update(:points_all_time => score, :points_this_term => score)
-    #Quiz.where(:user => student, :objective => objective).last.update(:total_score => score)
+  def make_ready(student, objective)
+    ObjectiveStudent.where(:user => student, :objective => objective.preassigns).each do |pre_os|
+      pre_os.update(:points_all_time => 7)
+    end
+    ObjectiveStudent.find_by(:user => student, :objective => objective).set_ready
+  end
+  
+  def set_ready_all (student)
+    student.objective_students.each do |os|
+      os.set_ready
+    end
+  end
+  
+  def set_specific_score (student, objective, score)
+    ObjectiveStudent.find_or_create_by(:user => student, :objective => objective)
+    this_quiz = Quiz.find_or_create_by(:user => student, :objective => objective, :origin => "manual_points_all_time")
+    this_quiz.update(:total_score => score)
   end
   
   def set_all_scores(category, subject, score)
@@ -110,13 +123,6 @@ class ActiveSupport::TestCase
     @objective_50 = objectives(:objective_50)
     @own_assign = objectives(:objective_60)
     @assign_to_add = objectives(:objective_70)
-    @objective_80 = objectives(:objective_80)
-    @sub_preassign = objectives(:objective_100)
-    @preassign_to_add = objectives(:objective_110)
-    @already_preassign_to_main = objectives(:objective_120)
-    @already_preassign_to_super = objectives(:objective_130)
-    @main_objective = objectives(:objective_140)
-    @super_objective = objectives(:objective_150)
     @other_teacher_objective = objectives(:objective_160)
   end
   
@@ -180,6 +186,8 @@ class ActiveSupport::TestCase
     @student_1 = users(:student_1)
     @student_2 = users(:student_2)
     @student_3 = users(:student_3)
+    @student_4 = users(:student_4)
+    @student_5 = users(:student_5)
     @other_school_student = Student.last
     @other_school_student.update(:school => schools(:school_2))
     @student_90 = users(:student_90)

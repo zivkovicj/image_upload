@@ -10,6 +10,7 @@ class PicturesIndexTest < ActionDispatch::IntegrationTest
     
     test "index for archer" do
         capybara_login(@teacher_1)
+        click_on("View/Create Content")
         click_on("All Pictures")
         
         assert_selector('a', :id => "edit_#{@user_p.id}")
@@ -23,6 +24,7 @@ class PicturesIndexTest < ActionDispatch::IntegrationTest
     
     test "index for admin" do
         capybara_login(@admin_user) 
+        click_on("View/Create Content")
         click_on("All Pictures")
        
         assert_selector('a', :id => "edit_#{@user_p.id}")
@@ -44,6 +46,7 @@ class PicturesIndexTest < ActionDispatch::IntegrationTest
         first_lab_pic_count = first_lab.pictures.count
         
         capybara_login(@admin_user) 
+        click_on("View/Create Content")
         click_on("All Pictures")
         
         find("#delete_#{@admin_p.id}").click

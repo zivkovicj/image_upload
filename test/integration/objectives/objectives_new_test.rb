@@ -28,9 +28,9 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         fill_in "name", with: ""
         click_on('Create a New Objective')
         
-        @new_objective = Objective.last
-        assert_equal "Objective #{@old_objective_count}", @new_objective.name
-        assert_equal @old_objective_count + 1, Objective.count
+        assert_selector('h2', :text => "New Objective")
+        assert_selector('div', :id => "error_explanation")
+        assert_selector('li', :text => "Name can't be blank")
     end
     
     test "user creates objective" do

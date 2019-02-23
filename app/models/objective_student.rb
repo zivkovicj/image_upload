@@ -1,4 +1,7 @@
 class ObjectiveStudent < ApplicationRecord
+    
+    before_create  :initialize_ready
+    
     belongs_to :user
     belongs_to :objective
     
@@ -8,18 +11,14 @@ class ObjectiveStudent < ApplicationRecord
     attribute :pretest_keys, :integer, default: 0
     attribute :dc_keys, :integer, default: 0
     attribute :teacher_granted_keys, :integer, default: 0
-    
-    # Checks whether a student has met all pre-requisites for an objective
-    def obj_ready?
-        user.objective_students.where(:objective => objective.preassigns).all? {|obj_stud| obj_stud.points_all_time.to_i >= 6 }
-    end
+    attribute :ready, :boolean, default: false
     
     def obj_willing?(max)
         points_all_time.to_i < max
     end
     
     def obj_ready_and_willing?(max)
-        obj_ready? && obj_willing?(max)
+        ready && obj_willing?(max)
     end
     
     def passed
@@ -31,7 +30,8 @@ class ObjectiveStudent < ApplicationRecord
     end
     
     def set_points(origin, this_score)
-        new_score_all_time = Quiz.where(:user_id => user_id, :objective_id => objective_id).maximum(:total_score)
+        old_score_all_time = points_all_time.to_i
+        new_score_all_time = Quiz.where(:user_id => user_id, :objective_id => objective_id).maximum(:total_score) || this_score
         self.points_all_time = new_score_all_time
         
         if origin == "pretest" || origin == "manual_pretest_score"
@@ -44,6 +44,14 @@ class ObjectiveStudent < ApplicationRecord
         
         self.save
         self.take_all_keys if points_all_time == 10
+        
+        # Set ready for all mainassigns
+        if old_score_all_time < 6 && new_score_all_time >= 6
+            objective.mainassigns.each do |mainassign|
+                mainassign_os = ObjectiveStudent.find_or_create_by(:user => user, :objective => mainassign)
+                mainassign_os.set_ready
+            end
+        end
     end
     
     def take_all_keys
@@ -58,5 +66,18 @@ class ObjectiveStudent < ApplicationRecord
         old_keys = self.read_attribute(:"#{which_key}_keys")
         current_keys = old_keys + new_keys.to_i
         self.update(:"#{which_key}_keys" => current_keys, :pretest_keys => 0)
+    end
+    
+    def new_ready
+        objective.preassigns.all? {|preassign| ObjectiveStudent.find_by(:user => user, :objective => preassign)&.points_all_time.to_i >= 6 }
+    end
+    
+    def initialize_ready
+        self.ready = new_ready
+        return true
+    end
+    
+    def set_ready
+        self.update(:ready => new_ready)
     end
 end

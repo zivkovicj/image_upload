@@ -42,6 +42,7 @@ class PicturesController < ApplicationController
       flash[:success] = "Picture Updated"
       redirect_to current_user
     else
+      @labels = labels_to_offer
       render 'edit'
     end
   end

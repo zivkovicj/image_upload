@@ -73,20 +73,19 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     setup_objectives
     setup_scores
     
-    first_assign = @seminar.objectives.first
+    first_objective = @seminar.objectives.first
     stud_to_add = Student.all.detect{|x| @seminar.students.include?(x) == false}
-    
-    go_to_student_search
     
     #Setup before adding student
     old_ss_count = SeminarStudent.count
     old_goal_student_count = @seminar.goal_students.count
-    #seatChartCount = @seminar.seating.count
     old_score_count = ObjectiveStudent.count
-    assignment_count = @seminar.objectives.select{|x| !stud_to_add.objectives.include?(x) }.count
-    assert assignment_count > 0
+    stud_objective_count = stud_to_add.objective_students.count
+    new_objective_count = @seminar.objectives.where.not(:id => stud_to_add.objective_ids).count  #Objectives in the new seminar that student didn't have yet.
+    assert new_objective_count > 0
     
     # Search for and add the student
+    go_to_student_search
     assert_no_text(@student_1.last_name_first)
     fill_in "search_field", with: stud_to_add.user_number
     click_button('Search')
@@ -104,10 +103,11 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     assert_equal Date.today, @new_ss.last_consultant_day
     
     @seminar.reload
+    stud_to_add.reload
     assert @seminar.students.include?(stud_to_add)
-    #assert_equal seatChartCount + 1, @seminar.seating.count
-    assert_equal old_score_count + assignment_count, ObjectiveStudent.count
-    assert_equal 1, stud_to_add.objective_students.where(:objective => first_assign).count
+    assert_equal stud_objective_count + new_objective_count, stud_to_add.objectives.count
+    assert_equal old_score_count + new_objective_count, ObjectiveStudent.count
+    assert_equal 1, stud_to_add.objective_students.where(:objective => first_objective).count  #Don't add another copy of the same objective_student
     assert_equal old_goal_student_count + 4, @seminar.goal_students.count
   end
   

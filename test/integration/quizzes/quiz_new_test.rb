@@ -12,10 +12,8 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         setup_scores
         setup_goals
         
-        set_specific_score(@student_2, @objective_10, 2)
-        
         @test_obj_stud = @objective_10.objective_students.find_by(:user => @student_2)
-        @test_obj_stud.update(:teacher_granted_keys => 2)
+        @test_obj_stud.update(:teacher_granted_keys => 2, :ready => true)
     end
     
     def begin_quiz
@@ -277,9 +275,10 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         
         # Doesn't take the keys yet, because student still has another try
         @test_obj_stud.reload
+        
         assert_equal 1, @test_obj_stud.pretest_keys
         assert_equal 1, @test_obj_stud.pretest_score
-        assert_equal 1, @test_obj_stud.points_all_time  #Stays the same because it didn't increase from the previous score
+        assert_equal 1, @test_obj_stud.points_all_time
         assert_nil @test_obj_stud.points_this_term
         assert_equal 2, @mainassign_os.reload.pretest_keys  
         
@@ -300,6 +299,32 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         assert_equal 3, @test_obj_stud.points_all_time
         assert_nil      @test_obj_stud.points_this_term
         assert_equal 0, @mainassign_os.reload.pretest_keys   
+    end
+    
+    test "set ready upon passing" do
+        other_preassign = Objective.create(:name => "Other Preassign")
+        mainassign_1 = Objective.create(:name => "Mainassign 1")
+        mainassign_2 = Objective.create(:name => "Mainassign 2")
+       
+        mainassign_1.preassigns << @objective_10
+        mainassign_2.preassigns << @objective_10
+        mainassign_2.preassigns << other_preassign
+        os_1 = ObjectiveStudent.create(:user => @student_2, :objective => mainassign_1, :ready => false)
+        os_2 = ObjectiveStudent.create(:user => @student_2, :objective => mainassign_2, :ready => false)
+        ObjectiveStudent.create(:user => @student_2, :objective => other_preassign, :points_all_time => 2)
+        
+        @test_obj_stud.update(:teacher_granted_keys => 2)
+       
+        go_to_first_period
+        begin_quiz
+        
+        10.times do
+            answer_question_correctly
+            click_on("Next Question")
+        end
+        
+        assert os_1.reload.ready
+        assert_not os_2.reload.ready
     end
     
     

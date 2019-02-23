@@ -53,10 +53,12 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "teacher keys" do
+        make_ready(@student_2, @objective_10)
         try_quiz_twice("teacher_granted")
     end
     
     test "pretest keys" do
+        make_ready(@student_2, @objective_10)
         try_quiz_twice("pretest")
     end
     
@@ -64,6 +66,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
         @bad_objective = Objective.create(:name => "Bad Objective")
         @bad_objective.objective_seminars.create(:seminar => @seminar, :pretest => 1)
         @bad_objective.objective_students.find_by(:user => @student_2).update(:teacher_granted_keys => 2)
+        make_ready(@student_2, @bad_objective)
         
         go_to_first_period
         click_on("Quizzes")
@@ -73,6 +76,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "quiz with questions" do
+        make_ready(@student_2, @objective_10)
         @test_os.update(:teacher_granted_keys => 2)
         set_specific_score(@test_os.user, @test_os.objective, 4)
         set_specific_score(@student_2, @objective_10, 2)
@@ -85,6 +89,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     
     test "unfinished quizzes" do
         @seminar.objective_seminars.update_all(:pretest => 0)
+        make_ready(@student_2, @objective_10)
         @seminar.objective_seminars.find_by(:objective => @objective_10).update(:pretest => 1)
         @student_2.objective_students.find_by(:objective => @objective_10).update(:pretest_keys => 2)
         set_specific_score(@student_2, @objective_10, 0)
@@ -134,9 +139,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     test "yes ready for quiz" do
         main_assign_os = @objective_20.objective_students.find_by(:user => @student_2)
         main_assign_os.update(:pretest_keys => 2)
-        @objective_20.preassigns.each do |obj|
-            obj.objective_students.find_or_create_by(:user => @student_2).update(:points_all_time => 8)
-        end
+        make_ready(@student_2, @objective_20)
         
         go_to_first_period
         click_on("Quizzes")
@@ -147,6 +150,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     test "erase oldest quiz if student has 6" do
         @test_os.update(:teacher_granted_keys => 6)
         set_specific_score(@test_os.user, @test_os.objective, 8)
+        make_ready(@student_2, @objective_10)
         go_to_first_period
         begin_quiz("teacher_granted")
         

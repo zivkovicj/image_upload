@@ -17,7 +17,6 @@ class SeminarStudentsController < ApplicationController
     old_ss_id = params[:seminar_student][:is_move]
     if old_ss_id
       @old_ss = SeminarStudent.find(old_ss_id)
-      update_goal_students_for_new_class_to_match_old_class
       @old_ss.destroy
     end
     
@@ -71,7 +70,7 @@ class SeminarStudentsController < ApplicationController
   end
   
   def grades
-    @ss = SeminarStudent.find_by(params[:id])
+    @ss = SeminarStudent.find(params[:id])
     @student = @ss.user
     @seminar = @ss.seminar
     
@@ -126,7 +125,6 @@ class SeminarStudentsController < ApplicationController
     @desk_consulted_objectives = @student.quiz_collection(@seminar, "dc")
     @pretest_objectives = @student.quiz_collection(@seminar, "pretest")
     @teacher_granted_quizzes = @student.quiz_collection(@seminar, "teacher_granted")
-    
     @show_quizzes = @desk_consulted_objectives.present? || @pretest_objectives.present? || @unfinished_quizzes.present? || @teacher_granted_quizzes.present?
   end
 
@@ -150,15 +148,5 @@ class SeminarStudentsController < ApplicationController
         @teachers = @seminar.teachers
       end
       
-      def update_goal_students_for_new_class_to_match_old_class
-        @student.goal_students.where(:seminar => @old_ss.seminar).each do |old_gs|
-          new_gs = @student.goal_students.find_by(:seminar => @seminar, :term => old_gs.term)
-          new_gs.update(:goal => old_gs.goal, :target => old_gs.target, :approved => old_gs.approved)
-          old_gs.checkpoints.each do |old_checkpoint|
-            new_checkpoint = new_gs.checkpoints.find_by(:sequence => old_checkpoint.sequence)
-            new_checkpoint.update(:action => old_checkpoint.action, :achievement => old_checkpoint.achievement, :teacher_comment => old_checkpoint.teacher_comment, 
-              :student_comment => old_checkpoint.student_comment)
-          end
-        end
-      end
+
 end

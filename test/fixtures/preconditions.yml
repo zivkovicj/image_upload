@@ -28,7 +28,14 @@ pc80to70:
 pc100to110:  # preassignToAdd and subPreassign
     preassign: objective_100
     mainassign: objective_110
+
+pc90to140:  # Remove_as_preassign to main
+    preassign: objective_90
+    mainassign: objective_140
     
+pc90to150:  # Remove_as_preassign to super
+    preassign: objective_90
+    mainassign: objective_150
 
 three: # alreadyPreassignedToSuper
     mainassign: objective_150

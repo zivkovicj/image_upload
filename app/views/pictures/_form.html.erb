@@ -21,6 +21,7 @@
     <%= f.file_field :image %>
   </div>
 
+
   <%= render :partial => 'shared/include_checks', 
     :locals => {:list_for_checks => @labels,
       :check_box_name => "picture[label_ids][]",
