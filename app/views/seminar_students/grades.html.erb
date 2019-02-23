@@ -6,6 +6,7 @@
           <td>&nbsp;
             <% if objective.worksheets.count > 0 then %>
               <%= link_to objective.name, include_files_objective_path(objective),
+                    :class => "blue_link",
                     :id => "link_to_#{id_word}_#{objective.id}" %>
             <% else %>
               <%= objective.name %>
