@@ -37,14 +37,14 @@ body {
 }
 
 .blue_link {
-  color: blue; 
+  color: blue !important; 
   text-decoration: none;
   &:visited {
-    color: blue;
+    color: blue !important;
     text-decoration: none;
   }
   &:hover {
-    color: green;
+    color: green !important; 
     text-decoration: none;
   }
 }
