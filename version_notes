@@ -26,6 +26,30 @@ Between each update, manually test:
 
 
 
+
+
+2.90 Student_Ready
+
+ObjectiveStudent
+    Ready, boolean
+    Every time an assignment is passed, update readiness for the mainassigns
+    Every time a pre-req is added, update readiness for that mainassigns
+    Or when pre-req is subtracted
+    At first, I updated set_ready upon creating a new ObjectiveStudent, but that isn't needed if I create
+        an ObjectiveStudent for all mainassigns when student becomes ready, or when preassigns are changed.
+Ensure that student is marked ready if an objective has no pre-reqs
+Don't need to setup all of the objectives for every test.  Just the most commonly-used
+Change button text to "Accept or Decline Invitations" (Not reject)
+Test changing objective seminars and preassigns in live site.  Make sure they work as expected.
+Migrate to add ready
+Update ready for all existing models   
+
+
+
+
+
+
+
 2.89 CONNECT FILE TO OBJECTIVE
  Create a join model 
  Add associations to model file

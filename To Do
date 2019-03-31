@@ -65,33 +65,10 @@ Keep reading at
 
 
 
-2.90 Student_Ready
+2.91 STUDENTS NEEDED
+    
+Students receive an error upon returning to profile page from quiz keys   
 
-ObjectiveStudent
-    VT Ready, boolean
-    VT Every time an assignment is passed, update readiness for the mainassigns
-    VT Every time a pre-req is added, update readiness for that mainassigns
-    VT Or when pre-req is subtracted
-    VT At first, I updated set_ready upon creating a new ObjectiveStudent, but that isn't needed if I create
-        an ObjectiveStudent for all mainassigns when student becomes ready, or when preassigns are changed.
-    
-    Ensure that student is marked ready if an objective has no pre-reqs
-    
-    V Don't need to setup all of the objectives for every test.  Just the most commonly-used
-    
-    V Change button text to "Accept or Decline Invitations" (Not reject)
-    
-    Test changing objective seminars and preassigns in live site.  Make sure they work as expected.
-    
-    
-
-Migrate to add ready
-    
-Update ready for all existing models    
-    
-    
-   
-    
 ObjectiveSeminar
     students_needed, integer
     initialize when os is created
@@ -101,6 +78,18 @@ ObjectiveSeminar
     update when student is removed
 
 
+
+
+
+When students take a paper quiz, the keys should go away after the score is entered
+
+Figure out how to make the link to be the color that I've asked.
+    In the meantime, I think I acutally like the blue background for tables with a list of files
+    The list of all files, accessed through the content page, needs at least one of these two solutions:
+        Either fix the color of the link text, or put a background color on the table.  Or both.
+    
+Teacher needs to be able to override "Not ready" or "100%" when trying to give keys.
+    
 
 
 Instead of iterating through apprentices, iterate through the groups and find an unplaced
