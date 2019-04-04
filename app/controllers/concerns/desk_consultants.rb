@@ -70,6 +70,7 @@ module DeskConsultants
         hp_consult_list.take(still_needed(obj)).each do |student|
           establish_new_group(student, obj, true)
         end
+        # Can probably get reid of the next block
         consult_list_still_needed.select{|x| x.score_on(obj) >= @cThresh && x.student_has_keys(obj) == 0}.take(still_needed(obj)).each do |student|
           establish_new_group(student, obj, true)
         end

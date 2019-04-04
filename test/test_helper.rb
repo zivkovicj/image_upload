@@ -52,10 +52,11 @@ class ActiveSupport::TestCase
   end
   
   def make_ready(student, objective)
-    ObjectiveStudent.where(:user => student, :objective => objective.preassigns).each do |pre_os|
+    objective.preassigns.each do |preassign|
+      pre_os = ObjectiveStudent.find_or_create_by(:user => student, :objective => preassign)
       pre_os.update(:points_all_time => 7)
     end
-    ObjectiveStudent.find_by(:user => student, :objective => objective).set_ready
+    ObjectiveStudent.find_or_create_by(:user => student, :objective => objective).set_ready
   end
   
   def set_ready_all (student)

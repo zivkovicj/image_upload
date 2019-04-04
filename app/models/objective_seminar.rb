@@ -6,6 +6,7 @@ class ObjectiveSeminar < ApplicationRecord
     attribute :pretest, :integer, default: 0
     
     before_create :createScores
+    before_create :students_needed_initialize
     
     def students_in_need
         objective.objective_students.where(:user => seminar.students).select{|x| !x.passed}.count
@@ -18,6 +19,22 @@ class ObjectiveSeminar < ApplicationRecord
                 student.objective_students.find_or_create_by(:objective_id => preassign.id)
             end
         end
+    end
+    
+    def new_needed_count
+        ObjectiveStudent
+            .where(:user => seminar.students, :objective => objective, :ready => true)
+            .where("points_all_time < ?", 9)
+            .count
+    end
+    
+    def students_needed_initialize
+        self.students_needed = new_needed_count
+        return true
+    end
+    
+    def students_needed_refresh
+        self.update(:students_needed => new_needed_count)
     end
     
     private

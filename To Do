@@ -67,21 +67,40 @@ Keep reading at
 
 2.91 STUDENTS NEEDED
     
-Students receive an error upon returning to profile page from quiz keys   
-
 ObjectiveSeminar
-    students_needed, integer
+    VT students_needed, integer
+    VT method for updating this column
     initialize when os is created
+        adding obj to seminar
+        VT adding seminar to obj
     update when a student passes an objective with 8 or more
         for all seminars that include the objective
     update when new student is added
     update when student is removed
 
+Students receive an error upon returning to profile page from quiz keys   
+
+There is a block in the D/C algorithm that probably has no effect
+
+The line below is in the objective_seminar model.  I don't think it needs to be.
+new_score = ObjectiveStudent.find_or_create_by(:user => student, :objective_id => objective.id)
+    
+Migrate to add students_needed
+
+Update students_needed for all current records
 
 
 
+
+
+Instead of iterating through apprentices, iterate through the groups and find an unplaced
+    apprentice to put into the group.
+    This should better use the consultants who were chosen.
+    And minimize the need for replacing those consultants into different groups.
 
 When students take a paper quiz, the keys should go away after the score is entered
+
+
 
 Figure out how to make the link to be the color that I've asked.
     In the meantime, I think I acutally like the blue background for tables with a list of files
@@ -92,10 +111,7 @@ Teacher needs to be able to override "Not ready" or "100%" when trying to give k
     
 
 
-Instead of iterating through apprentices, iterate through the groups and find an unplaced
-    apprentice to put into the group.
-    This should better use the consultants who were chosen.
-    And minimize the need for replacing those consultants into different groups.
+
 
 Don't place an apprentice who has 80 or 90, but do allow placing an apprentice who has 60 or 70.
     Probably try that as a last resort, though.

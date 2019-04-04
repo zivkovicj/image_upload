@@ -144,6 +144,14 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         second_class_to_add = classes_not_included[1]
         preassign_to_add_to_seminar = @own_assign.preassigns.where.not(:id => first_class_to_add.objective_ids).first
         
+        # Mark a student ready, in order to test students_needed
+        # It should be greater than zero because of this student
+        first_class_to_add.students << @student_3
+        make_ready(@student_3, @own_assign)
+        key_os = ObjectiveStudent.find_by(:user => @student_3, :objective => @own_assign)
+        assert key_os.ready
+        key_os.update(:points_all_time => 2)
+        
         # Put a student in that class to ensure that ObjectiveStudents are created for that student
         # After the seminar is added to this objective
         create_and_add_student(first_class_to_add)
@@ -164,6 +172,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert @own_assign.seminars.include?(second_class_to_add)
         assert_not @own_assign.seminars.include?(old_class)
         assert 2, @own_assign.objective_seminars.find_by(:seminar => first_class_to_add).priority
+        assert @own_assign.objective_seminars.find_by(:seminar => first_class_to_add).students_needed > 0
         assert first_class_to_add.objectives.include?(preassign_to_add_to_seminar)
         assert_equal old_objective_seminar_count + 5, ObjectiveSeminar.count   # Two new classes, three new preassigns
         assert_not_nil @new_student.reload.objective_students.find_by(:objective => @own_assign)
