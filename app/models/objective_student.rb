@@ -13,6 +13,10 @@ class ObjectiveStudent < ApplicationRecord
     attribute :teacher_granted_keys, :integer, default: 0
     attribute :ready, :boolean, default: false
     
+    def applicable_classes
+        Seminar.select{|x| x.students.include?(user) && x.objectives.include?(objective)}
+    end
+    
     def obj_willing?(max)
         points_all_time.to_i < max
     end
@@ -52,6 +56,15 @@ class ObjectiveStudent < ApplicationRecord
                 mainassign_os.set_ready
             end
         end
+        
+        # Change students_needed for applicable seminars
+        if old_score_all_time < 9 && new_score_all_time >= 9
+            these_classes = applicable_classes
+            these_classes.each do |sem|
+                ObjectiveSeminar.find_by(:objective => objective, :seminar => sem).students_needed_refresh
+            end
+        end
+            
     end
     
     def take_all_keys

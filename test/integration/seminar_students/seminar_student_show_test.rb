@@ -56,7 +56,7 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
     test 'grades back button' do
         capybara_login(@student_2)
         click_on("1st Period")
-        click_on("Objectives")
+        click_on("Scores")
     end
     
     test 'objective downloading screen' do
@@ -109,19 +109,23 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
         assert_equal 65, this_gs.target
     end
     
-     test "move student to different class" do
-        #gs_term_1 = @student_2.goal_students.find_by(:seminar => @seminar, :term => 1)
-        #gs_term_1.update(:goal => Goal.second)
-        #gs_term_1.checkpoints.find_by(:sequence => 1).update(:action => gs_term_1.goal.actions[1][2])
-        #gs_term_1.checkpoints.find_by(:sequence => 2).update(:achievement => 95)
-        #@student_2.goal_students.find_by(:seminar => @seminar, :term => 2).checkpoints.find_by(:sequence => 3).update(:teacher_comment => "Sup dude!")
-        #@student_2.goal_students.find_by(:seminar => @seminar, :term => 2).checkpoints.find_by(:sequence => 4).update(:student_comment => "Sup teach!")
+    test "move student to different class" do
         sem_2 = @teacher_1.seminars.second
         
+        # Make sure that new student gets an objective_student for an objective that she didn't have
         new_seminar_objective = sem_2.objectives.create(:name => "Flap")
         assert_nil @student_2.objective_students.find_by(:objective => new_seminar_objective)
         
-        #assert_nil @student_2.goal_students.find_by(:seminar => sem_2)
+            # Update students_needed for that new objective
+            this_obj_sem = ObjectiveSeminar.find_by(:objective => new_seminar_objective, :seminar => sem_2)
+            this_obj_sem.students_needed_refresh
+            old_stud_need_count = this_obj_sem.students_needed
+            
+            # Establish students_needed for the old seminar
+            obj_from_old_sem = @seminar.objectives[0]
+            prev_obj_sem = ObjectiveSeminar.find_by(:objective => obj_from_old_sem, :seminar => @seminar)
+            prev_obj_sem.students_needed_refresh
+            prev_sem_stud_need_count = prev_obj_sem.students_needed
         
         assert @student_2.seminars.include?(@seminar)
         assert @seminar.students.include?(@student_2)
@@ -144,26 +148,23 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
         newest_sem_stud = SeminarStudent.find_by(:user => @student_2, :seminar => sem_2)
         assert_equal Date.today, newest_sem_stud.last_consultant_day
         
-        #new_gs_1 = @student_2.goal_students.find_by(:seminar => sem_2, :term => 1)
-        #new_gs_2 = @student_2.goal_students.find_by(:seminar => sem_2, :term => 2)
-        
-        #assert_equal Goal.second, new_gs_1.goal
-        #assert_nil new_gs_2.goal
-        
-        #assert_equal Goal.second.actions[1][2], new_gs_1.checkpoints.find_by(:sequence => 1).action
-        #assert_equal 95, new_gs_1.checkpoints.find_by(:sequence => 2).achievement
-        #assert_equal "Sup dude!", new_gs_2.checkpoints.find_by(:sequence => 3).teacher_comment
-        #assert_equal "Sup teach!", new_gs_2.checkpoints.find_by(:sequence => 4).student_comment
-        
-        #assert_nil new_gs_2.checkpoints.find_by(:sequence => 1).action
-        #assert_nil new_gs_2.checkpoints.find_by(:sequence => 2).achievement
-        #assert_nil new_gs_1.checkpoints.find_by(:sequence => 3).teacher_comment
-        #assert_nil new_gs_1.checkpoints.find_by(:sequence => 4).student_comment
+        # Students_needed for the specific objective_seminar has increased by one because of the new student
+        assert_equal old_stud_need_count + 1, this_obj_sem.reload.students_needed
+        assert_equal prev_sem_stud_need_count - 1, prev_obj_sem.reload.students_needed
         
         assert_not_nil @student_2.objective_students.find_by(:objective => new_seminar_objective)
     end
     
     test "remove student from class" do
+    
+        # Establish students_needed for an objective, to test that it gets updated
+        first_obj_sem = @seminar.objective_seminars[0]
+        this_obj = first_obj_sem.objective
+        make_ready(@student_2, this_obj)
+        set_specific_score(@student_2, this_obj, 2)
+        first_obj_sem.students_needed_refresh
+        old_stud_need_count = first_obj_sem.students_needed
+        
         capybara_login(@teacher_1)
         click_on("scoresheet_seminar_#{@seminar.id}")
         click_on(@student_2.last_name_first)
@@ -175,6 +176,7 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
         
         assert_not @seminar.students.include?(@student_2)
         assert_not @student_2.seminars.include?(@seminar)
+        assert_equal old_stud_need_count - 1, first_obj_sem.reload.students_needed
     end
     
     test "market for student with bucks" do

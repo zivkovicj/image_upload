@@ -126,8 +126,10 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     
     test "not ready for quiz" do
         @test_os.update(:pretest_keys => 2)
-        set_specific_score(@test_os.user, @test_os.objective, 2)
+        set_specific_score(@test_os.user, @objective_10, 2)
+        assert @objective_20.preassigns.include?(@objective_10)
         main_assign_os = @objective_20.objective_students.find_by(:user => @student_2)
+        main_assign_os.set_ready
         main_assign_os.update(:pretest_keys => 2)
         
         go_to_first_period

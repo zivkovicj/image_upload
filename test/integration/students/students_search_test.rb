@@ -83,6 +83,11 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     stud_objective_count = stud_to_add.objective_students.count
     new_objective_count = @seminar.objectives.where.not(:id => stud_to_add.objective_ids).count  #Objectives in the new seminar that student didn't have yet.
     assert new_objective_count > 0
+      
+      # ObjectiveSeminar to test that students_needed is updated
+      this_obj_sem = ObjectiveSeminar.find_by(:objective => first_objective, :seminar => @seminar)
+      this_obj_sem.students_needed_refresh
+      old_studs_need_count = this_obj_sem.students_needed
     
     # Search for and add the student
     go_to_student_search
@@ -109,6 +114,9 @@ class StudentsSearchTest < ActionDispatch::IntegrationTest
     assert_equal old_score_count + new_objective_count, ObjectiveStudent.count
     assert_equal 1, stud_to_add.objective_students.where(:objective => first_objective).count  #Don't add another copy of the same objective_student
     assert_equal old_goal_student_count + 4, @seminar.goal_students.count
+    
+    # students_needed has been updated for obj_sem
+    assert_equal old_studs_need_count + 1, this_obj_sem.reload.students_needed
   end
   
   test "cant find unverified student" do

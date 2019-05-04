@@ -18,6 +18,12 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
         old_score_count = ObjectiveStudent.count
         old_goal_student_count = @seminar.goal_students.count
         
+        # Setup old_students_needed to count that it's updated upon adding new students
+        first_obj = @seminar.objectives.first
+        this_obj_sem = ObjectiveSeminar.find_by(:objective => first_obj, :seminar => @seminar)
+        this_obj_sem.students_needed_refresh
+        old_students_needed = this_obj_sem.students_needed
+        
         go_to_create_student_view
         
         fill_in ("first_name_1"), :with => "Phil"
@@ -98,6 +104,7 @@ class StudentsNewTest < ActionDispatch::IntegrationTest
     
         assert_text("#{@seminar.name}")
         assert_text("Current Term Scores")
+        assert_equal old_students_needed + 5, this_obj_sem.reload.students_needed
     end
     
     test "username already taken" do

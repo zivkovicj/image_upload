@@ -234,9 +234,19 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
     test "objectives" do
         setup_objectives
         obj_array = [@objective_30, @objective_40, @objective_50, @own_assign, @assign_to_add]
+        assert_not @seminar.objectives.include?(@assign_to_add)
+        assert_nil @assign_to_add.objective_seminars.find_by(:seminar => @seminar)
         assert_equal 0, @objective_30.preassigns.count
         @this_preassign = @assign_to_add.preassigns.first
         @objective_zero_priority = objectives(:objective_zero_priority)
+        
+        # Mark a student ready, in order to test students_needed
+        # It should be greater than zero because of this student
+        @seminar.students << @student_3
+        make_ready(@student_3, @assign_to_add)
+        key_os = ObjectiveStudent.find_by(:user => @student_3, :objective => @assign_to_add)
+        assert key_os.ready
+        key_os.update(:points_all_time => 2)
         
         capybara_login(@teacher_1)
         go_to_seminar
@@ -264,6 +274,7 @@ class SeminarsEditTest < ActionDispatch::IntegrationTest
             assert ObjectiveStudent.find_by(:user => student, :objective => @objective_30).ready  
         end
         
+        assert @assign_to_add.objective_seminars.find_by(:seminar => @seminar).students_needed > 0
         assert_selector('div', :text => "Class Updated")
         assert_selector('h2', :text => "Edit #{@seminar.name}")
     end

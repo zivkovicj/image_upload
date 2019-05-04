@@ -56,7 +56,7 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         assert_equal @new_quiz.user, @student_2
         assert_equal @new_quiz.objective, @objective_10
         assert_equal old_quiz_count + 1, Quiz.count
-        assert_equal 2, @new_quiz.old_stars
+        assert @new_quiz.old_stars >= 2
         
         new_riposte_count = @new_quiz.ripostes.count
         assert new_riposte_count > 0
@@ -179,6 +179,13 @@ class NewQuizTest < ActionDispatch::IntegrationTest
     test "improving points" do
         @test_obj_stud.update(:points_all_time => 1, :points_this_term => 1, :teacher_granted_keys => 2)
         set_specific_score(@test_obj_stud.user, @test_obj_stud.objective, 1)
+       
+        # Set up old_stud_need_count
+        # This is to check that students_needed is updated upon passing a quiz       
+        this_obj_sem = ObjectiveSeminar.find_by(:seminar => @seminar, :objective => @objective_10)
+        this_obj_sem.students_needed_refresh
+        old_stud_need_count = this_obj_sem.students_needed
+        assert old_stud_need_count > 0
         
         # First try on quiz student scores 3 stars. An improvement of 2 stars.
         go_to_first_period
@@ -196,21 +203,23 @@ class NewQuizTest < ActionDispatch::IntegrationTest
         assert_equal 3, @test_obj_stud.points_all_time
         assert_equal 3, @test_obj_stud.points_this_term
         assert_nil @test_obj_stud.pretest_score
+        assert_equal old_stud_need_count, this_obj_sem.students_needed
         
         # Second try on quiz student scores 8 stars. An improvement of 5 stars.
         click_on("Try this quiz again")
-        8.times do
+        9.times do
             answer_question_correctly
             click_on("Next Question")
         end
-        2.times do
+        1.times do
             answer_question_incorrectly
             click_on("Next Question")
         end
         
         @test_obj_stud.reload
-        assert_equal 8, @test_obj_stud.points_all_time
-        assert_equal 8, @test_obj_stud.points_this_term
+        assert_equal 9, @test_obj_stud.points_all_time
+        assert_equal 9, @test_obj_stud.points_this_term
+        assert_equal old_stud_need_count - 1, this_obj_sem.reload.students_needed
     end
     
     test "quizzed better last term" do

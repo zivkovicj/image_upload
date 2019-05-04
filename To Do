@@ -60,7 +60,9 @@ Keep reading at
 
 
 
-
+Instance ID  i-054caa3fa55680a24
+IP Address  34.207.161.220
+Subnet ID    subnet-651f5a4b
 
 
 
@@ -70,24 +72,70 @@ Keep reading at
 ObjectiveSeminar
     VT students_needed, integer
     VT method for updating this column
-    initialize when os is created
-        adding obj to seminar
+    VT initialize when os is created
+        VT adding obj to seminar
         VT adding seminar to obj
-    update when a student passes an objective with 8 or more
+    VT update when a student passes an objective with 8 or more
         for all seminars that include the objective
-    update when new student is added
-    update when student is removed
+    VT update when new students are created
+    VT or a student is moved from another class
+    VT or when an existing student is added
+    VT update when student is moved away 
+    VT update when student is removed
 
-Students receive an error upon returning to profile page from quiz keys   
+ 
+ FAIL["test_erase_oldest_quiz_if_student_has_6", Minitest::Result, 484.80287350400005]
+ test_erase_oldest_quiz_if_student_has_6#Minitest::Result (484.80s)
+        Expected: 1
+          Actual: 2
+        test/integration/quizzes/quizzes_available_test.rb:160:in `block (2 levels) in <class:QuizzesAvailableTest>'
+        test/integration/quizzes/quizzes_available_test.rb:158:in `times'
+        test/integration/quizzes/quizzes_available_test.rb:158:in `block in <class:QuizzesAvailableTest>'
 
-There is a block in the D/C algorithm that probably has no effect
+ FAIL["test_edit_picture", Minitest::Result, 343.863760782]
+ test_edit_picture#Minitest::Result (343.86s)
+        Expected: "Beer and Pretzels"
+          Actual: "Druid"
+        test/integration/pictures/pictures_edit_test.rb:33:in `block in <class:PicturesEditTest>'
 
-The line below is in the objective_seminar model.  I don't think it needs to be.
-new_score = ObjectiveStudent.find_or_create_by(:user => student, :objective_id => objective.id)
-    
+FAIL["test_setup_quiz", Minitest::Result, 306.11545251900003]
+ test_setup_quiz#Minitest::Result (306.12s)
+        Expected: 2
+          Actual: 5
+        test/integration/quizzes/quiz_new_test.rb:59:in `block in <class:NewQuizTest>'
+  
 Migrate to add students_needed
 
 Update students_needed for all current records
+
+Error upon submitting the pre-req screen with nothing chosen
+
+
+
+    Are there other events that trigger when students are moved, but not when existing students are added?
+    Or vice-versa?
+    Because that could cause serious problems
+    
+    Use students_needed to replace the function that checks them on the spot
+
+Students receive an error upon returning to profile page from quiz keys   
+
+
+
+
+ FAIL["test_create_new_picture", Minitest::Result, 624.042114966]
+ test_create_new_picture#Minitest::Result (624.04s)
+        Expected: 4
+          Actual: 3
+        test/integration/pictures/pictures_new_test.rb:37:in `block in <class:PicturesNewTest>' 
+
+
+
+
+
+There is a block in the D/C algorithm that probably has no effect
+
+
 
 
 

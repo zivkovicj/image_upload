@@ -13,11 +13,14 @@ class SeminarStudentsController < ApplicationController
     @seminar = Seminar.find(@ss.seminar_id)
     @student = Student.find(@ss.user_id)
     @student.update(:sponsor => current_user) if current_user.type == "Teacher"
+    refresh_all_obj_sems(@seminar)
     
     old_ss_id = params[:seminar_student][:is_move]
     if old_ss_id
       @old_ss = SeminarStudent.find(old_ss_id)
+      old_sem = @old_ss.seminar
       @old_ss.destroy
+      refresh_all_obj_sems(old_sem)
     end
     
     redirect_to scoresheet_seminar_url(@seminar)
@@ -52,8 +55,8 @@ class SeminarStudentsController < ApplicationController
   def destroy
     this_ss = SeminarStudent.find(params[:id])
     @seminar = Seminar.find(this_ss.seminar_id)
-    
     this_ss.destroy
+    refresh_all_obj_sems(@seminar)
     
     #Redirect
     flash[:success] = "Student removed from class period"

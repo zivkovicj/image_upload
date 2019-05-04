@@ -24,7 +24,7 @@ class ObjectiveSeminar < ApplicationRecord
     def new_needed_count
         ObjectiveStudent
             .where(:user => seminar.students, :objective => objective, :ready => true)
-            .where("points_all_time < ?", 9)
+            .where("points_all_time < ? OR points_all_time IS NULL", 9)
             .count
     end
     
@@ -40,7 +40,7 @@ class ObjectiveSeminar < ApplicationRecord
     private
         def createScores
             seminar.students.each do |student|
-                new_score = ObjectiveStudent.find_or_create_by(:user => student, :objective_id => objective.id)
+                ObjectiveStudent.find_or_create_by(:user => student, :objective_id => objective.id)
             end
         end
         

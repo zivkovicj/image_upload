@@ -35,6 +35,7 @@ class StudentsController < ApplicationController
     
     if one_saved 
       flash[:success] = "Students added to class"
+      refresh_all_obj_sems(@seminar)
       redirect_to scoresheet_seminar_url(@seminar)
     else
       new_student_stuff
