@@ -83,27 +83,14 @@ ObjectiveSeminar
     VT update when student is moved away 
     VT update when student is removed
 
- 
- FAIL["test_erase_oldest_quiz_if_student_has_6", Minitest::Result, 484.80287350400005]
- test_erase_oldest_quiz_if_student_has_6#Minitest::Result (484.80s)
-        Expected: 1
-          Actual: 2
-        test/integration/quizzes/quizzes_available_test.rb:160:in `block (2 levels) in <class:QuizzesAvailableTest>'
-        test/integration/quizzes/quizzes_available_test.rb:158:in `times'
-        test/integration/quizzes/quizzes_available_test.rb:158:in `block in <class:QuizzesAvailableTest>'
 
- FAIL["test_edit_picture", Minitest::Result, 343.863760782]
- test_edit_picture#Minitest::Result (343.86s)
-        Expected: "Beer and Pretzels"
-          Actual: "Druid"
-        test/integration/pictures/pictures_edit_test.rb:33:in `block in <class:PicturesEditTest>'
 
-FAIL["test_setup_quiz", Minitest::Result, 306.11545251900003]
- test_setup_quiz#Minitest::Result (306.12s)
-        Expected: 2
-          Actual: 5
-        test/integration/quizzes/quiz_new_test.rb:59:in `block in <class:NewQuizTest>'
-  
+Students receive an error upon returning to profile page from quiz keys 
+Or from scores
+
+
+
+
 Migrate to add students_needed
 
 Update students_needed for all current records
@@ -118,7 +105,7 @@ Error upon submitting the pre-req screen with nothing chosen
     
     Use students_needed to replace the function that checks them on the spot
 
-Students receive an error upon returning to profile page from quiz keys   
+  
 
 
 
@@ -129,7 +116,19 @@ Students receive an error upon returning to profile page from quiz keys
           Actual: 3
         test/integration/pictures/pictures_new_test.rb:37:in `block in <class:PicturesNewTest>' 
 
+ FAIL["test_erase_oldest_quiz_if_student_has_6", Minitest::Result, 484.80287350400005]
+ test_erase_oldest_quiz_if_student_has_6#Minitest::Result (484.80s)
+        Expected: 1
+          Actual: 2
+        test/integration/quizzes/quizzes_available_test.rb:160:in `block (2 levels) in <class:QuizzesAvailableTest>'
+        test/integration/quizzes/quizzes_available_test.rb:158:in `times'
+        test/integration/quizzes/quizzes_available_test.rb:158:in `block in <class:QuizzesAvailableTest>'
 
+ FAIL["test_edit_picture", Minitest::Result, 343.863760782]
+ test_edit_picture#Minitest::Result (343.86s)
+        Expected: "Beer and Pretzels"
+          Actual: "Druid"
+        test/integration/pictures/pictures_edit_test.rb:33:in `block in <class:PicturesEditTest>'
 
 
 
