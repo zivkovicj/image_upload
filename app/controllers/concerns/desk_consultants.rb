@@ -127,7 +127,7 @@ module DeskConsultants
     end
     
     def check_for_lone_students
-      @consultancy.teams.joins(:users).group('teams.id').having('count(users.id) < 2').destroy_all
+      @consultancy.teams.joins(:users).group('teams.id').having('count(users.id) < 2').delete_all
     end
     
     def new_place_for_lone_students
