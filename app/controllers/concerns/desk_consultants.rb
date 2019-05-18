@@ -106,7 +106,7 @@ module DeskConsultants
         this_request = student.learn_request_in(@seminar)
         if this_request
           team = @consultancy.teams.detect{|x| x.objective.id == this_request && x.has_room}
-          team.users << student if team.valid? && team.persisted?
+          team.users << student if team && team.valid? && team.persisted?
         end
       end
     end
