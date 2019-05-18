@@ -122,7 +122,9 @@ module DeskConsultants
     
     def find_placement(student)
       team = @consultancy.teams.detect{|x| x.has_room && student.objective_students.find_by(:objective => x.objective).obj_ready_and_willing?(@cThresh)}
-      team.users << student if team
+      if team && team.valid? && team.persisted?
+        team.users << student
+      end
       return team
     end
     
