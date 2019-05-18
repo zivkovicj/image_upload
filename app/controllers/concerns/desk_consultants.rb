@@ -106,9 +106,7 @@ module DeskConsultants
         this_request = student.learn_request_in(@seminar)
         if this_request
           team = @consultancy.teams.detect{|x| x.objective.id == this_request && x.has_room}
-          if team && team.valid? && team.persisted?
-            team.users << student
-          end
+          team.users << student if team
         end
       end
     end
@@ -122,7 +120,7 @@ module DeskConsultants
     
     def find_placement(student)
       team = @consultancy.teams.detect{|x| x.has_room && student.objective_students.find_by(:objective => x.objective).obj_ready_and_willing?(@cThresh)}
-      if team && team.valid? && team.persisted?
+      if team && team.present?
         team.users << student
       end
       return team
