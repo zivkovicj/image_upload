@@ -23,6 +23,41 @@ Between each update, manually test:
 
 
 
+The short version: My app has been using a method that has significant weight on performance. I'm considering solving this problem by adding a database column that tracks the same output as the method.
+
+I realize that this is not a typical question for Stack Overflow. Is there a better venue for a question of this nature? I'm sure there are already articles that deal with these types of "best practice" issues. But I don't know what vocabulary I would search to find them. If somebody could point me toward some already-published reading, I would be happy to look there.
+
+The long version: My app places students in groups based on the math objectives they haven't yet passed. One key method, students_needed(), counts the number of students who need a given objective. For example, there might be 13 students who need to pass "Subtracting Integers". When the teacher runs the group-creation feature, this method needs to be called for every single objective relevant to the classroom. This will probably be around 400 objectives for most classrooms. To make matters more complicated, it also checks the pre-requisites for each objective. (Students can't be counted as needing "Subtracting Integers" if they haven't yet passed off "Adding Integers.") By the time all of this is checked, that amounts to 1,800 hits on the database. It's causing a major slowdown.
+
+I've got one solution idea that seems promising. I already have a join model between classroom and objective. What if I added a column to this model called students_needed? This column would store the integer that would be the same as the result of the method that I've been calling. The difference is that I would store this value BEFORE the teacher tries to create groups, so that I don't need to call the method during group creation. I would be able to pluck the values from all of the ClassroomObjectives with one query.
+
+But there are some very inelegant downsides: I would now need to update the students_needed column every time a student enters or leaves a classroom. And I would need to do this for every objective in the classroom. Even worse, I would need to update every time a student passes a pre-requisite objective.
+
+So it's almost like this approach would just take those 1,800 database calls and spread them out over some less-common events. (I expect the group-creation feature to be significantly more common than the events I mentioned in the previous paragraph.)
+
+Right now, I feel like this refactoring would be worth the time. But I suspect that some professional Rails developers would hate this design.
+
+Thank you in advance for any insight.
+
+
+
+
+2.91 Students_Needed ObjectiveSeminar
+     students_needed, integer
+     method for updating this column
+     initialize when os is created
+         adding obj to seminar
+         adding seminar to obj
+     update when a student passes an objective with 8 or more
+        for all seminars that include the objective
+     update when new students are created
+     or a student is moved from another class
+     or when an existing student is added
+     update when student is moved away 
+     update when student is removed
+Don't need to migrate to add students_needed.  Already done in previous update.
+But do need to update students_needed for all current records
+
 
 
 

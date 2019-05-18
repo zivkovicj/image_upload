@@ -22,7 +22,7 @@ module DeskConsultants
     def setup_need_hash()
       become_need_hash = Hash.new
       @seminar.objective_seminars.each do |obj_sem|
-        become_need_hash[obj_sem.objective.id] = obj_sem.students_in_need / 3
+        become_need_hash[obj_sem.objective.id] = obj_sem.students_needed / 3
       end
       return become_need_hash
     end
@@ -106,7 +106,7 @@ module DeskConsultants
         this_request = student.learn_request_in(@seminar)
         if this_request
           team = @consultancy.teams.detect{|x| x.objective.id == this_request && x.has_room}
-          team.users << student if team
+          team.users << student if team.valid? && team.persisted?
         end
       end
     end

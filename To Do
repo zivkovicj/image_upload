@@ -53,7 +53,7 @@ Check Pre-Reqs for "Both-Side Equation" Objectives
 Keep reading at 
     https://devcenter.heroku.com/articles/ruby-memory-use#why-memory-errors-matter
 
-
+If the .valid? and .persisted? works, make a more efficient system where it collects the valid and persisted teams before going into the find_placement method
 
 
 
@@ -65,80 +65,65 @@ IP Address  34.207.161.220
 Subnet ID    subnet-651f5a4b
 
 
+2.92 Students_Needed in Code
+Replace any uses of old students_needed method with column
+Tests
+Erase method
+answer_quiz_randomly should only answer the quiz.  Not begin it.
 
+Fix terminal prompt to show current branch
 
-2.91 STUDENTS NEEDED
-    
-ObjectiveSeminar
-    VT students_needed, integer
-    VT method for updating this column
-    VT initialize when os is created
-        VT adding obj to seminar
-        VT adding seminar to obj
-    VT update when a student passes an objective with 8 or more
-        for all seminars that include the objective
-    VT update when new students are created
-    VT or a student is moved from another class
-    VT or when an existing student is added
-    VT update when student is moved away 
-    VT update when student is removed
+Fix git both links
 
+/home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:27: warning: constant ::Fixnum is deprecatedime: 00:08:16,  ETA: 00:01:41
+/home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:91: warning: constant ::Fixnum is deprecated
+/home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:27: warning: constant ::Fixnum is deprecatedime: 00:08:18,  ETA: 00:01:29
+/home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:91: warning: constant ::Fixnum is deprecated
 
-
-Students receive an error upon returning to profile page from quiz keys 
-Or from scores
+/home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:27: warning: constant ::Fixnum is deprecatedime: 00:07:56,  ETA: 00:03:30
+/home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:91: warning: constant ::Fixnum is deprecated
 
 
 
 
-Migrate to add students_needed
+ERROR["test_destroy_oldest_upon_tenth", Minitest::Result, 3.801363729999821]
+ test_destroy_oldest_upon_tenth#Minitest::Result (3.80s)
+NoMethodError:         NoMethodError: undefined method `/' for nil:NilClass
+            app/controllers/concerns/desk_consultants.rb:25:in `block in setup_need_hash'
+            app/controllers/concerns/desk_consultants.rb:24:in `setup_need_hash'
+            app/controllers/consultancies_controller.rb:24:in `create'
+            test/integration/consultancies/consultancies_show_test.rb:666:in `block in <class:ConsultanciesShowTest>'
 
-Update students_needed for all current records
+ERROR["test_preview_then_permanent", Minitest::Result, 55.700446036999665]
+ test_preview_then_permanent#Minitest::Result (55.70s)
+NoMethodError:         NoMethodError: undefined method `/' for nil:NilClass
+            app/controllers/concerns/desk_consultants.rb:25:in `block in setup_need_hash'
+            app/controllers/concerns/desk_consultants.rb:24:in `setup_need_hash'
+            app/controllers/consultancies_controller.rb:24:in `create'
+            test/integration/consultancies/consultancies_show_test.rb:166:in `block in <class:ConsultanciesShowTest>'
 
+ FAIL["test_place_apprentices_by_request", Minitest::Result, 92.68987109399973]
+ test_place_apprentices_by_request#Minitest::Result (92.69s)
+        Expected false to be truthy.
+        test/integration/consultancies/consultancies_show_test.rb:141:in `block (2 levels) in test_all_apprentices'
+        test/integration/consultancies/consultancies_show_test.rb:139:in `block in test_all_apprentices'
+        test/integration/consultancies/consultancies_show_test.rb:138:in `test_all_apprentices'
+        test/integration/consultancies/consultancies_show_test.rb:451:in `block in <class:ConsultanciesShowTest>'
+
+
+
+
+
+            
 Error upon submitting the pre-req screen with nothing chosen
-
-
-
-    Are there other events that trigger when students are moved, but not when existing students are added?
-    Or vice-versa?
-    Because that could cause serious problems
-    
-    Use students_needed to replace the function that checks them on the spot
-
-  
-
-
-
-
- FAIL["test_create_new_picture", Minitest::Result, 624.042114966]
- test_create_new_picture#Minitest::Result (624.04s)
-        Expected: 4
-          Actual: 3
-        test/integration/pictures/pictures_new_test.rb:37:in `block in <class:PicturesNewTest>' 
-
- FAIL["test_erase_oldest_quiz_if_student_has_6", Minitest::Result, 484.80287350400005]
- test_erase_oldest_quiz_if_student_has_6#Minitest::Result (484.80s)
-        Expected: 1
-          Actual: 2
-        test/integration/quizzes/quizzes_available_test.rb:160:in `block (2 levels) in <class:QuizzesAvailableTest>'
-        test/integration/quizzes/quizzes_available_test.rb:158:in `times'
-        test/integration/quizzes/quizzes_available_test.rb:158:in `block in <class:QuizzesAvailableTest>'
-
- FAIL["test_edit_picture", Minitest::Result, 343.863760782]
- test_edit_picture#Minitest::Result (343.86s)
-        Expected: "Beer and Pretzels"
-          Actual: "Druid"
-        test/integration/pictures/pictures_edit_test.rb:33:in `block in <class:PicturesEditTest>'
-
 
 
 There is a block in the D/C algorithm that probably has no effect
 
-
-
-
-
-
+It appears as though the teacher cannot delete keys.  The problem is because some of the keys showing are from d-c.  Some of them are teacher-granted.  
+    Only the teacher-granted keys can be deducted by clicking on them.
+    To fix this problem, I'll need to implement the different keys, which will have slightly different paths when they are clicked,
+        in order to delete the different types of keys.
 
 Instead of iterating through apprentices, iterate through the groups and find an unplaced
     apprentice to put into the group.
@@ -177,11 +162,7 @@ Test that a "user" is added to a worksheet as it's uploaded
 
 Shrink picture for apple, label, etc.  They should all be the size of the key.
 
-Migrate to add students_needed
 
- 
-
-Update students_needed for all existing models
 
 A teacher's Class list is showing all classes, even before invite is accepted.
 

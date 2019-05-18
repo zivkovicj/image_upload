@@ -14,7 +14,7 @@ class PicturesController < ApplicationController
   def create
     @picture = Picture.new(picture_params)
     @picture.user = current_user
-    
+    debugger
     if @picture.save
       flash[:success] = "New Picture Successfully Created"
       redirect_to current_user

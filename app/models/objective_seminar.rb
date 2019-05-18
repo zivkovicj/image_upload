@@ -8,9 +8,9 @@ class ObjectiveSeminar < ApplicationRecord
     before_create :createScores
     before_create :students_needed_initialize
     
-    def students_in_need
-        objective.objective_students.where(:user => seminar.students).select{|x| !x.passed}.count
-    end
+    #def students_in_need
+        #objective.objective_students.where(:user => seminar.students).select{|x| !x.passed}.count
+    #end
     
     def add_preassigns
         objective.preassigns.each do |preassign|

@@ -121,7 +121,7 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
             click_on("Next Question")
         end
        
-       assert_text("This Score:")
+       assert_text("Previous score this term")
     end
     
     test "not ready for quiz" do
@@ -150,18 +150,19 @@ class QuizzesAvailableTest < ActionDispatch::IntegrationTest
     end
     
     test "erase oldest quiz if student has 6" do
-        @test_os.update(:teacher_granted_keys => 6)
-        set_specific_score(@test_os.user, @test_os.objective, 8)
+        @test_os.update(:teacher_granted_keys => 2)
+        set_specific_score(@test_os.user, @test_os.objective, 8)  # First instance of quiz
         make_ready(@student_2, @objective_10)
         go_to_first_period
-        begin_quiz("teacher_granted")
         
-        should_array = [1,2,3,4,5,5,5,5]
+        begin_quiz("teacher_granted")  # Second instance of quiz
+        
+        should_array = [2,3,4,5,5,5,5,5]
         8.times do |y|
             @test_os.reload.update_keys("teacher_granted", 1)
             assert_equal should_array[y], @student_2.quizzes.where(:objective => @objective_10).count
             answer_quiz_randomly
-            click_on ("Try this quiz again")
+            click_on ("Try this quiz again")   # Third through 5th instances of quiz are added here.
         end
     end
     

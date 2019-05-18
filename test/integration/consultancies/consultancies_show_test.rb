@@ -4,6 +4,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
     
     include DeskConsultants
     include ConsultanciesHelper
+    include AddStudentStuff
     
     def setup
         setup_users
@@ -82,6 +83,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @students = setup_present_students
         @rank_objectives_by_need = @seminar.rank_objectives_by_need
         @rank_by_consulting = setup_rank_by_consulting
+        refresh_all_obj_sems(@seminar)
         @need_hash = setup_need_hash
         @prof_list = setup_prof_list 
     end
@@ -169,6 +171,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         team_1 = @consultancy.teams.first
         stud_to_check = team_1.users.detect{|x| x != team_1.consultant}
         this_obj_stud = ObjectiveStudent.find_by(:user => stud_to_check, :objective => team_1.objective)
+        this_obj_stud.update(:points_this_term => 2) # To ensure that points_this_term is not 10.  If it were, then no keys would be given.
         assert_equal 0, this_obj_stud.dc_keys
         first_consultant = @consultancy.teams.first.consultant
         first_consultant_ss = SeminarStudent.find_by(:user => first_consultant, :seminar => @seminar)
@@ -180,6 +183,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         click_on("Save this Arrangement and Give Quiz Keys to Students")
         
         # Reload and Check Permanent Values
+        # Check that students have been given keys
         @consultancy.reload
         this_obj_stud.reload
         first_consultant_ss.reload
@@ -638,6 +642,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("consultancy_#{@seminar.id}")
         click_on("#{new_consultancy_button_text}")
+        refresh_all_obj_sems(@seminar)
         click_on("Create Desk Consultants Groups")
         assert_equal consult_count + 1, Consultancy.count
     end

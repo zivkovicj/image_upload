@@ -123,6 +123,8 @@ class SeminarStudentsShowTest < ActionDispatch::IntegrationTest
             
             # Establish students_needed for the old seminar
             obj_from_old_sem = @seminar.objectives[0]
+            this_obj_stud = ObjectiveStudent.find_by(:objective => obj_from_old_sem, :user => @student_2)
+            set_specific_score(@student_2, obj_from_old_sem, 2)
             prev_obj_sem = ObjectiveSeminar.find_by(:objective => obj_from_old_sem, :seminar => @seminar)
             prev_obj_sem.students_needed_refresh
             prev_sem_stud_need_count = prev_obj_sem.students_needed
