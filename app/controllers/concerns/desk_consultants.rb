@@ -105,7 +105,7 @@ module DeskConsultants
       prof_list_still_needed.each do |student|
         this_request = student.learn_request_in(@seminar)
         if this_request
-          team = @consultancy.reload.teams.detect{|x| x.objective.id == this_request && x.has_room}
+          team = @consultancy.teams.detect{|x| x.objective.id == this_request && x.has_room}
           team.users << student if team
         end
       end
@@ -119,13 +119,14 @@ module DeskConsultants
     end
     
     def find_placement(student)
-      team = @consultancy.reload.teams.detect{|x| x.has_room && student.objective_students.find_by(:objective => x.objective).obj_ready_and_willing?(@cThresh)}
+      team = @consultancy.teams.detect{|x| x.has_room && student.objective_students.find_by(:objective => x.objective).obj_ready_and_willing?(@cThresh)}
       team.users << student if team
       return team
     end
     
     def check_for_lone_students
       @consultancy.teams.joins(:users).group('teams.id').having('count(users.id) < 2').destroy_all
+      @consultancy.reload
     end
     
     def new_place_for_lone_students
