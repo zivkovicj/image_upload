@@ -31,6 +31,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_selector('h2', :text => this_objective.name)
     end
     
+    
     ##
     # BEGIN TESTS
     ##
@@ -78,6 +79,24 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_not @own_assign.worksheets.include?(@worksheet_1)
         assert @own_assign.worksheets.include?(@worksheet_2)
         assert @own_assign.worksheets.include?(@worksheet_3)
+    end
+    
+    test "include files blank" do
+        setup_objectives
+        setup_worksheets
+        
+        assert @own_assign.worksheets.include?(@worksheet_1)
+        
+        capybara_login(@teacher_1)
+        go_to_objective_show_page(@own_assign)
+        click_on "Files"
+        
+        uncheck("check_#{@worksheet_1.id}")
+        click_on("Save Changes")
+        
+        assert_selector("h2", :text => @own_assign.name)
+        
+        assert_not @own_assign.worksheets.include?(@worksheet_1)   
     end
     
     test "include labels and quantities" do
@@ -133,6 +152,30 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_equal 5, lab_obj_a.reload.point_value
     end
     
+    test "include labels blank" do
+        setup_labels
+        setup_objectives
+        
+        @own_assign.labels << @other_l_pub
+        old_label_objective_count = LabelObjective.count
+        
+        capybara_login(@teacher_1)
+        go_to_objective_show_page(@own_assign)
+        click_on "Labels"
+        
+        # Changes on the labels screen
+        uncheck("check_#{@other_l_pub.id}")
+        click_on("Save Changes")
+        
+        assert_selector('h2', :text => "Edit Quantities and Point Values")
+        assert_selector('h2', :text => "for #{@own_assign.name}")
+        assert_text(no_label_message)
+        assert_no_text(quantity_instructions)
+        
+        @own_assign.reload
+        assert_equal 0, @own_assign.labels.count
+    end
+    
     test "include seminars" do
         setup_objectives
         
@@ -178,6 +221,24 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_not_nil @new_student.reload.objective_students.find_by(:objective => @own_assign)
     end
     
+    test "include seminars blank" do
+        setup_objectives
+        
+        old_objective_seminar_count = ObjectiveSeminar.count
+        assert @own_assign.seminars.count > 0
+        old_class = @own_assign.seminars.first
+        
+        capybara_login(@teacher_1)
+        go_to_objective_show_page(@own_assign)
+        click_on "Included Classes"
+        
+        uncheck(old_class.name)
+        click_on("Save Changes")
+        
+        @own_assign.reload
+        assert_equal 0, @own_assign.seminars.count
+    end
+    
     test "pre reqs" do
         setup_objectives
         @remove_as_preassign = objectives(:objective_90)
@@ -201,7 +262,7 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert_not @main_objective.preassigns.include?(@already_preassign_to_super)
         
         # Student info to check whether readiness is marked upon changing pre-reqs.
-            # Both student are ready for main objective at the beginning, but student_3 should change to not ready beccause a
+            # Both student are ready for main objective at the beginning, but student_3 should change to not ready because a
             #   pre-req was added that she hadn't passed.
         ObjectiveStudent.find_or_create_by(:user => @student_2, :objective => @preassign_to_add).update(:points_all_time => 7)
         ObjectiveStudent.find_or_create_by(:user => @student_2, :objective => @sub_preassign).update(:points_all_time => 7)
@@ -262,12 +323,37 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         assert @super_objective.preassigns.include?(@remove_as_preassign)
         assert_equal old_precondition_count + 4, Precondition.count   #To make sure that Preconditions were not created that would be redundant
         
+        
         assert os_2.reload.ready        # Ready, and stayed
         assert_not os_3.reload.ready    # Ready, but lost readiness
         assert os_4.reload.ready        # Not ready, but became ready
         assert_not os_5.reload.ready    # Not ready, and stayed not ready
     end
     
+    test "pre reqs blank" do
+        @main_objective = objectives(:objective_140)
+        @remove_as_preassign = objectives(:objective_90)
+        @already_preassign_to_main = objectives(:objective_120)
+        
+        assert @main_objective.preassigns.include?(@remove_as_preassign)
+        assert @main_objective.preassigns.include?(@already_preassign_to_main)
+        assert_equal 2, @main_objective.preassigns.count
+        
+        capybara_login(@teacher_1)
+        go_to_all_objectives
+        click_on(@main_objective.full_name)
+        click_on("Pre Reqs")
+        
+        uncheck("check_#{@remove_as_preassign.id}")
+        uncheck("check_#{@already_preassign_to_main.id}")
+        
+        click_button("Save Changes")
+        
+        @main_objective.reload
+        
+        assert_equal 0, @main_objective.reload.preassigns.count 
+    end
+
     test "pre req options 1" do
             # Mainassign doesn't appear as an option for a preassign
             # That would create an impossible loop.
@@ -431,16 +517,6 @@ class ObjectivesFormTest < ActionDispatch::IntegrationTest
         capybara_login(@teacher_1)
         click_on("New Objective")
         assert_no_text("Nothing here right now.")
-    end
-    
-    test "objective with no label" do
-        skip
-        capybara_login(@teacher_1)
-        click_on("New Objective")
-        click_on('Create a New Objective')
-        
-        assert_text(no_label_message)
-        assert_no_text(quantity_instructions)
     end
     
     test "objective with label but not questions" do

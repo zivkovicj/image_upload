@@ -8,9 +8,12 @@
 <%= render 'shared/headline' %>
 <%= render 'objective_subheadline' %>
 
+<% @which_params = "pre_reqs" %>
 <%= form_for(@objective) do |a| %>
     
     <%= render 'shared/error_messages', object: @objective %>
+    
+    <%= a.hidden_field :which_params, :value => "pre_reqs" %>
   
     <%= render :partial => 'shared/include_checks', 
       :locals => {:list_for_checks => @pre_req_list,

@@ -163,6 +163,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         click_on("consultancy_#{@seminar.id}")
         click_on("#{new_consultancy_button_text}")
         assert_text("Mark Attendance Before Creating Desk-Consultants Groups")
+        refresh_all_obj_sems(@seminar)
         click_on("Create Desk Consultants Groups")
         
         # Check Preview Values
@@ -658,6 +659,7 @@ class ConsultanciesShowTest < ActionDispatch::IntegrationTest
         @seminar.consultancies.create(:created_at => "2017-07-08 03:10:54")
         @seminar.consultancies.create(:created_at => "2017-07-07 03:10:54")
         
+        refresh_all_obj_sems(@seminar)
         assert_equal 10, @seminar.consultancies.count
         
         capybara_login(@teacher_1)

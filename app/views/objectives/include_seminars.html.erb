@@ -11,7 +11,9 @@
 <%= form_for(@objective) do |a| %>
     
     <%= render 'shared/error_messages', object: @objective %>
-      
+    
+    <%= a.hidden_field :which_params, :value => "seminars" %>
+    
     <% if @assign_permission != "admin" %>
         <div class="singleOption" id="seminars_to_include">
           <h2>Classes To Include This Objective</h2>

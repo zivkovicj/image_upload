@@ -57,33 +57,29 @@ class ObjectivesController < ApplicationController
     @old_seminars = @objective.seminar_ids
     @old_pre_reqs = @objective.preassign_ids
     redirect_path = @objective
-    params_to_use = objective_params_seminars
-    if params[:objective][:name]
+    
+    @which_params = params[:objective][:which_params]
+    if @which_params == "name"
       params_to_use = objective_params_basic
-    elsif params[:objective][:label_ids]
+    elsif @which_params == "seminars"
+      params_to_use = objective_params_seminars
+    elsif @which_params == "labels"
       params_to_use = objective_params_labels
+      @objective.label_ids = [] if params[:objective][:label_ids].nil?
       redirect_path = quantities_objective_path(@objective)
-    elsif params[:objective][:preassign_ids]
+    elsif @which_params == "pre_reqs"
       params_to_use = objective_params_preassigns
-    elsif params[:objective][:worksheet_ids]
+      @objective.preassign_ids = [] if params[:objective][:preassign_ids].nil?
+    elsif @which_params == "worksheets"
       params_to_use = objective_params_worksheets
+      @objective.worksheet_ids = [] if params[:objective][:worksheet_ids].nil?
     end
+    
     if @objective.update_attributes(params_to_use)
-      add_pre_reqs_to_seminars
-      set_ready_for_all_students
+      pre_reqs_and_set_ready
       flash[:success] = "Objective Updated"
       redirect_to redirect_path
     end
-    
-    #if @objective.update_attributes(objective_params_basic)
-      #
-      #flash[:success] = "Objective Updated"
-      #redirect_to this_redirect_path
-    #else
-      #@labels = labels_to_offer
-      #@pre_req_list = build_pre_req_list(@objective)
-      #render 'edit'
-    #end
   end
   
 
@@ -203,6 +199,13 @@ class ObjectivesController < ApplicationController
       @labels = labels_to_offer
       set_permissions(@objective)
       @pre_req_list = build_pre_req_list(@objective)
+    end
+    
+    def pre_reqs_and_set_ready
+      if @which_params == "pre_reqs" || @which_params == "seminars"
+        add_pre_reqs_to_seminars
+        set_ready_for_all_students
+      end
     end
           
 end

@@ -14,6 +14,7 @@
     
       <%= render 'shared/error_messages', object: @objective %>
       
+      <%= a.hidden_field :which_params, :value => "labels" %>
       
       <%= render :partial => 'shared/include_checks', 
         :locals => {:list_for_checks => @labels,

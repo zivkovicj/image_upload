@@ -2,6 +2,8 @@
     
     <%= render 'shared/error_messages', object: @objective %>
   
+    <%= a.hidden_field :which_params, :value => "name" %>
+  
     <div class="singleOption">
       </br>
       <%= render 'shared/name_in_form', form: a, submitted_placeholder: nil %>

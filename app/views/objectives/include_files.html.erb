@@ -42,6 +42,8 @@
     
       <%= render 'shared/error_messages', object: @objective %>
       
+      <%= a.hidden_field :which_params, :value => "worksheets" %>
+      
       <%= render :partial => 'shared/include_checks', 
         :locals => {:list_for_checks => @worksheets,
           :check_box_name => "objective[worksheet_ids][]",

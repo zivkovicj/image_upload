@@ -40,7 +40,7 @@ class RipostesController < ApplicationController
             @riposte.update(:tally => perc)
             @quiz.update(:progress => next_riposte_num)
             
-            if @riposte == @quiz.ripostes.last
+            if @riposte == @quiz.ripostes.order(:position).last
                 @student = @quiz.user
                 @objective = @quiz.objective
                 @this_obj_stud = @student.objective_students.find_by(:objective => @objective)

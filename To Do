@@ -48,12 +48,10 @@ Upload videos and link to them on social media
 
 Private Repo on Github
 
-Check Pre-Reqs for "Both-Side Equation" Objectives
 
 Keep reading at 
     https://devcenter.heroku.com/articles/ruby-memory-use#why-memory-errors-matter
 
-If the .valid? and .persisted? works, make a more efficient system where it collects the valid and persisted teams before going into the find_placement method
 
 
 
@@ -76,46 +74,90 @@ Fix terminal prompt to show current branch
 Fix git both links
 
 /home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:27: warning: constant ::Fixnum is deprecatedime: 00:08:16,  ETA: 00:01:41
-/home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:91: warning: constant ::Fixnum is deprecated
-/home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:27: warning: constant ::Fixnum is deprecatedime: 00:08:18,  ETA: 00:01:29
-/home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:91: warning: constant ::Fixnum is deprecated
-
-/home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:27: warning: constant ::Fixnum is deprecatedime: 00:07:56,  ETA: 00:03:30
-/home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:91: warning: constant ::Fixnum is deprecated
 
 
 
+ERROR["test_include_files", Minitest::Result, 1.3603108389997942]
+ test_include_files#Minitest::Result (1.36s)
+ArgumentError:         ArgumentError: When assigning attributes, you must pass a hash as an argument.
+            app/controllers/objectives_controller.rb:76:in `update'
+            test/integration/objectives/objectives_edit_test.rb:74:in `block in <class:ObjectivesFormTest>'
 
-ERROR["test_destroy_oldest_upon_tenth", Minitest::Result, 3.801363729999821]
- test_destroy_oldest_upon_tenth#Minitest::Result (3.80s)
-NoMethodError:         NoMethodError: undefined method `/' for nil:NilClass
-            app/controllers/concerns/desk_consultants.rb:25:in `block in setup_need_hash'
-            app/controllers/concerns/desk_consultants.rb:24:in `setup_need_hash'
-            app/controllers/consultancies_controller.rb:24:in `create'
-            test/integration/consultancies/consultancies_show_test.rb:666:in `block in <class:ConsultanciesShowTest>'
+ SKIP["test_user_edits_own_objective", Minitest::Result, 1.779217367000001]
+ test_user_edits_own_objective#Minitest::Result (1.78s)
+        Skipped, no message given
+        test/integration/objectives/objectives_edit_test.rb:394:in `block in <class:ObjectivesFormTest>'
 
-ERROR["test_preview_then_permanent", Minitest::Result, 55.700446036999665]
- test_preview_then_permanent#Minitest::Result (55.70s)
-NoMethodError:         NoMethodError: undefined method `/' for nil:NilClass
-            app/controllers/concerns/desk_consultants.rb:25:in `block in setup_need_hash'
-            app/controllers/concerns/desk_consultants.rb:24:in `setup_need_hash'
-            app/controllers/consultancies_controller.rb:24:in `create'
-            test/integration/consultancies/consultancies_show_test.rb:166:in `block in <class:ConsultanciesShowTest>'
+ERROR["test_include_labels_and_quantities", Minitest::Result, 2.3404359449996264]
+ test_include_labels_and_quantities#Minitest::Result (2.34s)
+ArgumentError:         ArgumentError: When assigning attributes, you must pass a hash as an argument.
+            app/controllers/objectives_controller.rb:76:in `update'
+            test/integration/objectives/objectives_edit_test.rb:103:in `block in <class:ObjectivesFormTest>'
 
- FAIL["test_place_apprentices_by_request", Minitest::Result, 92.68987109399973]
- test_place_apprentices_by_request#Minitest::Result (92.69s)
-        Expected false to be truthy.
-        test/integration/consultancies/consultancies_show_test.rb:141:in `block (2 levels) in test_all_apprentices'
-        test/integration/consultancies/consultancies_show_test.rb:139:in `block in test_all_apprentices'
-        test/integration/consultancies/consultancies_show_test.rb:138:in `test_all_apprentices'
-        test/integration/consultancies/consultancies_show_test.rb:451:in `block in <class:ConsultanciesShowTest>'
+ SKIP["test_teacher_edits_public_objective", Minitest::Result, 3.2874886839999817]
+ test_teacher_edits_public_objective#Minitest::Result (3.29s)
+        Skipped, no message given
+        test/integration/objectives/objectives_edit_test.rb:366:in `block in <class:ObjectivesFormTest>'
 
+ SKIP["test_teacher_made_no_objectives", Minitest::Result, 3.708668231000047]
+ test_teacher_made_no_objectives#Minitest::Result (3.71s)
+        Skipped, no message given
+        test/integration/objectives/objectives_edit_test.rb:446:in `block in <class:ObjectivesFormTest>'
 
+ SKIP["test_view_other_teacher_objective", Minitest::Result, 4.043762333999894]
+ test_view_other_teacher_objective#Minitest::Result (4.04s)
+        Skipped, no message given
+        test/integration/objectives/objectives_edit_test.rb:380:in `block in <class:ObjectivesFormTest>'
 
+ERROR["test_empty_name_update", Minitest::Result, 4.632120954999664]
+ test_empty_name_update#Minitest::Result (4.63s)
+ArgumentError:         ArgumentError: When assigning attributes, you must pass a hash as an argument.
+            app/controllers/objectives_controller.rb:76:in `update'
+            test/integration/objectives/objectives_edit_test.rb:439:in `block in <class:ObjectivesFormTest>'
 
+ SKIP["test_label_with_no_questions", Minitest::Result, 5.056461929999841]
+ test_label_with_no_questions#Minitest::Result (5.06s)
+        Skipped, no message given
+        test/integration/objectives/objectives_edit_test.rb:483:in `block in <class:ObjectivesFormTest>'
 
-            
-Error upon submitting the pre-req screen with nothing chosen
+ FAIL["test_pre_reqs", Minitest::Result, 6.115654514999733]
+ test_pre_reqs#Minitest::Result (6.12s)
+        Expected true to be nil or false
+        test/integration/objectives/objectives_edit_test.rb:266:in `block in <class:ObjectivesFormTest>'
+
+ERROR["test_include_seminars", Minitest::Result, 6.775439819999974]
+ test_include_seminars#Minitest::Result (6.78s)
+ArgumentError:         ArgumentError: When assigning attributes, you must pass a hash as an argument.
+            app/controllers/objectives_controller.rb:76:in `update'
+            test/integration/objectives/objectives_edit_test.rb:167:in `block in <class:ObjectivesFormTest>'
+
+ERROR["test_edit_objective_basic_info", Minitest::Result, 10.512293660999603]
+ test_edit_objective_basic_info#Minitest::Result (10.51s)
+ArgumentError:         ArgumentError: When assigning attributes, you must pass a hash as an argument.
+            app/controllers/objectives_controller.rb:76:in `update'
+            test/integration/objectives/objectives_edit_test.rb:48:in `block in <class:ObjectivesFormTest>'
+
+ SKIP["test_objective_with_no_label", Minitest::Result, 10.832797466999637]
+ test_objective_with_no_label#Minitest::Result (10.83s)
+        Skipped, no message given
+        test/integration/objectives/objectives_edit_test.rb:462:in `block in <class:ObjectivesFormTest>'
+
+ SKIP["test_teacher_made_objectives", Minitest::Result, 12.25366241699976]
+ test_teacher_made_objectives#Minitest::Result (12.25s)
+        Skipped, no message given
+        test/integration/objectives/objectives_edit_test.rb:455:in `block in <class:ObjectivesFormTest>'
+
+ SKIP["test_label_with_questions", Minitest::Result, 12.587546320000001]
+ test_label_with_questions#Minitest::Result (12.59s)
+        Skipped, no message given
+        test/integration/objectives/objectives_edit_test.rb:497:in `block in <class:ObjectivesFormTest>'
+
+ SKIP["test_objective_with_label_but_not_questions", Minitest::Result, 12.917542368999875]
+ test_objective_with_label_but_not_questions#Minitest::Result (12.92s)
+        Skipped, no message given
+        test/integration/objectives/objectives_edit_test.rb:472:in `block in <class:ObjectivesFormTest>'
+
+There was an error upon submitting the pre-req screen with nothing chosen.  Probably need to do something similar with blank labels, classes, etc.
 
 
 There is a block in the D/C algorithm that probably has no effect
