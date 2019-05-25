@@ -36,8 +36,7 @@ class RipostesController < ApplicationController
                 end
             end
             
-            @riposte.update(:stud_answer => stud_answer)
-            @riposte.update(:tally => perc)
+            @riposte.update(:stud_answer => stud_answer, :tally => perc)
             @quiz.update(:progress => next_riposte_num)
             
             if @riposte == @quiz.ripostes.order(:position).last
@@ -46,6 +45,7 @@ class RipostesController < ApplicationController
                 @this_obj_stud = @student.objective_students.find_by(:objective => @objective)
                 set_total_score
                 take_post_req_keys
+                @quiz.update(:old_stars => 99)
                 redirect_to quiz_path(@quiz)
             else
                 next_riposte = @quiz.ripostes.find_by(:position => next_riposte_num)
