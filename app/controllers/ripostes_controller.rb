@@ -45,7 +45,6 @@ class RipostesController < ApplicationController
                 @this_obj_stud = @student.objective_students.find_by(:objective => @objective)
                 set_total_score
                 take_post_req_keys
-                @quiz.update(:old_stars => 99)
                 redirect_to quiz_path(@quiz)
             else
                 next_riposte = @quiz.ripostes.find_by(:position => next_riposte_num)

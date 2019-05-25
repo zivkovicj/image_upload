@@ -26,7 +26,7 @@ class QuizzesController < ApplicationController
     
     def edit
         @objective = Objective.find(params[:objective_id])     
-        @quiz = Quiz.where(:user => current_user, :objective => @objective).order(:created_at).last
+        @quiz = Quiz.find_by(:user => current_user, :objective => @objective, :total_score => nil)
         current_position = @quiz.progress
         @riposte = @quiz.ripostes.find_by(:position => current_position) || @quiz.ripostes.first
         redirect_to edit_riposte_path(@riposte)
