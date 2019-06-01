@@ -86,20 +86,9 @@ V Show them in the student's key pool.
 V Clicking on a key removes that TYPE of key from the student's holdings.
 V Now check keybox updating for a whole class at a time.
 
-I deleted a line in the objective_student update action that updates the obj_stud by score_params (which only whitelists user and objective).  Make sure that is okay.
+Get in the habit of precompiling before pushing to heroku
 
- FAIL["test_take_keys_for_perfect_score", Minitest::Result, 376.76434422700004]
- test_take_keys_for_perfect_score#Minitest::Result (376.76s)
-        Expected: 10
-          Actual: 8
-        test/integration/seminars/seminars_scoresheet_test.rb:77:in `block in <class:SeminarsScoresheetTest>'
 
- FAIL["test_update_all_time_not_this_term", Minitest::Result, 383.30087194]
- test_update_all_time_not_this_term#Minitest::Result (383.30s)
-        Expected: 6
-          Actual: 7
-        test/integration/seminars/seminars_scoresheet_test.rb:114:in `block in <class:SeminarsScoresheetTest>'
-        
  FAIL["test_choose_consultants", Minitest::Result, 231.56674220700006]
  test_choose_consultants#Minitest::Result (231.57s)
         Expected false to be truthy.
@@ -107,8 +96,6 @@ I deleted a line in the objective_student update action that updates the obj_stu
 
 
 2.94_STUDENT_CLICKS_KEY_TO_START_QUIZ
-
-There was an error upon submitting the pre-req screen with nothing chosen.  Probably need to do something similar with blank labels, classes, etc.
 
 DON'T assign a student to a topic if she already has any keys.  Right now it's set to do that as a last resort.  But that doesn't work when doing D/C sessions two days in a row.
     With this change, I might also need to adjust the way that it looks at needed students.  So that Sasha wouldn't be counted as somebody who needs that topic.

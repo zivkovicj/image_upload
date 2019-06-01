@@ -1,5 +1,5 @@
 class AdminsController < ApplicationController
-
+    # It's not freaking up to date
 
     def show
         @admin = User.find(params[:id])
