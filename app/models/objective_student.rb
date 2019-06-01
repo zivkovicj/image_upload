@@ -77,8 +77,14 @@ class ObjectiveStudent < ApplicationRecord
     
     def update_keys(which_key, new_keys)
         old_keys = self.read_attribute(:"#{which_key}_keys")
-        current_keys = old_keys + new_keys.to_i
-        self.update(:"#{which_key}_keys" => current_keys, :pretest_keys => 0)
+        temp_keys_1 = old_keys + new_keys.to_i
+        temp_keys_2 = [temp_keys_1, 6].min
+        current_keys = [temp_keys_2, 0].max
+        if which_key == "pretest"
+            self.update(:pretest_keys => current_keys) 
+        else
+            self.update(:"#{which_key}_keys" => current_keys, :pretest_keys => 0)  # If dc_keys or teacher_keys are given, erase the pretest keys
+        end
     end
     
     def new_ready

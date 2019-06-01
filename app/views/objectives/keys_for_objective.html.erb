@@ -13,8 +13,16 @@
         <% if seminar.objectives.include?(@objective) %>
             <h4>Give keys to whole class
                 <% [2,1,-1,-2].each do |n| %>
-                    <div class="whole_class_keys btn-med btn-primary" id="whole_class_<%= n %>_<%= seminar.id %>" obj_id=<%= @objective.id %> 
-                        sem_id=<%= seminar.id %> new_keys=<%= n %>>&nbsp; <%= n %> &nbsp;</div>&nbsp;
+                    <div class="whole_class_keys btn-med btn-primary"
+                        id="whole_class_<%= n %>_<%= seminar.id %>"
+                        obj_id=<%= @objective.id %> 
+                        sem_id=<%= seminar.id %>
+                        key_type="teacher_granted"
+                        new_keys=<%= n %>>
+                        
+                        &nbsp; <%= n %> &nbsp;
+                    
+                    </div>&nbsp;
                 <% end %>
             </h4>
         

@@ -8,8 +8,9 @@ class ObjectiveStudentsController < ApplicationController
   
   def update
     @o_s = ObjectiveStudent.find(params[:id])
-    @o_s.update_attributes(score_params)
-    @o_s.update_keys("teacher_granted", params[:objective_student][:new_keys])
+    key_type = params[:objective_student][:key_type]
+    new_keys = params[:objective_student][:new_keys]
+    @o_s.update_keys(key_type, new_keys)
     respond_with @o_s
   end
   

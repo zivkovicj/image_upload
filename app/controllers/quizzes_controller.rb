@@ -24,7 +24,7 @@ class QuizzesController < ApplicationController
         end
     end
     
-    def edit
+    def edit    # Called when a student clicks on an unfinished quiz
         @objective = Objective.find(params[:objective_id])     
         @quiz = Quiz.find_by(:user => current_user, :objective => @objective, :total_score => nil)
         current_position = @quiz.progress

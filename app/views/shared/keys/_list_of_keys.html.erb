@@ -1,12 +1,26 @@
 
-<% if this_os.passed_with_100 %>
-    Has scored 100% on this objective
-<% elsif this_os.ready %>
-    <div class="key_area key_holder_<%= this_os.id %> sem_<%= this_sem.id %>" new_keys=-1 os_id=<%= this_os.id %> sem_id=<%= this_sem.id %>>
-        <% this_os.total_keys.times do |n| %>
-            <%= image_tag('key.jpg') %>
-        <% end %>
-    </div>
-<% else %>
-    <div id="not_ready_<%= this_os.id %>">Hasn't passed the pre-requisites for this objective.</div>
+<% key_types = [["teacher_granted","key.jpg"], ["dc","key_2.jpg"],[ "pretest","key_3.jpg"]] %>
+
+
+<% key_types.each do |key_type| %>
+    <td>
+        <div class="key_area key_holder_<%= this_os.id %>_<%= key_type[0] %> sem_<%= this_sem.id %>_<%= key_type[0] %>"
+            key_type="<%= key_type[0] %>"
+            new_keys=-1
+            os_id=<%= this_os.id %>
+            sem_id=<%= this_sem.id %>>
+            
+            <% this_os.read_attribute(:"#{key_type[0]}_keys").times do |n| %>
+                <%= image_tag("keys/#{key_type[1]}") %>
+            <% end %>
+        </div>
+    </td>
 <% end %>
+
+<td>
+    <% if this_os.passed_with_100 %>
+        Has scored 100% on this objective
+    <% elsif this_os.ready? == false %>
+        <div id="not_ready_<%= this_os.id %>">Hasn't passed the pre-requisites for this objective.</div>
+    <% end %>
+</td>

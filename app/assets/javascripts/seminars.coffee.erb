@@ -164,27 +164,31 @@ ready = ->
     <%# KEYS %>
     
     if $('.add_key').length > 0
-        key_image = "<img src='<%= asset_path('key.jpg') %>'>"
         
         update_key_holder = (ths, new_keys) ->
             old_keys = $(ths).children().length
             current_keys_0 = parseInt(old_keys) + parseInt(new_keys)
             current_keys_1 = Math.min(6, current_keys_0)
             os_id = $(ths).attr('os_id')
-            if current_keys_1 == 6
-                $('.add_key_2_'+os_id).text("")
-                $('.add_key_1_'+os_id).text("")
-            else
-                $('.add_key_2_'+os_id).text("+2")
-                $('.add_key_1_'+os_id).text("+1")
-            $('.key_holder_'+os_id).empty()
+            key_type = $(ths).attr('key_type')
+            this_holder = $('.key_holder_'+os_id+'_'+key_type)
+            this_holder.empty()
+            if key_type == "pretest"
+                key_image = "<img src='<%= asset_path('keys/key_3.jpg') %>'>" 
+            else if new_keys > 0
+                $('.key_holder_'+os_id+'_'+'pretest').empty()
+            if key_type == "teacher_granted"
+                key_image = "<img src='<%= asset_path('keys/key.jpg') %>'>"
+            if key_type == "dc"
+                key_image = "<img src='<%= asset_path('keys/key_2.jpg') %>'>"
             for i in [0...current_keys_1] by 1
-                $('.key_holder_'+os_id).append(key_image)
+                this_holder.append(key_image)
     
         $('.key_area').on "click", ->
             os_id = parseInt($(this).attr('os_id'))
             new_keys = $(this).attr('new_keys')
-            this_holder = $('.key_holder_'+os_id).first()
+            key_type = $(this).attr('key_type')
+            this_holder = $('.key_holder_'+os_id+'_'+key_type).first()
             update_key_holder(this_holder, new_keys)
             url = '/objective_students/'+os_id
             $.ajax
@@ -193,6 +197,7 @@ ready = ->
                 dataType: "json"
                 data:
                     objective_student:
+                        key_type: key_type
                         new_keys: new_keys
                         
         $('.whole_class_keys').on "click", ->
@@ -200,7 +205,7 @@ ready = ->
             sem_id = $(this).attr('sem_id')
             new_keys = $(this).attr('new_keys')
             url = '/objectives/'+obj_id+'/whole_class_keys'
-            $('.sem_'+sem_id).each (index, element) =>
+            $('.sem_'+sem_id+'_teacher_granted').each (index, element) =>
                 update_key_holder(element, new_keys)
             $.ajax
                 type: "POST",

@@ -3,12 +3,17 @@
 
 <h2 class="add_key">Give Keys</h2>
 <table>
+    <td colspan="3"></td>
+    <td>Teacher</td>
+    <td>Desk Consultant</td>
+    <td>Pretest</td>
+    <td>Comments</td>
     <% @objectives.each do |objective| %>
         <% this_os = objective.objective_students.find_by(:user => @student) %>
         <tr>
             <%= render 'shared/keys/add_key_buttons', :this_os => this_os %>
             <td><%= objective.name %></td>
-            <td><%= render 'shared/keys/list_of_keys', :this_os => this_os, :this_sem => @seminar %></td>
+            <%= render 'shared/keys/list_of_keys', :this_os => this_os, :this_sem => @seminar %>
         </tr>
     <% end %>
 </table>

@@ -65,8 +65,7 @@ class SeminarsScoresheetTest < ActionDispatch::IntegrationTest
     end
     
     test "take keys for perfect score" do
-        @test_obj_stud.update(:teacher_granted_keys => 2, :dc_keys => 2)
-        set_specific_score(@test_obj_stud.user, @test_obj_stud.objective, 8)
+        @test_obj_stud.update(:teacher_granted_keys => 2, :dc_keys => 2, :points_all_time => 8)
         
         capybara_login(@teacher_1)
         click_on("scoresheet_seminar_#{@seminar.id}")
@@ -98,7 +97,7 @@ class SeminarsScoresheetTest < ActionDispatch::IntegrationTest
     
     test "update all time not this term" do
         Quiz.create(:user => @student_2, :objective => @objective_10, :origin => "teacher_granted", :total_score => 7)
-        @test_obj_stud.update(:pretest_score => 2, :points_this_term => 6)
+        @test_obj_stud.update(:pretest_score => 2, :points_this_term => 6, :points_all_time => 6)
         
         capybara_login(@teacher_1)
         click_on("scoresheet_seminar_#{@seminar.id}")

@@ -75,19 +75,47 @@ Fix git both links
 
 /home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:27: warning: constant ::Fixnum is deprecatedime: 00:08:16,  ETA: 00:01:41
 
-Don't update a quiz to the next riposte number if the quiz is finished.  That links it to a non-existing question.
+ FAIL["test_choose_consultants", Minitest::Result, 138.197434745]
+ test_choose_consultants#Minitest::Result (138.20s)
+        Expected false to be truthy.
+        test/integration/consultancies/consultancies_show_test.rb:335:in `block in <class:ConsultanciesShowTest>'
+
+2.93_DIFFERENT_KEY_TYPES
+V Make three different key icons.
+V Show them in the student's key pool.
+V Clicking on a key removes that TYPE of key from the student's holdings.
+V Now check keybox updating for a whole class at a time.
+
+I deleted a line in the objective_student update action that updates the obj_stud by score_params (which only whitelists user and objective).  Make sure that is okay.
+
+ FAIL["test_take_keys_for_perfect_score", Minitest::Result, 376.76434422700004]
+ test_take_keys_for_perfect_score#Minitest::Result (376.76s)
+        Expected: 10
+          Actual: 8
+        test/integration/seminars/seminars_scoresheet_test.rb:77:in `block in <class:SeminarsScoresheetTest>'
+
+ FAIL["test_update_all_time_not_this_term", Minitest::Result, 383.30087194]
+ test_update_all_time_not_this_term#Minitest::Result (383.30s)
+        Expected: 6
+          Actual: 7
+        test/integration/seminars/seminars_scoresheet_test.rb:114:in `block in <class:SeminarsScoresheetTest>'
+        
+ FAIL["test_choose_consultants", Minitest::Result, 231.56674220700006]
+ test_choose_consultants#Minitest::Result (231.57s)
+        Expected false to be truthy.
+        test/integration/consultancies/consultancies_show_test.rb:335:in `block in <class:ConsultanciesShowTest>'
+
+
+2.94_STUDENT_CLICKS_KEY_TO_START_QUIZ
 
 There was an error upon submitting the pre-req screen with nothing chosen.  Probably need to do something similar with blank labels, classes, etc.
 
-DON'T give a student keys if she already has some.  Right now it's set to do that as a last resort.  But that doesn't work when doing D/C sessions two days in a row.
+DON'T assign a student to a topic if she already has any keys.  Right now it's set to do that as a last resort.  But that doesn't work when doing D/C sessions two days in a row.
     With this change, I might also need to adjust the way that it looks at needed students.  So that Sasha wouldn't be counted as somebody who needs that topic.
 
 There is a block in the D/C algorithm that probably has no effect
 
-It appears as though the teacher cannot delete keys.  The problem is because some of the keys showing are from d-c.  Some of them are teacher-granted.  
-    Only the teacher-granted keys can be deducted by clicking on them.
-    To fix this problem, I'll need to implement the different keys, which will have slightly different paths when they are clicked,
-        in order to delete the different types of keys.
+
 
 Instead of iterating through apprentices, iterate through the groups and find an unplaced
     apprentice to put into the group.
