@@ -75,10 +75,6 @@ Fix git both links
 
 /home/ubuntu/.rvm/gems/ruby-2.6.0/gems/will_paginate-3.1.0/lib/will_paginate/view_helpers/link_renderer.rb:27: warning: constant ::Fixnum is deprecatedime: 00:08:16,  ETA: 00:01:41
 
- FAIL["test_choose_consultants", Minitest::Result, 138.197434745]
- test_choose_consultants#Minitest::Result (138.20s)
-        Expected false to be truthy.
-        test/integration/consultancies/consultancies_show_test.rb:335:in `block in <class:ConsultanciesShowTest>'
 
 2.93_DIFFERENT_KEY_TYPES
 V Make three different key icons.
@@ -94,79 +90,217 @@ Get in the habit of precompiling before pushing to heroku
         Expected false to be truthy.
         test/integration/consultancies/consultancies_show_test.rb:335:in `block in <class:ConsultanciesShowTest>'
 
+******************************************
+IMPORTANT UPDATES FOR SUMMER 2019
+******************************************
+Errors, fixes, and tests (see below)
+Tests to Add
+Market suggestions from Mr. Korn
+Solid plan for public objectives and questions
+Huge list of labels for questions
+Write Update Plan
+Default Term Date Plan
+Materials Site (Easier browsing of all study guides)
+Teacher-graded questions
+Objectives need official names and catchy names
+Allow for teachers to see and edit student passwords
+Small, important visuals
+Consultant points as a method of determining consultant topics
+Desk Consultants Improvements (See Below)
+Key improvements
+Return student requests
+Multiple-correct questions
+Reports for quizzes and unused keys
+List of missed questions
+Quiz Editing
+Edit Questions
+Spiral Review
+“I don’t want the rest of my keys to this objective”
+Sign up Mr. Z School to receive BAT
+End-of-term Stuff
+Archive Classes
 
-2.94_STUDENT_CLICKS_KEY_TO_START_QUIZ
-
-DON'T assign a student to a topic if she already has any keys.  Right now it's set to do that as a last resort.  But that doesn't work when doing D/C sessions two days in a row.
-    With this change, I might also need to adjust the way that it looks at needed students.  So that Sasha wouldn't be counted as somebody who needs that topic.
-
-There is a block in the D/C algorithm that probably has no effect
 
 
 
-Instead of iterating through apprentices, iterate through the groups and find an unplaced
-    apprentice to put into the group.
-    This should better use the consultants who were chosen.
-    And minimize the need for replacing those consultants into different groups.
+****************************************
+UPDATE WISHLIST, SUMMER 2019
+****************************************
 
-When students take a paper quiz, the keys should go away after the score is entered
+Less-important small fixes
+Better objective suggestions
+Dojo-style currency-giving
+Hall pass app
+Student can start quiz by clicking keys
+Add multiple, already-existing students to a class at once
+Objective Permissions
+Consultancy Back-tracking
+Teacher Adjusting Consultancy
+Archive a class at the end of a school year
+
+Slunk
+
+
+WRITE UPDATE PLAN
+Make a plan for how to roll out updates after more users are using the apps.
+
+
+DEFAULT TERM DATE PLAN
+Plan to update default term start and end dates each year
+Give mentor teacher a notice if the school's term dates haven't been set.
+
+
+MAKE A SOLID PLAN FOR TEACHERS WHO WANT TO USE PUBLIC OBJECTIVES
+But maybe they don't want to use other teacher's questions.
+Also, look into what happens with a public objective that uses private labels.
+    Maybe don't allow public objectives to use private labels
+    Likewise, public labels shouldn't use private questions
 
 
 
+CURRENT TERM SCORES
+Bugs are going to happen with current implementation, using a column model when other classes might be set to different terms.
+Probably need to make a method that picks out the quiz scores.
+Quiz will need a “date completed” column, so it isn’t just going on the “date updated” column.  This approach will allow for 
+
+
+
+QUIZ EDITING
+Teachers need to be able to update scores for students questions and quizzes
+Would be really cool to offer the option to add the student's answer to the list of acceptable answers
+
+
+
+HUGE LIST OF LABELS FOR QUESTIONS
+Best solution brainstormed so far is to make a "label-viewer" mini-app.
+    Whenever labels need to be chosen, show that app.
+    It will expand and contract the list based on some choices.  
+ The current method of choosing labels is sloppy and cumbersome
+    Current idea is to bring up a section when the user pushes "Choose Label"
+    The pop-up offers all the labels, better organized
+    Ideally, the window would be a pop-up.  But not until I get better at testing javascript
+    
+
+
+
+
+ERRORS, FIXES, AND TESTS
+Reinstate javascript testing
+Fix vulnerabilities that are noted in e-mail
+Using stars toward grade isn't working
+Live site has errors in student searching. It occurred when trying to add Melissa Suess to 7th period
+Update or remove all skipped tests
+Worksheet didn't seem to attach when an admin created a new worksheet while attaching.
+Can I learn how to test file uploads in a reasonable time?
+Test that a "user" is added to a worksheet as it's uploaded
+Shrink picture for apple, label, etc.  They should all be the size of the key.
 Figure out how to make the link to be the color that I've asked.
     In the meantime, I think I acutally like the blue background for tables with a list of files
     The list of all files, accessed through the content page, needs at least one of these two solutions:
         Either fix the color of the link text, or put a background color on the table.  Or both.
-    
-Teacher needs to be able to override "Not ready" or "100%" when trying to give keys.
-    
-
-
-
-
-Don't place an apprentice who has 80 or 90, but do allow placing an apprentice who has 60 or 70.
-    Probably try that as a last resort, though.
-Continue trying to avoid placing a consultant who has scored 100
-    But allow it, if needed.  That will help the algorithm be more thorough.
-    Make sure to offer extra points to students who end up in that position.
-Go by these numbers, not seminar.consultantThreshold
-
-Worksheet didn't seem to attach when an admin created a new worksheet while attaching.
-
-Can I learn how to test file uploads in a reasonable time?
-
-
-
-Test that a "user" is added to a worksheet as it's uploaded
-
-Shrink picture for apple, label, etc.  They should all be the size of the key.
-
-
-
+There is a block in the D/C algorithm that probably has no effect
+Right now assets compile is set to true.  This was a solution to images not appearing in heroku.
+But the article mentioned that this causes a performance slowdown.  So keep looking for better solutions.
 A teacher's Class list is showing all classes, even before invite is accepted.
-
     Could probably use a better line than this one: assert_no_text("Teacher Since:") when testing redirection to profile.
-
     Button should say "Finish Quiz" if it's on the last question.
-    
 Look into adding multiple records at once with rails and SQL.
     If possible, add new ObjectiveStudents this way
-
-
-Look into my capacity with AWS.
-
-Sign up Mr. Z School to receive BAT
-
 The sign-up screen looks like crap
+Don't show zero-priority objectives in suggestion list
+Should check for assign_permission on the back end to prevent url hacks
+Not allowing me to remove 3-2 as a pre-req from 3-3
+If student buys item that sold out after he loaded page, it appears to student that purchase is working.
+    This tutorial looks helpful for fixing the problem:
+    https://www.tutorialspoint.com/ruby-on-rails/rails-and-ajax.htm
+README for loading only specific jquery-ui components.
+    https://github.com/jquery-ui-rails/jquery-ui-rails
+If a teacher signs in, but doesn't have a school, send them to school-choosing view
+Test and re-route for incomplete school info
+Admin should be able to destroy students
+    And schools
+        But what happens to students and teachers when their school gets destroyed.
+        This can probably wait for awhile
+Deleting a consultancy from its own show page isn't working right now.
+Block access to goals until a distant future update when the functions related to goals can be improved.
+Can erase most of the javascript for choosing goals, targets, checkpoints, and achievement
+    Or maybe not, since I'll need to replace the best-in-place to get my tests working.
+    Either that, or I need to update my tests to RSpec
+Repeated apple icons need to be different icons
+Searching by student number threw an error
+Set_objectives_and_scores should be a model method so that it can be better tested
+Index of consultancies should show created_at
+    So I can get rid of display_date
+    Make sure last_consultant_day also works by created_at
+Remove 'hide_scores' from the javascript
+Note for the user that an objective cannot be deleted from a class if it is a pre-req for an other objective.  Also note which objective we’re talking about. 
+Check whether dialog5 is still needed
+See if this bit of scss should be re-inserted:
+.field_with_errors {
+  @extend .has-error;
+  .form-control {
+    color: $state-danger-text;
+  }
+}
+If a due date is updated to something that isn't a date, back-end needs to change that.
+Remove references to 'class_and_edit'
+Replace "spacer" and "small_spacer" with padding
+Switch the image and text on big links
+"Teacher Since" should move to the teacher-editing screen 
+Resetting points_this_term should set them to nil, not zero.
+Warning that running DC again will delete the previous arrangement from the same day.
+Cannot delete a teacher because of the hanging commodities
+Navmenu on the quantities is weird
+Need a navmenu when giving keys to a whole class
+Option to mark consultancy permanent without giving keys
+    Or better yet, just don't give keys for objectives that have no questions.  
+You could install the exception notifier, which will send you an email for every 500 error including a full stack trace.
+When choosing pretests, the objectives should be listed in order by name
+Show the number of questions that each objective has
+Big link should probably show the icon before the text
+Undefined method 'order' when searching for objective
+Error upon admin saving new objective
+Updating question quantities should give a flash message
+Pictures Index needs pagination
+Confirm removing <Seminar 1073514> from your classes
+Fill-in Questions need at least 8 answer choices
+Update seminar_bucks_earned or school_bucks_earned each time a new currency is added
+    Or when an item is purchased
+    Refer to those when loading the view
+When editing objectives, etc reroute to objectives index instead of profile
+Links are hard to see after used
+I think it does take away pretest keys if a class is set to no longer be a pretest.
+ But does it do the same if the objective is removed from the class entirely?
+ Giving pretest keys should be based on whether the student already has a pretest score.
+ To prevent weird things from happening if a student is enrolled in two different classes and the teacher takes away a pretest.
+Or if any teacher takes a pretest then gives it back, we don't want to give those students new keys to complete.
+Can I re-name the "present" attribute of the seminar student?  That's already a ruby word.
+For the sake of performance, the method "set_pretests" should only be called when pretests are changed.  Right now, it is getting called when
+    anything about the seminar is changed.
+Check pagination everywhere it occurs
+Don't block the "Desk Consultants" icon when it isn't availble. Instead, re-route to a screen that explains what is needed.
 
+
+
+LESS-IMPORTANT SMALL FIXES
+Dry up the four buttons shown in the bottom of seminar navigation
+    See what pages they should be included on
+Note that Mr. Z school recommends against naming a commodity "Star" or "Gem"
+
+
+MARKET
+Mark fewer items delivered in school market
+Or mark all items delivered in school market
+- The units of money should not use the dollar sign.  Instead, I think it would be good to either use a letter 'Z' with a line through it (every dollar is called a Z buck) or letting the teacher choose from various symbols for their own dollar.
+ - Using decimals (at least 0.25 and 0.50).  Actually this suggestion came from a student of mine who thought that the MrZ Marketplace would be a good way of teaching and learning decimal operations
+(I think I might have already implemented the next three)
+1. Buttons for school only on profile page
+2. Classes have option to see purchased items for that specific class
+3. Visually separate the buttons in the teacher view
 
 
 
 CONSULTANT POINTS AS A METHOD OF DETERMINING CONSULTANT PLACEMENT
-
-ObjectiveStudent
-    consultant_points, integer
-
 Need to rework the sytem so that students don't get blocked off from being consultant until they
     have already been.
 
@@ -174,19 +308,42 @@ Need to rework the sytem so that students don't get blocked off from being consu
 
 
 
+DESK CONSULTANTS IMPROVEMENTS
+
+Don't place an apprentice who has 80 or 90, but do allow placing an apprentice who has 60 or 70.
+    Probably try that as a last resort, though.
+Continue trying to avoid placing a consultant who has scored 100
+    But allow it, if needed.  That will help the algorithm be more thorough.
+    Make sure to offer extra points to students who end up in that position.
+Go by these numbers, not seminar.consultantThreshold
+Instead of iterating through apprentices, iterate through the groups and find an unplaced
+    apprentice to put into the group.
+    This should better use the consultants who were chosen.
+    And minimize the need for replacing those consultants into different groups.
+No assigning students to topics where they already have keys
+DON'T assign a student to a topic if she already has any keys.  Right now it's set to do that as a last resort.  But that doesn't work when doing D/C sessions two days in a row.
+    With this change, I might also need to adjust the way that it looks at needed students.  So that Sasha wouldn't be counted as somebody who needs that topic.
+Desk Consultants should have “Max Group Size” for topics such as Chess.
+There should also be Max Number of groups, so that I don’t end up with more than four groups doing chess when I have four boards.
+DC should NOT go back and place students into groups if they've already passed the objective.  New learning is more important than having a group
 
 
-RE ACTIVATE THE SUGGESTED NEXT OBJECTIVE BUTTON
-Maybe two suggestions: Suggested retake, and suggested new objective
+
+KEY IMPROVEMENTS
+When students take a paper quiz, the keys should go away after the score is entered
+Term-changing needs to offer getting rid of teacher keys, dc keys, and unfinished quizzes.
+Updating a pre-test shouldn't give keys to students who have already assessed in that objective.
+Don't give keys for quizzes that have no questions
+
+
+
+
+BETTER OBJECTIVE SUGGESTIONS
 Keep track of which objectives are not good for doing outside of a D/C environment
 
 
-BROWSE ALL STUDY GUIDES
+BROWSING OF ALL STUDY GUIDES
 Teachers can browse all study guides
-
-Blocking teacher from giving keys to student with 100 or not ready is problematic
-
-
 
 Should check for assign_permission on the back end to prevent url hacks
 
@@ -204,92 +361,41 @@ Erase skipped tests
 
 Live site threw an error in 6th period.  Insert/Update violates foreign key constraint.  Trying to add a student to a team.
 
-Eliminate the feature where goals transfer with the student.  It's causing an error.
-
 Index of consultancies should show created_at
     So I can get rid of display_date
     Make sure last_consultant_day also works by created_at
 
-<h3>Market Stars Used This Term: <strong><%= @stars_used_toward_grade_this_term %></strong></h3>
-<h3>Total Stars for This Term: <strong><%= @total_stars_this_term %></strong></h3>
-
 
 
 2.89 SMALL, IMPORTANT VISUALS
-
 When editing a question, the box prompt is way too small.
-
 Edit quantities and point values screen is cluttered.
-
 Log out/log in needs some padding from the edge.
-
-Don't show the goal on a student's profile unless teacher has enabled goalkeeper.
-
+Icons should be the same size.
+Can I fix the way that icons overlap button when user zooms in?
 Submenu buttons should be equal size
-
-The colors are far too busy with all the different buttons.
-
+The colors are too busy with all the different buttons.
 Basic Info Icon doesn't make sense.
-
 Submenus needs a ribbon or something to set it apart.
+Don't need the edit button below teacher's name
+Page to update pretests for a class should list those objectives in order
+Footer message should be random like the header message.
+Links are hard to see after used  
+
 
 
  
-
- FAIL["test_place_apprentices_by_request", Minitest::Result, 101.21296747308224]
- test_place_apprentices_by_request#Minitest::Result (101.21s)
-        Expected false to be truthy.
-        test/integration/consultancies/consultancies_show_test.rb:138:in `block (2 levels) in test_all_apprentices'
-        test/integration/consultancies/consultancies_show_test.rb:137:in `block in test_all_apprentices'
-        test/integration/consultancies/consultancies_show_test.rb:136:in `test_all_apprentices'
-        test/integration/consultancies/consultancies_show_test.rb:466:in `block in <class:ConsultanciesShowTest>'
-
- FAIL["test_choose_consultants", Minitest::Result, 336.130864654202]
- test_choose_consultants#Minitest::Result (336.13s)
-        Expected false to be truthy.
-        test/integration/consultancies/consultancies_show_test.rb:349:in `block in <class:ConsultanciesShowTest>'
-
-FAIL["test_deprioritize_consultants_who_already_have_keys", Minitest::Result, 597.7001137840562]
- test_deprioritize_consultants_who_already_have_keys#Minitest::Result (597.70s)
-        Expected: 0
-          Actual: 1
-        test/integration/consultancies/consultancies_show_test.rb:373:in `block in <class:ConsultanciesShowTest>'
-
-Using stars toward grade isn't working
-
+TEACHER-GRADED QUESTIONS
 Quizzes that have no questions shouldn't give any stars at all.
     Shouldn't even allow the student a response.
     Even after I make the update that allows for teacher-graded questions, this will still be an issue
         Because quizzes like rotations still cannot be submitted online. For now.
 
-Goalkeeper is showing "Me" when it should be showing student names
 
-Move content-creation buttons to their own screen
 
-Don't give keys for quizzes that have no questions
-
-Remove 'hide_scores' from the javascript
-
-Smaller students icon
-
-Taking away keys isn't working
-
-Known moderate severity security vulnerability detected in rack >= 2.0.0, < 2.0.6 defined in Gemfile.lock.
-Gemfile.lock update suggested: rack ~> 2.0.6
-
-Known moderate severity security vulnerability detected in loofah < 2.2.3 defined in Gemfile.lock.
-Gemfile.lock update suggested: loofah ~> 2.2.3.
-
- - The units of money should not use the dollar sign.  Instead, I think it would be good to either use a letter 'Z' with a line through it (every dollar is called a Z buck) or letting the teacher choose from various symbols for their own dollar.
-
- - Using decimals (at least 0.25 and 0.50).  Actually this suggestion came from a student of mine who thought that the MrZ Marketplace would be a good way of teaching and learning decimal operations
-
-Also, when trying to choose a student's checkpoint, it won't allow me to choose something different than the first choice.
-  And then it leaves that choice with a blank. 
-  
- Figure out why I cannot remove 2-04 as a pre-req
  
-Reorganize this file
+  
+ 
 
 Prevent user from deleting an objective from a seminar if that objective is a preassign for another.
 That's why some objectives cannot be deleted.  I need to find out what they're pre-reqs to.
@@ -300,19 +406,6 @@ But don't fix that until after I implement consultant stars
 
 "Create New Students" button should show up on the class edit page
 
-Don't need the edit button below teacher's name
-
-Check whether dialog5 is still needed
-
-
-
-See if this bit of scss should be re-inserted:
-.field_with_errors {
-  @extend .has-error;
-  .form-control {
-    color: $state-danger-text;
-  }
-}
 
 
 
@@ -323,96 +416,24 @@ See if this bit of scss should be re-inserted:
 
 
 
-TWO DC ERRORS
-
-If a due date is updated to something that isn't a date, back-end needs to change that.
-
-
- FAIL["test_place_apprentices_by_request", Minitest::Result, 192.3266328405589]
- test_place_apprentices_by_request#Minitest::Result (192.33s)
-        Expected false to be truthy.
-        test/integration/consultancies/consultancies_show_test.rb:138:in `block (2 levels) in test_all_apprentices'
-        test/integration/consultancies/consultancies_show_test.rb:137:in `block in test_all_apprentices'
-        test/integration/consultancies/consultancies_show_test.rb:136:in `test_all_apprentices'
-        test/integration/consultancies/consultancies_show_test.rb:466:in `block in <class:ConsultanciesShowTest>'
 
 
 
- FAIL["test_rank_by_consulting", Minitest::Result, 267.98395700659603]
- test_rank_by_consulting#Minitest::Result (267.98s)
-        Expected: Sat, 13 Oct 2018
-          Actual: Sun, 14 Oct 2018
-        test/integration/consultancies/consultancies_show_test.rb:233:in `block in <class:ConsultanciesShowTest>'
 
-FAIL["test_deprioritize_consultants_who_already_have_keys", Minitest::Result, 924.3650707723573]
- test_deprioritize_consultants_who_already_have_keys#Minitest::Result (924.37s)
-        Expected: 0
-          Actual: 1
-        test/integration/consultancies/consultancies_show_test.rb:371:in `block in <class:ConsultanciesShowTest>'
-
-2.?? ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
-
+ALLOW FOR TEACHERS TO SEE AND EDIT STUDENT PASSWORDS
 Add a "student_password" column to user.
 This credential can be used to log in for students.  It can be seen and edited by the teacher.
-
     Login method checks for authenticate on regular password, then for a match on student password
 Will need to link teacher to edit passwords from student edit page
-
 Would be nice if first page leads teachers to the printable version, but that page also has a link to edit all usernames and passwords at once
-
-Remove references to 'class_and_edit'
-
-Replace "spacer" and "small_spacer" with padding
-
-Switch the image and text on big links
-
-"Teacher Since" should move to the teacher-editing screen 
-
-
-
-
-
-
-HUGE LIST OF LABELS FOR QUESTIONS
-
-Best solution brainstormed so far is to make a "label-viewer" mini-app.
-    Whenever labels need to be chosen, show that app.
-    It will expand and contract the list based on some choices.  
-    
- 
- 
-RE-IMPLEMENT SCHOOL MARKET
-
-<% view_word = "View" %>
-<% if @teacher.school_admin > 0 %>
-  <% view_word = "Manage" %>
-<% end %>
-
-<%= link_to "#{view_word} #{@school.market_name}",
-  commodities_path(:school_id => @school.id),
-  :class => "btn btn-lg btn-primary",
-  :method => :get,
-  :id => "manage_school_market" %>
-
-<%= link_to "Manage #{@teacher.name_with_title} Market", commodities_path(:user_id => @teacher.id), class: "btn btn-lg btn-primary", :method => :get,
-  :id => "manage_teacher_market" %> 
-  
-  
-  
-
-
-Checkpoint due dates could use a back button
-
-Test checkpoint editing if a due date is nil
-
-Ability to delete a goal option
-
-Resetting points_this_term should set them to nil, not zero.
-Warning that running DC again will delete the previous arrangment from the same day.
-
-After a student is moved, the old goal_students should be erased
-
-Cannot delete a teacher because of the hanging commodities
+I took away references to seminar.shouldShowConsultLink.
+add some info to explain to teachers that it is needed to use DeskConsultants
+Move one_unfinished check to obj_stud
+Then put that method back into user.quiz_collection
+Are the sponsors affected by the fact that classes allow multiple teachers?
+Look up whether my architecture will work better if change the model instead of using a column in the join table
+    Seminar :has_many  :pretest_objectives
+    This approach seems like I can ruby some things a lot better
 
 
 
@@ -431,14 +452,15 @@ When adding keys to an objective, if a class doesn't include the objective, user
     "Doesn't include this objective"
     Would be nice if there were a button to add the objective.
 
-DON'T ALLOW TEACHER TO RUN AN NEW CONSULTANCY IN THE SAME DAY IF IT'S ALREADY SET TO PERMANENT
 
 
-NEEDED FIXES
-Navmenu on the quantities is weird
-Need a navmenu when giving keys to a whole class
-Option to mark consultancy permanent without giving keys
-    Or better yet, just don't give keys for objectives that have no questions.  
+CONSULTANCY BACK-TRACKING
+Don’t allow teacher to run a new consultancy in the same day if it’s already set to permanent.
+Make this clear.
+Make an option to delete the consultancy.
+This needs to be implemented in a way that takes away student keys and resets the last consultant day.
+Should there be a note to remind teachers to mark students as consultants?
+
 
 HALL PASS APP
 Student enters number.
@@ -451,17 +473,7 @@ SLUNK
 Manage a class game of slunk
 
 
-You could install the exception notifier, which will send you an email for every 500 error including a full stack trace.
 
-When choosing pretests, the objectives should be listed in order by name
-Show the number of questions that each objective has
-
-Big link should probably show the icon before the text
-
-REINSTATE JAVASCRIPT TESTING
-
-Would it be worth trying to first place apprentices where they have already tried and failed?
-To avoid situations where I'm pretty sure Mia would pass 1700, but she was placed there because she hasn't taken it yet.
 
 
 
@@ -476,11 +488,11 @@ Set request to nil if teacher changes an objective to priority zero.
 Make sure that the student's request is present in the seminar
     When student changes class
     When objectives are removed from a seminar
-
-
-
-
-
+Update student requests if pre-reqs change
+This only matter if pre-reqs change after the request is made.
+Highly corner case, but worth a small update.
+ took away the line in the desk consultants algorithm that checks whether an apprentice is ready for her
+request.  
 
 
 
@@ -491,101 +503,17 @@ Classes have option to see purchased items for that specific class
 Visually separate the buttons in the teacher view
 
 
-RETURN OBJECTIVE REQUESTS
-    
-
-
-
-
-
-IMPORTANT FIXES
-
-Save "check_if_ready" as a column in the objective_student.
-    Set it true or false when obj_stud is created
-    Update it whenever an objective is passed that is a pre-req for another objective
-    Refer to it everywhere that check_if_ready is referred to
-
-Student requests are not updating with ajax.
-    This seems to be caused by having too many different forms in the seminar_student view
-    Sometimes it routes to the wrong controller
-
-Teacher commenting on goal is blank
-
-Right now assets compile is set to true.  This was a solution to images not appearing in heroku.
-But the article mentioned that this causes a performance slowdown.  So keep looking for better solutions.
-
-Doesn't seem to be always taking away pretest keys when the student scores 100%
-    Rayshon had a key box that read "Has scored 100% on this objective"
-
-Page to update pretests for a class should list those objectives in order
-
-Can't seem to take an objective away from a seminar
-
-Undefined method 'order' when searching for objective
-
-Error upon admin saving new objective
-
-Updating question quantities should give a flash message
-
-Pictures Index needs pagination
-
-Confirm removing <Seminar 1073514> from your classes
-
-Fill-in Questions need at least 8 answer choices
-
-Update seminar_bucks_earned or school_bucks_earned each time a new currency is added
-    Or when an item is purchased
-    Refer to those when loading the view
-    
-When editing objectives, etc reroute to objectives index instead of profile
-
-Stick student names to the left side of the scoresheet
-
-And use less blank space on the scoresheet view
-
-
-
-
-LINKS ARE HARD TO SEE AFTER USED
-
-
 OBJECTIVES NEED OFFICIAL NAMES AND CATCHY NAMES
 Display the official name on a pre-test
 And in the Objective index
     Option to change in objective index
 Display the catchy name in desk-consultants and teacher-granted quizzes
-
-
-
-TEACHERS UPDATE QUIZ SCORES
-
-Teachers need to be able to update scores for students questions and quizzes
-Would be really cool to offer the option to add the student's answer to the list of acceptable answers
-
-
-SHOW NEW STARS MORE CLEARLY
-Students are confused when a quiz shows a low score for new stars.
-
-
-
-
-
 EDIT QUESTIONS
 Edit multiple questions at once
 Show more of the question prompt in the index
 And less space between questions
 Show the number for the question so that it can be searched more quickly when there's a small error in one question
  
-
-
-RE-WORK OFFERING OF LABELS
-The current method of choosing labels is sloppy and cumbersome
-    Current idea is to bring up a section when the user pushes "Choose Label"
-    The pop-up offers all the labels, better organized
-    Ideally, the window would be a pop-up.  But not until I get better at testing javascript
-    
-
-
 
 
 PRE-REQS OF PRETESTS
@@ -597,7 +525,6 @@ MAIN TEACHER CAN REMOVE OTHER TEACHERS
 Main teacher needs to be able to remove other teachers from a class
 
 COMMODITY CONTROLLER PERMISSIONS
-
 Finish controller permissions to ensure authorized access to commodities
     And they should probably be dried as well
     
@@ -607,16 +534,6 @@ Finish controller permissions to ensure authorized access to commodities
 
    
     
-    
-Show different propaganda messages for students  
-
-
-Teachers might also need to update pretest scores.
-    Currently, entering pretest scores in the scoresheet will affect the student's grade.
-    
-Something is causing an objective to be added several times.
-    Make sure that doesn't happen.
-    It's probably from other objectives adding them as pre-reqs.
 
 
 
@@ -624,80 +541,12 @@ Objectives can be marked as a "non-standard" assessment.
 If so, it will skip those objectives when assessing readiness during a pre-test
 It will still consider those objectives for readiness for the rest of the school year
 
-I think it does take away pretest keys if a class is set to no longer be a pretest.
-    But does it do the same if the objective is removed from the class entirely?
-    Giving pretest keys should be based on whether the student already has a pretest score.
-        To prevent weird things from happening if a student is enrolled in two different classes and the teacher takes away a pretest.
-        Or if any teacher takes a pretest then gives it back, we don't want to give those students new keys to complete.
-
-
-
-Need a test to check the correct amounts displayed for quiz results
-    Correct label for stars for pre-test and normal
-    Correct amount of stars for pre-test, normal, and second try
-
-
-
-
-
-PASSWORD CHECKS
-Make sure that default password is equal to username.
-Make sure that teacher can change password.
-    Or maybe just reset it.
-    
-Footer message should be random like the header message.
-    
-I took away references to seminar.shouldShowConsultLink.
-add some info to explain to teachers that it is needed to use DeskConsultants
-
-
-
-
-GIVE SCHOOL BUCKS
-
-Class page offers school bucks in the same window as star market
-
-
-UPDATE REQUESTS IF PRE-REQS CHANGE
-This only matter if pre-reqs change after the request is made.
-Highly corner case, but worth a small update.
- took away the line in the desk consultants algorithm that checks whether an apprentice is ready for her
-request.  
-
-
-OFFER TO CHANGE REQUESTS WHEN A STUDENT PASSES THE REQUESTED OBJECTIVE
-
-DESK CONSULTANTS TESTS NEED TO ENSURE THAT NO REQUESTS GO WITH A STUDENT WHO ISN'T QUALIFIED FOR THAT REQUEST
-
-
-SCHOOL BUCKS TO NON-SEMINAR STUDENTS
-Teacher show page offers a link to student search
-Student search offers the panel to give school bucks
-
-
-
-
-FIX PROBLEMS WITH STUDENT SEARCHING
-
-
-SET SCORE THIS TERM TO NIL WHEN TERM ENDS
-
-MOVE ONE_UNFINISHED CHECK TO OBJ_STUD
-
-Then put that method back into user.quiz_collection
 
 
 DELETE COMMODITIES
-
 Still needs to maintain a record of the commodity_students purchased.  At least until database maintenance.
 
 STUDENT CAN SEE A REPORT OF ALL BUCKS RECEIVED
-
-
-
-
-ORGANIZE CONTENT CREATION BUTTONS
-Probably set up a "content creation" screen that organizes those buttons better.  
 
 
 TEACHER CAN SEE A REPORT OF ALL BUCKS GIVEN
@@ -719,24 +568,6 @@ Teacher can open and close availability for certain commodities
 Don't allow teacher to delete stars
 
 
-USING STARS NEEDS TO BE UPDATED
-
-
-
-SHOULD I IMPROVE LOADING OF SUBMENU NAVRIBBON PAGES BY LOADING FEWER OBJECTS AT A TIME?
-Instead of loading the requests AND the market info AND total scores, etc., just load one of these objects at a time.
-Should be the more rails-y approach.
-
-
-
-
-LEARN OPTIONS REFACTOR
-Some parts might perform better if I set the seminar.consultantThreshold before calling the method
-Both of these methods no longer need assign_list
-Teach options needs to be refactored as well.
-Test that teach options doesn't include objectives where the student has scored 100
-Or less than 6
-Or where the student already has keys
 
 
 WATCH FOR DELETIONS THAT AFFECT OTHER USERS
@@ -746,61 +577,27 @@ Might need to have an alternative to deletion, such as archiving, or hiding.
 
 
 TEACHER CAN TAKE CLASS CURRENCY (IN CASE OF A MISTAKE)
-
 Admin teachers can create new students without placing them into a class
-
 Teacher can make a comment while giving some currency
-
 Currency moves with student if student changes classes
-
 Teacher can give bucks to whole class.
     Screen that allows unchecking boxes from certain students
     Custom controller action that loops through whole class
     
 
-MAKE A SOLID PLAN FOR TEACHERS WHO WANT TO USE PUBLIC OBJECTIVES
-But maybe they don't want to use other teacher's questions.
-Also, look into what happens with a public objective that uses private labels.
-    Maybe don't allow public objectives to use private labels
-    Likewise, public labels shouldn't use private questions
   
 ADMIN CAN SEE CURRENCY REPORTS FOR STUDENTS AND TEACHERS
     
-    
-LIMIT THE BUCKS THAT A TEACHER HAS
-
-
-
 LEVEL 2 ADMIN CAN GIVE TEACHERS MORE BUCKS
     
     
     
 LEVEL 2 ADMIN CAN REMOVE A TEACHER FROM THE SCHOOL
 
-FIGURE OUT HOW TO MAKE ALL LINKS STAY WHITE
-Look up whether I should be using "link" "button" or another option
-
-
-
-ICONS FOR NEWEST MODELS
-
-
-OPTION TO PUT "RECENTLY MARKED DELIEVERED" AT TOP
-
-This will help office staff in case an item was marked as delivered when it shouldn't have been.
-    
+aqui    
     
 
-
-HOTFIXES
-Can I re-name the "present" attribute of the seminar student?  That's already a ruby word.
-For the sake of performance, the method "set_pretests" should only be called when pretests are changed.  Right now, it is getting called when
-    anything about the seminar is changed.
-Check pagination everywhere it occurs
-Don't block the "Desk Consultants" icon when it isn't availble. Instead, re-route to a screen that explains what is needed.
-
-
-
+aqui
 QUIZ FINISHING
 
 Show the number of keys left in the quiz report
@@ -808,19 +605,7 @@ If student has scored 100, then end-of-quiz message reads, "You have scored 100%
 
 
 
-SHOW ALL TYPES OF KEYS
 
-Key fields should show dc keys and pretest keys in a different color
-Check this in student quiz-finishing, student_seminar show page, teacher views student, and teacher views objective
-
-
-
-
-
-
-
-
-TEACHER-GRADED QUESTIONS
 
 
 
@@ -894,29 +679,6 @@ At the end of a quiz, DC needs to offer students “I don’t want to use the re
 There's too much space with all he headers and stuff at the top.  Condense that.
 
 
-
-PRIORITIES FOR SUMMER 2018
-V Star Market
-V Quiz fixes (See section below)
-Teacher-graded quiz questions
-Allow updating the school_year for each seminar
-Materials site working
-Consultant Stars
-Growth Stars
-Students can print/download a study guide for their next topic
-Check again to make sure pictures are working correctly
-Are the sponsors affected by the fact that classes allow multiple teachers?
-Don't put a student into a group if she already has keys for that topic
-    I think I already did this
-End-of-term Stuff
-Archive Classes
-Remediation objectives
-
-Auto-include goal points into total stars
-
-Look up whether my architecture will work better if change the model instead of using a column in the join table
-    Seminar :has_many  :pretest_objectives
-    This approach seems like I can ruby some things a lot better
     
     
 
@@ -928,25 +690,6 @@ In the same view, also give teacher the option to erase keys
     This will only erase teacher keys and dc keys.  Not pretest keys
     
 
-
-
-
-
-
-
-I TOOK OUT THIS PART FROM THE GOAL_STUDENTS NAVRIBBON.
-BUT THERE SHOULD BE A PART THAT CHANGES CHECKPOINT SOMEWHERE
-    <tr>
-        <td><h2>Switch to Checkpoint</h2></td>
-        <td class="spacer"></td>
-        <% 4.times do |n| %>
-            <td class="<%= 'highlighted' if n==@this_checkpoint %>">
-                <h2>
-                    <%= link_to n + 1, scoresheet_seminar_path(:seminar => @seminar, :which_checkpoint => n, :override => true), :id => "checkpoint_#{n}" %>
-                </h2>
-            </td>
-        <% end %>
-    </tr>
 
 
 
@@ -1002,6 +745,14 @@ Student using the sub-tabs to navigate the seminar_student view
 Mr. Z School needs to test a student visiting when there is a teacher comment.
 Should I enforce that term start and end dates are sequential?  I think I should
 Test that absent students cannot be chosen as consultant
+Need a test to check the correct amounts displayed for quiz results
+    Correct label for stars for pre-test and normal
+    Correct amount of stars for pre-test, normal, and second try
+Make sure that default password is equal to username.
+Make sure that teacher can change password.
+    Or maybe just reset it.
+Desk consultants test need to ensure that no request go with a student who isn’t qualified for that request.  Or even better, change the request when readiness is changed (which happends after pre-reqs are changed).
+
 
 
 
@@ -1025,57 +776,6 @@ Also e-mail parents
 E-mail when a comment is made on a student's goal
 
 
-COLLECTION OF SMALL FIXES
-If student buys item that sold out after he loaded page, it appears to student that purchase is working.
-    This tutorial looks helpful for fixing the problem:
-    https://www.tutorialspoint.com/ruby-on-rails/rails-and-ajax.htm
-README for loading only specific jquery-ui components.
-    https://github.com/jquery-ui-rails/jquery-ui-rails
-Dry up the four buttons shown in the bottom of seminar navigation
-    See what pages they should be inncluded on
-Switching classes when you're in a screen that isn't the scoresheet goes to a blank page.
-Q/A
-If a teacher signs in, but doesn't have a school, send them to school-choosing view
-Test and re-route for incomplete school info
-Admin should be able to destroy students
-    And schools
-        But what happens to students and teachers when their school gets destroyed.
-        This can probably wait for awhile
-Live site has errors in student searching. It occurred when trying to add Melissa Suess to 7th period
-V Consultants button in NavBar needs to link to consultancy show page  
-Set up billing alerts with AWS.
-I moved the javascripts to the end of the body tag on the chance that it might help with loading. Test on the live site with school computers using both ways.
-Deleting a consultancy from its own show page isn't working right now.
-Put goals in NavRibbon
-Fix NavRibbon for Desk Consultants
-Don't mark a student as consultant if the student is alone. It wastes that student's consultant turn.
-Check on StackOverflow whether my approach to array columns is best practice
-When editing a goal, they're all marked as "Private" when the user enters the view.
-Can erase most of the javascript for choosing goals, targets, checkpoints, and achievement
-    Or maybe not, since I'll need to replace the best-in-place to get my tests working.
-    Either that, or I need to update my tests to RSpec
-Student Goal Icon
-Desk Consultants should have “Max Group Size” for topics such as Chess.
-There should also be Max Number of groups, so that I don’t end up with more than four groups doing chess when I have four boards.
-I also need to add multiple, already-existing students to a class at once.
-Searching by student number threw an error
-Need the option to zoom in on one student's goal
-DC should NOT go back and place students into groups if they've already passed the objective.  New learning is more
-    important than having a group
-Need to allow for multiple teachers to leave comments.
-So the comment needs to have the ID of the person who left it.
-The OBjectiveStudent model has a column for "teacher score" which doesn't affect any of a student's term scores.
-    We need a scoresheet option where the teacher can input this
-Set_objectives_and_scores should be a model method so that it can be better tested
-Plan to update default term start and end dates each year
-Give mentor teacher a notice if the school's term dates haven't been set.
-Note that Mr. Z school recommends against naming a commodity "Star" or "Gem"
-Mark fewer items delivered in school market
-Or mark all items delivered in school market
-
-
-SCORESHEET SCROLLVIEW HEADER
-
 OBJECTIVES EDITING VIEWS
 
 Editing objectives should get the same treatment as seminar editing and student view.
@@ -1084,19 +784,12 @@ Don't show the regular navribbon while editing label quantities.
 
 
 
-DELETE GOALS
 
 
 
 QUESTIONS YOU MISSED
-
 Students can pull up questions they missed on quizzes. 
 
-
-GROWTH STARS
-If a student takes a quiz that he has already taken before and improves his score, the app create a record in the "GrowthStars" table.
-This record is attached to the objective_student.
-It is dated so that the teacher can look growth stars for a specific term.
 
 CONSULTANT STARS
 If a classmate from your consultant team earns growth stars, the consultant earns half that many growth stars. (Round up)
@@ -1258,11 +951,7 @@ Update a student's learn_requests when that student passes an objective.
     If that student had learn_requested to learn the objective she just passed, her learn_request should become neutral.
 Remove the part of the D-C algorithm that checks whether student has scored below 100 in his request.
 
-TEACHER EDITING OF STUDENT PASSWORDS
-Allow teachers to reset student passwords, but not to edit them.
 
-WRITE UPDATE PLAN
-Make a plan for how to roll out updates after more users are using the apps.
 
     
 PICTURE NEEDS EXTENT
@@ -1348,6 +1037,7 @@ Perhaps grant them some kind of points or rewards for these spiral reviews.
 If students do porrly on some lables, mark them for some kind of future review or refresher.
 In the future, allow hints on spiral reviews and practice quizzes.
 
+
 DELETING STUDENT REQUESTS FOR SPECIAL-CASE EVENTS
 Student might make a request for an objective, but then teachers later changes the priority for the objective or the consutlant threshold for the class.
 Perhaps this should be handled by deleting the student's request in either of these events.
@@ -1368,34 +1058,18 @@ Need to be able to save the consultancy after adjusting
 In creating Consultant groups, create a group of absent students
     The teacher can pull the absent student out of that group if those students arrive later.
 
-CONSULTANT STARS
  
-GROWTH POINTS
-Need to add "last_growth" type column to objective_sudent
-    When a student improves score, update last_growth to today's date
-    If there is growth, but last_growth was the same day, then don't add growth points. (They need to take it again on a different day to earn those points.)
-
-REMOVE QUIZ FROM DESK CONSULTANTS OFFERINGS AFTER STUDENT HAS TAKEN IT TWICE
-Count the number of attempts since the most recent time working that objective with desk consultants
-    If there are more than one, that quiz is no longer offered to the student.
-Or else close after one attempt if the day ends
-Automatically add consultant stars
-
-PRE-TEST MODE
-Explanation: Some objectives are unlocked from the beginning as pre-tests. But then students might later take those same objectives after consultant groups.
-There should be an indicator whether a certain quiz was taken as a pre-test or not.
-    Or maybe I should just update the "locked" status of that objective. Once a student unlocks a quiz for any other reason, it will no longer be available in the pre-test section
-If a student fails a quiz while in Pre-Test mode, lock all post-requisites of that objective where they are potential pre-tests
-    So the student will no longer have them open as a pre-test until earning them by passing off the pre-requisities.
 
 DISABLE "NEXT QUESTION" BUTTON UNTIL STUDENT CHOOSES A RESPONSE
 Goal: Disable the "Next" button until the student gives some kind of answer
 Add a "previous question" button
 
+
 TEACHERS CAN INVITE OTHER TEACHERS TO THE SCHOOL
 If the invited teacher follows the link, their e-mail is auto-filled in the signup form so that it matches the addess that was invited.
 The school is also auto-filled.
 Teacher invited by the school mentor are automatically verified.
+
 
 MENTOR CAN REMOVE TEACHERS FROM A SCHOOL
 When that happens, all students sponsored by that teacher are removed from the school
@@ -1403,22 +1077,14 @@ When that happens, all students sponsored by that teacher are removed from the s
 ENABLE HTML IN QUESTIONS
 I can go a long way toward making the questions look nicer if content-creators can use html when creating the prompts and answers.
 
+
 CREATE LABEL WHILE CREATING QUESTION
 I give the option to create a new label while creating questions, then it won't be tedious to add many questions to the 
+
 
 VETO ANSWER-SCRAMBLING
 Option to not randomize the answer choices for multiple-choice questions.
 
-STUDENT VIEW INTO MULTIPLE SUB-VIEWS
-Basically, make the initial view cleaner. But give the student the option to open other divs.
-Students should be able to view their old quizzes.
-Won't need to setup scores in all the tests that view the student_view
- 
-LINK TO THE MATERIALS SITE SO THAT I CAN SHARE THE MATERIALS I'VE CREATED
-Change the heroku name
-Make sure that everything is functioning for the regular site in case people start using it.
-Need an icon for every class. Seminar, Teacher, etc.
-Update the materials site
 
 
 
@@ -1487,6 +1153,7 @@ ELL STUDENTS
 Allow students to be marked as ELL. When that happens, they are default exempt from text-heavy objectives and questions
  
 
+
 SMALL IMPROVEMENTS TO COMPLETE MUCH LATER
 When there's only one public objective, the list looks really weird.
     I'm sure the problem is the same for private objectives.
@@ -1536,11 +1203,41 @@ Allow teachers and admin to edit their user_numbers upon creation and updating
 Right now the make_username method ends by generating a random token if the first four tries fail. If the site ever has a million users, I'll need to ensure that
     it's generating a unique token for the username
 Option to show "My questions only" in "All Questions"
+Offer to change requests when a student passes an objective.
 
-CUSTOM GOALS
-Teachers need to be able to create new goals
+
+
+FIXES FOR GOALKEEPER
+When editing a goal, they're all marked as "Private" when the user enters the view. 
+Need to allow for multiple teachers to leave comments.
+So the comment needs to have the ID of the person who left it.
+Need the option to zoom in on one student’s goal
+Eliminate the feature where goals transfer with the student.  It's causing an error.
+Goalkeeper is showing "Me" when it should be showing student names
+Also, when trying to choose a student's checkpoint, it won't allow me to choose something different than the first choice.
+  And then it leaves that choice with a blank.
+Checkpoint due dates could use a back button
+Test checkpoint editing if a due date is nil
+Ability to delete a goal option
+After a student is moved, the old goal_students should be erased
+Custom Goals--Teachers need to be able to create new goals
 Ensure that all goals include at least one actions option is offered for all three checkpoints. Otherwise there will be errors.
 When writing actions, there should be an option to copy actions from #1 to #3.
+Delete goals
+
+
+
+SCHOOL MARKET
+Class page offers school bucks in the same window as star market
+Teacher show page offers a link to student search
+Student search offers the panel to give school bucks
+OPTION TO PUT "RECENTLY MARKED DELIEVERED" AT TOP
+Option to put “recently marked delivered” at top
+This will help office staff in case an item was marked as delivered when it shouldn't have been.
+
+
 
 OPTIONAL FEATURES TO CONSIDER SOME DAY
 Upload student photos. Or have student icons.
+Don't show the goal on a student's profile unless teacher has enabled goalkeeper.
+
